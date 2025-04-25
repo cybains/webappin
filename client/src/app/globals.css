@@ -4,12 +4,14 @@
   --background: #ffffff;
   --foreground: #171717;
 }
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Define the theme colors */
+  --color-background: var(--background); /* Background color variable */
+  --color-foreground: var(--foreground); /* Foreground (text) color variable */
+
+  /* Define font variables */
+  --font-sans: 'Poppins', sans-serif; /* Use Poppins for sans-serif font */
+  --font-mono: 'Source Sans Pro', monospace; /* Use Source Sans Pro for monospace font */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +24,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Poppins, Source Sans Pro, sans-serif;
 }
