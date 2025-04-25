@@ -14,16 +14,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <header className="flex justify-between items-center p-4 border-b">
-          <div className="text-xl font-bold">Rovari</div>
-          <nav>
-            <ul className="flex space-x-4">
+        <header>
+          <div style={{marginTop: '2rem'}} className="text-5xl font-bold translate-x-10">Rovari</div>
+          <nav style={{ display: 'flex', justifyContent: 'space-between', width: 'calc(100% - 10rem)', marginLeft: '20rem', marginTop: '-2rem' }}>
+            <ul className="flex space-x-8 text-lg sm:text-xl">
               <li><a href="#services" className="hover:underline">Services</a></li>
               <li><a href="#countries" className="hover:underline">Countries</a></li>
               <li><a href="#resources" className="hover:underline">Resources/Blog</a></li>
               <li><a href="#about" className="hover:underline">About</a></li>
               <li><a href="#contact" className="hover:underline">Contact</a></li>
-              <li><a href="#client-portal" className="hover:underline">Client Portal</a></li>
+              <li><a
+                          className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
+                          style={{ marginTop: '-1em', marginLeft: '20rem' }}
+                          href="#client-portal"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Client Portal
+                        </a></li>
             </ul>
           </nav>
         </header>
