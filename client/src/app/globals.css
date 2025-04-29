@@ -4,6 +4,7 @@
   --background: #ffffff;
   --foreground: #171717;
 }
+
 @theme inline {
   /* Define the theme colors */
   --color-background: var(--background); /* Background color variable */
@@ -25,4 +26,63 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Poppins, Source Sans Pro, sans-serif;
+}
+
+/* Overlay Styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 999; /* Ensure it's above the content */
+  opacity: 0; /* Initially hidden */
+  pointer-events: none; /* Disable interaction */
+  transition: opacity 0.3s ease-in-out; /* Smooth transition */
+}
+
+.overlay.open {
+  opacity: 1; /* Show the overlay when the menu is open */
+  pointer-events: all; /* Enable interaction when the overlay is active */
+}
+
+/* Mobile Menu (Slide-in effect) */
+.mobile-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  width: 100%;
+  height: 100vh; /* Full screen height */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease-in-out; /* Smooth slide-in */
+  transform: translateY(-100%); /* Start off-screen */
+  z-index: 1000; /* Ensure it's above the overlay */
+}
+
+.mobile-menu.open {
+  transform: translateY(0); /* Slide the menu in */
+}
+
+.mobile-menu ul {
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.mobile-menu li {
+  margin: 1rem 0;
+}
+
+/* Media Query for Mobile */
+@media (max-width: 767px) {
+  .md\\:hidden {
+    display: block; /* Show the mobile menu on smaller screens */
+  }
 }
