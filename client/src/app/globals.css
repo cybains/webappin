@@ -1,9 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f9fafb; /* soft light gray */
+  --foreground: #111827; /* dark gray text */
+  --primary: #2563eb; /* vibrant blue */
+  --secondary: #f59e0b; /* amber */
+  --accent: #10b981; /* emerald */
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111827; /* deep blue-gray */
+    --foreground: #f3f4f6; /* light gray text */
+    --primary: #3b82f6; /* brighter blue */
+    --secondary: #facc15; /* yellow */
+    --accent: #34d399; /* minty green */
+  }
+}
+
 
 @theme inline {
   /* Define the theme colors */
@@ -12,7 +26,7 @@
 
   /* Define font variables */
   --font-sans: 'Poppins', sans-serif; /* Use Poppins for sans-serif font */
-  --font-mono: 'Source Sans Pro', monospace; /* Use Source Sans Pro for monospace font */
+  --font-mono: 'Source Code Pro', monospace; /* Updated to Source Code Pro for modern monospace font */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,7 +39,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Poppins, Source Sans Pro, sans-serif;
+  font-family: var(--font-mono), sans-serif; /* Use font-mono for the body */
 }
 
 /* Overlay Styles */
