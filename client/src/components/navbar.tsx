@@ -8,17 +8,17 @@ export default function Navbar() {
 
   // Toggle mobile menu
   const toggleMenu = () => setIsOpen(!isOpen);
-
+ 
   return (
     <header className="w-full border-b bg-white">
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 py-4">
         
         {/* Logo + Company Name in a Link */}
-        <Link href="/" className="flex items-center space-x-3">
+        <Link href="/" className="flex items-center space-x-3 md:justify-start">
           <img src="/logo.svg" alt="Rovari Logo" className="h-10 w-auto" />
           <span className="text-3xl font-bold text-black">Rovari</span>
         </Link>
-
+  
         {/* Hamburger Icon for Mobile (Visible on smaller screens) */}
         <button
           className="md:hidden text-3xl"
@@ -27,7 +27,7 @@ export default function Navbar() {
         >
           {isOpen ? "X" : "☰"}
         </button>
-
+  
         {/* Navigation */}
         <nav className={`mt-4 md:mt-0 ${isOpen ? "block" : "hidden"} md:block`}>
           <ul className="flex flex-wrap justify-center md:justify-end gap-4 md:gap-8 text-sm md:text-base font-medium text-gray-700">
@@ -49,7 +49,7 @@ export default function Navbar() {
           </ul>
         </nav>
       </div>
-
+  
       {/* Mobile Menu (Visible when isOpen is true) */}
       <div className={`overlay ${isOpen ? "open" : ""}`} onClick={toggleMenu}></div> {/* Overlay */}
       {isOpen && (
@@ -74,5 +74,5 @@ export default function Navbar() {
         </div>
       )}
     </header>
-  );
+  )
 }
