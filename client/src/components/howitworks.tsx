@@ -1,107 +1,118 @@
 "use client";
 
-import { useState } from "react";
+import { ClipboardList, UserCheck, MessageCircle } from "lucide-react";
+import { motion } from "framer-motion";
+
+const steps = [
+  {
+    icon: <ClipboardList className="h-8 w-8 text-primary" />,
+    title: "Step 1: Intake Form",
+    description: "Tell us your needs in a quick form—it only takes a minute.",
+  },
+  {
+    icon: <UserCheck className="h-8 w-8 text-primary" />,
+    title: "Step 2: Get Matched",
+    description: "We connect you with a consultant who understands your goals.",
+  },
+  {
+    icon: <MessageCircle className="h-8 w-8 text-primary" />,
+    title: "Step 3: Receive Guidance",
+    description: "Get tailored advice, visa help, or job matching solutions.",
+  },
+];
 
 export default function HowItWorks() {
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [resume, setResume] = useState<File | null>(null);
-  const [linkedin, setLinkedin] = useState("");
-  const [query, setQuery] = useState("");
-
-  const isContactValid = email.trim() || phone.trim();
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isContactValid) {
-      alert("Please provide either a phone number or email address.");
-      return;
-    }
-
-    // You can replace this with actual form submission logic
-    alert("Form submitted! We'll be in touch soon.");
-  };
-
   return (
-    <section className="w-full bg-white py-16 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-10">How It Works</h2>
+    <section
+      className="py-20 px-4"
+      style={{ backgroundColor: "var(--background)" }}
+      id="how-it-works"
+    >
+      <div className="max-w-6xl mx-auto text-center">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-3xl font-bold mb-4"
+          style={{ color: "var(--foreground)" }}
+        >
+          How It Works
+        </motion.h2>
 
-        {/* Step by Step Form */}
-        <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Step 1 */}
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Step 1: Provide Contact Information</h3>
-            <div className="flex flex-col md:flex-row gap-4">
-              <input
-                type="email"
-                placeholder="Email Address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg"
-              />
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg"
-              />
-            </div>
-          </div>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="text-gray-600 dark:text-gray-300 mb-12"
+          style={{ color: "var(--foreground)" }}
+        >
+          A simple process designed to give you the clarity and guidance you need.
+        </motion.p>
 
-          {/* Step 2 */}
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Step 2: Share Additional Information</h3>
-            <div className="space-y-4">
-              <input
-                type="file"
-                onChange={(e) => setResume(e.target.files?.[0] || null)}
-                className="w-full"
-              />
-              <input
-                type="url"
-                placeholder="LinkedIn Profile (optional)"
-                value={linkedin}
-                onChange={(e) => setLinkedin(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg"
-              />
-              <textarea
-                placeholder="Your query or specific needs..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg min-h-[100px]"
-              />
-            </div>
-          </div>
-
-          {/* Step 3 */}
-          <div className="text-center">
-            <button
-              type="submit"
-              className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {steps.map((step, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.2, duration: 0.6 }}
+              className="flex flex-col items-center text-center p-6"
+              style={{
+                backgroundColor: "var(--backgroundCard)",
+                color: "var(--foreground)",
+                borderRadius: "1.25rem",
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+              }}
             >
-              Submit and Get Started
-            </button>
-          </div>
-        </form>
+              <div className="mb-4">{step.icon}</div>
+              <h3
+                className="text-xl font-semibold mb-2"
+                style={{ color: "var(--foreground)" }}
+              >
+                {step.title}
+              </h3>
+              <p
+                className="text-gray-600 dark:text-gray-300 text-sm"
+                style={{ color: "var(--foreground)" }}
+              >
+                {step.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
 
-        {/* Visual Steps */}
-        <div className="mt-16 flex flex-col md:flex-row justify-between items-center text-center gap-8">
-          <div className="flex-1">
-            <div className="text-5xl mb-2">📥</div>
-            <p>Intake Form</p>
-          </div>
-          <div className="text-2xl">➡️</div>
-          <div className="flex-1">
-            <div className="text-5xl mb-2">🧠</div>
-            <p>Expert Analysis</p>
-          </div>
-          <div className="text-2xl">➡️</div>
-          <div className="flex-1">
-            <div className="text-5xl mb-2">📈</div>
-            <p>Personalized Advice</p>
-          </div>
+        {/* Animated timeline */}
+        <div className="hidden md:flex justify-between items-center mt-16 px-8 relative h-8">
+          {/* Line */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
+            className="absolute top-1/2 left-0 right-0 h-1"
+            style={{
+              backgroundColor: "var(--primary)", // Ensures it aligns with primary color
+            }}
+          />
+
+          {/* Dots */}
+          {steps.map((_, index) => (
+            <motion.div
+              key={index}
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 + index * 0.2, duration: 0.4 }}
+              className="w-4 h-4 rounded-full z-10 border-4 border-white dark:border-gray-800"
+              style={{
+                backgroundColor: "var(--primary)", // Dot color
+                borderColor: "var(--background)", // Border color based on background
+              }}
+            />
+          ))}
         </div>
       </div>
     </section>

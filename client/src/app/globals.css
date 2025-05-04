@@ -1,102 +1,61 @@
 @import "tailwindcss";
 
+/* Default light theme (Base theme) */
 :root {
-  --background: #f9fafb; /* soft light gray */
-  --foreground: #111827; /* dark gray text */
-  --primary: #2563eb; /* vibrant blue */
-  --secondary: #f59e0b; /* amber */
+  --background: #fafafa; /* Very light gray (background) */
+  --foreground: #333333; /* Dark gray text */
+  --primary: #4A90E2; /* Blue (primary accent color) */
+  --secondary: #F5A623; /* Amber (secondary accent color) */
+  --accent: #50E3C2; /* Emerald green (subtle highlights) */
+  --font-sans: 'Poppins', sans-serif; /* Sans-serif font */
+  --font-mono: 'Source Code Pro', monospace; /* Monospace font */
+}
+
+/* Dark Theme */
+[data-theme='dark'] {
+  --background: #0a0a0a; /* deep blue-gray */
+  --foreground: #ededed; /* light gray text */
+  --primary: #3b82f6; /* brighter blue */
+  --secondary: #facc15; /* yellow */
+  --accent: #34d399; /* minty green */
+
+  --font-sans: 'Roboto', sans-serif; /* Change to a different font for dark mode */
+  --font-mono: 'Courier New', monospace;
+}
+
+/* Custom Theme (optional, you can add more) */
+[data-theme='custom'] {
+  --background: #e0e7ff; /* soft blue */
+  --foreground: #1f2937; /* cool dark blue text */
+  --primary: #8b5cf6; /* purple */
+  --secondary: #fbbf24; /* orange */
   --accent: #10b981; /* emerald */
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #111827; /* deep blue-gray */
-    --foreground: #f3f4f6; /* light gray text */
-    --primary: #3b82f6; /* brighter blue */
-    --secondary: #facc15; /* yellow */
-    --accent: #34d399; /* minty green */
-  }
-}
-
-
-@theme inline {
-  /* Define the theme colors */
-  --color-background: var(--background); /* Background color variable */
-  --color-foreground: var(--foreground); /* Foreground (text) color variable */
-
-  /* Define font variables */
-  --font-sans: 'Poppins', sans-serif; /* Use Poppins for sans-serif font */
-  --font-mono: 'Source Code Pro', monospace; /* Updated to Source Code Pro for modern monospace font */
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: 'Arial', sans-serif; /* Different font for the custom theme */
+  --font-mono: 'Courier New', monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-mono), sans-serif; /* Use font-mono for the body */
+  font-family: var(--font-sans), sans-serif; /* Use font-sans for body text */
+  transition: background-color 0.3s, color 0.3s ease;
 }
 
-/* Overlay Styles */
-.overlay {
+/* Button for Theme Toggle (Example) */
+.theme-toggle-btn {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  z-index: 999; /* Ensure it's above the content */
-  opacity: 0; /* Initially hidden */
-  pointer-events: none; /* Disable interaction */
-  transition: opacity 0.3s ease-in-out; /* Smooth transition */
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.overlay.open {
-  opacity: 1; /* Show the overlay when the menu is open */
-  pointer-events: all; /* Enable interaction when the overlay is active */
-}
-
-/* Mobile Menu (Slide-in effect) */
-.mobile-menu {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: #fff;
-  width: 100%;
-  height: 100vh; /* Full screen height */
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease-in-out; /* Smooth slide-in */
-  transform: translateY(-100%); /* Start off-screen */
-  z-index: 1000; /* Ensure it's above the overlay */
-}
-
-.mobile-menu.open {
-  transform: translateY(0); /* Slide the menu in */
-}
-
-.mobile-menu ul {
-  padding: 0;
-  width: 100%;
-  text-align: center;
-}
-
-.mobile-menu li {
-  margin: 1rem 0;
-}
-
-/* Media Query for Mobile */
-@media (max-width: 767px) {
-  .md\\:hidden {
-    display: block; /* Show the mobile menu on smaller screens */
-  }
+.theme-toggle-btn:hover {
+  background-color: var(--secondary);
 }

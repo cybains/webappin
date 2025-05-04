@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const categories = [
   "Job Seeker",
@@ -11,6 +12,7 @@ const categories = [
 
 export default function SearchMe() {
   const [query, setQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleGo = () => {
     if (!query.trim()) return;
@@ -19,41 +21,76 @@ export default function SearchMe() {
   };
 
   return (
-    <section className="w-full bg-gray-100 py-12 px-4">
-      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-start gap-8">
-        {/* Categories */}
-        <div className="flex md:flex-col gap-4 overflow-x-auto md:overflow-visible">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              className="min-w-max px-4 py-2 bg-white shadow-md rounded-full hover:bg-blue-100 text-sm font-medium"
-              onClick={() => setQuery(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+    <section
+      className="w-full py-12 px-6"
+      style={{
+        background: "var(--backgroundSecondary)", // Light to dark gradient for dynamic theme
+      }}
+    >
+      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center gap-8">
+        {/* Left half: Dropdown Menu */}
+        <motion.div
+          className="flex-1"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+        >
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="w-full px-5 py-4 rounded-lg border border-gray-300 text-gray-800 bg-white focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all duration-300 ease-in-out"
+            style={{
+              backgroundColor: "var(--backgroundCard)",
+              color: "var(--foreground)", // Adjusting text color for consistency with theme
+            }}
+          >
+            <option value="" disabled>Select a category</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </motion.div>
 
-        {/* Search Bar */}
-        <div className="flex-1">
-          <label className="block mb-2 text-lg font-semibold text-gray-700">What are you looking for?</label>
-          <div className="relative">
-            <input
+        {/* Right half: Search Bar and Go Button */}
+        <motion.div
+          className="flex items-center gap-4 flex-1"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+        >
+          <div className="flex-1">
+            <motion.input
               type="text"
-              placeholder="e.g., Job opportunities in Lisbon"
-              className="w-full px-4 py-3 pr-20 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500"
-              style={{ cursor: 'url("/rover-cursor.png"), auto' }} // Add this image to /public
+              placeholder="Type in"
+              className="w-full px-5 py-4 pr-16 rounded-lg border border-gray-300 text-gray-800 bg-white focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all duration-300 ease-in-out"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              style={{
+                cursor: "pointer", // Temporary custom cursor style
+                backgroundColor: "var(--backgroundCard)", // Adjust background based on theme
+                color: "var(--foreground)", // Adjust text color based on theme
+              }}
+              whileFocus={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
             />
-            <button
-              className="absolute top-1/2 right-2 -translate-y-1/2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
-              onClick={handleGo}
-            >
-              Go
-            </button>
           </div>
-        </div>
+
+          {/* Search Me! Button */}
+          <motion.button
+            className="bg-indigo-600 text-white px-6 py-4 rounded-lg shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out"
+            onClick={handleGo}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              backgroundColor: "var(--primary)", // Primary color for button
+              borderColor: "var(--primary)", // Border color matches the theme
+            }}
+          >
+            Search Me!
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   );

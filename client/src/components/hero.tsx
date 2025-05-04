@@ -31,7 +31,10 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative h-[75vh] flex flex-col justify-center items-center overflow-hidden">
+    <section
+      className="relative h-[75vh] flex flex-col justify-center items-center overflow-hidden"
+      style={{ backgroundColor: 'var(--background)' }}
+    >
       {/* Horizontal scrolling image strip */}
       <div
         ref={scrollRef}
@@ -50,9 +53,23 @@ export default function Hero() {
       </div>
 
       {/* Overlay content */}
-      <div className="absolute bottom-0 right-0 z-10  bg-opacity-50 p-6 rounded-xl text-white text-center">
-        <h1 className="text-4xl md:text-6xl font-bold">A World of Opportunities</h1>
-        <p className="mt-4 text-lg md:text-2xl">
+      <div
+        className="absolute bottom-0 right-0 z-10 p-6 rounded-xl text-center"
+        style={{
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Adjust the overlay background color
+          color: 'var(--foreground)',  // Ensures text is readable based on theme
+        }}
+      >
+        <h1
+          className="text-4xl md:text-6xl font-bold"
+          style={{ color: 'var(--foreground)' }}
+        >
+          A World of Opportunities
+        </h1>
+        <p
+          className="mt-4 text-lg md:text-2xl"
+          style={{ color: 'var(--foreground)' }}
+        >
           I get the data, you make the decisions.
         </p>
       </div>
