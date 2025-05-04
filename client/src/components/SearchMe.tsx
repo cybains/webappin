@@ -44,7 +44,9 @@ export default function SearchMe() {
               color: "var(--foreground)", // Adjusting text color for consistency with theme
             }}
           >
-            <option value="" disabled>Select a category</option>
+            <option value="" disabled>
+              Select a category
+            </option>
             {categories.map((cat) => (
               <option key={cat} value={cat}>
                 {cat}
@@ -79,14 +81,17 @@ export default function SearchMe() {
 
           {/* Search Me! Button */}
           <motion.button
-            className="bg-indigo-600 text-white px-6 py-4 rounded-lg shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out"
+            className="bg-indigo-600 text-white px-6 py-4 rounded-lg shadow-lg transition duration-300 ease-in-out"
             onClick={handleGo}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             style={{
               backgroundColor: "var(--primary)", // Primary color for button
               borderColor: "var(--primary)", // Border color matches the theme
+              transition: "background-color 0.3s ease", // Adding a smooth transition
             }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = "var(--secondary)"} // Amber hover effect
+            onMouseLeave={(e) => e.target.style.backgroundColor = "var(--primary)"} // Reset to primary
           >
             Search Me!
           </motion.button>
