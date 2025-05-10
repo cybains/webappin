@@ -78,7 +78,7 @@ export default function SearchMe() {
           {loading && (
             <div className="text-left">
               <p className="inline-block bg-gray-100 text-gray-600 p-3 rounded-xl rounded-tl-none max-w-[80%] animate-pulse">
-                Typing...
+                Searching...
               </p>
             </div>
           )}
