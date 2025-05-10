@@ -13,11 +13,38 @@ const categories = [
 export default function SearchMe() {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [response, setResponse] = useState(""); // To store the response from API
+  const [loading, setLoading] = useState(false); // To handle loading state
 
-  const handleGo = () => {
+  const handleGo = async () => {
     if (!query.trim()) return;
-    // You can replace this with actual navigation logic
-    alert(`Navigating to results for: ${query}`);
+    
+    setLoading(true);  // Set loading to true when API call starts
+    
+    try {
+      // Sending a POST request to Flask API
+      const res = await fetch("http://localhost:5000/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: query,
+          category: selectedCategory,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setResponse(data.response);  // Update response state with API response
+      } else {
+        console.error("Failed to fetch data from API");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);  // Set loading to false after API call is complete
+    }
   };
 
   return (
@@ -93,10 +120,17 @@ export default function SearchMe() {
             onMouseEnter={(e) => e.target.style.backgroundColor = "var(--secondary)"} // Amber hover effect
             onMouseLeave={(e) => e.target.style.backgroundColor = "var(--primary)"} // Reset to primary
           >
-            Search Me!
+            {loading ? "Loading..." : "Search Me!"}
           </motion.button>
         </motion.div>
       </div>
+
+      {/* Display API response */}
+      {response && (
+        <div className="mt-6 text-lg font-semibold">
+          <p>{response}</p>
+        </div>
+      )}
     </section>
   );
 }
