@@ -16,13 +16,18 @@ type Job = {
 };
 
 async function getJobs(): Promise<Job[]> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-      : 'http://localhost:3000';
+  const isProd = process.env.NODE_ENV === 'production';
+  const baseUrl = isProd
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` // on Vercel, includes your domain
+    : 'http://localhost:3000'; // local dev server
 
   try {
-    const res = await fetch(`${baseUrl}/api/jobs`, { cache: 'no-store' });
+    // Use absolute URL in prod, relative URL in dev
+    const url = isProd ? `${baseUrl}/api/jobs` : 'http://localhost:3000/api/jobs';
+
+    console.log('Fetching jobs from:', url);
+
+    const res = await fetch(url, { cache: 'no-store' });
 
     if (!res.ok) {
       console.error(`Failed to fetch jobs via proxy: ${res.status}`);
@@ -41,6 +46,7 @@ async function getJobs(): Promise<Job[]> {
     return [];
   }
 }
+
 
 export default async function JobsPage() {
   const jobs = await getJobs();
