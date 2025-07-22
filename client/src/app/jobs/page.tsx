@@ -30,7 +30,7 @@ async function getJobs() {
 }
 
 export default async function JobsPage() {
-  const jobs = await getJobs();
+  const jobs: Job[] = await getJobs();
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
