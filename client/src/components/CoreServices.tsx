@@ -1,9 +1,10 @@
 "use client";
 
+import React from 'react';
 import { Briefcase, Globe, Building2, Users } from "lucide-react";
 
 type Service = {
-  icon: JSX.Element;
+  icon: React.ReactElement;
   title: string;
   description: string;
   link: string;

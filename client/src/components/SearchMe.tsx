@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { SendHorizonal } from "lucide-react";
 
 const categories = ["Job Seeker", "Digital Nomad", "Entrepreneur", "Expat Family"];

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from 'next/image';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +29,7 @@ export default function Navbar() {
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-3 md:justify-start">
-          <img src="/logo.svg" alt="Rovari Logo" className="h-10 w-auto" />
+          <Image src="/logo.svg" alt="Rovari Logo" className="h-10 w-auto" />
           <span className="text-3xl font-bold" style={{ color: "var(--foreground)" }}>
             Rovari
           </span>
