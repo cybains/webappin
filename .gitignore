@@ -414,3 +414,6 @@ yarn-error.log*
 # Ignore system files
 .DS_Store
 Thumbs.db
+
+# Ignore requirements file
+requirements.txt
