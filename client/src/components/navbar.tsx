@@ -29,7 +29,13 @@ export default function Navbar() {
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-3 md:justify-start">
-          <Image src="/logo.svg" alt="Rovari Logo" className="h-10 w-auto" />
+          <Image
+  src="/logo.svg"
+  alt="Rovari Logo"
+  width={40}
+  height={40}
+  className="h-10 w-auto"
+/>
           <span className="text-3xl font-bold" style={{ color: "var(--foreground)" }}>
             Rovari
           </span>
