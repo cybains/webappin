@@ -9,6 +9,7 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const navItems = [
+    { label: "Jobs", href: "/jobs" },
     { label: "Services", href: "#services" },
     { label: "Countries", href: "#countries" },
     { label: "Blog", href: "#resources" },
