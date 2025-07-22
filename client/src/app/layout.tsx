@@ -6,7 +6,7 @@ import Navbar from "@/components/navbar"; // ✅ New import
 
 
 export const metadata: Metadata = {
-  title: "Rovari",
+  title: "SUFONIQ",
   description: "Move abroad with confidence – consultations, jobs, relocation & more.",
 };
 

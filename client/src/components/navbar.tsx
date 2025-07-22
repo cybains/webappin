@@ -27,19 +27,25 @@ export default function Navbar() {
       }}
     >
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 py-4">
-        {/* Logo */}
-        <Link href="/" className="flex items-center space-x-3 md:justify-start">
-          <Image
-  src="/logo.svg"
-  alt="Rovari Logo"
-  width={40}
-  height={40}
-  className="h-10 w-auto"
-/>
-          <span className="text-3xl font-bold" style={{ color: "var(--foreground)" }}>
-            Rovari
-          </span>
-        </Link>
+      <Link href="/" className="flex items-center space-x-3 md:justify-start">
+  {/* Logo Image */}
+  <Image
+    src="/Asset 1.png"
+    alt="Sufoniq Logo"
+    width={40}
+    height={40}
+    className="h-10 w-auto"
+  />
+
+  {/* Company Name Image */}
+  <Image
+    src="/Asset 3.png"  // 👈 replace with your actual filename
+    alt="Rovari Text"
+    width={100}             // 👈 adjust as needed
+    height={10}
+    className="h-6 w-auto"
+  />
+</Link>
 
         {/* Hamburger for Mobile */}
         <button
