@@ -29,15 +29,16 @@ async function getJobs() {
   return data.jobs;
 }
 
-
-
-
 export default async function JobsPage() {
   const jobs = await getJobs();
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Remote Jobs</h1>
+      <h1 className="text-3xl font-bold mb-4">Remote Jobs</h1>
+      <p className="mb-6 italic text-gray-600 text-sm">
+        We update job listings by fetching data every 6 hours to respect API rate limits.
+      </p>
+
       <div className="grid gap-6">
         {jobs.slice(0, 20).map((job) => (
           <a
@@ -51,7 +52,10 @@ export default async function JobsPage() {
             <p className="text-sm text-gray-500">
               {job.company_name} • {job.job_type} • {job.candidate_required_location}
             </p>
-            <p className="mt-2 text-gray-700 line-clamp-3">{job.description}</p>
+            <div
+              className="mt-2 text-gray-700 line-clamp-3"
+              dangerouslySetInnerHTML={{ __html: job.description }}
+            />
           </a>
         ))}
       </div>
