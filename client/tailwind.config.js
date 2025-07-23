@@ -1,9 +1,9 @@
-// tailwind.config.js
 module.exports = {
   darkMode: 'media',
   content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    './src/app/**/*.{js,ts,jsx,tsx}',       // app folder (pages, layouts, etc)
+    './src/components/**/*.{js,ts,jsx,tsx}', // components
+    // No need to include 'lib' unless you have UI code there
   ],
   theme: {
     extend: {
