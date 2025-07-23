@@ -30,7 +30,7 @@ export default function MapTest() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPositions((prev) =>
+      setPositions((prev) => 
         prev.map((marker) => ({
           ...marker,
           coordinates: jitter(marker.coordinates),
