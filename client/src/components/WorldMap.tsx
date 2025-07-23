@@ -13,15 +13,17 @@ function getSmartCoordinates(): [number, number] {
   return [lng, lat];
 }
 
-// Gentle jitter
-function jitter([lng, lat]: [number, number]) {
+// Gentle jitter with explicit return type as tuple [number, number]
+function jitter([lng, lat]: [number, number]): [number, number] {
   const deltaLat = (Math.random() - 0.5) * 0.2;
   const deltaLng = (Math.random() - 0.5) * 0.2;
   return [lng + deltaLng, lat + deltaLat];
 }
 
 export default function MapTest() {
-  const [positions, setPositions] = useState<{ id: number; coordinates: [number, number] }[]>(
+  const [positions, setPositions] = useState<
+    { id: number; coordinates: [number, number] }[]
+  >(
     Array.from({ length: NUM_MARKERS }, (_, i) => ({
       id: i,
       coordinates: getSmartCoordinates(),
@@ -37,6 +39,7 @@ export default function MapTest() {
         }))
       );
     }, 1000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -63,7 +66,7 @@ export default function MapTest() {
         ))}
       </Map>
 
-      {/* Transparent gradient for cleaner top */}
+      {/* Transparent gradient overlay on top */}
       <div className="pointer-events-none absolute top-0 left-0 w-full h-full z-10 bg-gradient-to-b from-white/90 via-white/10 to-transparent" />
     </div>
   );
