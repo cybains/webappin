@@ -1,16 +1,31 @@
 "use client";
+import { useEffect, useRef } from "react";
+import mapboxgl from "mapbox-gl";
 
-import WorldMap from "react-world-map";
-import { useState } from "react";
+// 🔑 Replace with your Mapbox token
+mapboxgl.accessToken = "YOUR_MAPBOX_ACCESS_TOKEN";
 
-export default function InteractiveWorldMap() {
-  const [selected, setSelected] = useState<string>("");
+export default function WorldMap() {
+  const mapContainer = useRef(null);
+
+  useEffect(() => {
+    if (!mapContainer.current) return;
+
+    const map = new mapboxgl.Map({
+      container: mapContainer.current as HTMLElement,
+      style: "mapbox://styles/mapbox/light-v10", // You can change theme
+      center: [0, 20], // Longitude, Latitude
+      zoom: 1.2,
+      interactive: false, // disable zoom/pan for visual background
+    });
+
+    return () => map.remove();
+  }, []);
 
   return (
-    <WorldMap
-      selected={selected}
-      onClickFunction={(geo) => setSelected(geo)}
-      style={{ width: "100%", height: "100%" }} // ensure it fills container
+    <div
+      ref={mapContainer}
+      className="absolute inset-0 -z-10 opacity-20 pointer-events-none"
     />
   );
 }
