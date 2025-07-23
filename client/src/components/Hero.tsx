@@ -10,7 +10,7 @@ export default function Hero() {
     >
 
       <div>
-        <h1 className="text-8xl text-gray-950 tracking-tighter text-balance z-10 relative">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-gray-950 tracking-tighter text-balance z-10 relative leading-tight">
           Stop the noise. The future of work isn’t loud, it’s aligned.
         </h1>
       </div>
