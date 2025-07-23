@@ -1,0 +1,16 @@
+{
+  "name": "webappin-job-fetcher",
+  "version": "1.0.0",
+  "description": "Backend service to fetch remote jobs and save them to MongoDB for the Webappin project",
+  "main": "fetchAndSaveJobs.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node fetchAndSaveJobs.mjs"
+  },
+  "dependencies": {
+    "mongoose": "^7.3.4",
+    "node-fetch": "^3.3.2"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}
