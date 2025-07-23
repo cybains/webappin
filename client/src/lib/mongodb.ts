@@ -7,17 +7,19 @@ if (!uri) {
 }
 
 const options = {};
-let client;
-let clientPromise: Promise<MongoClient>;
 
 declare global {
+  // Prevent multiple instances of MongoClient in development
+  // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-if (!global._mongoClientPromise) {
-  client = new MongoClient(uri, options);
-  global._mongoClientPromise = client.connect();
+const client = new MongoClient(uri, options);
+
+const clientPromise: Promise<MongoClient> = global._mongoClientPromise || client.connect();
+
+if (process.env.NODE_ENV !== 'production') {
+  global._mongoClientPromise = clientPromise;
 }
-clientPromise = global._mongoClientPromise;
 
 export default clientPromise;

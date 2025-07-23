@@ -15,8 +15,15 @@ export async function GET() {
     }));
 
     return NextResponse.json({ jobs: jobsWithId });
-  } catch (error: any) {
-    console.error('🔴 Mongo Fetch Error:', error?.message || error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  } catch (error: unknown) {
+    // Narrow error type safely
+    let message = 'Internal server error';
+    if (error instanceof Error) {
+      message = error.message;
+      console.error('🔴 Mongo Fetch Error:', message);
+    } else {
+      console.error('🔴 Mongo Fetch Error:', error);
+    }
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
