@@ -420,3 +420,4 @@ requirements.txt
 
 
 .env.local
+.env
