@@ -1,8 +1,5 @@
 @import url('https://geists.vercel.app/font.css');
 @import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Default light theme (Base theme) */
 :root {

@@ -21,19 +21,15 @@ export default function Navbar() {
   return (
     <header
       className="w-full shadow-sm backdrop-blur-sm sticky top-0 z-50"
-
       style={{
         backgroundColor: "var(--background)",
         color: "var(--foreground)",
         fontFamily: "var(--font-sans)",
       }}
     >
-      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center pl-0 pr-6 py-3 md:py-2">
-
-
+      <div className="w-full flex flex-col md:flex-row items-center justify-start px-5 py-3 md:py-2">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-4 md:justify-start -ml-8">
-
+        <Link href="/" className="flex items-center space-x-4 md:justify-start ml-0">
           <Image
             src="/Asset 1.png"
             alt="Sufoniq Logo"
@@ -63,23 +59,18 @@ export default function Navbar() {
         <nav
           className={`flex-grow w-full md:w-auto transition-all duration-300 ease-in-out mt-1 md:ml-7 ${
             isOpen ? "block mt-4" : "hidden md:block"
-        }`}
-      >
-
+          }`}
+        >
           <ul className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 text-sm md:text-base font-medium">
-
             {navItems.map(({ label, href }) => (
               <li key={label}>
                 <a
                   href={href}
                   className="text-gray-500 transition-colors duration-200 hover:text-[var(--secondary)]"
-                  style={{ // or 'Inter, sans-serif'
-                    textDecoration: "none",
-                  }}
-                  >
-                {label}
+                  style={{ textDecoration: "none" }}
+                >
+                  {label}
                 </a>
-
               </li>
             ))}
           </ul>
