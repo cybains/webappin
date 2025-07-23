@@ -417,3 +417,6 @@ Thumbs.db
 
 # Ignore requirements file
 requirements.txt
+
+
+.env.local

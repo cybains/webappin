@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 import React from 'react';
 
 type Job = {
-  id: number;
+  id: string;
   title: string;
   company_name: string;
   category: string;
