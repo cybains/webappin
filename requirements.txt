@@ -5,3 +5,6 @@ flask
 python-dotenv
 flask_cors
 dotenv
+react-simple-maps
+d3-geo
+react-DOM
