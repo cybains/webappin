@@ -7,7 +7,7 @@ import Navbar from "@/components/navbar"; // ✅ New import
 
 export const metadata: Metadata = {
   title: "SUFONIQ",
-  description: "Move abroad with confidence – consultations, jobs, relocation & more.",
+  description: "Relocate without the panic — jobs, advice, and a plan that actually makes sense.",
 };
 
 export default function RootLayout({
