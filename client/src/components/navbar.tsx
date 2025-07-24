@@ -20,16 +20,17 @@ export default function Navbar() {
 
   return (
     <header
-      className="w-full shadow-sm backdrop-blur-sm sticky top-0 z-50"
+      className="w-full sticky top-0 z-50 shadow-sm backdrop-blur-sm border-b border-gray-200"
       style={{
         backgroundColor: "var(--background)",
         color: "var(--foreground)",
         fontFamily: "var(--font-sans)",
       }}
     >
-      <div className="w-full flex flex-col md:flex-row items-center justify-start px-5 py-3 md:py-2">
+      {/* Wrapper */}
+      <div className="w-full flex flex-row items-center justify-between px-5 py-3 md:py-2">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-4 md:justify-start ml-0">
+        <Link href="/" className="flex items-center space-x-4 md:justify-start">
           <Image
             src="/Asset 1.png"
             alt="Sufoniq Logo"
@@ -48,7 +49,7 @@ export default function Navbar() {
 
         {/* Mobile Hamburger */}
         <button
-          className="md:hidden text-3xl focus:outline-none"
+          className="md:hidden text-3xl focus:outline-none z-50"
           onClick={toggleMenu}
           aria-label="Toggle Menu"
         >
@@ -57,17 +58,17 @@ export default function Navbar() {
 
         {/* Nav Links */}
         <nav
-          className={`flex-grow w-full md:w-auto transition-all duration-300 ease-in-out mt-1 md:ml-7 ${
-            isOpen ? "block mt-4" : "hidden md:block"
-          }`}
+          className={`${
+            isOpen ? "block" : "hidden"
+          } fixed top-15 left-0 w-full bg-[var(--background)] transition-all duration-300 ease-in-out z-40 md:mt-0
+            md:static md:block md:w-auto md:bg-transparent`}
         >
-          <ul className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 text-sm md:text-base font-medium">
+          <ul className="flex flex-col md:flex-row items-start md:items-start gap-4 md:gap-8 text-sm md:text-base font-medium px-5 py-4 md:p-0">
             {navItems.map(({ label, href }) => (
-              <li key={label}>
+              <li key={label} className="w-full md:w-auto">
                 <a
                   href={href}
-                  className="text-gray-500 transition-colors duration-200 hover:text-[var(--secondary)]"
-                  style={{ textDecoration: "none" }}
+                  className="block w-full text-gray-700 md:text-gray-500 px-4 py-2 md:px-0 md:py-0 transition duration-200 hover:bg-[var(--accent)] hover:text-white md:hover:bg-transparent md:hover:text-[var(--secondary)] md:hover:underline"
                 >
                   {label}
                 </a>
