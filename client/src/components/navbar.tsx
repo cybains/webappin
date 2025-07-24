@@ -1,12 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const toggleMenu = () => setIsOpen(!isOpen);
+
+  const toggleMenu = () => {
+    setIsOpen((prev) => {
+      const newState = !prev;
+      if (typeof window !== "undefined") {
+        document.body.classList.toggle("hide-hero", newState);
+      }
+      return newState;
+    });
+  };
 
   const navItems = [
     { label: "Jobs", href: "/jobs" },
@@ -60,10 +69,10 @@ export default function Navbar() {
         <nav
           className={`${
             isOpen ? "block" : "hidden"
-          } fixed top-15 left-0 w-full bg-[var(--background)] transition-all duration-300 ease-in-out z-40 md:mt-0
-            md:static md:block md:w-auto md:bg-transparent`}
+          } fixed top-16 left-4 right-4 rounded-xl bg-white/70 backdrop-blur-lg shadow-lg shadow-black/10 transition-all duration-300 ease-in-out z-40
+            md:static md:block md:w-auto md:bg-transparent md:shadow-none md:rounded-none md:backdrop-blur-0`}
         >
-          <ul className="flex flex-col md:flex-row items-start md:items-start gap-4 md:gap-8 text-sm md:text-base font-medium px-5 py-4 md:p-0">
+          <ul className="flex flex-col md:flex-row items-start md:items-start gap-6 md:gap-8 text-sm md:text-base font-medium px-6 py-6 md:p-0">
             {navItems.map(({ label, href }) => (
               <li key={label} className="w-full md:w-auto">
                 <a

@@ -63,3 +63,9 @@ body {
 .theme-toggle-btn:hover {
   background-color: var(--secondary);
 }
+
+@media (max-width: 768px) {
+  body.hide-hero .hero {
+    display: none !important;
+  }
+}
