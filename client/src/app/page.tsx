@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import SearchMe from "@/components/SearchMe";
 import HowItWorks from "@/components/HowItWorks";
+import Contact from "@/components/Contact";
 import CoreServices from "@/components/CoreServices";
 import Footer from "@/components/Footer";
 
@@ -33,11 +34,17 @@ export default function Home() {
       <section id="how-it-works">
         <HowItWorks />
       </section>
-
+      
       {/* Core Services Section */}
       <section id="services">
         <CoreServices />
       </section>
+    
+      {/* Contact Section */}{/* How It Works Section */}
+      <section id="Contact">
+        <Contact />
+      </section>
+
 
       {/* Footer Section */}
       <footer id="footer">
