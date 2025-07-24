@@ -70,8 +70,8 @@ export default function ContactSection() {
           Still got questions?
         </h2>
         <p className="text-base text-muted-foreground">
-          Reach out and we'll get back with answers, wit, and maybe snacks.
-        </p>
+  We&rsquo;ll get back with answers, wit, and maybe snacks.
+</p>
       </div>
 
       {/* Reserved Space for Messages */}
