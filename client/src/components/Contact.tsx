@@ -82,7 +82,7 @@ export default function ContactSection() {
               {email}
             </p>
             <p className="text-zinc-500 mt-2 text-sm italic tracking-wide">
-              Email copied to your clipboard for convenience purposes.
+              Email copied to the clipboard for your convenience. Keep it handy!
             </p>
           </div>
         )}
@@ -93,11 +93,11 @@ export default function ContactSection() {
               Sorry man, we only kinda do emails.
             </p>
             <p className="text-zinc-500 mt-1 text-sm italic tracking-wide">
-              Email copied to your clipboard for convenience purposes.
+              Email copied to the clipboard for your convenience. Keep it handy!
             </p>
             {showPhew && (
               <p className="text-sm mt-1 text-muted-foreground italic">
-                Phew, that real heart to heart is tough.
+                Real heart to heart is tough, just email us.
               </p>
             )}
           </div>

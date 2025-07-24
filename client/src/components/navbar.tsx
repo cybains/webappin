@@ -20,11 +20,11 @@ export default function Navbar() {
 
   const navItems = [
     { label: "Jobs", href: "/jobs" },
-    { label: "Services", href: "#services" },
+    { label: "Services", href: "/#services" },
     { label: "Countries", href: "#countries" },
     { label: "Blog", href: "#resources" },
     { label: "About Us", href: "/about" },
-    { label: "Contact", href: "#contact" },
+    { label: "Contact", href: "/#contact" },
     { label: "Client Portal", href: "#client-portal" },
   ];
 
