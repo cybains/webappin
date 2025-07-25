@@ -27,18 +27,13 @@ type JobsResponse = {
 };
 
 async function getJobs(page = 1, limit = 20): Promise<JobsResponse> {
-  const isProd = process.env.NODE_ENV === 'production';
-  const baseUrl = isProd
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : 'http://localhost:3000';
-
-  const url = `${baseUrl}/api/jobs?page=${page}&limit=${limit}`;
+  const url = `/api/jobs?page=${page}&limit=${limit}`;
 
   try {
     const res = await fetch(url, { cache: 'no-store' });
 
     if (!res.ok) {
-      console.error(`Failed to fetch jobs via proxy: ${res.status}`);
+      console.error(`Failed to fetch jobs: ${res.status}`);
       return { jobs: [], page, limit, totalJobs: 0 };
     }
 
@@ -49,6 +44,7 @@ async function getJobs(page = 1, limit = 20): Promise<JobsResponse> {
     return { jobs: [], page, limit, totalJobs: 0 };
   }
 }
+
 
 export default function JobsPage() {
   const searchParams = useSearchParams();
