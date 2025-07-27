@@ -7,9 +7,8 @@ def run_worldbank_etl():
     
     # Extract
     raw_data = fetch_worldbank_data(
-        qterm="energy",
-        fields=["display_title", "abstracts", "count", "lang", "docty", "disclosure_date", "url"],
-        max_pages=3
+        qterm=None,
+        max_pages=None  # no 'fields' parameter here
     )
     print(f"Extracted {len(raw_data)} records")
 
