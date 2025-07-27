@@ -8,3 +8,6 @@ dotenv
 react-simple-maps
 d3-geo
 react-DOM
+requests 
+pymongo
+python-dateutil
