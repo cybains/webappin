@@ -1,4 +1,3 @@
-
 "use client";
 import React from "react";
 
@@ -166,7 +165,7 @@ const PERSONAS = [
 ] as const;
 
 export default function MethodologyPage() {
-  const toc: { href: string; label: string }[] = [
+  const toc = [
     { href: "#ingestion", label: "Data ingestion & scope" },
     { href: "#governance", label: "Data quality & governance" },
     { href: "#features", label: "Transformations & features" },
@@ -185,7 +184,6 @@ export default function MethodologyPage() {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
-      {/* Header */}
       <header className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Methodology</h1>
         <p className="mt-1 text-sm text-gray-600">
@@ -198,7 +196,6 @@ export default function MethodologyPage() {
         </div>
       </header>
 
-      {/* TOC */}
       <nav className="mb-10 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <p className="mb-2 text-sm font-semibold text-slate-700">On this page</p>
         <ul className="grid gap-1 text-sm sm:grid-cols-2">
@@ -212,57 +209,61 @@ export default function MethodologyPage() {
         </ul>
       </nav>
 
-      {/* Content */}
       <div className="space-y-10">
         <section id="ingestion" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">1 Data ingestion & scope</h2>
+          <h2 className="text-xl font-semibold">1) Data ingestion & scope</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li>
               <strong>API:</strong> World Bank v2 JSON endpoints (
               <code className="rounded bg-slate-100 px-1 py-0.5">/sources</code>,{" "}
               <code className="rounded bg-slate-100 px-1 py-0.5">/indicators</code>,{" "}
               <code className="rounded bg-slate-100 px-1 py-0.5">/country</code>,{" "}
-              <code className="rounded bg-slate-100 px-1 py-0.5">/country/all/indicator/{`{code}`}</code>
+              <code className="rounded bg-slate-100 px-1 py-0.5">/country/all/indicator/{"{code}"}</code>
               ).
             </li>
+            <li><strong>Coverage:</strong> All indicators, countries & aggregates; years 1960–{currentYear} where available.</li>
             <li>
-              <strong>Coverage:</strong> All indicators, countries & aggregates; years 1960–{currentYear} where available.
-            </li>
-            <li>
-              <strong>Storage:</strong> MongoDB (<code className="rounded bg-slate-100 px-1 py-0.5">worldbank_raw</code>), 1 row per{" "}
-              <em>indicator × country × year</em>; key{" "}
+              <strong>Storage:</strong> MongoDB (<code className="rounded bg-slate-100 px-1 py-0.5">worldbank_raw</code>), 1 row per <em>indicator × country × year</em>; key{" "}
               <code className="rounded bg-slate-100 px-1 py-0.5">{"{indicator|country|year}"}</code>.
             </li>
-            <li>
-              <strong>Versioning:</strong> Every dump stamped with <code className="rounded bg-slate-100 px-1 py-0.5">dump_as_of</code> (UTC); derived tables reference the same snapshot.
-            </li>
+            <li><strong>Versioning:</strong> Every dump stamped with <code className="rounded bg-slate-100 px-1 py-0.5">dump_as_of</code> (UTC); derived tables reference the same snapshot.</li>
           </ul>
         </section>
 
         <section id="governance" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">2 Data quality & governance</h2>
+          <h2 className="text-xl font-semibold">2) Data quality & governance</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li><strong>Metadata:</strong> We keep id, name, source_id, unit, notes/definitions per indicator.</li>
             <li><strong>Aggregates:</strong> World/regions/income groups are tagged and excluded from country-only rankings by default.</li>
-            <li><strong>Missing values:</strong> Shown as <code className="rounded bg-slate-100 px-1 py-0.5">N/A</code>. Short gaps (≤2 years) may be linearly interpolated for analytics and flagged as <code className="rounded bg-slate-100 px-1 py-0.5">filled</code>.</li>
+            <li><strong>Missing values:</strong> Shown as <code className="rounded bg-slate-100 px-1 py-0.5">N/A</code>. Short gaps (≤2 years) may be linearly interpolated and flagged as <code className="rounded bg-slate-100 px-1 py-0.5">filled</code>.</li>
             <li><strong>Outliers:</strong> Winsorized per indicator-year across countries (default P5–P95).</li>
             <li><strong>Units:</strong> We never mix unit families (e.g., current USD vs constant USD vs PPP).</li>
           </ul>
         </section>
 
         <section id="features" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">3 Transformations & features</h2>
+          <h2 className="text-xl font-semibold">3) Transformations & features</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li><strong>Per-capita:</strong> <code className="rounded bg-slate-100 px-1 py-0.5">x_pc = x / POP</code>; <strong>% of GDP:</strong> <code className="rounded bg-slate-100 px-1 py-0.5">x_%GDP = 100 * x / GDP</code>.</li>
             <li><strong>Log transform (levels):</strong> <code className="rounded bg-slate-100 px-1 py-0.5">y = ln(x + ε)</code>. <strong>Logit (bounded %):</strong> <code className="rounded bg-slate-100 px-1 py-0.5">z = ln(p/(1−p))</code>, with <code className="rounded bg-slate-100 px-1 py-0.5">p = x/100</code>.</li>
-            <li><strong>Growth:</strong> YoY% <code className="rounded bg-slate-100 px-1 py-0.5">100*(x_t/x_{t-1} − 1)</code>; log-growth <code className="rounded bg-slate-100 px-1 py-0.5">ln(x_t+ε) − ln(x_{t-1}+ε)</code>; CAGR <code className="rounded bg-slate-100 px-1 py-0.5">(x1/x0)^(1/n) − 1</code>.</li>
+            <li>
+              <strong>Growth:</strong> YoY%{" "}
+              <code className="rounded bg-slate-100 px-1 py-0.5">
+                100*(x<sub>t</sub>/x<sub>t−1</sub> − 1)
+              </code>
+              ; log-growth{" "}
+              <code className="rounded bg-slate-100 px-1 py-0.5">
+                ln(x<sub>t</sub>+ε) − ln(x<sub>t−1</sub>+ε)
+              </code>
+              ; CAGR <code className="rounded bg-slate-100 px-1 py-0.5">(x1/x0)^(1/n) − 1</code>.
+            </li>
             <li><strong>Rolling:</strong> mean/std (e.g., 3y) and OLS slope on last 5y.</li>
             <li><strong>Polarity:</strong> indicators marked higher- or lower-is-better (e.g., unemployment, CO₂ are lower-better).</li>
           </ul>
         </section>
 
         <section id="normalize" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">4 Normalization & ranks</h2>
+          <h2 className="text-xl font-semibold">4) Normalization & ranks</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li><strong>Percentile (world):</strong> empirical percentile per year across countries (after winsorization), scaled 0–100.</li>
             <li><strong>Robust z-score:</strong> <code className="rounded bg-slate-100 px-1 py-0.5">(x − median) / (1.4826 * MAD)</code>.</li>
@@ -272,7 +273,7 @@ export default function MethodologyPage() {
         </section>
 
         <section id="kpis" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">5 Headline KPIs (final)</h2>
+          <h2 className="text-xl font-semibold">5) Headline KPIs (final)</h2>
           <div className="overflow-hidden rounded-xl border border-slate-200">
             <table className="min-w-full text-sm">
               <thead className="bg-slate-50">
@@ -302,7 +303,7 @@ export default function MethodologyPage() {
         </section>
 
         <section id="personas" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">6 Persona indices</h2>
+          <h2 className="text-xl font-semibold">6) Persona indices</h2>
           <p className="mt-3 text-slate-700">
             Composite scores (0–100) built from per-indicator percentiles (polarity applied).
             Equal weights across pillars and within pillars. Score published if ≥60% indicators are present; otherwise flagged <code className="rounded bg-slate-100 px-1 py-0.5">low_coverage</code>.
@@ -330,7 +331,7 @@ export default function MethodologyPage() {
         </section>
 
         <section id="profiles" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">7 Country profiles & comparisons</h2>
+          <h2 className="text-xl font-semibold">7) Country profiles & comparisons</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li><strong>Profiles:</strong> latest value + year + unit + YoY + world percentile; 10–20y trends; benchmarks (World/Region/Income).</li>
             <li><strong>Comparisons:</strong> side-by-side KPIs, percentile bars, trend overlays; ranks exclude aggregates by default.</li>
@@ -338,7 +339,7 @@ export default function MethodologyPage() {
         </section>
 
         <section id="opportunities" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">8 Opportunity mapping</h2>
+          <h2 className="text-xl font-semibold">8) Opportunity mapping</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li><strong>Level percentile</strong> L ∈ [0,100] and <strong>Trend percentile</strong> T ∈ [0,100] (YoY or 5y CAGR).</li>
             <li><strong>Score:</strong> geometric mean <code className="rounded bg-slate-100 px-1 py-0.5">O = √(L · T)</code> with a small volatility penalty; coverage ≥70%, latest ≤2y, inflation within bounds.</li>
@@ -346,7 +347,7 @@ export default function MethodologyPage() {
         </section>
 
         <section id="forecasts" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">9 Forecasts (projections)</h2>
+          <h2 className="text-xl font-semibold">9) Forecasts (projections)</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li><strong>Scope:</strong> smooth, well-covered annual series (GDP pc, inflation, unemployment, internet users, life expectancy, CO₂ pc).</li>
             <li><strong>Transforms:</strong> log for levels; logit for bounded %.</li>
@@ -356,7 +357,7 @@ export default function MethodologyPage() {
         </section>
 
         <section id="alerts" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">10 Alerts</h2>
+          <h2 className="text-xl font-semibold">10) Alerts</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li><strong>Triggers:</strong> threshold/percentile crossings, large YoY/log-growth, trend breaks, anomalies (robust z), forecast breaches.</li>
             <li><strong>Noise control:</strong> hysteresis (2 consecutive observations), cooldown windows, recency & coverage checks.</li>
@@ -365,7 +366,7 @@ export default function MethodologyPage() {
         </section>
 
         <section id="llm" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">11 LLM grounding</h2>
+          <h2 className="text-xl font-semibold">11) LLM grounding</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li><strong>Evidence bundle:</strong> compact JSON of numbers/years/units/sources from Mongo; the model only narrates from this evidence.</li>
             <li><strong>Discipline:</strong> every numeric claim includes year + unit + source code (e.g., <code className="rounded bg-slate-100 px-1 py-0.5">NY.GDP.PCAP.KD, 2023, WDI</code>); no on-the-fly calculations.</li>
@@ -373,7 +374,7 @@ export default function MethodologyPage() {
         </section>
 
         <section id="versioning" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">12 Reproducibility & versioning</h2>
+          <h2 className="text-xl font-semibold">12) Reproducibility & versioning</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li>Each release references a single <code className="rounded bg-slate-100 px-1 py-0.5">dump_as_of</code> and pipeline commit.</li>
             <li>Derived tables (<code className="rounded bg-slate-100 px-1 py-0.5">features</code>, <code className="rounded bg-slate-100 px-1 py-0.5">country_views</code>, <code className="rounded bg-slate-100 px-1 py-0.5">persona_scores</code>, <code className="rounded bg-slate-100 px-1 py-0.5">opportunities</code>, <code className="rounded bg-slate-100 px-1 py-0.5">forecasts</code>, <code className="rounded bg-slate-100 px-1 py-0.5">alerts</code>) are rebuilt end-to-end.</li>
@@ -382,7 +383,7 @@ export default function MethodologyPage() {
         </section>
 
         <section id="limitations" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">13 Limitations & ethics</h2>
+          <h2 className="text-xl font-semibold">13) Limitations & ethics</h2>
           <ul className="mt-3 list-disc pl-6 text-slate-700">
             <li>Some indicators have gaps or long lags; we surface the latest year explicitly.</li>
             <li>Method changes may affect comparability across time; versioning exposes changes.</li>
@@ -392,7 +393,7 @@ export default function MethodologyPage() {
         </section>
 
         <section id="contact" className="scroll-mt-24">
-          <h2 className="text-xl font-semibold">14 Contact</h2>
+          <h2 className="text-xl font-semibold">14) Contact</h2>
           <p className="mt-3 text-slate-700">
             Questions or feedback? Email{" "}
             <a href={`mailto:${contactEmail}`} className="font-medium text-blue-700 underline underline-offset-4">
@@ -402,12 +403,9 @@ export default function MethodologyPage() {
         </section>
       </div>
 
-      {/* Footer mini-bar */}
       <footer className="mt-12 flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-600">
         <span>© {currentYear} Sufoniq • Data snapshot: {dumpAsOf}</span>
-        <a href="#ingestion" className="hover:text-slate-900">
-          Back to top ↑
-        </a>
+        <a href="#ingestion" className="hover:text-slate-900">Back to top ↑</a>
       </footer>
     </main>
   );
