@@ -1,29 +1,30 @@
 {
   "iso3": "ALB",
+  "country_name": "Albania",
   "year": 2024,
-  "summary_md": "**Albania** (latest 2024) shows GDP per capita of **5,726 USD per person** (NY.GDP.PCAP.KD). Inflation is **2.21%** (FP.CPI.TOTL.ZG), unemployment **10.25%** (SL.UEM.TOTL.ZS). Life expectancy is **79.60 years** (SP.DYN.LE00.IN). Internet usage stands at **83.10%** (IT.NET.USER.ZS), and exports are **36.11% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Albania, in the latest year, boasts a per capita GDP (5,726 USD per person) and an inflation rate (2.21%) of notable figures, alongside a moderate unemployment rate (10.25%) and a life expectancy (79.60 years) that reflects the country's health environment. The nation's internet usage (83.10%) indicates a growing digital presence, while its share of global exports (36.11%) suggests a developing economy.",
   "sections": {
-    "economy_md": "GDP per capita **5,726 USD per person**; exports **36.11%**; inflation **2.21%**.",
-    "labor_md": "Unemployment **10.25%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **83.10%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **79.60 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Albania's economy is characterized by a per capita GDP (5,726 USD per person) and a share of global exports (36.11%), indicating a developing economic landscape with room for growth.",
+    "labor_md": "With an unemployment rate (10.25%), Albania's labor market presents both challenges and opportunities for job seekers and entrepreneurs.",
+    "digital_md": "The country's internet usage (83.10%) is on the rise, pointing to an increasingly connected population and potential for digital entrepreneurship.",
+    "health_env_md": "Albania's life expectancy (79.60 years) suggests a health environment that supports a relatively long and healthy life for its citizens."
   },
   "persona_highlights": {
     "job_seeker": [
-      "Score **45.1**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Moderate unemployment rate (10.25%) to navigate",
+      "Opportunities in a developing economy (36.11%)"
     ],
     "entrepreneur": [
-      "Score **50.9**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Growing digital presence (83.10%) to capitalize on",
+      "Economic development (36.11%) for business expansion"
     ],
     "digital_nomad": [
-      "Score **55.3**",
-      "Connectivity, price stability and livability."
+      "Increasing internet usage (83.10%) for remote work",
+      "Economic and digital growth (36.11%, 83.10%) to thrive"
     ],
     "expat_family": [
-      "Score **63.0**",
-      "Health, education, safety and environment."
+      "Healthy life expectancy (79.60 years) for family well-being",
+      "Economic and digital opportunities (36.11%, 83.10%) for family success"
     ]
   },
   "facts_used": [
@@ -95,9 +96,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {
