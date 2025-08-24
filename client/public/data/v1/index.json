@@ -1,0 +1,20 @@
+{
+  "version": "v1",
+  "generated_at": "2025-08-24T00:00:00Z",
+  "countries": [
+    {
+      "iso3": "AUT",
+      "name": "Austria",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": { "narrative": "/data/v1/countries/AUT_narrative.json" }
+    },
+    {
+      "iso3": "PRT",
+      "name": "Portugal",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": { "narrative": "/data/v1/countries/PRT_narrative.json" }
+    }
+  ]
+}
