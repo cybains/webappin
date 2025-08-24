@@ -21,7 +21,7 @@ export default function Navbar() {
   const navItems = [
     { label: "Jobs", href: "/jobs" },
     { label: "Services", href: "/#services" },
-    { label: "Countries", href: "#countries" },
+    { label: "Countries", href: "/countries" },
     { label: "Blog", href: "#resources" },
     { label: "About Us", href: "/about" },
     { label: "Contact", href: "/#contact" },
@@ -76,12 +76,21 @@ export default function Navbar() {
           <ul className="flex flex-col md:flex-row items-start md:items-start gap-6 md:gap-8 text-sm md:text-base font-medium px-6 py-6 md:p-0">
             {navItems.map(({ label, href }) => (
               <li key={label} className="w-full md:w-auto">
-                <a
-                  href={href}
-                  className="block w-full text-gray-700 md:text-gray-500 px-4 py-2 md:px-0 md:py-0 transition duration-200 hover:bg-[var(--accent)] hover:text-white md:hover:bg-transparent md:hover:text-[var(--secondary)] md:hover:underline"
-                >
-                  {label}
-                </a>
+                {href.startsWith("/") ? (
+                  <Link
+                    href={href}
+                    className="block w-full text-gray-700 md:text-gray-500 px-4 py-2 md:px-0 md:py-0 transition duration-200 hover:bg-[var(--accent)] hover:text-white md:hover:bg-transparent md:hover:text-[var(--secondary)] md:hover:underline"
+                  >
+                    {label}
+                  </Link>
+                ) : (
+                  <a
+                    href={href}
+                    className="block w-full text-gray-700 md:text-gray-500 px-4 py-2 md:px-0 md:py-0 transition duration-200 hover:bg-[var(--accent)] hover:text-white md:hover:bg-transparent md:hover:text-[var(--secondary)] md:hover:underline"
+                  >
+                    {label}
+                  </a>
+                )}
               </li>
             ))}
           </ul>
