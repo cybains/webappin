@@ -1,29 +1,34 @@
 {
   "iso3": "MDA",
+  "country_name": "Moldova",
   "year": 2024,
-  "summary_md": "**Moldova** (latest 2024) shows GDP per capita of **3,873 USD per person** (NY.GDP.PCAP.KD). Inflation is **4.68%** (FP.CPI.TOTL.ZG), unemployment **1.43%** (SL.UEM.TOTL.ZS). Life expectancy is **71.20 years** (SP.DYN.LE00.IN). Internet usage stands at **80.20%** (IT.NET.USER.ZS), and exports are **31.41% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Moldova, in the year 2024, has a GDP per capita of 3,873 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 4.68% (FP.CPI.TOTL.ZG), and an unemployment rate of 1.43% (SL.UEM.TOTL.ZS). The average life expectancy is 71.20 years years (SP.DYN.LE00.IN), and internet usage stands at 80.20% (IT.NET.USER.ZS). The country's export growth is recorded at 31.41% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **3,873 USD per person**; exports **31.41%**; inflation **4.68%**.",
-    "labor_md": "Unemployment **1.43%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **80.20%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **71.20 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Moldova's economy is characterized by a GDP per capita of 3,873 USD per person (NY.GDP.PCAP.KD), with an export growth of 31.41% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market in Moldova shows an unemployment rate of 1.43% (SL.UEM.TOTL.ZS), indicating the proportion of the workforce that is jobless.",
+    "digital_md": "Internet penetration in Moldova is at 80.20% (IT.NET.USER.ZS), reflecting the level of digital connectivity among its population.",
+    "health_env_md": "The average life expectancy in Moldova is 71.20 years years (SP.DYN.LE00.IN), suggesting the general health and living conditions of its citizens."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **63.4**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Consider Moldova's unemployment rate of 1.43% (SL.UEM.TOTL.ZS) when evaluating job opportunities.",
+      "Take into account the GDP per capita of 3,873 USD per person (NY.GDP.PCAP.KD) for economic stability."
     ],
     "entrepreneur": [
       "Score **44.1**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Assess the export growth of 31.41% (NE.EXP.GNFS.ZS) to understand market potential.",
+      "Evaluate the digital infrastructure with internet usage at 80.20% (IT.NET.USER.ZS) for business operations."
     ],
     "digital_nomad": [
       "Score **46.8**",
-      "Connectivity, price stability and livability."
+      "Consider the internet penetration rate of 80.20% (IT.NET.USER.ZS) for remote work feasibility.",
+      "Analyze the economic indicators, including GDP per capita of 3,873 USD per person (NY.GDP.PCAP.KD), for lifestyle planning."
     ],
     "expat_family": [
       "Score **50.1**",
-      "Health, education, safety and environment."
+      "Review the life expectancy of 71.20 years years (SP.DYN.LE00.IN) for long-term settlement considerations.",
+      "Examine the unemployment rate of 1.43% (SL.UEM.TOTL.ZS) to gauge job market conditions for family members."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [],
     "watchouts": [

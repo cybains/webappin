@@ -1,29 +1,33 @@
 {
   "iso3": "ISL",
+  "country_name": "Iceland",
   "year": 2024,
-  "summary_md": "**Iceland** (latest 2024) shows GDP per capita of **57,955 USD per person** (NY.GDP.PCAP.KD). Inflation is **5.86%** (FP.CPI.TOTL.ZG), unemployment **3.11%** (SL.UEM.TOTL.ZS). Life expectancy is **82.61 years** (SP.DYN.LE00.IN). Internet usage stands at **99.80%** (IT.NET.USER.ZS), and exports are **41.59% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Iceland, in the year 2024, has a GDP per capita of 57,955 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 5.86% (FP.CPI.TOTL.ZG), and an unemployment rate of 3.11% (SL.UEM.TOTL.ZS). The average life expectancy is 82.61 years years (SP.DYN.LE00.IN), and internet usage stands at 99.80% (IT.NET.USER.ZS). The country's export growth is at 41.59% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **57,955 USD per person**; exports **41.59%**; inflation **5.86%**.",
-    "labor_md": "Unemployment **3.11%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **99.80%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **82.61 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Iceland's economy is characterized by a GDP per capita of 57,955 USD per person (NY.GDP.PCAP.KD) and an export growth of 41.59% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market in Iceland shows an unemployment rate of 3.11% (SL.UEM.TOTL.ZS), indicating a relatively stable job market.",
+    "digital_md": "With an internet usage rate of 99.80% (IT.NET.USER.ZS), Iceland has a high level of digital connectivity.",
+    "health_env_md": "The average life expectancy in Iceland is 82.61 years years (SP.DYN.LE00.IN), reflecting the country's commitment to health and well-being."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **69.4**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Stable job market with an unemployment rate of 3.11% (SL.UEM.TOTL.ZS)",
+      "High GDP per capita of 57,955 USD per person (NY.GDP.PCAP.KD)"
     ],
     "entrepreneur": [
       "Score **89.4**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Opportunities in a country with a GDP per capita of 57,955 USD per person (NY.GDP.PCAP.KD) and export growth of 41.59% (NE.EXP.GNFS.ZS)"
     ],
     "digital_nomad": [
       "Score **58.7**",
-      "Connectivity, price stability and livability."
+      "High internet usage rate of 99.80% (IT.NET.USER.ZS)",
+      "Stable economy with a GDP per capita of 57,955 USD per person (NY.GDP.PCAP.KD)"
     ],
     "expat_family": [
       "Score **83.6**",
-      "Health, education, safety and environment."
+      "Long life expectancy of 82.61 years years (SP.DYN.LE00.IN)",
+      "Stable economy with a GDP per capita of 57,955 USD per person (NY.GDP.PCAP.KD)"
     ]
   },
   "facts_used": [
@@ -95,9 +99,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

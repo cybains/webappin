@@ -1,29 +1,34 @@
 {
   "iso3": "SMR",
+  "country_name": "San Marino",
   "year": 2024,
-  "summary_md": "**San Marino** (latest 2024) shows GDP per capita of **51,277 USD per person** (NY.GDP.PCAP.KD). Inflation is **1.24%** (FP.CPI.TOTL.ZG), unemployment **—** (SL.UEM.TOTL.ZS). Life expectancy is **85.71 years** (SP.DYN.LE00.IN). Internet usage stands at **87.00%** (IT.NET.USER.ZS), and exports are **197.41% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "San Marino, in the year 2024, has a per capita GDP of 51,277 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 1.24% (FP.CPI.TOTL.ZG), and an average life expectancy of 85.71 years years (SP.DYN.LE00.IN). The country's internet user penetration stands at 87.00% (IT.NET.USER.ZS), and its export growth is recorded at 197.41% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **51,277 USD per person**; exports **197.41%**; inflation **1.24%**.",
-    "labor_md": "Unemployment **—**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **87.00%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **85.71 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "San Marino's economy is characterized by a per capita GDP of 51,277 USD per person (NY.GDP.PCAP.KD) and an export growth of 197.41% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The country has a life expectancy of 85.71 years years (SP.DYN.LE00.IN), indicating a stable labor environment.",
+    "digital_md": "With an internet user penetration of 87.00% (IT.NET.USER.ZS), San Marino shows a growing digital presence.",
+    "health_env_md": "The average life expectancy of 85.71 years years (SP.DYN.LE00.IN) reflects the health environment in San Marino."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **75.2**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "A stable labor environment with a life expectancy of 85.71 years years (SP.DYN.LE00.IN)",
+      "A growing digital presence indicated by an internet user penetration of 87.00% (IT.NET.USER.ZS)"
     ],
     "entrepreneur": [
       "Score **68.3**",
-      "Regulation, finance depth, power reliability and innovation."
+      "A per capita GDP of 51,277 USD per person (NY.GDP.PCAP.KD) suggests a supportive economic environment for business growth",
+      "Export growth of 197.41% (NE.EXP.GNFS.ZS) may provide opportunities for entrepreneurial ventures"
     ],
     "digital_nomad": [
       "Score **73.9**",
-      "Connectivity, price stability and livability."
+      "An internet user penetration of 87.00% (IT.NET.USER.ZS) supports remote work and digital nomadism",
+      "A stable economic environment with a per capita GDP of 51,277 USD per person (NY.GDP.PCAP.KD) may offer a conducive setting for digital nomads"
     ],
     "expat_family": [
       "Score **70.8**",
-      "Health, education, safety and environment."
+      "A life expectancy of 85.71 years years (SP.DYN.LE00.IN) indicates a healthy living environment for expat families",
+      "A per capita GDP of 51,277 USD per person (NY.GDP.PCAP.KD) and export growth of 197.41% (NE.EXP.GNFS.ZS) suggest a stable economy for expat families"
     ]
   },
   "facts_used": [
@@ -84,9 +89,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

@@ -1,29 +1,34 @@
 {
   "iso3": "CHE",
+  "country_name": "Switzerland",
   "year": 2024,
-  "summary_md": "**Switzerland** (latest 2024) shows GDP per capita of **89,783 USD per person** (NY.GDP.PCAP.KD). Inflation is **1.06%** (FP.CPI.TOTL.ZG), unemployment **4.11%** (SL.UEM.TOTL.ZS). Life expectancy is **84.06 years** (SP.DYN.LE00.IN). Internet usage stands at **97.30%** (IT.NET.USER.ZS), and exports are **72.16% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Switzerland, known for its high standard of living, has a strong economy with a per capita GDP (89,783 USD per person). The country experiences moderate inflation (1.06%) and unemployment rates (4.11%). Citizens enjoy a long life expectancy (84.06 years), and a significant portion of the population is connected to the internet (97.30%). The country's exports (72.16%) represent a substantial part of its economy.",
   "sections": {
-    "economy_md": "GDP per capita **89,783 USD per person**; exports **72.16%**; inflation **1.06%**.",
-    "labor_md": "Unemployment **4.11%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **97.30%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **84.06 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Switzerland's economy is characterized by a high per capita GDP (89,783 USD per person) and a significant export share (72.16%).",
+    "labor_md": "The unemployment rate in Switzerland is relatively low (4.11%), indicating a stable labor market.",
+    "digital_md": "A large percentage of the Swiss population has internet access (97.30%), reflecting the country's advanced digital infrastructure.",
+    "health_env_md": "Switzerland boasts a high life expectancy (84.06 years), indicative of the country's quality healthcare system."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **68.1**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Low unemployment rate (4.11%) suggests a favorable job market.",
+      "High GDP per capita (89,783 USD per person) indicates potential for career growth."
     ],
     "entrepreneur": [
       "Score **88.8**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Strong economy (89,783 USD per person) provides opportunities for business expansion.",
+      "High internet penetration (97.30%) facilitates digital entrepreneurship."
     ],
     "digital_nomad": [
       "Score **74.6**",
-      "Connectivity, price stability and livability."
+      "Advanced digital infrastructure (97.30%) supports remote work.",
+      "Stable economy (89,783 USD per person) ensures financial security for digital nomads."
     ],
     "expat_family": [
       "Score **82.8**",
-      "Health, education, safety and environment."
+      "Long life expectancy (84.06 years) reflects quality healthcare.",
+      "Low unemployment rate (4.11%) suggests job opportunities for family members."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

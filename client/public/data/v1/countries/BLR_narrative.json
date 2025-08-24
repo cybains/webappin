@@ -1,29 +1,30 @@
 {
   "iso3": "BLR",
+  "country_name": "Belarus",
   "year": 2024,
-  "summary_md": "**Belarus** (latest 2024) shows GDP per capita of **6,791 USD per person** (NY.GDP.PCAP.KD). Inflation is **5.79%** (FP.CPI.TOTL.ZG), unemployment **3.36%** (SL.UEM.TOTL.ZS). Life expectancy is **74.18 years** (SP.DYN.LE00.IN). Internet usage stands at **91.50%** (IT.NET.USER.ZS), and exports are **65.06% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Belarus, in the year 2024, has a GDP per capita of 6,791 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 5.79% (FP.CPI.TOTL.ZG), and an unemployment rate of 3.36% (SL.UEM.TOTL.ZS). The average life expectancy is 74.18 years years (SP.DYN.LE00.IN), and internet usage stands at 91.50% (IT.NET.USER.ZS). The country's export growth is at 65.06% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **6,791 USD per person**; exports **65.06%**; inflation **5.79%**.",
-    "labor_md": "Unemployment **3.36%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **91.50%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **74.18 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Belarus's economy is characterized by a GDP per capita of 6,791 USD per person (NY.GDP.PCAP.KD), with an export growth rate of 65.06% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market in Belarus shows an unemployment rate of 3.36% (SL.UEM.TOTL.ZS), indicating a relatively stable employment environment.",
+    "digital_md": "Internet penetration in Belarus is at 91.50% (IT.NET.USER.ZS), suggesting a moderate level of digital connectivity among its population.",
+    "health_env_md": "The average life expectancy in Belarus is 74.18 years years (SP.DYN.LE00.IN), reflecting the country's health environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **72.5**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Belarus offers a stable employment environment with an unemployment rate of 3.36% (SL.UEM.TOTL.ZS) and a GDP per capita of 6,791 USD per person (NY.GDP.PCAP.KD)."
     ],
     "entrepreneur": [
       "Score **42.0**",
-      "Regulation, finance depth, power reliability and innovation."
+      "The moderate level of digital connectivity, indicated by an internet usage rate of 91.50% (IT.NET.USER.ZS), may provide opportunities for entrepreneurs in Belarus."
     ],
     "digital_nomad": [
       "Score **60.3**",
-      "Connectivity, price stability and livability."
+      "With an internet usage rate of 91.50% (IT.NET.USER.ZS), Belarus could be a suitable destination for digital nomads."
     ],
     "expat_family": [
       "Score **66.2**",
-      "Health, education, safety and environment."
+      "The stable employment environment and reasonable GDP per capita of 6,791 USD per person (NY.GDP.PCAP.KD) in Belarus might be attractive to expat families."
     ]
   },
   "facts_used": [
@@ -95,9 +96,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

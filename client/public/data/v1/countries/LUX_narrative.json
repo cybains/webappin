@@ -1,29 +1,34 @@
 {
   "iso3": "LUX",
+  "country_name": "Luxembourg",
   "year": 2024,
-  "summary_md": "**Luxembourg** (latest 2024) shows GDP per capita of **103,909 USD per person** (NY.GDP.PCAP.KD). Inflation is **2.05%** (FP.CPI.TOTL.ZG), unemployment **5.93%** (SL.UEM.TOTL.ZS). Life expectancy is **83.36 years** (SP.DYN.LE00.IN). Internet usage stands at **98.80%** (IT.NET.USER.ZS), and exports are **215.50% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Luxembourg, in the year 2024, has a per capita GDP of 103,909 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 2.05% (FP.CPI.TOTL.ZG), and an unemployment rate of 5.93% (SL.UEM.TOTL.ZS). The average life expectancy is 83.36 years years (SP.DYN.LE00.IN), and internet usage stands at 98.80% (IT.NET.USER.ZS). The country's export growth is recorded at 215.50% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **103,909 USD per person**; exports **215.50%**; inflation **2.05%**.",
-    "labor_md": "Unemployment **5.93%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **98.80%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **83.36 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Luxembourg's economy is characterized by a high per capita GDP and a significant export growth rate.",
+    "labor_md": "The unemployment rate in Luxembourg is relatively low, indicating a stable labor market.",
+    "digital_md": "Internet usage in Luxembourg is high, reflecting a well-connected digital environment.",
+    "health_env_md": "The average life expectancy in Luxembourg is long, suggesting a healthy living environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **54.2**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Low unemployment rate",
+      "High GDP per capita"
     ],
     "entrepreneur": [
       "Score **83.6**",
-      "Regulation, finance depth, power reliability and innovation."
+      "High GDP per capita",
+      "Significant export growth"
     ],
     "digital_nomad": [
       "Score **70.7**",
-      "Connectivity, price stability and livability."
+      "High internet usage",
+      "Well-connected digital environment"
     ],
     "expat_family": [
       "Score **76.5**",
-      "Health, education, safety and environment."
+      "Long life expectancy",
+      "Stable labor market"
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

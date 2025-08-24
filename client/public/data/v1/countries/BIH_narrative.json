@@ -1,29 +1,34 @@
 {
   "iso3": "BIH",
+  "country_name": "Bosnia and Herzegovina",
   "year": 2024,
-  "summary_md": "**Bosnia and Herzegovina** (latest 2024) shows GDP per capita of **6,698 USD per person** (NY.GDP.PCAP.KD). Inflation is **1.69%** (FP.CPI.TOTL.ZG), unemployment **10.72%** (SL.UEM.TOTL.ZS). Life expectancy is **77.85 years** (SP.DYN.LE00.IN). Internet usage stands at **83.40%** (IT.NET.USER.ZS), and exports are **42.82% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Bosnia and Herzegovina's economy is characterized by a per capita GDP of 6,698 USD per person (NY.GDP.PCAP.KD), with a moderate inflation rate of 1.69% (FP.CPI.TOTL.ZG). The unemployment rate stands at 10.72% (SL.UEM.TOTL.ZS), while the average life expectancy is 77.85 years (SP.DYN.LE00.IN). The country has a significant internet user base, accounting for 83.40% (IT.NET.USER.ZS) of the population.",
   "sections": {
-    "economy_md": "GDP per capita **6,698 USD per person**; exports **42.82%**; inflation **1.69%**.",
-    "labor_md": "Unemployment **10.72%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **83.40%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **77.85 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "The economy of Bosnia and Herzegovina is reflected by a per capita GDP of 6,698 USD per person (NY.GDP.PCAP.KD), alongside a moderate inflation rate of 1.69% (FP.CPI.TOTL.ZG).",
+    "labor_md": "With an unemployment rate of 10.72% (SL.UEM.TOTL.ZS), the labor market presents certain challenges. The average life expectancy is 77.85 years (SP.DYN.LE00.IN), indicating the general health environment.",
+    "digital_md": "The digital landscape is marked by a substantial internet user base, representing 83.40% (IT.NET.USER.ZS) of the population.",
+    "health_env_md": "The average life expectancy in Bosnia and Herzegovina is 77.85 years (SP.DYN.LE00.IN), suggesting a stable health environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **38.5**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Moderate unemployment rate of 10.72% (SL.UEM.TOTL.ZS) may present opportunities for employment.",
+      "Average life expectancy of 77.85 years (SP.DYN.LE00.IN) indicates a stable workforce."
     ],
     "entrepreneur": [
       "Score **56.3**",
-      "Regulation, finance depth, power reliability and innovation."
+      "A per capita GDP of 6,698 USD per person (NY.GDP.PCAP.KD) could influence business opportunities.",
+      "Internet user base of 83.40% (IT.NET.USER.ZS) may suggest potential for digital business ventures."
     ],
     "digital_nomad": [
       "Score **63.6**",
-      "Connectivity, price stability and livability."
+      "Internet user base of 83.40% (IT.NET.USER.ZS) supports remote work opportunities.",
+      "Moderate inflation rate of 1.69% (FP.CPI.TOTL.ZG) may affect cost of living for digital nomads."
     ],
     "expat_family": [
       "Score **59.4**",
-      "Health, education, safety and environment."
+      "Moderate unemployment rate of 10.72% (SL.UEM.TOTL.ZS) may influence family job opportunities.",
+      "Average life expectancy of 77.85 years (SP.DYN.LE00.IN) indicates a stable environment for family health."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

@@ -1,29 +1,34 @@
 {
   "iso3": "MCO",
+  "country_name": "Monaco",
   "year": 2024,
-  "summary_md": "**Monaco** (latest 2024) shows GDP per capita of **224,582 USD per person** (NY.GDP.PCAP.KD). Inflation is **—** (FP.CPI.TOTL.ZG), unemployment **—** (SL.UEM.TOTL.ZS). Life expectancy is **86.37 years** (SP.DYN.LE00.IN). Internet usage stands at **99.10%** (IT.NET.USER.ZS), and exports are **— of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Monaco, a sovereign city-state, offers a high standard of living with a per capita GDP (224,582 USD per person). The average life expectancy (86.37 years) is relatively high, indicating a healthy environment. With a significant portion of the population using the internet (99.10%), the country is well-connected digitally. The small size and wealth of Monaco make it an attractive destination for various demographics.",
   "sections": {
-    "economy_md": "GDP per capita **224,582 USD per person**; exports **—**; inflation **—**.",
-    "labor_md": "Unemployment **—**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **99.10%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **86.37 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Monaco's economy is characterized by a high per capita GDP (224,582 USD per person), reflecting its affluent status.",
+    "labor_md": "The average life expectancy (86.37 years) suggests a robust health environment, potentially contributing to a productive workforce.",
+    "digital_md": "A considerable percentage of the population is internet users (99.10%), indicating a strong digital presence.",
+    "health_env_md": "The high average life expectancy (86.37 years) points to a favorable health environment in Monaco."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **71.3**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Affluent economy with high per capita GDP (224,582 USD per person)",
+      "High average life expectancy (86.37 years) suggesting a stable environment for long-term employment"
     ],
     "entrepreneur": [
       "Score **72.2**",
-      "Regulation, finance depth, power reliability and innovation."
+      "High per capita GDP (224,582 USD per person) indicating potential for business growth",
+      "Strong digital infrastructure with a significant internet user base (99.10%)"
     ],
     "digital_nomad": [
       "Score **84.6**",
-      "Connectivity, price stability and livability."
+      "Strong digital infrastructure with a significant internet user base (99.10%)",
+      "High per capita GDP (224,582 USD per person) providing a comfortable lifestyle for remote work"
     ],
     "expat_family": [
       "Score **82.8**",
-      "Health, education, safety and environment."
+      "High per capita GDP (224,582 USD per person) ensuring a comfortable standard of living",
+      "High average life expectancy (86.37 years) indicating a healthy environment for family life"
     ]
   },
   "facts_used": [
@@ -62,9 +67,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

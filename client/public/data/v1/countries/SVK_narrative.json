@@ -1,29 +1,34 @@
 {
   "iso3": "SVK",
+  "country_name": "Slovak Republic",
   "year": 2024,
-  "summary_md": "**Slovak Republic** (latest 2024) shows GDP per capita of **19,798 USD per person** (NY.GDP.PCAP.KD). Inflation is **2.76%** (FP.CPI.TOTL.ZG), unemployment **5.23%** (SL.UEM.TOTL.ZS). Life expectancy is **78.02 years** (SP.DYN.LE00.IN). Internet usage stands at **89.80%** (IT.NET.USER.ZS), and exports are **85.22% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "The Slovak Republic, in the year 2024, has a GDP per capita of 19,798 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 2.76% (FP.CPI.TOTL.ZG), and an unemployment rate of 5.23% (SL.UEM.TOTL.ZS). The average life expectancy is 78.02 years years (SP.DYN.LE00.IN), and internet usage stands at 89.80% percent (IT.NET.USER.ZS). The country's GDP growth rate is 85.22% percent (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **19,798 USD per person**; exports **85.22%**; inflation **2.76%**.",
-    "labor_md": "Unemployment **5.23%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **89.80%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **78.02 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "The Slovak Republic's economy is characterized by a GDP per capita of 19,798 USD per person (NY.GDP.PCAP.KD), with a GDP growth rate of 85.22% percent (NE.EXP.GNFS.ZS).",
+    "labor_md": "Labor statistics show an unemployment rate of 5.23% (SL.UEM.TOTL.ZS), indicating the state of the job market.",
+    "digital_md": "Internet penetration in the Slovak Republic is at 89.80% percent (IT.NET.USER.ZS), reflecting the country's digital infrastructure.",
+    "health_env_md": "The average life expectancy in the Slovak Republic is 78.02 years years (SP.DYN.LE00.IN), suggesting the general health environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **53.2**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Consider the unemployment rate of 5.23% (SL.UEM.TOTL.ZS) when evaluating job opportunities.",
+      "Assess the GDP growth rate of 85.22% percent (NE.EXP.GNFS.ZS) for economic stability."
     ],
     "entrepreneur": [
       "Score **69.4**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Analyze the GDP per capita of 19,798 USD per person (NY.GDP.PCAP.KD) to understand the market potential.",
+      "Consider the inflation rate of 2.76% (FP.CPI.TOTL.ZG) for business planning."
     ],
     "digital_nomad": [
       "Score **59.0**",
-      "Connectivity, price stability and livability."
+      "With internet usage at 89.80% percent (IT.NET.USER.ZS), the Slovak Republic offers a conducive environment for remote work.",
+      "The digital infrastructure supports connectivity and productivity for digital nomads."
     ],
     "expat_family": [
       "Score **61.1**",
-      "Health, education, safety and environment."
+      "The life expectancy of 78.02 years years (SP.DYN.LE00.IN) may influence family health planning.",
+      "The economic indicators, including GDP per capita of 19,798 USD per person (NY.GDP.PCAP.KD) and GDP growth rate of 85.22% percent (NE.EXP.GNFS.ZS), provide insight into the living standards."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

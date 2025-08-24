@@ -1,29 +1,34 @@
 {
   "iso3": "GEO",
+  "country_name": "Georgia",
   "year": 2024,
-  "summary_md": "**Georgia** (latest 2024) shows GDP per capita of **6,840 USD per person** (NY.GDP.PCAP.KD). Inflation is **1.11%** (FP.CPI.TOTL.ZG), unemployment **11.48%** (SL.UEM.TOTL.ZS). Life expectancy is **74.50 years** (SP.DYN.LE00.IN). Internet usage stands at **81.90%** (IT.NET.USER.ZS), and exports are **48.36% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Georgia's economy is characterized by a per capita GDP of 6,840 USD per person (NY.GDP.PCAP.KD), with a moderate inflation rate of 1.11% (FP.CPI.TOTL.ZG). The unemployment rate stands at 11.48% (SL.UEM.TOTL.ZS), while the average life expectancy is 74.50 years (SP.DYN.LE00.IN). The country has a significant internet user base, represented by 81.90% (IT.NET.USER.ZS). The GDP growth rate is 48.36% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **6,840 USD per person**; exports **48.36%**; inflation **1.11%**.",
-    "labor_md": "Unemployment **11.48%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **81.90%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **74.50 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Georgia's economy is characterized by a per capita GDP of 6,840 USD per person (NY.GDP.PCAP.KD), with a moderate inflation rate of 1.11% (FP.CPI.TOTL.ZG). The GDP growth rate is 48.36% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The unemployment rate in Georgia is 11.48% (SL.UEM.TOTL.ZS), indicating the general state of the labor market.",
+    "digital_md": "With a significant internet user base, represented by 81.90% (IT.NET.USER.ZS), Georgia is embracing digital connectivity.",
+    "health_env_md": "The average life expectancy in Georgia is 74.50 years (SP.DYN.LE00.IN), reflecting the country's health environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **61.7**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Georgia's moderate unemployment rate of 11.48% (SL.UEM.TOTL.ZS) may offer opportunities for job seekers.",
+      "The per capita GDP of 6,840 USD per person (NY.GDP.PCAP.KD) suggests a stable economy with potential for employment growth."
     ],
     "entrepreneur": [
       "Score **67.5**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Georgia's significant internet user base, represented by 81.90% (IT.NET.USER.ZS), indicates a favorable environment for digital entrepreneurship.",
+      "The moderate inflation rate of 1.11% (FP.CPI.TOTL.ZG) provides a stable economic backdrop for business planning."
     ],
     "digital_nomad": [
       "Score **67.1**",
-      "Connectivity, price stability and livability."
+      "With a significant internet user base, represented by 81.90% (IT.NET.USER.ZS), Georgia is a suitable destination for digital nomads.",
+      "The stable economy, indicated by the per capita GDP of 6,840 USD per person (NY.GDP.PCAP.KD), supports remote work and digital nomadism."
     ],
     "expat_family": [
       "Score **69.2**",
-      "Health, education, safety and environment."
+      "The average life expectancy in Georgia is 74.50 years (SP.DYN.LE00.IN), which may be appealing to expat families considering long-term relocation.",
+      "The moderate unemployment rate of 11.48% (SL.UEM.TOTL.ZS) suggests a stable job market for expat families."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

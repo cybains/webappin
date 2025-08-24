@@ -1,29 +1,34 @@
 {
   "iso3": "POL",
+  "country_name": "Poland",
   "year": 2024,
-  "summary_md": "**Poland** (latest 2024) shows GDP per capita of **17,984 USD per person** (NY.GDP.PCAP.KD). Inflation is **3.79%** (FP.CPI.TOTL.ZG), unemployment **2.47%** (SL.UEM.TOTL.ZS). Life expectancy is **78.51 years** (SP.DYN.LE00.IN). Internet usage stands at **86.40%** (IT.NET.USER.ZS), and exports are **52.33% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Poland's economy is characterized by a per capita GDP of 17,984 USD per person (NY.GDP.PCAP.KD), with a moderate inflation rate of 3.79% (FP.CPI.TOTL.ZG). The unemployment rate stands at 2.47% (SL.UEM.TOTL.ZS), while the average life expectancy is 78.51 years years (SP.DYN.LE00.IN). The country has a significant internet user base, accounting for 86.40%% (IT.NET.USER.ZS). Poland's GDP from exports is 52.33%% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **17,984 USD per person**; exports **52.33%**; inflation **3.79%**.",
-    "labor_md": "Unemployment **2.47%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **86.40%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **78.51 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Poland's economy is characterized by a per capita GDP of 17,984 USD per person (NY.GDP.PCAP.KD), with a moderate inflation rate of 3.79% (FP.CPI.TOTL.ZG). The country's GDP from exports is 52.33%% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The unemployment rate in Poland is 2.47% (SL.UEM.TOTL.ZS), indicating a relatively stable job market.",
+    "digital_md": "With an internet user base accounting for 86.40%% (IT.NET.USER.ZS), Poland is well-integrated into the digital economy.",
+    "health_env_md": "The average life expectancy in Poland is 78.51 years years (SP.DYN.LE00.IN), reflecting the country's health environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **67.5**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Moderate unemployment rate of 2.47% (SL.UEM.TOTL.ZS) suggests opportunities in the job market.",
+      "Inflation rate of 3.79% (FP.CPI.TOTL.ZG) may influence job stability and wage growth."
     ],
     "entrepreneur": [
       "Score **59.1**",
-      "Regulation, finance depth, power reliability and innovation."
+      "A per capita GDP of 17,984 USD per person (NY.GDP.PCAP.KD) indicates potential for business growth.",
+      "Significant internet user base of 86.40%% (IT.NET.USER.ZS) supports digital entrepreneurship."
     ],
     "digital_nomad": [
       "Score **59.8**",
-      "Connectivity, price stability and livability."
+      "With a per capita GDP of 17,984 USD per person (NY.GDP.PCAP.KD) and an internet user base of 86.40%% (IT.NET.USER.ZS) Poland offers a conducive environment for digital nomads.",
+      "Moderate inflation rate of 3.79% (FP.CPI.TOTL.ZG) may affect cost of living."
     ],
     "expat_family": [
       "Score **70.4**",
-      "Health, education, safety and environment."
+      "Average life expectancy of 78.51 years years (SP.DYN.LE00.IN) suggests a healthy living environment for expat families.",
+      "Moderate unemployment rate of 2.47% (SL.UEM.TOTL.ZS) indicates a stable job market for expat spouses."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [],
     "watchouts": [

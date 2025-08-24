@@ -1,29 +1,34 @@
 {
   "iso3": "SVN",
+  "country_name": "Slovenia",
   "year": 2024,
-  "summary_md": "**Slovenia** (latest 2024) shows GDP per capita of **26,046 USD per person** (NY.GDP.PCAP.KD). Inflation is **1.97%** (FP.CPI.TOTL.ZG), unemployment **3.36%** (SL.UEM.TOTL.ZS). Life expectancy is **81.98 years** (SP.DYN.LE00.IN). Internet usage stands at **90.40%** (IT.NET.USER.ZS), and exports are **81.53% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Slovenia, in the year 2024, has a GDP per capita of 26,046 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 1.97% (FP.CPI.TOTL.ZG), and an unemployment rate of 3.36% (SL.UEM.TOTL.ZS). The average life expectancy is 81.98 years years (SP.DYN.LE00.IN), and internet usage stands at 90.40% percent (IT.NET.USER.ZS). The country's export growth is at 81.53% percent (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **26,046 USD per person**; exports **81.53%**; inflation **1.97%**.",
-    "labor_md": "Unemployment **3.36%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **90.40%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **81.98 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Slovenia's economy is characterized by a GDP per capita of 26,046 USD per person (NY.GDP.PCAP.KD) and an export growth of 81.53% percent (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market in Slovenia shows an unemployment rate of 3.36% (SL.UEM.TOTL.ZS), indicating a relatively stable employment environment.",
+    "digital_md": "With an internet usage rate of 90.40% percent (IT.NET.USER.ZS), Slovenia demonstrates a significant engagement with digital technologies.",
+    "health_env_md": "The average life expectancy in Slovenia is 81.98 years years (SP.DYN.LE00.IN), reflecting the country's commitment to health and well-being."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **65.4**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Slovenia's stable employment environment with an unemployment rate of 3.36% (SL.UEM.TOTL.ZS) may offer opportunities for job seekers.",
+      "The GDP per capita of 26,046 USD per person (NY.GDP.PCAP.KD) suggests a robust economy with potential job prospects."
     ],
     "entrepreneur": [
       "Score **62.4**",
-      "Regulation, finance depth, power reliability and innovation."
+      "The digital engagement rate of 90.40% percent (IT.NET.USER.ZS) indicates a conducive environment for tech-based entrepreneurship.",
+      "A GDP per capita of 26,046 USD per person (NY.GDP.PCAP.KD) provides a solid economic foundation for business ventures."
     ],
     "digital_nomad": [
       "Score **70.6**",
-      "Connectivity, price stability and livability."
+      "With an internet usage rate of 90.40% percent (IT.NET.USER.ZS), Slovenia is well-suited for digital nomads.",
+      "The stable employment environment, indicated by an unemployment rate of 3.36% (SL.UEM.TOTL.ZS), supports remote work opportunities."
     ],
     "expat_family": [
       "Score **81.2**",
-      "Health, education, safety and environment."
+      "The average life expectancy of 81.98 years years (SP.DYN.LE00.IN) ensures a high quality of life for expat families.",
+      "A GDP per capita of 26,046 USD per person (NY.GDP.PCAP.KD) and low unemployment rate of 3.36% (SL.UEM.TOTL.ZS) contribute to a favorable living environment for expatriates."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

@@ -1,29 +1,34 @@
 {
   "iso3": "RUS",
+  "country_name": "Russian Federation",
   "year": 2024,
-  "summary_md": "**Russian Federation** (latest 2024) shows GDP per capita of **11,043 USD per person** (NY.GDP.PCAP.KD). Inflation is **6.69%** (FP.CPI.TOTL.ZG), unemployment **2.53%** (SL.UEM.TOTL.ZS). Life expectancy is **73.25 years** (SP.DYN.LE00.IN). Internet usage stands at **92.20%** (IT.NET.USER.ZS), and exports are **21.92% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "The Russian Federation, in the latest year, has a GDP per capita (11,043 USD per person), an inflation rate (6.69%), an unemployment rate (2.53%), average life expectancy (73.25 years), internet usage (92.20%), and a share of GDP from exports (21.92%).",
   "sections": {
-    "economy_md": "GDP per capita **11,043 USD per person**; exports **21.92%**; inflation **6.69%**.",
-    "labor_md": "Unemployment **2.53%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **92.20%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **73.25 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "The country's economy is characterized by a GDP per capita (11,043 USD per person), with a significant portion of its GDP derived from exports (21.92%).",
+    "labor_md": "Labor market indicators show an unemployment rate (2.53%) and a life expectancy (73.25 years), reflecting the overall health of the workforce.",
+    "digital_md": "Digital connectivity is evidenced by internet usage (92.20%), indicating the level of technological integration within the population.",
+    "health_env_md": "The average life expectancy (73.25 years) provides insight into the health environment and quality of life in the country."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **68.2**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Considering opportunities in a country with a GDP per capita (11,043 USD per person) and a moderate unemployment rate (2.53%).",
+      "Exploring a labor market with an average life expectancy (73.25 years) and internet usage (92.20%)."
     ],
     "entrepreneur": [
       "Score **61.7**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Entrepreneurs may find a market with a GDP per capita (11,043 USD per person) and a share of GDP from exports (21.92%).",
+      "Leveraging the country's digital infrastructure, indicated by internet usage (92.20%), for business growth."
     ],
     "digital_nomad": [
       "Score **56.5**",
-      "Connectivity, price stability and livability."
+      "With internet usage (92.20%), the country offers connectivity for digital nomads.",
+      "The moderate unemployment rate (2.53%) suggests a stable job market for remote workers."
     ],
     "expat_family": [
       "Score **56.2**",
-      "Health, education, safety and environment."
+      "Families may consider the country's GDP per capita (11,043 USD per person) and life expectancy (73.25 years) when relocating.",
+      "The share of GDP from exports (21.92%) indicates a diverse economy, potentially beneficial for expat families."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

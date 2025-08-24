@@ -1,29 +1,34 @@
 {
   "iso3": "LTU",
+  "country_name": "Lithuania",
   "year": 2024,
-  "summary_md": "**Lithuania** (latest 2024) shows GDP per capita of **19,094 USD per person** (NY.GDP.PCAP.KD). Inflation is **0.72%** (FP.CPI.TOTL.ZG), unemployment **7.50%** (SL.UEM.TOTL.ZS). Life expectancy is **76.99 years** (SP.DYN.LE00.IN). Internet usage stands at **88.50%** (IT.NET.USER.ZS), and exports are **74.11% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Lithuania, in the year 2024, has a per capita GDP of 19,094 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 0.72% (FP.CPI.TOTL.ZG), and an unemployment rate of 7.50% (SL.UEM.TOTL.ZS). The average life expectancy is 76.99 years years (SP.DYN.LE00.IN), and internet usage stands at 88.50% percent (IT.NET.USER.ZS). The country's GDP from exports is 74.11% percent (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **19,094 USD per person**; exports **74.11%**; inflation **0.72%**.",
-    "labor_md": "Unemployment **7.50%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **88.50%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **76.99 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Lithuania's economy is characterized by a per capita GDP of 19,094 USD per person (NY.GDP.PCAP.KD) and a significant contribution from exports, which account for 74.11% percent (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market in Lithuania shows an unemployment rate of 7.50% (SL.UEM.TOTL.ZS), indicating the general employment situation.",
+    "digital_md": "Internet penetration in Lithuania is relatively high, with usage at 88.50% percent (IT.NET.USER.ZS), reflecting the country's digital infrastructure.",
+    "health_env_md": "The average life expectancy in Lithuania is 76.99 years years (SP.DYN.LE00.IN), suggesting the overall health environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **58.2**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Consider Lithuania for employment opportunities with a low unemployment rate of 7.50% (SL.UEM.TOTL.ZS) and a stable economy.",
+      "Explore job markets in Lithuania, where the per capita GDP is 19,094 USD per person (NY.GDP.PCAP.KD)."
     ],
     "entrepreneur": [
       "Score **67.2**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Lithuania offers a favorable economic environment with a per capita GDP of 19,094 USD per person (NY.GDP.PCAP.KD), suitable for business ventures.",
+      "Consider the country's digital infrastructure, with internet usage at 88.50% percent (IT.NET.USER.ZS), for tech-based entrepreneurship."
     ],
     "digital_nomad": [
       "Score **62.8**",
-      "Connectivity, price stability and livability."
+      "Lithuania's high internet usage at 88.50% percent (IT.NET.USER.ZS) makes it an attractive destination for digital nomads.",
+      "The stable economy, indicated by a per capita GDP of 19,094 USD per person (NY.GDP.PCAP.KD), supports remote work and digital nomadism."
     ],
     "expat_family": [
       "Score **58.5**",
-      "Health, education, safety and environment."
+      "Lithuania's average life expectancy of 76.99 years years (SP.DYN.LE00.IN) suggests a healthy environment for expat families.",
+      "With a per capita GDP of 19,094 USD per person (NY.GDP.PCAP.KD) and a low unemployment rate of 7.50% (SL.UEM.TOTL.ZS), Lithuania could be a viable option for expat families seeking a stable lifestyle."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

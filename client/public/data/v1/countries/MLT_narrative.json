@@ -1,29 +1,34 @@
 {
   "iso3": "MLT",
+  "country_name": "Malta",
   "year": 2024,
-  "summary_md": "**Malta** (latest 2024) shows GDP per capita of **33,467 USD per person** (NY.GDP.PCAP.KD). Inflation is **1.65%** (FP.CPI.TOTL.ZG), unemployment **2.70%** (SL.UEM.TOTL.ZS). Life expectancy is **83.51 years** (SP.DYN.LE00.IN). Internet usage stands at **92.10%** (IT.NET.USER.ZS), and exports are **123.47% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Malta, in the year 2024, has a GDP per capita of 33,467 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 1.65% (FP.CPI.TOTL.ZG), and an unemployment rate of 2.70% (SL.UEM.TOTL.ZS). The average life expectancy is 83.51 years years (SP.DYN.LE00.IN), and internet usage stands at 92.10% (IT.NET.USER.ZS). The country's export growth is represented by 123.47% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **33,467 USD per person**; exports **123.47%**; inflation **1.65%**.",
-    "labor_md": "Unemployment **2.70%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **92.10%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **83.51 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Malta's economy is characterized by a GDP per capita of 33,467 USD per person (NY.GDP.PCAP.KD) and an export growth of 123.47% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market in Malta shows an unemployment rate of 2.70% (SL.UEM.TOTL.ZS), indicating a relatively stable employment environment.",
+    "digital_md": "Internet penetration in Malta is at 92.10% (IT.NET.USER.ZS), reflecting a well-connected digital infrastructure.",
+    "health_env_md": "The average life expectancy in Malta is 83.51 years years (SP.DYN.LE00.IN), suggesting a healthy living environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **81.6**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Malta's stable employment environment with an unemployment rate of 2.70% (SL.UEM.TOTL.ZS) may offer opportunities for job seekers.",
+      "The GDP per capita of 33,467 USD per person (NY.GDP.PCAP.KD) indicates a strong economy with potential job growth."
     ],
     "entrepreneur": [
       "Score **72.8**",
-      "Regulation, finance depth, power reliability and innovation."
+      "The well-connected digital infrastructure, with internet usage at 92.10% (IT.NET.USER.ZS), provides a conducive environment for entrepreneurs.",
+      "A GDP per capita of 33,467 USD per person (NY.GDP.PCAP.KD) suggests a market with potential for business expansion."
     ],
     "digital_nomad": [
       "Score **75.9**",
-      "Connectivity, price stability and livability."
+      "Internet penetration at 92.10% (IT.NET.USER.ZS) supports the lifestyle of digital nomads in Malta.",
+      "The stable economy with a GDP per capita of 33,467 USD per person (NY.GDP.PCAP.KD) may offer a reliable income source for digital nomads."
     ],
     "expat_family": [
       "Score **81.1**",
-      "Health, education, safety and environment."
+      "The average life expectancy of 83.51 years years (SP.DYN.LE00.IN) indicates a healthy living environment for expat families.",
+      "A GDP per capita of 33,467 USD per person (NY.GDP.PCAP.KD) suggests a comfortable standard of living for expat families."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

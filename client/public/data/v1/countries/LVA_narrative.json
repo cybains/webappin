@@ -1,29 +1,34 @@
 {
   "iso3": "LVA",
+  "country_name": "Latvia",
   "year": 2024,
-  "summary_md": "**Latvia** (latest 2024) shows GDP per capita of **16,951 USD per person** (NY.GDP.PCAP.KD). Inflation is **1.27%** (FP.CPI.TOTL.ZG), unemployment **6.72%** (SL.UEM.TOTL.ZS). Life expectancy is **75.68 years** (SP.DYN.LE00.IN). Internet usage stands at **92.20%** (IT.NET.USER.ZS), and exports are **64.62% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Latvia, in the year 2024, has a GDP per capita of 16,951 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 1.27% (FP.CPI.TOTL.ZG), and an unemployment rate of 6.72% (SL.UEM.TOTL.ZS). The average life expectancy is 75.68 years years (SP.DYN.LE00.IN), and internet usage stands at 92.20% (IT.NET.USER.ZS). The country's export growth is at 64.62% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **16,951 USD per person**; exports **64.62%**; inflation **1.27%**.",
-    "labor_md": "Unemployment **6.72%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **92.20%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **75.68 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Latvia's economy is characterized by a GDP per capita of 16,951 USD per person (NY.GDP.PCAP.KD) and an export growth rate of 64.62% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market in Latvia shows an unemployment rate of 6.72% (SL.UEM.TOTL.ZS), indicating the general employment situation.",
+    "digital_md": "Internet penetration in Latvia is relatively high, with usage at 92.20% (IT.NET.USER.ZS), reflecting the country's digital infrastructure.",
+    "health_env_md": "The average life expectancy in Latvia is 75.68 years years (SP.DYN.LE00.IN), suggesting the overall health environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **52.1**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Considering Latvia's unemployment rate of 6.72% (SL.UEM.TOTL.ZS), it may offer opportunities for employment.",
+      "The GDP per capita of 16,951 USD per person (NY.GDP.PCAP.KD) could influence job market conditions."
     ],
     "entrepreneur": [
       "Score **67.0**",
-      "Regulation, finance depth, power reliability and innovation."
+      "With an export growth rate of 64.62% (NE.EXP.GNFS.ZS), Latvia presents potential for business expansion.",
+      "The high internet usage at 92.20% (IT.NET.USER.ZS) supports digital entrepreneurship."
     ],
     "digital_nomad": [
       "Score **57.8**",
-      "Connectivity, price stability and livability."
+      "Latvia's internet usage at 92.20% (IT.NET.USER.ZS) is conducive to remote work.",
+      "The country's digital infrastructure may appeal to those seeking a tech-friendly environment."
     ],
     "expat_family": [
       "Score **67.2**",
-      "Health, education, safety and environment."
+      "The average life expectancy of 75.68 years years (SP.DYN.LE00.IN) in Latvia could be a factor for families considering relocation.",
+      "Considering the GDP per capita of 16,951 USD per person (NY.GDP.PCAP.KD), the cost of living and quality of life may be favorable for expat families."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

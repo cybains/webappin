@@ -1,29 +1,30 @@
 {
   "iso3": "CYP",
+  "country_name": "Cyprus",
   "year": 2024,
-  "summary_md": "**Cyprus** (latest 2024) shows GDP per capita of **32,999 USD per person** (NY.GDP.PCAP.KD). Inflation is **1.80%** (FP.CPI.TOTL.ZG), unemployment **5.60%** (SL.UEM.TOTL.ZS). Life expectancy is **81.65 years** (SP.DYN.LE00.IN). Internet usage stands at **91.20%** (IT.NET.USER.ZS), and exports are **96.69% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Cyprus, in the year 2024, has a per capita GDP of 32,999 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 1.80% (FP.CPI.TOTL.ZG), and an unemployment rate of 5.60% (SL.UEM.TOTL.ZS). The average life expectancy is 81.65 years (SP.DYN.LE00.IN), and internet usage stands at 91.20% (IT.NET.USER.ZS). The country's export growth is recorded at 96.69% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **32,999 USD per person**; exports **96.69%**; inflation **1.80%**.",
-    "labor_md": "Unemployment **5.60%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **91.20%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **81.65 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Cyprus's economy is characterized by a per capita GDP of 32,999 USD per person (NY.GDP.PCAP.KD) and an export growth of 96.69% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market in Cyprus shows an unemployment rate of 5.60% (SL.UEM.TOTL.ZS), indicating the general employment situation.",
+    "digital_md": "With an internet usage rate of 91.20% (IT.NET.USER.ZS), Cyprus demonstrates a significant level of digital connectivity.",
+    "health_env_md": "The health environment in Cyprus is reflected by an average life expectancy of 81.65 years (SP.DYN.LE00.IN)."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **71.4**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Considering opportunities in a country with a per capita GDP of 32,999 USD per person (NY.GDP.PCAP.KD) and an unemployment rate of 5.60% (SL.UEM.TOTL.ZS)."
     ],
     "entrepreneur": [
       "Score **72.7**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Entrepreneurs may find a favorable environment in Cyprus, where the export growth is at 96.69% (NE.EXP.GNFS.ZS)."
     ],
     "digital_nomad": [
       "Score **67.6**",
-      "Connectivity, price stability and livability."
+      "Cyprus offers a digital nomad community, supported by an internet usage rate of 91.20% (IT.NET.USER.ZS)."
     ],
     "expat_family": [
       "Score **69.3**",
-      "Health, education, safety and environment."
+      "Families considering expatriation might appreciate Cyprus's health environment, indicated by a life expectancy of 81.65 years (SP.DYN.LE00.IN)."
     ]
   },
   "facts_used": [
@@ -95,9 +96,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

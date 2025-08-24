@@ -1,29 +1,34 @@
 {
   "iso3": "NLD",
+  "country_name": "Netherlands",
   "year": 2024,
-  "summary_md": "**Netherlands** (latest 2024) shows GDP per capita of **51,471 USD per person** (NY.GDP.PCAP.KD). Inflation is **3.35%** (FP.CPI.TOTL.ZG), unemployment **3.60%** (SL.UEM.TOTL.ZS). Life expectancy is **81.91 years** (SP.DYN.LE00.IN). Internet usage stands at **97.00%** (IT.NET.USER.ZS), and exports are **84.13% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "The Netherlands, in the latest year, has a GDP per capita (51,471 USD per person) and an inflation rate (3.35%). The unemployment rate (3.60%) and life expectancy (81.91 years) are also recorded. Internet usage (97.00%) and export growth (84.13%) are significant indicators of the country's economic environment.",
   "sections": {
-    "economy_md": "GDP per capita **51,471 USD per person**; exports **84.13%**; inflation **3.35%**.",
-    "labor_md": "Unemployment **3.60%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **97.00%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **81.91 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "The Netherlands' economy is characterized by a high GDP per capita (51,471 USD per person) and a moderate export growth (84.13%).",
+    "labor_md": "With an unemployment rate (3.60%), the labor market reflects a balance between job availability and workforce participation.",
+    "digital_md": "Internet usage (97.00%) in the Netherlands is high, indicating a well-connected population.",
+    "health_env_md": "The life expectancy (81.91 years) in the Netherlands suggests a high standard of living and access to healthcare."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **68.7**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "High GDP per capita (51,471 USD per person) may indicate a competitive job market.",
+      "Moderate unemployment rate (3.60%) suggests opportunities for employment."
     ],
     "entrepreneur": [
       "Score **81.7**",
-      "Regulation, finance depth, power reliability and innovation."
+      "High GDP per capita (51,471 USD per person) indicates potential for business growth.",
+      "Moderate inflation rate (3.35%) could affect business costs."
     ],
     "digital_nomad": [
       "Score **61.7**",
-      "Connectivity, price stability and livability."
+      "High internet usage (97.00%) supports remote work and digital nomad lifestyles.",
+      "Moderate export growth (84.13%) suggests a stable economy for digital entrepreneurs."
     ],
     "expat_family": [
       "Score **83.3**",
-      "Health, education, safety and environment."
+      "High GDP per capita (51,471 USD per person) and life expectancy (81.91 years) may contribute to a high quality of life for expat families.",
+      "Moderate unemployment rate (3.60%) and internet usage (97.00%) indicate a supportive environment for family integration."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

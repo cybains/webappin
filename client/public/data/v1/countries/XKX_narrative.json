@@ -1,29 +1,34 @@
 {
   "iso3": "XKX",
+  "country_name": "Kosovo",
   "year": 2024,
-  "summary_md": "**Kosovo** (latest 2024) shows GDP per capita of **5,870 USD per person** (NY.GDP.PCAP.KD). Inflation is **1.62%** (FP.CPI.TOTL.ZG), unemployment **—** (SL.UEM.TOTL.ZS). Life expectancy is **78.03 years** (SP.DYN.LE00.IN). Internet usage stands at **89.40%** (IT.NET.USER.ZS), and exports are **41.92% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Kosovo, with a GDP per capita (5,870 USD per person), experiences a moderate inflation rate (1.62%) and has a life expectancy (78.03 years). The country's internet user penetration (89.40%) is relatively high, and its gross expenditure per capita (41.92%) reflects its economic standing. The digital environment is growing, and the health environment is stable.",
   "sections": {
-    "economy_md": "GDP per capita **5,870 USD per person**; exports **41.92%**; inflation **1.62%**.",
-    "labor_md": "Unemployment **—**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **89.40%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **78.03 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Kosovo's economy is characterized by a GDP per capita (5,870 USD per person) and a gross expenditure per capita (41.92%), indicating its economic position. The inflation rate (1.62%) provides insight into the purchasing power within the country.",
+    "labor_md": "The labor market in Kosovo is supported by a life expectancy (78.03 years), suggesting a workforce that is relatively healthy and potentially productive over time.",
+    "digital_md": "With an internet user penetration (89.40%), Kosovo is embracing digital advancements, which may contribute to economic growth and improved access to information.",
+    "health_env_md": "The health environment in Kosovo is reflected by a life expectancy (78.03 years), indicating the general well-being of its population."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **36.3**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "GDP per capita (5,870 USD per person) may influence job opportunities and salary expectations.",
+      "Life expectancy (78.03 years) suggests a stable workforce demographic."
     ],
     "entrepreneur": [
       "Score **49.6**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Gross expenditure per capita (41.92%) indicates potential market size for new businesses.",
+      "Internet user penetration (89.40%) suggests a digitally connected consumer base."
     ],
     "digital_nomad": [
       "Score **45.1**",
-      "Connectivity, price stability and livability."
+      "Internet user penetration (89.40%) supports the lifestyle of digital nomads.",
+      "Gross expenditure per capita (41.92%) may affect the cost of living and business operations."
     ],
     "expat_family": [
       "Score **61.8**",
-      "Health, education, safety and environment."
+      "Life expectancy (78.03 years) provides a sense of stability for expat families.",
+      "Gross expenditure per capita (41.92%) can influence the affordability of living and quality of life."
     ]
   },
   "facts_used": [
@@ -84,9 +89,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

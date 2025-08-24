@@ -1,29 +1,34 @@
 {
   "iso3": "ESP",
+  "country_name": "Spain",
   "year": 2024,
-  "summary_md": "**Spain** (latest 2024) shows GDP per capita of **29,193 USD per person** (NY.GDP.PCAP.KD). Inflation is **2.77%** (FP.CPI.TOTL.ZG), unemployment **11.39%** (SL.UEM.TOTL.ZS). Life expectancy is **83.88 years** (SP.DYN.LE00.IN). Internet usage stands at **95.40%** (IT.NET.USER.ZS), and exports are **37.29% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Spain, in the year 2024, has a GDP per capita of 29,193 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 2.77% (FP.CPI.TOTL.ZG), an unemployment rate of 11.39% (SL.UEM.TOTL.ZS), and an average life expectancy of 83.88 years years (SP.DYN.LE00.IN). The country's internet user penetration stands at 95.40% (IT.NET.USER.ZS), and its share of global exports is 37.29% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **29,193 USD per person**; exports **37.29%**; inflation **2.77%**.",
-    "labor_md": "Unemployment **11.39%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **95.40%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **83.88 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Spain's economy is characterized by a GDP per capita of 29,193 USD per person (NY.GDP.PCAP.KD) and a share of global exports at 37.29% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market in Spain shows an unemployment rate of 11.39% (SL.UEM.TOTL.ZS) and a life expectancy of 83.88 years years (SP.DYN.LE00.IN).",
+    "digital_md": "With an internet user penetration of 95.40% (IT.NET.USER.ZS), Spain is well-connected digitally.",
+    "health_env_md": "Spain's average life expectancy is 83.88 years years (SP.DYN.LE00.IN), indicating a healthy environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **50.9**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Considering Spain's unemployment rate of 11.39% (SL.UEM.TOTL.ZS) for job opportunities.",
+      "Exploring the country's GDP per capita of 29,193 USD per person (NY.GDP.PCAP.KD) for economic stability."
     ],
     "entrepreneur": [
       "Score **76.2**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Leveraging Spain's share of global exports at 37.29% (NE.EXP.GNFS.ZS) for business expansion.",
+      "Utilizing the country's internet user penetration of 95.40% (IT.NET.USER.ZS) for digital ventures."
     ],
     "digital_nomad": [
       "Score **70.2**",
-      "Connectivity, price stability and livability."
+      "Taking advantage of Spain's high internet user penetration of 95.40% (IT.NET.USER.ZS) for remote work.",
+      "Exploring the country's GDP per capita of 29,193 USD per person (NY.GDP.PCAP.KD) for a comfortable lifestyle."
     ],
     "expat_family": [
       "Score **87.6**",
-      "Health, education, safety and environment."
+      "Considering Spain's life expectancy of 83.88 years years (SP.DYN.LE00.IN) for a healthy environment.",
+      "Looking at the country's unemployment rate of 11.39% (SL.UEM.TOTL.ZS) for family job opportunities."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

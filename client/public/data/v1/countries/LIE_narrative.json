@@ -1,29 +1,34 @@
 {
   "iso3": "LIE",
+  "country_name": "Liechtenstein",
   "year": 2024,
-  "summary_md": "**Liechtenstein** (latest 2024) shows GDP per capita of **167,187 USD per person** (NY.GDP.PCAP.KD). Inflation is **—** (FP.CPI.TOTL.ZG), unemployment **—** (SL.UEM.TOTL.ZS). Life expectancy is **84.84 years** (SP.DYN.LE00.IN). Internet usage stands at **97.30%** (IT.NET.USER.ZS), and exports are **— of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Liechtenstein, a principality in Central Europe, maintains a high standard of living with a GDP per capita (167,187 USD per person) and a life expectancy (84.84 years). The country has a high internet user penetration rate (97.30%).",
   "sections": {
-    "economy_md": "GDP per capita **167,187 USD per person**; exports **—**; inflation **—**.",
-    "labor_md": "Unemployment **—**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **97.30%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **84.84 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "The GDP per capita (167,187 USD per person) indicates a strong economic position for Liechtenstein.",
+    "labor_md": "With a life expectancy (84.84 years), the labor force in Liechtenstein enjoys a high quality of life.",
+    "digital_md": "The internet user penetration rate (97.30%) reflects the country's advanced digital infrastructure.",
+    "health_env_md": "The life expectancy (84.84 years) suggests a favorable health environment in Liechtenstein."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **60.8**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "High GDP per capita (167,187 USD per person) may offer competitive job opportunities.",
+      "Long life expectancy (84.84 years) indicates a stable workforce."
     ],
     "entrepreneur": [
       "Score **73.6**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Strong economic position (167,187 USD per person) supports business growth.",
+      "Advanced digital infrastructure (97.30%) facilitates online entrepreneurship."
     ],
     "digital_nomad": [
       "Score **76.7**",
-      "Connectivity, price stability and livability."
+      "High internet user penetration rate (97.30%) enables remote work.",
+      "Stable economy (167,187 USD per person) provides a reliable environment for digital nomads."
     ],
     "expat_family": [
       "Score **67.9**",
-      "Health, education, safety and environment."
+      "High GDP per capita (167,187 USD per person) ensures a comfortable lifestyle.",
+      "Long life expectancy (84.84 years) contributes to a healthy family environment."
     ]
   },
   "facts_used": [
@@ -62,9 +67,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

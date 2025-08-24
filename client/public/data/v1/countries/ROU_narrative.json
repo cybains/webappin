@@ -1,29 +1,31 @@
 {
   "iso3": "ROU",
+  "country_name": "Romania",
   "year": 2024,
-  "summary_md": "**Romania** (latest 2024) shows GDP per capita of **12,493 USD per person** (NY.GDP.PCAP.KD). Inflation is **5.72%** (FP.CPI.TOTL.ZG), unemployment **5.38%** (SL.UEM.TOTL.ZS). Life expectancy is **76.61 years** (SP.DYN.LE00.IN). Internet usage stands at **89.20%** (IT.NET.USER.ZS), and exports are **35.60% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Romania, in the year 2024, has a GDP per capita of 12,493 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 5.72% (FP.CPI.TOTL.ZG), and an unemployment rate of 5.38% (SL.UEM.TOTL.ZS). The average life expectancy is 76.61 years years (SP.DYN.LE00.IN), and internet usage stands at 89.20% (IT.NET.USER.ZS). The country's export growth is at 35.60% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **12,493 USD per person**; exports **35.60%**; inflation **5.72%**.",
-    "labor_md": "Unemployment **5.38%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **89.20%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **76.61 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Romania's economy is characterized by a GDP per capita of 12,493 USD per person (NY.GDP.PCAP.KD), with an export growth rate of 35.60% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market shows an unemployment rate of 5.38% (SL.UEM.TOTL.ZS), indicating the general employment situation.",
+    "digital_md": "Internet penetration in Romania is at 89.20% (IT.NET.USER.ZS), reflecting the country's digital infrastructure.",
+    "health_env_md": "The average life expectancy in Romania is 76.61 years years (SP.DYN.LE00.IN), suggesting the overall health environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **45.2**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Considering opportunities in a country with a GDP per capita of 12,493 USD per person (NY.GDP.PCAP.KD) and an unemployment rate of 5.38% (SL.UEM.TOTL.ZS)."
     ],
     "entrepreneur": [
       "Score **63.0**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Entrepreneurs may find a market with an export growth rate of 35.60% (NE.EXP.GNFS.ZS) and a GDP per capita of 12,493 USD per person (NY.GDP.PCAP.KD)."
     ],
     "digital_nomad": [
       "Score **56.0**",
-      "Connectivity, price stability and livability."
+      "With an internet usage rate of 89.20% (IT.NET.USER.ZS), Romania offers a conducive environment for digital nomads.",
+      "The country's digital infrastructure supports remote work and connectivity."
     ],
     "expat_family": [
       "Score **54.1**",
-      "Health, education, safety and environment."
+      "Families considering relocation to Romania may note the average life expectancy of 76.61 years years (SP.DYN.LE00.IN), indicating a stable health environment."
     ]
   },
   "facts_used": [
@@ -95,9 +97,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

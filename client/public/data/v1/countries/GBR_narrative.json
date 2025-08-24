@@ -1,29 +1,34 @@
 {
   "iso3": "GBR",
+  "country_name": "United Kingdom",
   "year": 2024,
-  "summary_md": "**United Kingdom** (latest 2024) shows GDP per capita of **47,265 USD per person** (NY.GDP.PCAP.KD). Inflation is **3.27%** (FP.CPI.TOTL.ZG), unemployment **4.11%** (SL.UEM.TOTL.ZS). Life expectancy is **81.24 years** (SP.DYN.LE00.IN). Internet usage stands at **96.30%** (IT.NET.USER.ZS), and exports are **30.64% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "The United Kingdom, in the year 2024, has a GDP per capita (47,265 USD per person) and an inflation rate (3.27%). The unemployment rate (4.11%) is relatively low, while the average life expectancy (81.24 years) is high. Internet usage (96.30%) is widespread, and the country's export growth (30.64%) is significant. The nation's economic, labor, digital, and health environments reflect a stable and connected society.",
   "sections": {
-    "economy_md": "GDP per capita **47,265 USD per person**; exports **30.64%**; inflation **3.27%**.",
-    "labor_md": "Unemployment **4.11%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **96.30%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **81.24 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "The United Kingdom's economy is characterized by a GDP per capita (47,265 USD per person) and a moderate export growth (30.64%).",
+    "labor_md": "With an unemployment rate (4.11%), the labor market in the United Kingdom is relatively stable.",
+    "digital_md": "Internet usage (96.30%) is high in the United Kingdom, indicating a well-connected digital environment.",
+    "health_env_md": "The average life expectancy (81.24 years) in the United Kingdom is high, suggesting a strong health environment."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **57.5**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Low unemployment rate (4.11%) suggests a favorable job market.",
+      "High life expectancy (81.24 years) indicates a stable and potentially long-term employment outlook."
     ],
     "entrepreneur": [
       "Score **89.8**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Moderate export growth (30.64%) may offer opportunities for business expansion.",
+      "High GDP per capita (47,265 USD per person) suggests a strong consumer base for new ventures."
     ],
     "digital_nomad": [
       "Score **60.1**",
-      "Connectivity, price stability and livability."
+      "Widespread internet usage (96.30%) supports remote work and digital nomad lifestyles.",
+      "Stable economic conditions (47,265 USD per person) provide a reliable environment for digital entrepreneurship."
     ],
     "expat_family": [
       "Score **74.0**",
-      "Health, education, safety and environment."
+      "High life expectancy (81.24 years) ensures a healthy environment for families.",
+      "Low unemployment rate (4.11%) indicates a stable job market for expat spouses."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

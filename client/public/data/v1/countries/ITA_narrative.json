@@ -1,29 +1,34 @@
 {
   "iso3": "ITA",
+  "country_name": "Italy",
   "year": 2024,
-  "summary_md": "**Italy** (latest 2024) shows GDP per capita of **34,398 USD per person** (NY.GDP.PCAP.KD). Inflation is **0.98%** (FP.CPI.TOTL.ZG), unemployment **6.78%** (SL.UEM.TOTL.ZS). Life expectancy is **83.70 years** (SP.DYN.LE00.IN). Internet usage stands at **87.00%** (IT.NET.USER.ZS), and exports are **32.73% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Italy, in the latest year, has a GDP per capita (34,398 USD per person) and an inflation rate (0.98%). The unemployment rate (6.78%) and life expectancy (83.70 years) are also recorded. Internet usage (87.00%) and the share of exports in GDP (32.73%) are indicators of the country's economic and digital environment.",
   "sections": {
-    "economy_md": "GDP per capita **34,398 USD per person**; exports **32.73%**; inflation **0.98%**.",
-    "labor_md": "Unemployment **6.78%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **87.00%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **83.70 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Italy's economy is reflected by its GDP per capita (34,398 USD per person) and the share of exports in GDP (32.73%).",
+    "labor_md": "The labor market is characterized by an unemployment rate (6.78%).",
+    "digital_md": "Digital engagement is evident with an internet usage rate (87.00%).",
+    "health_env_md": "The average life expectancy in Italy is (83.70 years) years."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **43.5**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Consider Italy for employment opportunities with an unemployment rate (6.78%).",
+      "Explore the country's GDP per capita (34,398 USD per person) for economic stability."
     ],
     "entrepreneur": [
       "Score **72.4**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Italy's share of exports in GDP (32.73%) may offer business expansion opportunities.",
+      "Assess the digital environment with internet usage (87.00%)."
     ],
     "digital_nomad": [
       "Score **72.4**",
-      "Connectivity, price stability and livability."
+      "Italy's internet usage rate (87.00%) supports remote work.",
+      "Consider the country's economic indicators, such as GDP per capita (34,398 USD per person)."
     ],
     "expat_family": [
       "Score **78.5**",
-      "Health, education, safety and environment."
+      "The life expectancy (83.70 years) in Italy suggests a healthy environment for families.",
+      "The unemployment rate (6.78%) may influence family job opportunities."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

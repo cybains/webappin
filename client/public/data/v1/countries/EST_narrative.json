@@ -1,29 +1,32 @@
 {
   "iso3": "EST",
+  "country_name": "Estonia",
   "year": 2024,
-  "summary_md": "**Estonia** (latest 2024) shows GDP per capita of **20,046 USD per person** (NY.GDP.PCAP.KD). Inflation is **3.52%** (FP.CPI.TOTL.ZG), unemployment **7.83%** (SL.UEM.TOTL.ZS). Life expectancy is **78.49 years** (SP.DYN.LE00.IN). Internet usage stands at **93.20%** (IT.NET.USER.ZS), and exports are **76.27% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Estonia, in the year 2024, has a GDP per capita of 20,046 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 3.52% (FP.CPI.TOTL.ZG), and an unemployment rate of 7.83% (SL.UEM.TOTL.ZS). The average life expectancy is 78.49 years years (SP.DYN.LE00.IN), and internet usage stands at 93.20% (IT.NET.USER.ZS). The country's export growth is represented by 76.27% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **20,046 USD per person**; exports **76.27%**; inflation **3.52%**.",
-    "labor_md": "Unemployment **7.83%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **93.20%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **78.49 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Estonia's economy is characterized by a GDP per capita of 20,046 USD per person (NY.GDP.PCAP.KD) and an export growth of 76.27% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market in Estonia shows an unemployment rate of 7.83% (SL.UEM.TOTL.ZS).",
+    "digital_md": "Internet penetration in Estonia is high, with usage at 93.20% (IT.NET.USER.ZS).",
+    "health_env_md": "The average life expectancy in Estonia is 78.49 years years (SP.DYN.LE00.IN)."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **57.3**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Consider Estonia for employment opportunities with a low unemployment rate of 7.83% (SL.UEM.TOTL.ZS) and a strong digital infrastructure."
     ],
     "entrepreneur": [
       "Score **78.6**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Estonia's GDP per capita of 20,046 USD per person (NY.GDP.PCAP.KD) and export growth of 76.27% (NE.EXP.GNFS.ZS) may offer a favorable environment for business ventures.",
+      "The country's high internet usage at 93.20% (IT.NET.USER.ZS) supports digital entrepreneurship."
     ],
     "digital_nomad": [
       "Score **58.3**",
-      "Connectivity, price stability and livability."
+      "With an internet usage rate of 93.20% (IT.NET.USER.ZS), Estonia provides a conducive environment for digital nomads.",
+      "The country's strong digital infrastructure and low unemployment rate of 7.83% (SL.UEM.TOTL.ZS) make it an attractive destination for remote work."
     ],
     "expat_family": [
       "Score **67.4**",
-      "Health, education, safety and environment."
+      "Estonia's high life expectancy of 78.49 years years (SP.DYN.LE00.IN) and low unemployment rate of 7.83% (SL.UEM.TOTL.ZS) contribute to a stable and healthy living environment for expat families."
     ]
   },
   "facts_used": [
@@ -95,9 +98,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

@@ -1,29 +1,34 @@
 {
   "iso3": "GRC",
+  "country_name": "Greece",
   "year": 2024,
-  "summary_md": "**Greece** (latest 2024) shows GDP per capita of **21,654 USD per person** (NY.GDP.PCAP.KD). Inflation is **2.74%** (FP.CPI.TOTL.ZG), unemployment **10.13%** (SL.UEM.TOTL.ZS). Life expectancy is **81.54 years** (SP.DYN.LE00.IN). Internet usage stands at **85.00%** (IT.NET.USER.ZS), and exports are **41.98% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Greece, in the year 2024, has a GDP per capita (21,654 USD per person) and an inflation rate (2.74%). The unemployment rate (10.13%) and life expectancy (81.54 years) are also recorded, alongside internet usage (85.00%) and export growth (41.98%).",
   "sections": {
-    "economy_md": "GDP per capita **21,654 USD per person**; exports **41.98%**; inflation **2.74%**.",
-    "labor_md": "Unemployment **10.13%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **85.00%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **81.54 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "The GDP per capita (21,654 USD per person) and export growth (41.98%) indicate the economic status, while the inflation rate (2.74%) reflects the cost of living adjustments.",
+    "labor_md": "With an unemployment rate (10.13%), the labor market dynamics are crucial for understanding the job opportunities and challenges in Greece.",
+    "digital_md": "Internet usage (85.00%) suggests the level of digital connectivity and potential for digital entrepreneurship in the country.",
+    "health_env_md": "Life expectancy (81.54 years) provides insight into the health environment and quality of life for residents."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **43.7**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Considering the unemployment rate (10.13%), job seekers may find opportunities in sectors with lower unemployment.",
+      "The GDP per capita (21,654 USD per person) could influence the types of jobs available and their remuneration."
     ],
     "entrepreneur": [
       "Score **63.0**",
-      "Regulation, finance depth, power reliability and innovation."
+      "The export growth (41.98%) may indicate potential markets for new businesses.",
+      "Internet usage (85.00%) suggests a digitally connected population, suitable for online businesses."
     ],
     "digital_nomad": [
       "Score **61.5**",
-      "Connectivity, price stability and livability."
+      "High internet usage (85.00%) supports the lifestyle of digital nomads.",
+      "The economic indicators, including GDP per capita (21,654 USD per person), may affect the cost of living and business operations."
     ],
     "expat_family": [
       "Score **79.2**",
-      "Health, education, safety and environment."
+      "Life expectancy (81.54 years) and health environment are important considerations for expat families.",
+      "The inflation rate (2.74%) and GDP per capita (21,654 USD per person) can impact the family's financial planning and quality of life."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

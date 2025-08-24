@@ -1,29 +1,34 @@
 {
   "iso3": "CZE",
+  "country_name": "Czechia",
   "year": 2024,
-  "summary_md": "**Czechia** (latest 2024) shows GDP per capita of **20,445 USD per person** (NY.GDP.PCAP.KD). Inflation is **2.44%** (FP.CPI.TOTL.ZG), unemployment **2.51%** (SL.UEM.TOTL.ZS). Life expectancy is **79.88 years** (SP.DYN.LE00.IN). Internet usage stands at **86.00%** (IT.NET.USER.ZS), and exports are **69.24% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Czechia, in the year 2024, has a GDP per capita (20,445 USD per person) and an inflation rate (2.44%) of specified levels, with an unemployment rate (2.51%) and life expectancy (79.88 years) that reflect its economic and social environment. The country's internet user penetration (86.00%) and share of GDP from exports (69.24%) are also indicative of its digital and trade dynamics.",
   "sections": {
-    "economy_md": "GDP per capita **20,445 USD per person**; exports **69.24%**; inflation **2.44%**.",
-    "labor_md": "Unemployment **2.51%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **86.00%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **79.88 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Czechia's economy is characterized by a GDP per capita (20,445 USD per person) and a significant share of GDP from exports (69.24%).",
+    "labor_md": "The labor market in Czechia shows an unemployment rate (2.51%) and a life expectancy (79.88 years), suggesting stability and quality of life.",
+    "digital_md": "With an internet user penetration (86.00%), Czechia demonstrates a growing digital presence.",
+    "health_env_md": "Czechia's life expectancy (79.88 years) indicates a healthy environment for its citizens."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **62.9**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Consider Czechia for employment opportunities with a stable unemployment rate (2.51%) and a strong economy (20,445 USD per person).",
+      "Explore the job market in Czechia, where life expectancy (79.88 years) suggests a healthy workforce."
     ],
     "entrepreneur": [
       "Score **67.1**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Leverage Czechia's GDP from exports (69.24%) for business expansion.",
+      "Utilize the country's digital infrastructure, indicated by internet user penetration (86.00%), for e-commerce ventures."
     ],
     "digital_nomad": [
       "Score **66.3**",
-      "Connectivity, price stability and livability."
+      "Czechia's internet user penetration (86.00%) provides a conducive environment for remote work.",
+      "The stable economic indicators, including GDP per capita (20,445 USD per person), support a sustainable lifestyle for digital nomads."
     ],
     "expat_family": [
       "Score **69.2**",
-      "Health, education, safety and environment."
+      "Czechia's high life expectancy (79.88 years) ensures a healthy environment for expat families.",
+      "The country's economic stability, reflected by GDP per capita (20,445 USD per person), offers a secure base for expat families."
     ]
   },
   "facts_used": [
@@ -95,9 +100,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {

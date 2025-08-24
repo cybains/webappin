@@ -1,29 +1,30 @@
 {
   "iso3": "MNE",
+  "country_name": "Montenegro",
   "year": 2024,
-  "summary_md": "**Montenegro** (latest 2024) shows GDP per capita of **8,553 USD per person** (NY.GDP.PCAP.KD). Inflation is **3.34%** (FP.CPI.TOTL.ZG), unemployment **14.10%** (SL.UEM.TOTL.ZS). Life expectancy is **77.59 years** (SP.DYN.LE00.IN). Internet usage stands at **89.80%** (IT.NET.USER.ZS), and exports are **44.87% of GDP** (NE.EXP.GNFS.ZS).",
+  "summary_md": "Montenegro, in the year 2024, has a GDP per capita of 8,553 USD per person (NY.GDP.PCAP.KD), with an inflation rate of 3.34% (FP.CPI.TOTL.ZG), and an unemployment rate of 14.10% (SL.UEM.TOTL.ZS). The average life expectancy is 77.59 years years (SP.DYN.LE00.IN), and internet usage stands at 89.80% (IT.NET.USER.ZS). The country's export growth is at 44.87% (NE.EXP.GNFS.ZS).",
   "sections": {
-    "economy_md": "GDP per capita **8,553 USD per person**; exports **44.87%**; inflation **3.34%**.",
-    "labor_md": "Unemployment **14.10%**; participation and skills in KPI cards.",
-    "digital_md": "Internet usage **89.80%**; see mobile and broadband adoption.",
-    "health_env_md": "Life expectancy **77.59 years**; environmental pressures shown in CO₂/air-quality KPIs."
+    "economy_md": "Montenegro's economy is characterized by a GDP per capita of 8,553 USD per person (NY.GDP.PCAP.KD), with an export growth rate of 44.87% (NE.EXP.GNFS.ZS).",
+    "labor_md": "The labor market shows an unemployment rate of 14.10% (SL.UEM.TOTL.ZS), indicating the percentage of the workforce that is jobless.",
+    "digital_md": "Internet penetration in Montenegro is relatively high, with usage at 89.80% (IT.NET.USER.ZS), suggesting a significant portion of the population has access to digital services.",
+    "health_env_md": "The average life expectancy in Montenegro is 77.59 years years (SP.DYN.LE00.IN), reflecting the overall health environment of the country."
   },
   "persona_highlights": {
     "job_seeker": [
       "Score **49.0**",
-      "Tracks unemployment, LFPR, skills and growth momentum."
+      "Consider Montenegro for employment opportunities with an unemployment rate of 14.10% (SL.UEM.TOTL.ZS) and a GDP per capita of 8,553 USD per person (NY.GDP.PCAP.KD) to gauge economic stability."
     ],
     "entrepreneur": [
       "Score **64.6**",
-      "Regulation, finance depth, power reliability and innovation."
+      "Montenegro's export growth rate of 44.87% (NE.EXP.GNFS.ZS) and internet usage at 89.80% (IT.NET.USER.ZS) may offer a conducive environment for business expansion."
     ],
     "digital_nomad": [
       "Score **63.8**",
-      "Connectivity, price stability and livability."
+      "With an internet usage rate of 89.80% (IT.NET.USER.ZS), Montenegro provides a digital infrastructure suitable for remote work and digital nomad lifestyles."
     ],
     "expat_family": [
       "Score **56.1**",
-      "Health, education, safety and environment."
+      "Montenegro's life expectancy of 77.59 years years (SP.DYN.LE00.IN) and a GDP per capita of 8,553 USD per person (NY.GDP.PCAP.KD) could be attractive factors for families considering relocation."
     ]
   },
   "facts_used": [
@@ -95,9 +96,11 @@
     }
   ],
   "generator": {
-    "mode": "template",
-    "prompt_version": "v1.0"
+    "mode": "llamacpp",
+    "prompt_version": "v2.0",
+    "narrative_version": "v2"
   },
+  "snapshot_date": "2025-08-24",
   "callouts": {
     "strengths": [
       {
