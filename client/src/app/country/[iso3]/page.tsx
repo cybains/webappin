@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 type Fact = {
@@ -21,8 +21,9 @@ type Narrative = {
   source_links?: { label?: string; url: string }[];
 };
 
-export default function CountryPage({ params }: { params: { iso3: string } }) {
-  const iso3 = (params.iso3 || '').toUpperCase();
+export default function CountryPage({ params }: { params: Promise<{ iso3: string }> }) {
+  const { iso3: rawIso3 } = use(params);
+  const iso3 = (rawIso3 || '').toUpperCase();
   const [data, setData] = useState<Narrative | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
@@ -49,7 +50,7 @@ export default function CountryPage({ params }: { params: { iso3: string } }) {
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold">{iso3}</h1>
         {/* simple markdown-ish rendering without extra deps */}
-        {data.summary_md ? (
+        {typeof data.summary_md === 'string' ? (
           <div className="prose whitespace-pre-wrap">{data.summary_md}</div>
         ) : null}
       </header>
