@@ -76,38 +76,60 @@ export default function CountriesPage() {
         </section>
 
         {/* All countries (from index.json) */}
-        <section className="max-w-3xl mx-auto w-full">
-          <h2 className="text-2xl font-semibold mb-4">All Countries</h2>
+<section className="max-w-5xl mx-auto w-full">
+  <div className="flex items-end justify-between gap-4 mb-4">
+    <h2 className="text-2xl font-semibold">All Countries</h2>
+    <input
+      placeholder="Search by name or ISO3…"
+      className="border rounded-md px-3 py-2 text-sm w-64"
+      onChange={(e) => {
+        const q = e.target.value.toLowerCase();
+        setData((prev) =>
+          prev
+            ? {
+                ...prev,
+                countries: prev.countries.map(c => ({ ...c, _hide:
+                  !(c.name.toLowerCase().includes(q) || c.iso3.toLowerCase().includes(q))
+                })),
+              }
+            : prev
+        );
+      }}
+    />
+  </div>
 
-          {err ? (
-            <div className="p-4 bg-red-50 border text-red-700 rounded">
-              Error loading countries: {err}
+  {err ? (
+    <div className="p-4 bg-red-50 border text-red-700 rounded">
+      Error loading countries: {err}
+    </div>
+  ) : !data ? (
+    <div>Loading countries…</div>
+  ) : (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {data.countries
+        .filter((c: any) => !c._hide)
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((c) => (
+          <div key={c.iso3} className="rounded-xl border shadow-sm p-4 bg-white/80 dark:bg-black/20">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-medium">{c.name}</h3>
+              <span className="text-xs px-2 py-0.5 rounded-full border">{c.iso3}</span>
             </div>
-          ) : !data ? (
-            <div>Loading countries…</div>
-          ) : (
-            <ul className="divide-y">
-              {data.countries.map((c) => (
-                <li key={c.iso3} className="py-3 flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">{c.name}</div>
-                    <div className="text-sm text-gray-500">
-                      {c.iso3} • updated {c.updated_at ?? '—'}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    {c.has_api ? (
-                      <span className="text-xs px-2 py-1 rounded-full border">Live API</span>
-                    ) : null}
-                    <Link className="text-blue-600 hover:underline" href={`/country/${c.iso3}`}>
-                      Open
-                    </Link>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+            <p className="text-xs text-gray-500 mb-3">
+              Updated {c.updated_at ?? '—'}
+            </p>
+            <div className="flex items-center justify-between">
+              {c.has_api ? <span className="text-xs px-2 py-1 rounded border">Live API</span> : <span />}
+              <Link className="text-sm text-blue-600 hover:underline" href={`/country/${c.iso3}`}>
+                Open →
+              </Link>
+            </div>
+          </div>
+        ))}
+    </div>
+  )}
+</section>
+
       </div>
     </main>
   );

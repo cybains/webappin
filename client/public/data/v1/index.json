@@ -1,20 +1,447 @@
 {
   "version": "v1",
-  "generated_at": "2025-08-24T00:00:00Z",
+  "generated_at": "2025-08-24T15:17:02.502Z",
   "countries": [
+    {
+      "iso3": "ALB",
+      "name": "ALB",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/ALB_narrative.json"
+      }
+    },
+    {
+      "iso3": "AND",
+      "name": "AND",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/AND_narrative.json"
+      }
+    },
+    {
+      "iso3": "ARM",
+      "name": "ARM",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/ARM_narrative.json"
+      }
+    },
     {
       "iso3": "AUT",
       "name": "Austria",
       "updated_at": "2025-08-24",
       "has_api": false,
-      "files": { "narrative": "/data/v1/countries/AUT_narrative.json" }
+      "files": {
+        "narrative": "/data/v1/countries/AUT_narrative.json"
+      }
+    },
+    {
+      "iso3": "AZE",
+      "name": "AZE",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/AZE_narrative.json"
+      }
+    },
+    {
+      "iso3": "BEL",
+      "name": "BEL",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/BEL_narrative.json"
+      }
+    },
+    {
+      "iso3": "BGR",
+      "name": "BGR",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/BGR_narrative.json"
+      }
+    },
+    {
+      "iso3": "BIH",
+      "name": "BIH",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/BIH_narrative.json"
+      }
+    },
+    {
+      "iso3": "BLR",
+      "name": "BLR",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/BLR_narrative.json"
+      }
+    },
+    {
+      "iso3": "CHE",
+      "name": "CHE",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/CHE_narrative.json"
+      }
+    },
+    {
+      "iso3": "CYP",
+      "name": "CYP",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/CYP_narrative.json"
+      }
+    },
+    {
+      "iso3": "CZE",
+      "name": "CZE",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/CZE_narrative.json"
+      }
+    },
+    {
+      "iso3": "DEU",
+      "name": "DEU",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/DEU_narrative.json"
+      }
+    },
+    {
+      "iso3": "DNK",
+      "name": "DNK",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/DNK_narrative.json"
+      }
+    },
+    {
+      "iso3": "ESP",
+      "name": "ESP",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/ESP_narrative.json"
+      }
+    },
+    {
+      "iso3": "EST",
+      "name": "EST",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/EST_narrative.json"
+      }
+    },
+    {
+      "iso3": "FIN",
+      "name": "FIN",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/FIN_narrative.json"
+      }
+    },
+    {
+      "iso3": "FRA",
+      "name": "FRA",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/FRA_narrative.json"
+      }
+    },
+    {
+      "iso3": "GBR",
+      "name": "GBR",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/GBR_narrative.json"
+      }
+    },
+    {
+      "iso3": "GEO",
+      "name": "GEO",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/GEO_narrative.json"
+      }
+    },
+    {
+      "iso3": "GRC",
+      "name": "GRC",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/GRC_narrative.json"
+      }
+    },
+    {
+      "iso3": "HRV",
+      "name": "HRV",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/HRV_narrative.json"
+      }
+    },
+    {
+      "iso3": "HUN",
+      "name": "HUN",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/HUN_narrative.json"
+      }
+    },
+    {
+      "iso3": "IRL",
+      "name": "IRL",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/IRL_narrative.json"
+      }
+    },
+    {
+      "iso3": "ISL",
+      "name": "ISL",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/ISL_narrative.json"
+      }
+    },
+    {
+      "iso3": "ITA",
+      "name": "ITA",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/ITA_narrative.json"
+      }
+    },
+    {
+      "iso3": "LIE",
+      "name": "LIE",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/LIE_narrative.json"
+      }
+    },
+    {
+      "iso3": "LTU",
+      "name": "LTU",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/LTU_narrative.json"
+      }
+    },
+    {
+      "iso3": "LUX",
+      "name": "LUX",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/LUX_narrative.json"
+      }
+    },
+    {
+      "iso3": "LVA",
+      "name": "LVA",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/LVA_narrative.json"
+      }
+    },
+    {
+      "iso3": "MCO",
+      "name": "MCO",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/MCO_narrative.json"
+      }
+    },
+    {
+      "iso3": "MDA",
+      "name": "MDA",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/MDA_narrative.json"
+      }
+    },
+    {
+      "iso3": "MKD",
+      "name": "MKD",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/MKD_narrative.json"
+      }
+    },
+    {
+      "iso3": "MLT",
+      "name": "MLT",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/MLT_narrative.json"
+      }
+    },
+    {
+      "iso3": "MNE",
+      "name": "MNE",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/MNE_narrative.json"
+      }
+    },
+    {
+      "iso3": "NLD",
+      "name": "NLD",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/NLD_narrative.json"
+      }
+    },
+    {
+      "iso3": "NOR",
+      "name": "NOR",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/NOR_narrative.json"
+      }
+    },
+    {
+      "iso3": "POL",
+      "name": "POL",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/POL_narrative.json"
+      }
     },
     {
       "iso3": "PRT",
       "name": "Portugal",
       "updated_at": "2025-08-24",
       "has_api": false,
-      "files": { "narrative": "/data/v1/countries/PRT_narrative.json" }
+      "files": {
+        "narrative": "/data/v1/countries/PRT_narrative.json"
+      }
+    },
+    {
+      "iso3": "ROU",
+      "name": "ROU",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/ROU_narrative.json"
+      }
+    },
+    {
+      "iso3": "RUS",
+      "name": "RUS",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/RUS_narrative.json"
+      }
+    },
+    {
+      "iso3": "SMR",
+      "name": "SMR",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/SMR_narrative.json"
+      }
+    },
+    {
+      "iso3": "SRB",
+      "name": "SRB",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/SRB_narrative.json"
+      }
+    },
+    {
+      "iso3": "SVK",
+      "name": "SVK",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/SVK_narrative.json"
+      }
+    },
+    {
+      "iso3": "SVN",
+      "name": "SVN",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/SVN_narrative.json"
+      }
+    },
+    {
+      "iso3": "SWE",
+      "name": "SWE",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/SWE_narrative.json"
+      }
+    },
+    {
+      "iso3": "TUR",
+      "name": "TUR",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/TUR_narrative.json"
+      }
+    },
+    {
+      "iso3": "UKR",
+      "name": "UKR",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/UKR_narrative.json"
+      }
+    },
+    {
+      "iso3": "XKX",
+      "name": "XKX",
+      "updated_at": "2025-08-24",
+      "has_api": false,
+      "files": {
+        "narrative": "/data/v1/countries/XKX_narrative.json"
+      }
     }
   ]
 }
