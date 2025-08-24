@@ -11,7 +11,7 @@ type Fact = {
   year?: number;
   value?: number;
   lag_years?: number;
-  yoy?: number; // optional, if you add later we show it
+  yoy?: number;
   pctl?: Pctl;
 };
 
@@ -77,7 +77,7 @@ const ORDER = [
   'EN.ATM.CO2E.PC',
 ];
 
-/** ISO3 → ISO2 (for flag emoji) + fallback name mapping for display */
+/** ISO3 → ISO2 + ISO3 → name (for display & flag) */
 const ISO3_TO_ISO2: Record<string, string> = {
   AUT: 'AT', BEL: 'BE', BGR: 'BG', HRV: 'HR', CYP: 'CY', CZE: 'CZ', DNK: 'DK',
   EST: 'EE', FIN: 'FI', FRA: 'FR', DEU: 'DE', GRC: 'GR', HUN: 'HU', IRL: 'IE',
@@ -99,6 +99,26 @@ const ISO3_TO_NAME: Record<string, string> = {
   MDA: 'Moldova', BLR: 'Belarus', RUS: 'Russia', TUR: 'Turkey', ARM: 'Armenia', AZE: 'Azerbaijan',
   GEO: 'Georgia', AND: 'Andorra', MCO: 'Monaco', SMR: 'San Marino',
 };
+
+/** ---------- Accent palette (adds personality) ---------- */
+type Accent = { ring: string; gradFrom: string; gradTo: string; bar: string; chip: string };
+const PALETTES: Accent[] = [
+  { ring: 'ring-blue-500/40',    gradFrom: 'from-blue-50',    gradTo: 'to-cyan-50',    bar: 'bg-blue-600',    chip: 'bg-blue-50 border-blue-300' },
+  { ring: 'ring-emerald-500/40', gradFrom: 'from-emerald-50', gradTo: 'to-teal-50',    bar: 'bg-emerald-600', chip: 'bg-emerald-50 border-emerald-300' },
+  { ring: 'ring-rose-500/40',    gradFrom: 'from-rose-50',    gradTo: 'to-fuchsia-50', bar: 'bg-rose-600',    chip: 'bg-rose-50 border-rose-300' },
+  { ring: 'ring-amber-500/40',   gradFrom: 'from-amber-50',   gradTo: 'to-orange-50',  bar: 'bg-amber-600',   chip: 'bg-amber-50 border-amber-300' },
+  { ring: 'ring-indigo-500/40',  gradFrom: 'from-indigo-50',  gradTo: 'to-sky-50',     bar: 'bg-indigo-600',  chip: 'bg-indigo-50 border-indigo-300' },
+  { ring: 'ring-violet-500/40',  gradFrom: 'from-violet-50',  gradTo: 'to-purple-50',  bar: 'bg-violet-600',  chip: 'bg-violet-50 border-violet-300' },
+];
+
+function hashIso3(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+function pickAccent(iso3: string): Accent {
+  return PALETTES[hashIso3(iso3) % PALETTES.length];
+}
 
 /** ---------- Helpers ---------- */
 function flagEmojiFromIso3(iso3?: string): string {
@@ -125,13 +145,19 @@ function pctile(n?: number): string {
   if (typeof n !== 'number' || Number.isNaN(n)) return '—';
   return `${Math.round(n)}`;
 }
+function pickDisplayName(iso3: string, manifestName?: string | null): string {
+  // Use manifest name only if it doesn't look like a 3-letter ISO code.
+  if (manifestName && manifestName.toUpperCase() !== iso3 && manifestName.length > 3) {
+    return manifestName;
+  }
+  return ISO3_TO_NAME[iso3] ?? iso3;
+}
 
 /** Fetch display name from manifest (typed; no `any`) */
 async function fetchNameFromManifest(iso3: string): Promise<string | null> {
   try {
     const r = await fetch('/data/v1/index.json', { cache: 'force-cache' });
     if (!r.ok) return null;
-
     const m = (await r.json()) as Partial<Manifest>;
     const list: ManifestCountry[] = Array.isArray(m.countries) ? m.countries : [];
     const found = list.find((c) => typeof c.iso3 === 'string' && c.iso3.toUpperCase() === iso3);
@@ -150,14 +176,18 @@ export default function CountryPage() {
   const [name, setName] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
+  // Always prefer full country name: built-in map first, then manifest, then ISO3
+  const defaultName = ISO3_TO_NAME[iso3] ?? iso3;
+
   useEffect(() => {
     if (!iso3) return;
     fetch(`/data/v1/countries/${iso3}_narrative.json`)
       .then((r) => (r.ok ? r.json() : Promise.reject(`${r.status} ${r.statusText}`)))
       .then((j: Narrative) => setData(j))
       .catch((e) => setErr(String(e)));
-    fetchNameFromManifest(iso3).then((n) => setName(n || ISO3_TO_NAME[iso3] || iso3));
-  }, [iso3]);
+    fetchNameFromManifest(iso3).then((n) => setName(pickDisplayName(iso3, n)));
+
+  }, [iso3, defaultName]);
 
   const factsOrdered: Fact[] = useMemo(() => {
     const facts = data?.facts_used ?? [];
@@ -170,7 +200,8 @@ export default function CountryPage() {
   const hasAnyYoY = useMemo(() => (data?.facts_used ?? []).some((f) => typeof f.yoy === 'number'), [data]);
   const flag = flagEmojiFromIso3(iso3);
   const snapshot = data?.year ? String(data.year) : '—';
-  const headerName = name ?? ISO3_TO_NAME[iso3] ?? iso3;
+  const headerName = name ?? defaultName;
+  const accent = pickAccent(iso3);
 
   if (err) {
     return (
@@ -179,28 +210,37 @@ export default function CountryPage() {
       </main>
     );
   }
-  if (!data) return <div className="p-6">Loading {iso3}…</div>;
+  if (!data) return <div className="p-6">Loading {defaultName}…</div>;
 
   return (
     <main className="max-w-6xl mx-auto p-6 space-y-8">
-      {/* Breadcrumb instead of back link */}
-      <nav className="text-sm text-gray-600">
+      {/* Breadcrumb with accent dot */}
+      <nav className="text-sm text-gray-600 flex items-center gap-2">
+        <span className={`inline-block h-2 w-2 rounded-full ${accent.bar}`} />
         <Link href="/countries" className="hover:underline">Countries</Link>
-        <span className="mx-2">›</span>
+        <span className="opacity-60">/</span>
         <span className="font-medium text-gray-800">{headerName}</span>
       </nav>
 
-      {/* Header / hero */}
-      <header className="rounded-2xl border p-6 bg-white/70 dark:bg-black/20">
+      {/* Header / hero with soft gradient + ring */}
+      <header
+        className={[
+          'rounded-2xl border p-6 bg-gradient-to-br',
+          accent.gradFrom,
+          accent.gradTo,
+          'ring-1 ring-inset',
+          accent.ring,
+        ].join(' ')}
+      >
         <div className="flex items-center gap-4">
           <div className="text-4xl leading-none">{flag}</div>
           <div className="min-w-0">
             <h1 className="text-3xl font-semibold truncate">{headerName} — Country Brief</h1>
-            <div className="mt-1 text-sm text-gray-600">
+            <div className="mt-1 text-sm text-gray-700">
               Data snapshot: {snapshot} • Dataset: World Bank (WDI & related)
             </div>
           </div>
-          <span className="ml-auto text-xs px-2 py-1 rounded-full border">{iso3}</span>
+          <span className="ml-auto text-xs px-2 py-1 rounded-full border bg-white/70">{iso3}</span>
         </div>
         {data.summary_md ? (
           <p className="mt-4 text-gray-800 whitespace-pre-wrap">{data.summary_md}</p>
@@ -211,7 +251,7 @@ export default function CountryPage() {
       {factsOrdered.length ? (
         <section className="space-y-3">
           <h2 className="text-xl font-semibold">Headline KPIs (latest available)</h2>
-          <div className="overflow-auto rounded-2xl border bg-white/60 dark:bg-black/20">
+          <div className="overflow-auto rounded-2xl border bg-white/70">
             <table className="min-w-full text-sm">
               <thead className="bg-gray-50">
                 <tr className="text-left">
@@ -231,14 +271,14 @@ export default function CountryPage() {
                   const worldPctTxt = pctile(worldPctRaw);
 
                   return (
-                    <tr key={`${f.code}-${i}`} className="border-t align-top">
-                      <td className="px-4 py-3">
+                    <tr key={`${f.code}-${i}`} className={i % 2 ? 'bg-gray-50/40' : ''}>
+                      <td className="px-4 py-3 align-top">
                         <div className="font-medium">{meta.label}</div>
                         <div className="text-xs text-gray-500">{f.code}</div>
                       </td>
-                      <td className="px-4 py-3">{value} {yr !== '—' ? `(${yr})` : ''}</td>
+                      <td className="px-4 py-3 align-top">{value} {yr !== '—' ? `(${yr})` : ''}</td>
                       {hasAnyYoY ? (
-                        <td className="px-4 py-3">
+                        <td className="px-4 py-3 align-top">
                           {typeof f.yoy === 'number'
                             ? (INDICATORS[f.code]?.unit === 'percent'
                                 ? `${fmtNumber(f.yoy, 1)} pp`
@@ -246,20 +286,21 @@ export default function CountryPage() {
                             : '—'}
                         </td>
                       ) : null}
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 align-top">
                         <div className="flex items-center gap-2">
-                          <span className="inline-block text-xs px-2 py-0.5 rounded-full border">{worldPctTxt}</span>
-                          {/* simple percentile bar */}
+                          <span className={`inline-block text-xs px-2 py-0.5 rounded-full border ${accent.chip}`}>
+                            {worldPctTxt}
+                          </span>
                           <div className="h-2 rounded bg-gray-200 w-32 overflow-hidden">
                             <div
-                              className="h-2 rounded bg-gray-600"
+                              className={['h-2 rounded', accent.bar].join(' ')}
                               style={{ width: worldPctRaw != null ? `${Math.max(0, Math.min(100, worldPctRaw))}%` : '0%' }}
                               aria-label={`World percentile ${worldPctTxt}`}
                             />
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-gray-600">{meta.notes ?? ''}</td>
+                      <td className="px-4 py-3 align-top text-gray-700">{meta.notes ?? ''}</td>
                     </tr>
                   );
                 })}
@@ -276,12 +317,16 @@ export default function CountryPage() {
       {data.sections && Object.keys(data.sections).length ? (
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Object.entries(data.sections).map(([k, md]) => (
-            <article key={k} className="rounded-2xl border p-4 bg-white/60 dark:bg-black/20">
+            <article
+              key={k}
+              className={[
+                'rounded-2xl border p-4 bg-gradient-to-br',
+                accent.gradFrom,
+                'to-white',
+              ].join(' ')}
+            >
               <h3 className="text-lg font-semibold mb-1">
-                {k
-                  .replace(/_md$/, '')
-                  .replace(/_/g, ' ')
-                  .replace(/\b\w/g, s => s.toUpperCase())}
+                {k.replace(/_md$/, '').replace(/_/g, ' ').replace(/\b\w/g, (s) => s.toUpperCase())}
               </h3>
               <div className="text-sm whitespace-pre-wrap">{md}</div>
             </article>
@@ -300,17 +345,17 @@ export default function CountryPage() {
               const scoreMatch = String(arr[0]).match(/(\d+(\.\d+)?)/);
               const scoreNum = scoreMatch ? Number(scoreMatch[1]) : undefined;
               const scoreText = scoreMatch ? scoreMatch[1] : '—';
-              const title = k.replace('_', ' ').replace(/\b\w/g, s => s.toUpperCase());
+              const title = k.replace('_', ' ').replace(/\b\w/g, (s) => s.toUpperCase());
 
               return (
-                <div key={k} className="rounded-2xl border p-4 bg-white/60 dark:bg-black/20">
+                <div key={k} className={`rounded-2xl border p-4 bg-white/70 ring-1 ring-inset ${accent.ring}`}>
                   <div className="flex items-baseline justify-between mb-2">
                     <h3 className="font-medium">{title}</h3>
                     <div className="text-2xl font-semibold">{scoreText}</div>
                   </div>
                   <div className="h-2 rounded bg-gray-200 overflow-hidden mb-3" aria-hidden>
                     <div
-                      className="h-2 rounded bg-gray-700"
+                      className={['h-2 rounded', accent.bar].join(' ')}
                       style={{ width: scoreNum != null ? `${Math.max(0, Math.min(100, scoreNum))}%` : '0%' }}
                     />
                   </div>
@@ -330,12 +375,12 @@ export default function CountryPage() {
           <h2 className="text-xl font-semibold">Callouts</h2>
           <div className="flex flex-wrap gap-2">
             {(data.callouts?.strengths ?? []).map((s, i) => (
-              <span key={`s-${i}`} className="text-xs px-2 py-1 rounded-full border border-green-300 bg-green-50">
+              <span key={`s-${i}`} className={`text-xs px-2 py-1 rounded-full border ${accent.chip}`}>
                 ✅ {s.label ?? s.code ?? 'Strength'}
               </span>
             ))}
             {(data.callouts?.watchouts ?? []).map((w, i) => (
-              <span key={`w-${i}`} className="text-xs px-2 py-1 rounded-full border border-amber-300 bg-amber-50">
+              <span key={`w-${i}`} className={`text-xs px-2 py-1 rounded-full border ${accent.chip}`}>
                 ⚠️ {w.label ?? w.code ?? 'Watch-out'}
               </span>
             ))}
