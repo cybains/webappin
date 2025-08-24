@@ -34,6 +34,21 @@ type Narrative = {
   source_links?: Record<string, string>;
 };
 
+/** ---------- Manifest types (no `any`) ---------- */
+type ManifestCountry = {
+  iso3: string;
+  name: string;
+  updated_at?: string;
+  has_api?: boolean;
+  files?: { narrative: string };
+};
+
+type Manifest = {
+  version: string;
+  generated_at: string;
+  countries: ManifestCountry[];
+};
+
 /** ---------- Display dictionaries ---------- */
 const INDICATORS: Record<
   string,
@@ -110,14 +125,20 @@ function pctile(n?: number): string {
   if (typeof n !== 'number' || Number.isNaN(n)) return '—';
   return `${Math.round(n)}`;
 }
+
+/** Fetch display name from manifest (typed; no `any`) */
 async function fetchNameFromManifest(iso3: string): Promise<string | null> {
   try {
     const r = await fetch('/data/v1/index.json', { cache: 'force-cache' });
     if (!r.ok) return null;
-    const m = await r.json();
-    const found = (m?.countries ?? []).find((c: any) => c.iso3?.toUpperCase() === iso3);
+
+    const m = (await r.json()) as Partial<Manifest>;
+    const list: ManifestCountry[] = Array.isArray(m.countries) ? m.countries : [];
+    const found = list.find((c) => typeof c.iso3 === 'string' && c.iso3.toUpperCase() === iso3);
     return found?.name ?? null;
-  } catch { return null; }
+  } catch {
+    return null;
+  }
 }
 
 /** ---------- Page ---------- */
@@ -135,18 +156,18 @@ export default function CountryPage() {
       .then((r) => (r.ok ? r.json() : Promise.reject(`${r.status} ${r.statusText}`)))
       .then((j: Narrative) => setData(j))
       .catch((e) => setErr(String(e)));
-    fetchNameFromManifest(iso3).then(n => setName(n || ISO3_TO_NAME[iso3] || iso3));
+    fetchNameFromManifest(iso3).then((n) => setName(n || ISO3_TO_NAME[iso3] || iso3));
   }, [iso3]);
 
   const factsOrdered: Fact[] = useMemo(() => {
     const facts = data?.facts_used ?? [];
-    const byCode = new Map(facts.map(f => [f.code, f]));
-    const primary: Fact[] = ORDER.map(code => byCode.get(code)).filter(Boolean) as Fact[];
-    const extras = facts.filter(f => !ORDER.includes(f.code));
+    const byCode = new Map(facts.map((f) => [f.code, f]));
+    const primary: Fact[] = ORDER.map((code) => byCode.get(code)).filter(Boolean) as Fact[];
+    const extras = facts.filter((f) => !ORDER.includes(f.code));
     return [...primary, ...extras];
   }, [data]);
 
-  const hasAnyYoY = useMemo(() => (data?.facts_used ?? []).some(f => typeof f.yoy === 'number'), [data]);
+  const hasAnyYoY = useMemo(() => (data?.facts_used ?? []).some((f) => typeof f.yoy === 'number'), [data]);
   const flag = flagEmojiFromIso3(iso3);
   const snapshot = data?.year ? String(data.year) : '—';
   const headerName = name ?? ISO3_TO_NAME[iso3] ?? iso3;
