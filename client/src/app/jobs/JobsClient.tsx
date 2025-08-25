@@ -59,7 +59,9 @@ export default function JobsPage() {
       setExpandedJobId(null);
       setLoading(false);
     });
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
   }, [currentPage]);
 
   const handlePageChange = (newPage: number) => {
@@ -68,20 +70,29 @@ export default function JobsPage() {
   };
 
   const toggleExpand = (id: string) => {
-    setExpandedJobId(prev => prev === id ? null : id);
+    setExpandedJobId((prev) => (prev === id ? null : id));
   };
 
   const renderPageNumbers = () => {
     const nodes: React.ReactNode[] = [];
     const maxButtons = 5;
+
     let start = Math.max(1, currentPage - 2);
-    let end = Math.min(totalPages, start + maxButtons - 1);
-    if (end - start + 1 < maxButtons) start = Math.max(1, end - maxButtons + 1);
+    const end = Math.min(totalPages, start + maxButtons - 1); // <- const (fix prefer-const)
+
+    if (end - start + 1 < maxButtons) {
+      start = Math.max(1, end - maxButtons + 1);
+    }
 
     if (start > 1) {
-      nodes.push(<button key={1} onClick={() => handlePageChange(1)} className="chip rounded px-3 py-1">1</button>);
+      nodes.push(
+        <button key={1} onClick={() => handlePageChange(1)} className="chip rounded px-3 py-1">
+          1
+        </button>
+      );
       if (start > 2) nodes.push(<span key="dots-start" className="px-2 opacity-70">…</span>);
     }
+
     for (let i = start; i <= end; i++) {
       const active = i === currentPage;
       nodes.push(
@@ -99,12 +110,22 @@ export default function JobsPage() {
         </button>
       );
     }
+
     if (end < totalPages) {
       if (end < totalPages - 1) nodes.push(<span key="dots-end" className="px-2 opacity-70">…</span>);
-      nodes.push(<button key={totalPages} onClick={() => handlePageChange(totalPages)} className="chip rounded px-3 py-1">{totalPages}</button>);
+      nodes.push(
+        <button
+          key={totalPages}
+          onClick={() => handlePageChange(totalPages)}
+          className="chip rounded px-3 py-1"
+        >
+          {totalPages}
+        </button>
+      );
     }
+
     return nodes;
-    };
+  };
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
@@ -114,7 +135,7 @@ export default function JobsPage() {
         <div className="mx-auto max-w-md card rounded-2xl p-6 ring-brand text-center">No jobs found.</div>
       ) : (
         <div className="flex flex-col gap-4 mb-8">
-          {jobs.map(job => {
+          {jobs.map((job) => {
             const isExpanded = expandedJobId === job.id;
             return (
               <article
@@ -137,7 +158,9 @@ export default function JobsPage() {
                     )}
                     <h2 className="text-xl font-semibold truncate">{job.title}</h2>
                   </div>
-                  <time className="text-sm opacity-75">{new Date(job.publication_date).toLocaleDateString()}</time>
+                  <time className="text-sm opacity-75">
+                    {new Date(job.publication_date).toLocaleDateString()}
+                  </time>
                 </header>
 
                 {!isExpanded && (
@@ -150,13 +173,19 @@ export default function JobsPage() {
 
                 {isExpanded && (
                   <div className="space-y-3">
-                    <div className="text-sm"><strong>Company:</strong> {job.company_name}</div>
-                    <div className="text-sm"><strong>Category:</strong> {job.category}</div>
+                    <div className="text-sm">
+                      <strong>Company:</strong> {job.company_name}
+                    </div>
+                    <div className="text-sm">
+                      <strong>Category:</strong> {job.category}
+                    </div>
 
                     {job.tags?.length ? (
                       <div className="mt-1 flex flex-wrap gap-2">
-                        {job.tags.map((tag, idx) => (
-                          <span key={idx} className="chip rounded-full text-xs px-2 py-1">{tag}</span>
+                        {job.tags.map((tag) => (
+                          <span key={tag} className="chip rounded-full text-xs px-2 py-1">
+                            {tag}
+                          </span>
                         ))}
                       </div>
                     ) : null}
