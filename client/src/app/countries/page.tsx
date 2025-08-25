@@ -9,81 +9,45 @@ type Country = { code: string; name: string };
 type Group = { id: string; title: string; countries: Country[] };
 
 const GROUPS: Group[] = [
-  {
-    id: 'EU27',
-    title: 'European Union (EU-27)',
-    countries: [
-      { code: 'AUT', name: 'Austria' }, { code: 'BEL', name: 'Belgium' },
-      { code: 'BGR', name: 'Bulgaria' }, { code: 'HRV', name: 'Croatia' },
-      { code: 'CYP', name: 'Cyprus' }, { code: 'CZE', name: 'Czech Republic' },
-      { code: 'DNK', name: 'Denmark' }, { code: 'EST', name: 'Estonia' },
-      { code: 'FIN', name: 'Finland' }, { code: 'FRA', name: 'France' },
-      { code: 'DEU', name: 'Germany' }, { code: 'GRC', name: 'Greece' },
-      { code: 'HUN', name: 'Hungary' }, { code: 'IRL', name: 'Ireland' },
-      { code: 'ITA', name: 'Italy' }, { code: 'LVA', name: 'Latvia' },
-      { code: 'LTU', name: 'Lithuania' }, { code: 'LUX', name: 'Luxembourg' },
-      { code: 'MLT', name: 'Malta' }, { code: 'NLD', name: 'Netherlands' },
-      { code: 'POL', name: 'Poland' }, { code: 'PRT', name: 'Portugal' },
-      { code: 'ROU', name: 'Romania' }, { code: 'SVK', name: 'Slovakia' },
-      { code: 'SVN', name: 'Slovenia' }, { code: 'ESP', name: 'Spain' },
-      { code: 'SWE', name: 'Sweden' },
-    ],
-  },
-  {
-    id: 'EFTA',
-    title: 'European Free Trade Association (EFTA)',
-    countries: [
-      { code: 'ISL', name: 'Iceland' },
-      { code: 'LIE', name: 'Liechtenstein' },
-      { code: 'NOR', name: 'Norway' },
-      { code: 'CHE', name: 'Switzerland' },
-    ],
-  },
+  { id: 'EU27', title: 'European Union (EU-27)', countries: [
+    { code: 'AUT', name: 'Austria' }, { code: 'BEL', name: 'Belgium' },
+    { code: 'BGR', name: 'Bulgaria' }, { code: 'HRV', name: 'Croatia' },
+    { code: 'CYP', name: 'Cyprus' }, { code: 'CZE', name: 'Czech Republic' },
+    { code: 'DNK', name: 'Denmark' }, { code: 'EST', name: 'Estonia' },
+    { code: 'FIN', name: 'Finland' }, { code: 'FRA', name: 'France' },
+    { code: 'DEU', name: 'Germany' }, { code: 'GRC', name: 'Greece' },
+    { code: 'HUN', name: 'Hungary' }, { code: 'IRL', name: 'Ireland' },
+    { code: 'ITA', name: 'Italy' }, { code: 'LVA', name: 'Latvia' },
+    { code: 'LTU', name: 'Lithuania' }, { code: 'LUX', name: 'Luxembourg' },
+    { code: 'MLT', name: 'Malta' }, { code: 'NLD', name: 'Netherlands' },
+    { code: 'POL', name: 'Poland' }, { code: 'PRT', name: 'Portugal' },
+    { code: 'ROU', name: 'Romania' }, { code: 'SVK', name: 'Slovakia' },
+    { code: 'SVN', name: 'Slovenia' }, { code: 'ESP', name: 'Spain' },
+    { code: 'SWE', name: 'Sweden' },
+  ]},
+  { id: 'EFTA', title: 'European Free Trade Association (EFTA)', countries: [
+    { code: 'ISL', name: 'Iceland' }, { code: 'LIE', name: 'Liechtenstein' },
+    { code: 'NOR', name: 'Norway' }, { code: 'CHE', name: 'Switzerland' },
+  ]},
   { id: 'UK', title: 'United Kingdom', countries: [{ code: 'GBR', name: 'United Kingdom' }] },
-  {
-    id: 'WBALK',
-    title: 'Western Balkans',
-    countries: [
-      { code: 'ALB', name: 'Albania' },
-      { code: 'BIH', name: 'Bosnia and Herzegovina' },
-      { code: 'MNE', name: 'Montenegro' },
-      { code: 'MKD', name: 'North Macedonia' },
-      { code: 'SRB', name: 'Serbia' },
-      { code: 'XKX', name: 'Kosovo' },
-    ],
-  },
-  {
-    id: 'E_NEI',
-    title: 'Eastern Neighbourhood & Turkey',
-    countries: [
-      { code: 'UKR', name: 'Ukraine' },
-      { code: 'MDA', name: 'Moldova' },
-      { code: 'BLR', name: 'Belarus' },
-      { code: 'RUS', name: 'Russia' },
-      { code: 'TUR', name: 'Turkey' },
-    ],
-  },
-  {
-    id: 'CAUC',
-    title: 'Caucasus',
-    countries: [
-      { code: 'ARM', name: 'Armenia' },
-      { code: 'AZE', name: 'Azerbaijan' },
-      { code: 'GEO', name: 'Georgia' },
-    ],
-  },
-  {
-    id: 'MICRO',
-    title: 'European Microstates',
-    countries: [
-      { code: 'AND', name: 'Andorra' },
-      { code: 'MCO', name: 'Monaco' },
-      { code: 'SMR', name: 'San Marino' },
-    ],
-  },
+  { id: 'WBALK', title: 'Western Balkans', countries: [
+    { code: 'ALB', name: 'Albania' }, { code: 'BIH', name: 'Bosnia and Herzegovina' },
+    { code: 'MNE', name: 'Montenegro' }, { code: 'MKD', name: 'North Macedonia' },
+    { code: 'SRB', name: 'Serbia' }, { code: 'XKX', name: 'Kosovo' },
+  ]},
+  { id: 'E_NEI', title: 'Eastern Neighbourhood & Turkey', countries: [
+    { code: 'UKR', name: 'Ukraine' }, { code: 'MDA', name: 'Moldova' },
+    { code: 'BLR', name: 'Belarus' }, { code: 'RUS', name: 'Russia' },
+    { code: 'TUR', name: 'Turkey' },
+  ]},
+  { id: 'CAUC', title: 'Caucasus', countries: [
+    { code: 'ARM', name: 'Armenia' }, { code: 'AZE', name: 'Azerbaijan' }, { code: 'GEO', name: 'Georgia' },
+  ]},
+  { id: 'MICRO', title: 'European Microstates', countries: [
+    { code: 'AND', name: 'Andorra' }, { code: 'MCO', name: 'Monaco' }, { code: 'SMR', name: 'San Marino' },
+  ]},
 ];
 
-/** ISO3 → ISO2 for flag emoji on cards */
 const ISO3_TO_ISO2: Record<string, string> = {
   AUT: 'AT', BEL: 'BE', BGR: 'BG', HRV: 'HR', CYP: 'CY', CZE: 'CZ', DNK: 'DK',
   EST: 'EE', FIN: 'FI', FRA: 'FR', DEU: 'DE', GRC: 'GR', HUN: 'HU', IRL: 'IE',
@@ -101,7 +65,6 @@ function flagEmojiFromIso3(iso3: string): string {
   return Array.from(iso2).map((c) => String.fromCodePoint(0x1f1e6 - 65 + c.charCodeAt(0))).join('');
 }
 
-/** Small accent palette per group (used for ring/bars; base surfaces come from tokens) */
 type Accent = {
   headerFrom: string; headerTo: string; chip: string; ring: string; hoverFrom: string; hoverTo: string;
 };
@@ -119,30 +82,21 @@ function accentFor(id: string): Accent {
   return GROUP_ACCENTS[id] ?? GROUP_ACCENTS.EU27;
 }
 
-/** Search helpers */
-function escapeRegExp(s: string) {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+function escapeRegExp(s: string) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 function highlight(text: string, query: string): React.ReactNode {
   if (!query) return text;
   const re = new RegExp(`(${escapeRegExp(query)})`, 'i');
   const parts = text.split(re);
   return parts.map((part, i) =>
     i % 2 === 1
-      ? <mark key={i} className="rounded px-0.5" style={{ background: 'color-mix(in srgb, var(--primary) 35%, transparent)' }}>{part}</mark>
+      ? <mark key={i} className="rounded px-0.5" style={{ background: 'color-mix(in srgb, var(--primary) 20%, transparent)' }}>{part}</mark>
       : <span key={i}>{part}</span>
   );
 }
 
-/** Chevron */
 function Chevron({ open }: { open: boolean }) {
   return (
-    <svg
-      className={`h-4 w-4 transition-transform ${open ? 'rotate-90' : ''}`}
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      aria-hidden="true"
-    >
+    <svg className={`h-4 w-4 transition-transform ${open ? 'rotate-90' : ''}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path d="M7.2 4.7a1 1 0 0 0 0 1.4L11.1 10l-3.9 3.9a1 1 0 1 0 1.4 1.4l4.6-4.6a1.5 1.5 0 0 0 0-2.1L8.6 4.7a1 1 0 0 0-1.4 0z" />
     </svg>
   );
@@ -168,7 +122,7 @@ export default function CountriesPage() {
 
   function toggle(id: string) {
     setExpanded(prev => {
-      if (q.trim()) return prev; // ignore toggles while searching so UX is predictable
+      if (q.trim()) return prev; // lock toggles during search
       const next = new Set(prev);
       if (next.has(id)) next.delete(id); else next.add(id);
       return next;
@@ -179,16 +133,11 @@ export default function CountriesPage() {
     <>
       <main className="max-w-6xl mx-auto p-6 space-y-10 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
 
-        {/* Hero / toolbar (light = soft gradient, dark = glass) */}
-        <section
-          className={[
-            'rounded-2xl p-6 ring-brand',
-            'glass', // dark: glass layer; in light, glass reads as subtle card
-          ].join(' ')}
-        >
+        {/* Hero / toolbar */}
+        <section className="rounded-2xl p-6 card ring-brand">
           <div className="flex flex-col md:flex-row md:items-end gap-4">
             <div className="flex-1">
-              <h1 className="text-3xl font-semibold neon-cyan">Explore countries</h1>
+              <h1 className="text-3xl font-semibold">Explore countries</h1>
               <p className="text-sm opacity-80 mt-1">
                 Browse Europe and neighbours. Click a country to open its brief.
               </p>
@@ -224,7 +173,7 @@ export default function CountriesPage() {
 
             return (
               <section key={group.id} className="space-y-3">
-                {/* Group header (light keeps gradient; dark falls back to card/glass) */}
+                {/* Group header (light keeps gradient; dark uses card) */}
                 <button
                   type="button"
                   onClick={() => toggle(group.id)}
@@ -232,9 +181,7 @@ export default function CountriesPage() {
                   className={[
                     'w-full rounded-xl p-4 text-left transition flex items-center gap-3',
                     'card ring-brand',
-                    // Light playful gradient:
                     'bg-gradient-to-r', accent.headerFrom, accent.headerTo,
-                    // In dark, remove gradient to keep consistent neon glass:
                     'dark:bg-[var(--card)] dark:bg-none'
                   ].join(' ')}
                 >
