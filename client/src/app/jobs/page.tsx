@@ -1,10 +1,14 @@
 import React, { Suspense } from 'react';
 import JobsPage from './JobsClient';
+import Footer from "@/components/Footer";
 
 export default function Page() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-gray-500">Loading jobs...</div>}>
-      <JobsPage />
-    </Suspense>
+    <>
+      <Suspense fallback={<div className="p-8 text-center text-gray-500">Loading jobs...</div>}>
+        <JobsPage />
+      </Suspense>
+      <Footer />
+    </>
   );
 }
