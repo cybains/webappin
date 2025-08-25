@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Footer() {
   // State & refs for running icons and messages
@@ -225,6 +226,10 @@ export default function Footer() {
           </div>
           <p className="text-xs text-gray-200">&copy; {new Date().getFullYear()} Inquos. All rights reserved.</p>
         </motion.div>
+      </div>
+
+      <div className="mt-10 flex justify-center">
+        <ThemeToggle />
       </div>
 
       <style jsx>{`

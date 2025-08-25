@@ -16,11 +16,11 @@
 
 /* Dark Theme */
 [data-theme='dark'] {
-  --background: #0a0a0a; /* deep blue-gray */
-  --foreground: #ededed; /* light gray text */
-  --primary: #3b82f6; /* brighter blue */
-  --secondary: #facc15; /* yellow */
-  --accent: #34d399; /* minty green */
+  --background: #0b0e17; /* midnight asphalt */
+  --foreground: #e2e8f0; /* misty gray */
+  --primary: #0ea5e9; /* neon cyan */
+  --secondary: #d946ef; /* vibrant magenta */
+  --accent: #64748b; /* urban smoke */
 
   --font-sans: 'Geist Sans', sans-serif;
   --font-mono: 'Geist Mono', monospace;
@@ -43,25 +43,6 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
   transition: background-color 0.3s, color 0.3s ease;
-}
-
-
-/* Button for Theme Toggle (Example) */
-.theme-toggle-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.theme-toggle-btn:hover {
-  background-color: var(--secondary);
 }
 
 @media (max-width: 768px) {
