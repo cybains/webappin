@@ -215,7 +215,7 @@ export default function CountryPage() {
 
   return (
     <>
-      <main className="max-w-6xl mx-auto p-6 space-y-8 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+      <main className="max-w-6xl mx-auto p-6 space-y-8 min-h-screen bg-white text-gray-900 dark:bg-[var(--background)] dark:text-[var(--foreground)]">
       {/* Breadcrumb with accent dot */}
       <nav className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
         <span className={`inline-block h-2 w-2 rounded-full ${accent.bar}`} />

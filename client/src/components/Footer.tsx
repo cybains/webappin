@@ -227,7 +227,7 @@ export default function Footer() {
           <div>
             <p className="mb-4">Helping you relocate without rage-quitting since 2025.</p>
           </div>
-          <p className="text-xs text-gray-200">&copy; 2025 Inquos. All rights reserved.</p>
+          <p className="text-xs text-gray-200">&copy; 2025 UAB SkillAxis. All rights reserved.</p>
         </motion.div>
       </div>
 
