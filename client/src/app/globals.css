@@ -1,52 +1,137 @@
 @import url('https://geists.vercel.app/font.css');
 @import "tailwindcss";
 
-/* Default light theme (Base theme) */
+/* ------------------------------
+   Light Theme — "brunch downtown"
+   clean, airy, quick to scan
+   ------------------------------ */
 :root {
-  --background: #fafafa;
-  --foreground: #333333;
-  --primary: #4A90E2;
-  --secondary: #F5A623;
-  --accent: #50E3C2;
+  /* Core */
+  --background: #faf9f7;        /* warm paper */
+  --foreground: #1f2937;        /* slate-800 */
 
-  --font-sans: 'Geist Sans', sans-serif;
-  --font-mono: 'Geist Mono', monospace;
+  /* Brand accents (quiet in light) */
+  --primary:   #2563eb;         /* blue-600 */
+  --secondary: #ea580c;         /* orange-600 */
+  --accent:    #059669;         /* emerald-600 */
+
+  /* Surfaces */
+  --card:   #ffffff;            /* white card */
+  --muted:  #f3f4f6;            /* gray-100 */
+  --border: #e5e7eb;            /* gray-200 */
+  --ring:   #cbd5e1;            /* slate-300 */
+
+  /* Chips/badges */
+  --chip-bg:     #f9fafb;
+  --chip-border: #e5e7eb;
+
+  /* Fonts */
+  --font-sans: 'Geist Sans', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-
-/* Dark Theme */
+/* ------------------------------
+   Dark Theme — "evening metro"
+   neutral, no glow, crisp edges
+   ------------------------------ */
 [data-theme='dark'] {
-  --background: #0b0e17; /* midnight asphalt */
-  --foreground: #e2e8f0; /* misty gray */
-  --primary: #0ea5e9; /* neon cyan */
-  --secondary: #d946ef; /* vibrant magenta */
-  --accent: #64748b; /* urban smoke */
+  --background: #0e1117;        /* deep neutral */
+  --foreground: #e5e7eb;        /* gray-200 */
 
-  --font-sans: 'Geist Sans', sans-serif;
-  --font-mono: 'Geist Mono', monospace;
+  --primary:   #60a5fa;         /* blue-400 */
+  --secondary: #f59e0b;         /* amber-500 */
+  --accent:    #34d399;         /* emerald-400 */
+
+  --card:   #0f172a;            /* slate-900 */
+  --muted:  #111827;            /* gray-900 */
+  --border: #243244;            /* cool slate edge */
+  --ring:   #334155;            /* slate-700 */
+
+  --chip-bg:     #0f172a;
+  --chip-border: #2b3b56;
 }
 
-/* Custom Theme (optional, you can add more) */
+/* (optional) additional theme stays as-is, or remove entirely */
 [data-theme='custom'] {
-  --background: #e0e7ff; /* soft blue */
-  --foreground: #1f2937; /* cool dark blue text */
-  --primary: #8b5cf6; /* purple */
-  --secondary: #fbbf24; /* orange */
-  --accent: #10b981; /* emerald */
+  --background: #e0e7ff;
+  --foreground: #1f2937;
+  --primary:   #8b5cf6;
+  --secondary: #fbbf24;
+  --accent:    #10b981;
 
-  --font-sans: 'Geist Sans', sans-serif;
-  --font-mono: 'Geist Mono', monospace;
+  --card:   #ffffff;
+  --muted:  #eef2ff;
+  --border: #c7d2fe;
+  --ring:   #a5b4fc;
+
+  --chip-bg:     #eef2ff;
+  --chip-border: #c7d2fe;
 }
+
+/* ------------------------------
+   Base element styling
+   ------------------------------ */
+html, body { height: 100%; }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
-  transition: background-color 0.3s, color 0.3s ease;
+  transition: background-color .25s ease, color .25s ease;
 }
 
-@media (max-width: 768px) {
-  body.hide-hero .hero {
-    display: none !important;
-  }
+::selection {
+  background: color-mix(in srgb, var(--primary) 20%, transparent);
+  color: var(--foreground);
 }
+
+/* Keep the "hide-hero" behavior you use on mobile */
+@media (max-width: 768px) {
+  body.hide-hero .hero { display: none !important; }
+}
+
+/* Ensure app is above any future decorative layers */
+#__next, main, .app-root { position: relative; z-index: 1; }
+
+/* ------------------------------
+   Utilities (no glow)
+   ------------------------------ */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: saturate(110%) blur(4px);
+  -webkit-backdrop-filter: saturate(110%) blur(4px);
+}
+
+.muted { background: var(--muted); }
+
+.chip {
+  background: var(--chip-bg);
+  border: 1px solid var(--chip-border);
+}
+
+.table-head { background: var(--muted); }
+
+.ring-brand {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ring) 70%, transparent);
+}
+
+/* Buttons that should use brand color without glow */
+.btn-brand {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-brand:hover { filter: brightness(0.95); }
+
+/* Focus ring—clean, no glow */
+:where(a,button,input,select,textarea):focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--background) 100%, transparent),
+    0 0 0 4px color-mix(in srgb, var(--primary) 45%, transparent);
+  border-radius: 10px;
+  transition: box-shadow .15s ease;
+}
+
+/* Monospace helper */
+.mono { font-family: var(--font-mono), monospace; }
