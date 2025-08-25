@@ -1,7 +1,8 @@
 
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/navbar"; // ✅ New import
+import Navbar from "@/components/navbar"; // ✅ Modular header
+import ThemeToggle from "@/components/ThemeToggle";
 
 
 
@@ -18,8 +19,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <Navbar /> {/* ✅ Modular header */}
-        
+        <Navbar />
+        <ThemeToggle />
         {children}
       </body>
     </html>
