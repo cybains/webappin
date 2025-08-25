@@ -6,7 +6,6 @@ import SearchMe from "@/components/SearchMe";
 import HowItWorks from "@/components/HowItWorks";
 import Contact from "@/components/Contact";
 import CoreServices from "@/components/CoreServices";
-import Footer from "@/components/Footer";
 
 // Dynamically import WorldMap for client-side only
 const WorldMap = dynamic(() => import("@/components/WorldMap"), { ssr: false });
@@ -45,11 +44,6 @@ export default function Home() {
         <Contact />
       </section>
 
-
-      {/* Footer Section */}
-      <footer id="footer">
-        <Footer />
-      </footer>
     </main>
   );
 }

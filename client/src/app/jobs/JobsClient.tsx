@@ -88,7 +88,7 @@ export default function JobsPage() {
         <button
           key={i}
           onClick={() => handlePageChange(i)}
-          className={`px-3 py-1 border rounded ${currentPage === i ? 'bg-black text-white' : ''}`}
+          className={`px-3 py-1 border rounded border-gray-300 dark:border-gray-600 ${currentPage === i ? 'bg-black text-white dark:bg-white dark:text-black' : ''}`}
         >
           {i}
         </button>
@@ -102,7 +102,7 @@ export default function JobsPage() {
         <button
           key={totalPages}
           onClick={() => handlePageChange(totalPages)}
-          className={`px-3 py-1 border rounded ${currentPage === totalPages ? 'bg-black text-white' : ''}`}
+          className={`px-3 py-1 border rounded border-gray-300 dark:border-gray-600 ${currentPage === totalPages ? 'bg-black text-white dark:bg-white dark:text-black' : ''}`}
         >
           {totalPages}
         </button>
@@ -113,24 +113,24 @@ export default function JobsPage() {
   };
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-8">
+    <main className="max-w-5xl mx-auto px-4 py-8 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Removed the <h1> "Remote Jobs" */}
 
       {loading ? (
-        <p className="text-gray-600">Loading...</p>
+        <p className="text-gray-600 dark:text-gray-300">Loading...</p>
       ) : jobs.length === 0 ? (
-        <p className="text-red-500">No jobs found.</p>
+        <p className="text-red-500 dark:text-red-400">No jobs found.</p>
       ) : (
         <div className="flex flex-col gap-4 mb-8">
           {jobs.map((job) => {
             const isExpanded = expandedJobId === job.id;
 
             return (
-              <div
-                key={job.id}
-                onClick={() => toggleExpand(job.id)}
-                className="border rounded-xl p-4 cursor-pointer hover:shadow transition"
-              >
+                <div
+                  key={job.id}
+                  onClick={() => toggleExpand(job.id)}
+                  className="border border-gray-200 dark:border-gray-700 rounded-xl p-4 cursor-pointer hover:shadow transition bg-white dark:bg-gray-800"
+                >
                 <div className="flex justify-between items-center mb-2">
                   {/* Left side: Title and company logo */}
                   <div className="flex items-center gap-3">
@@ -145,14 +145,14 @@ export default function JobsPage() {
                   </div>
 
                   {/* Right side: publication date */}
-                  <span className="text-sm text-gray-500">
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
                     {new Date(job.publication_date).toLocaleDateString()}
                   </span>
                 </div>
 
                 {/* Collapsed view info */}
-                {!isExpanded && (
-                  <div className="text-sm text-gray-600 flex flex-wrap gap-4">
+                  {!isExpanded && (
+                    <div className="text-sm text-gray-600 dark:text-gray-300 flex flex-wrap gap-4">
                     <span>{job.candidate_required_location}</span>
                     <span>{job.job_type}</span>
                     {job.salary && <span>{job.salary}</span>}
@@ -162,10 +162,10 @@ export default function JobsPage() {
                 {/* Expanded view */}
                 {isExpanded && (
                   <>
-                    <p className="text-gray-700 mt-2">
+                      <p className="text-gray-700 dark:text-gray-300 mt-2">
                       <strong>Company:</strong> {job.company_name}
                     </p>
-                    <p className="text-gray-700">
+                      <p className="text-gray-700 dark:text-gray-300">
                       <strong>Category:</strong> {job.category}
                     </p>
 
@@ -173,10 +173,10 @@ export default function JobsPage() {
                     {job.tags && job.tags.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-2">
                         {job.tags.map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full"
-                          >
+                            <span
+                              key={idx}
+                              className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs px-2 py-1 rounded-full"
+                            >
                             {tag}
                           </span>
                         ))}
@@ -184,10 +184,10 @@ export default function JobsPage() {
                     )}
 
                     {/* Description */}
-                    <div
-                      className="mt-4 text-gray-700 max-h-96 overflow-auto"
-                      dangerouslySetInnerHTML={{ __html: job.description }}
-                    />
+                      <div
+                        className="mt-4 text-gray-700 dark:text-gray-300 max-h-96 overflow-auto"
+                        dangerouslySetInnerHTML={{ __html: job.description }}
+                      />
 
                     {/* Button */}
                     <div className="mt-4">
@@ -195,7 +195,7 @@ export default function JobsPage() {
                         href={job.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                          className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition"
                         onClick={(e) => e.stopPropagation()} // prevent card toggle on click
                       >
                         See the job posting
@@ -210,22 +210,22 @@ export default function JobsPage() {
       )}
 
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center gap-2">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage <= 1}
-          className="px-4 py-2 border rounded disabled:opacity-50"
-        >
+        <div className="flex justify-center items-center gap-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage <= 1}
+            className="px-4 py-2 border rounded border-gray-300 dark:border-gray-600 disabled:opacity-50"
+          >
           Previous
         </button>
 
         {renderPageNumbers()}
 
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage >= totalPages}
-          className="px-4 py-2 border rounded disabled:opacity-50"
-        >
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+            className="px-4 py-2 border rounded border-gray-300 dark:border-gray-600 disabled:opacity-50"
+          >
           Next
         </button>
       </div>
