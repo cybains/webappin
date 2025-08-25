@@ -1,6 +1,9 @@
+import Footer from "@/components/Footer";
+
 export default function AboutPage() {
   return (
-    <main className="max-w-5xl mx-auto px-6 py-16 text-base leading-relaxed">
+    <>
+      <main className="max-w-5xl mx-auto px-6 py-16 text-base leading-relaxed">
       <h1 className="text-4xl font-bold mb-10">About Us</h1>
 
       <section className="mb-16">
@@ -32,11 +35,16 @@ export default function AboutPage() {
           <li>
             <strong>MapLibre:</strong> Powering our interactive maps with accurate, open-source geographic data to support your relocation and remote work decisions.
           </li>
+          <li>
+            <strong>World Bank API:</strong> Supplying global development and economic data for broader context.
+          </li>
         </ul>
         <p>
           Together, these partners enable us to cut through the noise and deliver clear, aligned guidance — helping you take confident steps toward your future.
         </p>
       </section>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }

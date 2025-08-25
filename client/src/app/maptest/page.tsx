@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Map, { Marker, Popup } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
+import Footer from "@/components/Footer";
 
 const NUM_MARKERS = 100;
 
@@ -148,6 +149,7 @@ useEffect(() => {
   }, []);
 
   return (
+    <>
     <div className="relative w-full h-screen">
       <Map
         initialViewState={{
@@ -193,5 +195,7 @@ useEffect(() => {
       {/* Optional overlay for softness */}
       <div className="pointer-events-none absolute top-0 left-0 w-full h-full z-10 bg-gradient-to-b from-white/80 via-white/10 to-transparent" />
     </div>
+    <Footer />
+    </>
   );
 }

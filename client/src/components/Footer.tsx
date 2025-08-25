@@ -211,6 +211,9 @@ export default function Footer() {
             <li>
               <span className="font-semibold">MapLibre</span>: maps with open-source manners.
             </li>
+            <li>
+              <span className="font-semibold">World Bank API</span>: global development data.
+            </li>
           </ul>
         </motion.div>
 
@@ -224,7 +227,7 @@ export default function Footer() {
           <div>
             <p className="mb-4">Helping you relocate without rage-quitting since 2025.</p>
           </div>
-          <p className="text-xs text-gray-200">&copy; {new Date().getFullYear()} Inquos. All rights reserved.</p>
+          <p className="text-xs text-gray-200">&copy; 2025 Inquos. All rights reserved.</p>
         </motion.div>
       </div>
 

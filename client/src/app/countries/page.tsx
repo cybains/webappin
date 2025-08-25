@@ -3,6 +3,7 @@
 import type React from 'react';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import Footer from "@/components/Footer";
 
 type Country = { code: string; name: string };
 type Group = { id: string; title: string; countries: Country[] };
@@ -179,25 +180,26 @@ export default function CountriesPage() {
   }
 
   return (
-    <main className="max-w-6xl mx-auto p-6 space-y-10">
+    <>
+      <main className="max-w-6xl mx-auto p-6 space-y-10 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Hero / toolbar */}
-      <section className="rounded-2xl border p-6 bg-gradient-to-br from-slate-50 to-white ring-1 ring-inset ring-slate-200">
+      <section className="rounded-2xl border p-6 bg-gradient-to-br from-slate-50 to-white ring-1 ring-inset ring-slate-200 dark:from-slate-800 dark:to-gray-900 dark:border-gray-700 dark:ring-slate-700">
         <div className="flex flex-col md:flex-row md:items-end gap-4">
           <div className="flex-1">
             <h1 className="text-3xl font-semibold">Explore countries</h1>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
               Browse Europe and neighbours. Click a country to open its brief.
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs px-2 py-1 rounded-full border bg-white">{shownCount}/{totalCount}</span>
+            <span className="text-xs px-2 py-1 rounded-full border bg-white dark:bg-gray-800 dark:border-gray-600">{shownCount}/{totalCount}</span>
             <label className="sr-only" htmlFor="country-search">Search</label>
             <input
               id="country-search"
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search by country or ISO3…"
-              className="w-72 max-w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              className="w-72 max-w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
               autoComplete="off"
             />
           </div>
@@ -206,7 +208,7 @@ export default function CountriesPage() {
 
       {/* Groups */}
       {filtered.length === 0 ? (
-        <div className="p-6 text-gray-600 border rounded-xl bg-white">
+        <div className="p-6 text-gray-600 dark:text-gray-300 border rounded-xl bg-white dark:bg-gray-800 dark:border-gray-700">
           No countries match “{q}”. Try a different name or code.
         </div>
       ) : (
@@ -226,11 +228,12 @@ export default function CountriesPage() {
                   'w-full rounded-xl p-4 border bg-gradient-to-r flex items-center gap-3 text-left',
                   'transition focus:outline-none focus:ring-2',
                   accent.headerFrom, accent.headerTo, accent.ring,
+                  'dark:from-gray-800 dark:to-gray-700 dark:border-gray-700',
                 ].join(' ')}
               >
                 <Chevron open={isOpen} />
                 <span className="text-lg md:text-xl font-semibold">{group.title}</span>
-                <span className={['ml-auto text-xs px-2 py-0.5 rounded-full border', accent.chip].join(' ')}>
+                <span className={['ml-auto text-xs px-2 py-0.5 rounded-full border', accent.chip, 'dark:bg-gray-800 dark:border-gray-600'].join(' ')}>
                   {group.countries.length}
                 </span>
               </button>
@@ -251,6 +254,8 @@ export default function CountriesPage() {
                           'bg-gradient-to-br',
                           accent.hoverFrom,
                           accent.hoverTo,
+                          'dark:border-gray-700 dark:from-gray-800 dark:to-gray-800 dark:text-gray-200',
+                          'dark:hover:from-gray-700 dark:hover:to-gray-800',
                         ].join(' ')}
                         aria-label={`Open ${c.name}`}
                       >
@@ -268,6 +273,8 @@ export default function CountriesPage() {
           );
         })
       )}
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Footer from "@/components/Footer";
 
 /** ---------- Types matching your narrative JSON ---------- */
 type Pctl = { world?: number; region?: number; income?: number };
@@ -213,13 +214,14 @@ export default function CountryPage() {
   if (!data) return <div className="p-6">Loading {defaultName}…</div>;
 
   return (
-    <main className="max-w-6xl mx-auto p-6 space-y-8">
+    <>
+      <main className="max-w-6xl mx-auto p-6 space-y-8 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Breadcrumb with accent dot */}
-      <nav className="text-sm text-gray-600 flex items-center gap-2">
+      <nav className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
         <span className={`inline-block h-2 w-2 rounded-full ${accent.bar}`} />
         <Link href="/countries" className="hover:underline">Countries</Link>
         <span className="opacity-60">/</span>
-        <span className="font-medium text-gray-800">{headerName}</span>
+        <span className="font-medium text-gray-800 dark:text-gray-200">{headerName}</span>
       </nav>
 
       {/* Header / hero with soft gradient + ring */}
@@ -230,20 +232,21 @@ export default function CountryPage() {
           accent.gradTo,
           'ring-1 ring-inset',
           accent.ring,
+          'dark:from-gray-800 dark:to-gray-900 dark:border-gray-700',
         ].join(' ')}
       >
         <div className="flex items-center gap-4">
           <div className="text-4xl leading-none">{flag}</div>
           <div className="min-w-0">
             <h1 className="text-3xl font-semibold truncate">{headerName} — Country Brief</h1>
-            <div className="mt-1 text-sm text-gray-700">
+            <div className="mt-1 text-sm text-gray-700 dark:text-gray-300">
               Data snapshot: {snapshot} • Dataset: World Bank (WDI & related)
             </div>
           </div>
-          <span className="ml-auto text-xs px-2 py-1 rounded-full border bg-white/70">{iso3}</span>
+          <span className="ml-auto text-xs px-2 py-1 rounded-full border bg-white/70 dark:bg-gray-800 dark:border-gray-600">{iso3}</span>
         </div>
         {data.summary_md ? (
-          <p className="mt-4 text-gray-800 whitespace-pre-wrap">{data.summary_md}</p>
+          <p className="mt-4 text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{data.summary_md}</p>
         ) : null}
       </header>
 
@@ -251,9 +254,9 @@ export default function CountryPage() {
       {factsOrdered.length ? (
         <section className="space-y-3">
           <h2 className="text-xl font-semibold">Headline KPIs (latest available)</h2>
-          <div className="overflow-auto rounded-2xl border bg-white/70">
+          <div className="overflow-auto rounded-2xl border bg-white/70 dark:bg-gray-800 dark:border-gray-700">
             <table className="min-w-full text-sm">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr className="text-left">
                   <th className="px-4 py-3 font-medium">Indicator (code)</th>
                   <th className="px-4 py-3 font-medium">Value (year)</th>
@@ -271,10 +274,10 @@ export default function CountryPage() {
                   const worldPctTxt = pctile(worldPctRaw);
 
                   return (
-                    <tr key={`${f.code}-${i}`} className={i % 2 ? 'bg-gray-50/40' : ''}>
+                    <tr key={`${f.code}-${i}`} className={i % 2 ? 'bg-gray-50/40 dark:bg-gray-800/40' : ''}>
                       <td className="px-4 py-3 align-top">
                         <div className="font-medium">{meta.label}</div>
-                        <div className="text-xs text-gray-500">{f.code}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">{f.code}</div>
                       </td>
                       <td className="px-4 py-3 align-top">{value} {yr !== '—' ? `(${yr})` : ''}</td>
                       {hasAnyYoY ? (
@@ -291,7 +294,7 @@ export default function CountryPage() {
                           <span className={`inline-block text-xs px-2 py-0.5 rounded-full border ${accent.chip}`}>
                             {worldPctTxt}
                           </span>
-                          <div className="h-2 rounded bg-gray-200 w-32 overflow-hidden">
+                            <div className="h-2 rounded bg-gray-200 dark:bg-gray-700 w-32 overflow-hidden">
                             <div
                               className={['h-2 rounded', accent.bar].join(' ')}
                               style={{ width: worldPctRaw != null ? `${Math.max(0, Math.min(100, worldPctRaw))}%` : '0%' }}
@@ -300,14 +303,14 @@ export default function CountryPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 align-top text-gray-700">{meta.notes ?? ''}</td>
+                      <td className="px-4 py-3 align-top text-gray-700 dark:text-gray-300">{meta.notes ?? ''}</td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-gray-600">
+            <p className="text-xs text-gray-600 dark:text-gray-400">
             Benchmarks: world percentile shown above; region & income-group percentiles available per series when included.
           </p>
         </section>
@@ -323,6 +326,7 @@ export default function CountryPage() {
                 'rounded-2xl border p-4 bg-gradient-to-br',
                 accent.gradFrom,
                 'to-white',
+                'dark:from-gray-800 dark:to-gray-900 dark:border-gray-700',
               ].join(' ')}
             >
               <h3 className="text-lg font-semibold mb-1">
@@ -348,12 +352,12 @@ export default function CountryPage() {
               const title = k.replace('_', ' ').replace(/\b\w/g, (s) => s.toUpperCase());
 
               return (
-                <div key={k} className={`rounded-2xl border p-4 bg-white/70 ring-1 ring-inset ${accent.ring}`}>
+                <div key={k} className={`rounded-2xl border p-4 bg-white/70 dark:bg-gray-800 dark:border-gray-700 ring-1 ring-inset ${accent.ring} dark:ring-gray-700`}>
                   <div className="flex items-baseline justify-between mb-2">
                     <h3 className="font-medium">{title}</h3>
                     <div className="text-2xl font-semibold">{scoreText}</div>
                   </div>
-                  <div className="h-2 rounded bg-gray-200 overflow-hidden mb-3" aria-hidden>
+                  <div className="h-2 rounded bg-gray-200 dark:bg-gray-700 overflow-hidden mb-3" aria-hidden>
                     <div
                       className={['h-2 rounded', accent.bar].join(' ')}
                       style={{ width: scoreNum != null ? `${Math.max(0, Math.min(100, scoreNum))}%` : '0%' }}
@@ -375,12 +379,12 @@ export default function CountryPage() {
           <h2 className="text-xl font-semibold">Callouts</h2>
           <div className="flex flex-wrap gap-2">
             {(data.callouts?.strengths ?? []).map((s, i) => (
-              <span key={`s-${i}`} className={`text-xs px-2 py-1 rounded-full border ${accent.chip}`}>
+              <span key={`s-${i}`} className={`text-xs px-2 py-1 rounded-full border ${accent.chip} dark:bg-gray-800 dark:border-gray-600`}>
                 ✅ {s.label ?? s.code ?? 'Strength'}
               </span>
             ))}
             {(data.callouts?.watchouts ?? []).map((w, i) => (
-              <span key={`w-${i}`} className={`text-xs px-2 py-1 rounded-full border ${accent.chip}`}>
+              <span key={`w-${i}`} className={`text-xs px-2 py-1 rounded-full border ${accent.chip} dark:bg-gray-800 dark:border-gray-600`}>
                 ⚠️ {w.label ?? w.code ?? 'Watch-out'}
               </span>
             ))}
@@ -395,7 +399,7 @@ export default function CountryPage() {
           <ul className="list-disc pl-6 space-y-1">
             {Object.entries(data.source_links).map(([code, url]) => (
               <li key={code}>
-                <a className="text-blue-600 hover:underline" href={url} target="_blank" rel="noreferrer">
+                <a className="text-blue-600 dark:text-blue-400 hover:underline" href={url} target="_blank" rel="noreferrer">
                   {code} — {INDICATORS[code]?.label ?? 'Indicator'}
                 </a>
               </li>
@@ -403,6 +407,8 @@ export default function CountryPage() {
           </ul>
         </section>
       ) : null}
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }

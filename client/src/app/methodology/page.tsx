@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Footer from "@/components/Footer";
 
 const dumpAsOf = process.env.NEXT_PUBLIC_DUMP_AS_OF ?? "N/A";
 const currentYear = new Date().getFullYear();
@@ -183,7 +184,8 @@ export default function MethodologyPage() {
   ];
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-10">
+    <>
+      <main className="mx-auto max-w-5xl px-4 py-10">
       <header className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Methodology</h1>
         <p className="mt-1 text-sm text-gray-600">
@@ -407,6 +409,8 @@ export default function MethodologyPage() {
         <span>© {currentYear} Sufoniq • Data snapshot: {dumpAsOf}</span>
         <a href="#ingestion" className="hover:text-slate-900">Back to top ↑</a>
       </footer>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }
