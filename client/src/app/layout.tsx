@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar"; // ✅ Modular header
-import Footer from "@/components/Footer";
 
 
 
@@ -22,8 +21,6 @@ export default function RootLayout({
         <Navbar />
 
         <div className="flex-1">{children}</div>
-
-        <Footer />
       </body>
     </html>
   );

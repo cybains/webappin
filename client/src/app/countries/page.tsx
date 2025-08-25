@@ -3,6 +3,7 @@
 import type React from 'react';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import Footer from "@/components/Footer";
 
 type Country = { code: string; name: string };
 type Group = { id: string; title: string; countries: Country[] };
@@ -179,7 +180,8 @@ export default function CountriesPage() {
   }
 
   return (
-    <main className="max-w-6xl mx-auto p-6 space-y-10 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+    <>
+      <main className="max-w-6xl mx-auto p-6 space-y-10 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Hero / toolbar */}
       <section className="rounded-2xl border p-6 bg-gradient-to-br from-slate-50 to-white ring-1 ring-inset ring-slate-200 dark:from-slate-800 dark:to-gray-900 dark:border-gray-700 dark:ring-slate-700">
         <div className="flex flex-col md:flex-row md:items-end gap-4">
@@ -270,6 +272,8 @@ export default function CountriesPage() {
           );
         })
       )}
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }

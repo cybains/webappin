@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Footer from "@/components/Footer";
 
 /** ---------- Types matching your narrative JSON ---------- */
 type Pctl = { world?: number; region?: number; income?: number };
@@ -213,7 +214,8 @@ export default function CountryPage() {
   if (!data) return <div className="p-6">Loading {defaultName}…</div>;
 
   return (
-    <main className="max-w-6xl mx-auto p-6 space-y-8 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+    <>
+      <main className="max-w-6xl mx-auto p-6 space-y-8 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Breadcrumb with accent dot */}
       <nav className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
         <span className={`inline-block h-2 w-2 rounded-full ${accent.bar}`} />
@@ -405,6 +407,8 @@ export default function CountryPage() {
           </ul>
         </section>
       ) : null}
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }
