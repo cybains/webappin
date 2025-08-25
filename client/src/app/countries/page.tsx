@@ -225,7 +225,7 @@ export default function CountriesPage() {
                 onClick={() => toggle(group.id)}
                 aria-expanded={isOpen}
                 className={[
-                  'w-full rounded-xl p-4 border bg-gradient-to-r flex items-center gap-3 text-left',
+                  'w-full rounded-xl p-4 border bg-white bg-gradient-to-r flex items-center gap-3 text-left',
                   'transition focus:outline-none focus:ring-2',
                   accent.headerFrom, accent.headerTo, accent.ring,
                   'dark:from-gray-800 dark:to-gray-700 dark:border-gray-700',
@@ -251,7 +251,7 @@ export default function CountriesPage() {
                           'group rounded-2xl border p-4 shadow-sm transition focus:outline-none',
                           'hover:-translate-y-0.5 hover:shadow-md ring-1 ring-inset',
                           accent.ring,
-                          'bg-gradient-to-br',
+                          'bg-white bg-gradient-to-br',
                           accent.hoverFrom,
                           accent.hoverTo,
                           'dark:border-gray-700 dark:bg-gray-800 dark:hover:from-gray-700 dark:hover:to-gray-800',

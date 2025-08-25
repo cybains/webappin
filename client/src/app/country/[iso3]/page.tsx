@@ -243,7 +243,7 @@ export default function CountryPage() {
               Data snapshot: {snapshot} • Dataset: World Bank (WDI & related)
             </div>
           </div>
-          <span className="ml-auto text-xs px-2 py-1 rounded-full border bg-white/70 dark:bg-gray-800 dark:border-gray-600">{iso3}</span>
+          <span className="ml-auto text-xs px-2 py-1 rounded-full border bg-white dark:bg-gray-800 dark:border-gray-600">{iso3}</span>
         </div>
         {data.summary_md ? (
           <p className="mt-4 text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{data.summary_md}</p>
@@ -254,7 +254,7 @@ export default function CountryPage() {
       {factsOrdered.length ? (
         <section className="space-y-3">
           <h2 className="text-xl font-semibold">Headline KPIs (latest available)</h2>
-          <div className="overflow-auto rounded-2xl border bg-white/70 dark:bg-gray-800 dark:border-gray-700">
+          <div className="overflow-auto rounded-2xl border bg-white dark:bg-gray-800 dark:border-gray-700">
             <table className="min-w-full text-sm">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr className="text-left">
@@ -352,7 +352,7 @@ export default function CountryPage() {
               const title = k.replace('_', ' ').replace(/\b\w/g, (s) => s.toUpperCase());
 
               return (
-                <div key={k} className={`rounded-2xl border p-4 bg-white/70 dark:bg-gray-800 dark:border-gray-700 ring-1 ring-inset ${accent.ring} dark:ring-gray-700`}>
+                <div key={k} className={`rounded-2xl border p-4 bg-white dark:bg-gray-800 dark:border-gray-700 ring-1 ring-inset ${accent.ring} dark:ring-gray-700`}>
                   <div className="flex items-baseline justify-between mb-2">
                     <h3 className="font-medium">{title}</h3>
                     <div className="text-2xl font-semibold">{scoreText}</div>
