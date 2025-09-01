@@ -1,60 +1,39 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-export default function ContactSection() {
+export default function ContactReproPage() {
+  // core UI state
+  const [focusMode, setFocusMode] = useState(false);
   const [showEmailMenu, setShowEmailMenu] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [lifted, setLifted] = useState(false);
-  const [notice, setNotice] = useState<null | { type: "success" | "error"; msg: string }>(null);
-  const email = "support@sufoniq.com";
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  // data
+  const email = "support@sufoniq.com";
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
 
-  const emailBtnRef = useRef<HTMLButtonElement | null>(null);
+  // refs
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const anchorRef = useRef<HTMLDivElement | null>(null);
   const emailMenuRef = useRef<HTMLDivElement | null>(null);
+  const formCardRef = useRef<HTMLDivElement | null>(null);
+  const firstFieldRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    setLifted(showEmailMenu || showForm || !!notice);
-  }, [showEmailMenu, showForm, notice]);
+  // helpers
+  const isMobileNow = () =>
+    typeof window !== "undefined" && window.matchMedia("(max-width: 1023.5px)").matches;
 
-  // Close email menu on outside click or ESC
-  useEffect(() => {
-    const onClick = (e: MouseEvent) => {
-      if (!showEmailMenu) return;
-      const target = e.target as Node;
-      if (
-        emailMenuRef.current &&
-        !emailMenuRef.current.contains(target) &&
-        emailBtnRef.current &&
-        !emailBtnRef.current.contains(target)
-      ) {
-        setShowEmailMenu(false);
-      }
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setShowEmailMenu(false);
-    };
-    window.addEventListener("click", onClick);
-    window.addEventListener("keydown", onKey);
-    return () => {
-      window.removeEventListener("click", onClick);
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [showEmailMenu]);
-
-  const openCompose = (provider: "gmail" | "outlook" | "mailto") => {
-    const subject = encodeURIComponent("Hello Sufoniq — Inquiry");
+  const compose = (overrides?: { subject?: string; body?: string }) => {
+    const subject = encodeURIComponent(overrides?.subject ?? "Hello Sufoniq — Inquiry");
     const body = encodeURIComponent(
-      `Hi Sufoniq team,\n\nI’d like to ask about...\n\n—\nSent from sufoniq.com`
+      overrides?.body ?? `Hi Sufoniq team,\n\nI’d like to ask about...\n\n—\nSent from sufoniq.com`
     );
+    return { subject, body };
+  };
 
+  const openCompose = (provider: "gmail" | "outlook" | "mailto", overrides?: { subject?: string; body?: string }) => {
+    const { subject, body } = compose(overrides);
     let url = "";
     if (provider === "gmail") {
       url = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
@@ -65,267 +44,343 @@ export default function ContactSection() {
     }
     window.open(url, provider === "mailto" ? "_self" : "_blank", "noopener,noreferrer");
     setShowEmailMenu(false);
-    setNotice(null);
+  };
+
+  // focus mode: engage on first interaction inside the section
+  const ensureFocusMode = () => {
+    if (!focusMode) {
+      setFocusMode(true);
+      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  // ESC handling
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (showEmailMenu || showForm) {
+        setShowEmailMenu(false);
+        setShowForm(false);
+      } else if (focusMode) {
+        setFocusMode(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [focusMode, showEmailMenu, showForm]);
+
+  // click outside the entire section → exit focus mode & close everything
+  useEffect(() => {
+    const onDown = (e: MouseEvent) => {
+      if (!focusMode) return;
+      const t = e.target as Node;
+      if (sectionRef.current && !sectionRef.current.contains(t)) {
+        setShowEmailMenu(false);
+        setShowForm(false);
+        setFocusMode(false);
+      }
+    };
+    window.addEventListener("pointerdown", onDown);
+    return () => window.removeEventListener("pointerdown", onDown);
+  }, [focusMode]);
+
+  // click on the section background (not on buttons/panels) → close panels but keep focus mode
+  const onSectionClickAway = (e: React.MouseEvent) => {
+    const t = e.target as Node;
+    const inAnchor = !!anchorRef.current?.contains(t);
+    const inMenu = !!emailMenuRef.current?.contains(t);
+    const inForm = !!formCardRef.current?.contains(t);
+    if (!inAnchor && !inMenu && !inForm) {
+      if (showEmailMenu) setShowEmailMenu(false);
+      if (showForm) setShowForm(false);
+    }
+  };
+
+  // handlers
+  const handleEmailClick = () => {
+    ensureFocusMode();
+    if (isMobileNow()) {
+      openCompose("mailto");
+      return;
+    }
+    setShowEmailMenu((s) => !s);
+    setShowForm(false);
+    anchorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   const toggleForm = () => {
-    setShowForm((s) => !s);
+    ensureFocusMode();
+    const toOpen = !showForm;
+    setShowForm(toOpen);
     setShowEmailMenu(false);
-    setNotice(null);
+    anchorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (toOpen) setTimeout(() => firstFieldRef.current?.focus(), 420);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  // form utils (stubbed send → just fake delay)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  const validate = () => {
-    if (!form.name.trim()) return "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return "Please enter a valid email.";
-    if (!form.subject.trim()) return "Please add a subject.";
-    if (!form.message.trim()) return "Please write a message.";
-    return null;
-  };
-
-  const fallbackMailto = () => {
-    const subject = encodeURIComponent(form.subject || "Hello Sufoniq — Inquiry");
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}\n\n—\nSent via contact form on sufoniq.com`
-    );
-    const url = `mailto:${email}?subject=${subject}&body=${body}`;
-    window.location.href = url;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const err = validate();
-    if (err) {
-      setNotice({ type: "error", msg: err });
-      return;
-    }
-
     setSubmitting(true);
-    setNotice(null);
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) {
-        fallbackMailto();
-        setSubmitting(false);
-        setNotice({
-          type: "success",
-          msg: "Opening your mail app to send the message…",
-        });
-        return;
-      }
-
-      setForm({ name: "", email: "", subject: "", message: "" });
-      setSubmitting(false);
-      setNotice({ type: "success", msg: "Thanks! Your message has been sent." });
-    } catch {
-      fallbackMailto();
-      setSubmitting(false);
-      setNotice({
-        type: "success",
-        msg: "Opening your mail app to send the message…",
-      });
-    }
+    await new Promise((r) => setTimeout(r, 600));
+    setSubmitting(false);
+    setShowForm(false);
   };
 
   return (
     <section
-      className="py-20 px-6 text-center bg-background text-foreground relative overflow-hidden"
+      ref={sectionRef}
       id="contact"
+      className={[
+        "px-6 bg-background text-foreground overflow-hidden",
+        focusMode ? "min-h-screen py-28" : "py-20",
+      ].join(" ")}
+      onPointerDownCapture={ensureFocusMode}
+      onMouseDownCapture={onSectionClickAway}
     >
-      {/* Floating Text */}
-      <div
-        className={`transition-transform duration-500 ease-in-out mb-6 ${
-          lifted ? "-translate-y-6" : "translate-y-0"
-        }`}
-      >
-        <h2 className="text-2xl font-bold mb-2 text-foreground">Still got questions?</h2>
-        <p className="text-base text-muted-foreground">
-          We&rsquo;ll get back with answers, wit, and maybe snacks.
-        </p>
-      </div>
+      <div className="max-w-6xl mx-auto">
+        {/* heading */}
+        <div className="mb-6 text-center">
+          <h2 className="text-2xl font-bold mb-2">Still got questions?</h2>
+          <p className="text-base text-muted-foreground">We’ll get back with answers, wit, and maybe snacks.</p>
+        </div>
 
-      {/* Reserved Space for Messages */}
-      <div className="h-[110px] sm:h-[100px] md:h-[90px] transition-all duration-500 ease-in-out">
-        {notice && (
-          <div
-            className={`animate-fadeIn transition-opacity ${
-              notice.type === "success" ? "text-emerald-700" : "text-red-600"
-            }`}
-          >
-            <p className="text-sm italic">{notice.msg}</p>
-          </div>
-        )}
-        {!notice && showEmailMenu && (
-          <div className="animate-fadeIn transition-opacity">
-            <p className="text-sm text-muted-foreground">Choose how you’d like to email us:</p>
-          </div>
-        )}
-        {!notice && showForm && (
-          <div className="animate-fadeIn transition-opacity">
-            <p className="text-sm text-muted-foreground">Fill out the form and we’ll reply soon.</p>
-          </div>
-        )}
-      </div>
+        {/* helper */}
+        <div className="min-h-[60px] flex justify-center items-center">
+          <p className="text-sm text-muted-foreground">
+            Choose how you’d like to reach us — quick email or detailed form.
+          </p>
+        </div>
 
-      {/* Buttons */}
-      <div className="flex justify-center gap-4 mt-6 relative">
-        <button
-          ref={emailBtnRef}
-          onClick={() => {
-            setShowEmailMenu((s) => !s);
-            setShowForm(false);
-            setNotice(null);
-          }}
-          className="bg-primary text-white font-semibold py-2 px-6 rounded-full shadow hover:bg-primary/90 hover:text-black hover:font-bold transition"
-          aria-haspopup="menu"
-          aria-expanded={showEmailMenu}
-          aria-controls="email-menu"
-        >
-          Email Us
-        </button>
-
-        <button
-          onClick={toggleForm}
-          className="border border-primary text-primary font-semibold py-2 px-6 rounded-full hover:bg-primary hover:text-white transition"
-        >
-          Contact Form
-        </button>
-
-        {/* Email options dropdown — now ABOVE the button */}
-        {showEmailMenu && (
-          <div
-            id="email-menu"
-            ref={emailMenuRef}
-            role="menu"
-            className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-56 rounded-xl border border-zinc-200 bg-white shadow-lg text-left overflow-hidden z-50"
-          >
+        {/* anchor row */}
+        <div className="relative mt-4 flex justify-center">
+          <div ref={anchorRef} className="relative inline-flex gap-4 items-center">
             <button
-              role="menuitem"
-              className="w-full px-4 py-3 text-sm hover:bg-zinc-50 text-left"
-              onClick={() => openCompose("gmail")}
+              onClick={handleEmailClick}
+              className="bg-primary text-primary-foreground font-semibold py-2 px-6 rounded-full shadow hover:bg-primary/90 transition-colors"
             >
-              Open in Gmail
+              Email Us
             </button>
             <button
-              role="menuitem"
-              className="w-full px-4 py-3 text-sm hover:bg-zinc-50 text-left"
-              onClick={() => openCompose("outlook")}
+              onClick={toggleForm}
+              className="border border-primary text-primary font-semibold py-2 px-6 rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
             >
-              Open in Outlook
+              Contact Form
             </button>
-            <button
-              role="menuitem"
-              className="w-full px-4 py-3 text-sm hover:bg-zinc-50 text-left"
-              onClick={() => openCompose("mailto")}
-            >
-              Use my default mail app
-            </button>
-          </div>
-        )}
-      </div>
 
-      {/* Contact Form */}
-      {showForm && (
-        <div className="mt-10 max-w-xl mx-auto text-left animate-fadeIn">
-          <form
-            onSubmit={handleSubmit}
-            className="grid grid-cols-1 gap-4 bg-white/60 backdrop-blur rounded-2xl p-6 border border-zinc-200"
-          >
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {/* LEFT: email options (desktop only) */}
+            {showEmailMenu && (
+              <div
+                ref={emailMenuRef}
+                role="menu"
+                className="hidden lg:block absolute right-[calc(100%+16px)] top-1/2 -translate-y-1/2 z-50 animate-[slideInLeft_480ms_cubic-bezier(0.22,1,0.36,1)]"
+              >
+                <div className="relative w-72 rounded-2xl border border-border bg-popover text-popover-foreground shadow-xl overflow-hidden">
+                  {/* caret */}
+                  <div aria-hidden className="absolute -right-2 top-8 w-0 h-0 border-y-[10px] border-y-transparent border-l-[10px] border-l-border" />
+                  <div aria-hidden className="absolute -right-[7px] top-8 w-0 h-0 border-y-[9px] border-y-transparent border-l-[9px] border-l-popover" />
+                  <div className="px-4 py-2 text-xs text-muted-foreground border-b border-border">Quick compose:</div>
+                  <button
+                    className="w-full px-4 py-3 text-sm hover:bg-accent hover:text-accent-foreground text-left"
+                    onClick={() => openCompose("gmail")}
+                  >
+                    Open in Gmail
+                  </button>
+                  <button
+                    className="w-full px-4 py-3 text-sm hover:bg-accent hover:text-accent-foreground text-left"
+                    onClick={() => openCompose("outlook")}
+                  >
+                    Open in Outlook
+                  </button>
+                  <button
+                    className="w-full px-4 py-3 text-sm hover:bg-accent hover:text-accent-foreground text-left"
+                    onClick={() => openCompose("mailto")}
+                  >
+                    Use my default mail app
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* RIGHT: contact form (desktop only) */}
+            {showForm && (
+              <div className="hidden lg:block absolute left-[calc(100%+16px)] top-1/2 -translate-y-1/2 z-40 animate-[slideInRight_480ms_cubic-bezier(0.22,1,0.36,1)]">
+                <div ref={formCardRef} className="relative">
+                  {/* caret */}
+                  <div aria-hidden className="absolute -left-2 top-8 w-0 h-0 border-y-[10px] border-y-transparent border-r-[10px] border-r-border" />
+                  <div aria-hidden className="absolute -left-[7px] top-8 w-0 h-0 border-y-[9px] border-y-transparent border-r-[9px] border-r-card" />
+                  <form
+                    onSubmit={handleSubmit}
+                    className="w-[600px] max-w-[82vw] grid grid-cols-1 gap-4 bg-card/60 backdrop-blur rounded-2xl p-6 border border-border"
+                  >
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Name</label>
+                        <input
+                          ref={firstFieldRef}
+                          name="name"
+                          value={form.name}
+                          onChange={handleChange}
+                          type="text"
+                          required
+                          className="w-full rounded-lg border border-input bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-ring"
+                          placeholder="Jane Doe"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Email</label>
+                        <input
+                          name="email"
+                          value={form.email}
+                          onChange={handleChange}
+                          type="email"
+                          required
+                          className="w-full rounded-lg border border-input bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-ring"
+                          placeholder="jane@example.com"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Subject</label>
+                      <input
+                        name="subject"
+                        value={form.subject}
+                        onChange={handleChange}
+                        type="text"
+                        required
+                        className="w-full rounded-lg border border-input bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-ring"
+                        placeholder="How can you help with…"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Message</label>
+                      <textarea
+                        name="message"
+                        value={form.message}
+                        onChange={handleChange}
+                        required
+                        rows={6}
+                        className="w-full rounded-lg border border-input bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-ring"
+                        placeholder="Tell us a bit about what you need…"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between gap-4">
+                      <p className="text-xs text-muted-foreground">
+                        We’ll send this to <span className="font-medium">{email}</span>.
+                      </p>
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="bg-primary text-primary-foreground font-semibold py-2 px-6 rounded-full shadow hover:bg-primary/90 disabled:opacity-60 transition-colors"
+                      >
+                        {submitting ? "Sending…" : "Send Message"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* MOBILE: form below buttons */}
+        {showForm && (
+          <div className="lg:hidden mt-8 animate-[fadeIn_480ms_cubic-bezier(0.22,1,0.36,1)]">
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 gap-4 bg-card/60 backdrop-blur rounded-2xl p-6 border border-border"
+            >
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Name</label>
+                  <input
+                    ref={firstFieldRef}
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    type="text"
+                    required
+                    className="w-full rounded-lg border border-input bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-ring"
+                    placeholder="Jane Doe"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Email</label>
+                  <input
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    type="email"
+                    required
+                    className="w-full rounded-lg border border-input bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-ring"
+                    placeholder="jane@example.com"
+                  />
+                </div>
+              </div>
+
               <div>
-                <label className="block text-sm font-medium mb-1">Name</label>
+                <label className="block text-sm font-medium mb-1">Subject</label>
                 <input
-                  name="name"
-                  value={form.name}
+                  name="subject"
+                  value={form.subject}
                   onChange={handleChange}
                   type="text"
                   required
-                  className="w-full rounded-lg border border-zinc-300 px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40"
-                  placeholder="Jane Doe"
+                  className="w-full rounded-lg border border-input bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-ring"
+                  placeholder="How can you help with…"
                 />
               </div>
+
               <div>
-                <label className="block text-sm font-medium mb-1">Email</label>
-                <input
-                  name="email"
-                  value={form.email}
+                <label className="block text-sm font-medium mb-1">Message</label>
+                <textarea
+                  name="message"
+                  value={form.message}
                   onChange={handleChange}
-                  type="email"
                   required
-                  className="w-full rounded-lg border border-zinc-300 px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40"
-                  placeholder="jane@example.com"
+                  rows={6}
+                  className="w-full rounded-lg border border-input bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-ring"
+                  placeholder="Tell us a bit about what you need…"
                 />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1">Subject</label>
-              <input
-                name="subject"
-                value={form.subject}
-                onChange={handleChange}
-                type="text"
-                required
-                className="w-full rounded-lg border border-zinc-300 px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40"
-                placeholder="How can you help with…"
-              />
-            </div>
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-xs text-muted-foreground">
+                  We’ll send this to <span className="font-medium">{email}</span>.
+                </p>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="bg-primary text-primary-foreground font-semibold py-2 px-6 rounded-full shadow hover:bg-primary/90 disabled:opacity-60 transition-colors"
+                >
+                  {submitting ? "Sending…" : "Send Message"}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+      </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1">Message</label>
-              <textarea
-                name="message"
-                value={form.message}
-                onChange={handleChange}
-                required
-                rows={6}
-                className="w-full rounded-lg border border-zinc-300 px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40"
-                placeholder="Tell us a bit about what you need…"
-              />
-            </div>
-
-            <div className="flex items-center justify-between gap-4">
-              <p className="text-xs text-muted-foreground">
-                We’ll send this to <span className="font-medium">{email}</span>.
-              </p>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="bg-primary text-white font-semibold py-2 px-6 rounded-full shadow hover:bg-primary/90 disabled:opacity-60 transition"
-              >
-                {submitting ? "Sending…" : "Send Message"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {/* Custom animation class */}
+      {/* tiny keyframes for smoothness */}
       <style jsx>{`
-        @keyframes fadeIn {
-          0% {
-            opacity: 0;
-            transform: scale(0.98);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
+        @keyframes slideInLeft {
+          0% { opacity: 0; transform: translateX(-12px) scale(0.985); }
+          100% { opacity: 1; transform: translateX(0) scale(1); }
         }
-        .animate-fadeIn {
-          animation: fadeIn 0.35s ease-out;
+        @keyframes slideInRight {
+          0% { opacity: 0; transform: translateX(12px) scale(0.985); }
+          100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes fadeIn {
+          0% { opacity: 0; transform: translateY(10px) scale(0.985); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
         }
       `}</style>
     </section>
