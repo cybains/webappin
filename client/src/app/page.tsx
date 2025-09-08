@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
-import SearchMe from "@/components/SearchMe";
+// import SearchMe from "@/components/SearchMe"; // removed
 import HowItWorks from "@/components/HowItWorks";
 import Contact from "@/components/Contact";
 import CoreServices from "@/components/CoreServices";
@@ -25,10 +25,10 @@ export default function Home() {
           <Hero />
         </section>
 
-        {/* Search Me Section */}
-        <section id="search-me">
+        {/* Search Me Section — removed */}
+        {/* <section id="search-me">
           <SearchMe />
-        </section>
+        </section> */}
 
         {/* How It Works Section */}
         <section id="how-it-works">
