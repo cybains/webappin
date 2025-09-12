@@ -10,7 +10,8 @@ export async function GET() {
     const db = client.db(process.env.MONGODB_DB_NAME || "refjobs");
     const count = await db.collection("jobs").estimatedDocumentCount();
     return NextResponse.json({ ok: true, db: db.databaseName, collection: "jobs", count });
-  } catch (e: any) {
-    return NextResponse.json({ ok: false, error: e?.message || String(e) }, { status: 500 });
-  }
+  } catch (e: unknown) {
+  const message = e instanceof Error ? e.message : String(e);
+  return NextResponse.json({ ok: false, error: message }, { status: 500 });
+}
 }

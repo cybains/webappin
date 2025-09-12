@@ -127,7 +127,7 @@ function normalizeArbeitnow(j: ArbeitnowJob): Job {
 }
 
 // Fetchers return normalized jobs and never throw (they fail softly to [])
-async function fetchRemotive(q: string, _page: number): Promise<Job[]> {
+async function fetchRemotive(q: string): Promise<Job[]> {
   const base = 'https://remotive.com/api/remote-jobs';
   const sp = new URLSearchParams();
   if (q) sp.set('search', q);
@@ -193,7 +193,7 @@ export async function GET(req: NextRequest) {
   // Gather jobs based on `source` filter
   let all: Job[] = [];
   if (!sourceRaw || sourceRaw === 'remotive') {
-    const r = await fetchRemotive(q, page);
+    const r = await fetchRemotive(q);
     all = all.concat(r);
   }
   if (!sourceRaw || sourceRaw === 'arbeitnow') {
