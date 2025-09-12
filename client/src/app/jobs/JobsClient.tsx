@@ -159,19 +159,19 @@ export default function JobsPage() {
           value={qInput}
           onChange={(e) => setQInput(e.target.value)}
           placeholder="Search title, company, category, tags…"
-          className="px-3 py-2 border rounded-md bg-white text-gray-900 border-gray-300 dark:bg-[var(--card)] dark:text-[var(--foreground)] dark:border-[var(--card-border)]"
+          className="px-3 py-2 border rounded-md bg-[var(--card)] text-[var(--foreground)] border-[var(--card-border)]"
         />
         <input
           value={sourceInput}
           onChange={(e) => setSourceInput(e.target.value)}
           placeholder="Filter by source (e.g., remotive, arbeitnow)"
-          className="px-3 py-2 border rounded-md bg-white text-gray-900 border-gray-300 dark:bg-[var(--card)] dark:text-[var(--foreground)] dark:border-[var(--card-border)]"
+          className="px-3 py-2 border rounded-md bg-[var(--card)] text-[var(--foreground)] border-[var(--card-border)]"
         />
         <div className="flex items-center gap-2">
           <select
             value={pageSize}
             onChange={onPageSizeChange}
-            className="px-2 py-2 border rounded-md bg-white text-gray-900 border-gray-300 dark:bg-[var(--card)] dark:text-[var(--foreground)] dark:border-[var(--card-border)]"
+            className="px-2 py-2 border rounded-md bg-[var(--card)] text-[var(--foreground)] border-[var(--card-border)]"
           >
             {PAGE_SIZES.map(s => <option key={s} value={s}>{s} / page</option>)}
           </select>
@@ -204,7 +204,7 @@ export default function JobsPage() {
             return (
               <div
                 key={job.id}
-                className="relative border rounded-2xl p-4 hover:shadow transition bg-white text-gray-900 border-gray-200 dark:bg-[var(--card)] dark:text-[var(--foreground)] dark:border-[var(--card-border)]"
+                className="relative border rounded-2xl p-4 hover:shadow transition bg-[var(--card)] text-[var(--foreground)] border-[var(--card-border)]"
               >
                 {/* source banner */}
                 <div className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs px-3 py-1 rounded-full shadow">
@@ -276,7 +276,7 @@ export default function JobsPage() {
                     <div className="mt-3 flex flex-wrap items-center gap-3">
                       <button
                         onClick={(e) => { e.stopPropagation(); setModalJob(job); }}
-                        className="text-sm px-3 py-1 border rounded-lg border-gray-300 hover:bg-gray-100 text-gray-900 dark:border-[var(--card-border)] dark:hover:bg-[var(--chip-bg)] dark:text-[var(--foreground)]"
+                        className="text-sm px-3 py-1 border rounded-lg border-[var(--card-border)] hover:bg-[var(--chip-bg)] text-[var(--foreground)]"
                       >
                         View full description
                       </button>
@@ -300,7 +300,7 @@ export default function JobsPage() {
 
       {/* Pagination — sticky footer */}
       <div className="sticky bottom-4 z-10">
-        <div className="flex flex-wrap justify-center items-center gap-2 bg-white/80 backdrop-blur rounded-xl px-3 py-2 border border-gray-200 dark:bg-[color:var(--card)_/_0.8] dark:border-[var(--card-border)]">
+        <div className="flex flex-wrap justify-center items-center gap-2 bg-[color:var(--card)_/_0.8] backdrop-blur rounded-xl px-3 py-2 border border-[var(--card-border)]">
           <button onClick={() => pushRoute(1)} disabled={currentPage === 1} className="px-3 py-1 text-sm border rounded-md border-[var(--card-border)] disabled:opacity-50">First</button>
           <button onClick={() => pushRoute(currentPage - 1)} disabled={currentPage <= 1} className="px-3 py-1 text-sm border rounded-md border-[var(--card-border)] disabled:opacity-50">Previous</button>
 
@@ -348,7 +348,7 @@ export default function JobsPage() {
           onClick={() => setModalJob(null)}
         >
           <div
-            className="max-w-3xl w-full max-h-[80vh] overflow-auto bg-white text-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:bg-[var(--card)] dark:text-[var(--foreground)] dark:border-[var(--card-border)] p-4"
+            className="max-w-3xl w-full max-h-[80vh] overflow-auto bg-[var(--card)] text-[var(--foreground)] rounded-2xl shadow-xl border border-[var(--card-border)] p-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-3">
