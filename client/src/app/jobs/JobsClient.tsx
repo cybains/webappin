@@ -35,7 +35,7 @@ function buildPageItems(current: number, total: number, windowSize = PAGE_WINDOW
   if (total <= windowSize) return Array.from({ length: total }, (_, i) => i + 1);
   const half = Math.floor(windowSize / 2);
   let start = Math.max(1, current - half);
-  let end = Math.min(total, start + windowSize - 1);
+  const end = Math.min(total, start + windowSize - 1);
   if (end - start + 1 < windowSize) start = Math.max(1, end - windowSize + 1);
 
   const items: (number | '...')[] = [];
