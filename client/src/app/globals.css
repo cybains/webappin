@@ -17,6 +17,27 @@
   --font-sans: 'Geist Sans', sans-serif;
   --font-mono: 'Geist Mono', monospace;
 }
+/* global.css — add this just below :root and above [data-theme='dark'] */
+
+/* Explicit Light Theme (prevents stale dark when attribute isn't removed) */
+/* Explicit Light Theme (prevents stale dark when attribute remains) */
+[data-theme='light'] {
+  --background: #fafafa;
+  --foreground: #333333;
+  --primary: #4A90E2;
+  --secondary: #F5A623;
+  --accent: #50E3C2;
+
+  --card: #ffffff;
+  --card-border: #e5e7eb;
+  --muted: #4b5563;
+  --chip-bg: #f3f4f6;
+
+  --font-sans: 'Geist Sans', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+}
+
+
 
 
 /* Dark Theme */

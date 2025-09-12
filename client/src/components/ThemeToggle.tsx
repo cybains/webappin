@@ -1,27 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { applyTheme } from "@/lib/theme";
+
+type Mode = "light" | "dark";
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<Mode>("light");
 
+  // On first load, pick stored or system, then APPLY ONCE via attribute only
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const stored = (localStorage.getItem("theme") as "light" | "dark" | null);
-    const preferred =
-      stored ?? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const stored = (localStorage.getItem("theme") as Mode | null);
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const preferred: Mode = stored ?? (systemPrefersDark ? "dark" : "light");
 
     setTheme(preferred);
-    document.documentElement.setAttribute("data-theme", preferred);
-    document.documentElement.classList.toggle("dark", preferred === "dark");
+    applyTheme(preferred);              // <- attribute only, removes .dark
+    localStorage.setItem("theme", preferred);
   }, []);
 
   const toggleTheme = () => {
-    const next = theme === "light" ? "dark" : "light";
+    const next: Mode = theme === "light" ? "dark" : "light";
     setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-    document.documentElement.classList.toggle("dark", next === "dark");
+    applyTheme(next);                   // <- attribute only, removes .dark
     localStorage.setItem("theme", next);
   };
 

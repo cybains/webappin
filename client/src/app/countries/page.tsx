@@ -101,18 +101,19 @@ function flagEmojiFromIso3(iso3: string): string {
   return Array.from(iso2).map((c) => String.fromCodePoint(0x1f1e6 - 65 + c.charCodeAt(0))).join('');
 }
 
-/** Small accent palette per group for color + personality */
+/** Accent bits (chips/rings only). We no longer force light gradients on headers. */
 type Accent = {
-  headerFrom: string; headerTo: string; chip: string; ring: string; hoverFrom: string; hoverTo: string;
+  chip: string;
+  ring: string;
 };
 const GROUP_ACCENTS: Record<string, Accent> = {
-  EU27:  { headerFrom: 'from-blue-50',    headerTo: 'to-cyan-50',    chip: 'bg-blue-50 border-blue-300',    ring: 'ring-blue-500/30',    hoverFrom: 'hover:from-blue-50',    hoverTo: 'hover:to-white' },
-  EFTA:  { headerFrom: 'from-emerald-50', headerTo: 'to-teal-50',    chip: 'bg-emerald-50 border-emerald-300', ring: 'ring-emerald-500/30', hoverFrom: 'hover:from-emerald-50', hoverTo: 'hover:to-white' },
-  UK:    { headerFrom: 'from-indigo-50',  headerTo: 'to-sky-50',     chip: 'bg-indigo-50 border-indigo-300', ring: 'ring-indigo-500/30',  hoverFrom: 'hover:from-indigo-50',  hoverTo: 'hover:to-white' },
-  WBALK: { headerFrom: 'from-rose-50',    headerTo: 'to-fuchsia-50', chip: 'bg-rose-50 border-rose-300',      ring: 'ring-rose-500/30',    hoverFrom: 'hover:from-rose-50',    hoverTo: 'hover:to-white' },
-  E_NEI: { headerFrom: 'from-amber-50',   headerTo: 'to-orange-50',  chip: 'bg-amber-50 border-amber-300',    ring: 'ring-amber-500/30',   hoverFrom: 'hover:from-amber-50',   hoverTo: 'hover:to-white' },
-  CAUC:  { headerFrom: 'from-violet-50',  headerTo: 'to-purple-50',  chip: 'bg-violet-50 border-violet-300',  ring: 'ring-violet-500/30',  hoverFrom: 'hover:from-violet-50',  hoverTo: 'hover:to-white' },
-  MICRO: { headerFrom: 'from-teal-50',    headerTo: 'to-cyan-50',    chip: 'bg-teal-50 border-teal-300',      ring: 'ring-teal-500/30',    hoverFrom: 'hover:from-teal-50',    hoverTo: 'hover:to-white' },
+  EU27:  { chip: 'bg-[var(--chip-bg)] border-[var(--card-border)]', ring: 'ring-blue-500/20' },
+  EFTA:  { chip: 'bg-[var(--chip-bg)] border-[var(--card-border)]', ring: 'ring-emerald-500/20' },
+  UK:    { chip: 'bg-[var(--chip-bg)] border-[var(--card-border)]', ring: 'ring-indigo-500/20' },
+  WBALK: { chip: 'bg-[var(--chip-bg)] border-[var(--card-border)]', ring: 'ring-rose-500/20' },
+  E_NEI: { chip: 'bg-[var(--chip-bg)] border-[var(--card-border)]', ring: 'ring-amber-500/20' },
+  CAUC:  { chip: 'bg-[var(--chip-bg)] border-[var(--card-border)]', ring: 'ring-violet-500/20' },
+  MICRO: { chip: 'bg-[var(--chip-bg)] border-[var(--card-border)]', ring: 'ring-teal-500/20' },
 };
 
 function accentFor(id: string): Accent {
@@ -128,7 +129,13 @@ function highlight(text: string, query: string): React.ReactNode {
   const re = new RegExp(`(${escapeRegExp(query)})`, 'i'); // use capturing group
   const parts = text.split(re);
   return parts.map((part, i) =>
-    i % 2 === 1 ? <mark key={i} className="bg-yellow-200 rounded px-0.5">{part}</mark> : <span key={i}>{part}</span>
+    i % 2 === 1 ? (
+      <mark key={i} className="bg-yellow-200 dark:bg-yellow-700/60 dark:text-yellow-50 rounded px-0.5">
+        {part}
+      </mark>
+    ) : (
+      <span key={i}>{part}</span>
+    )
   );
 }
 
@@ -182,100 +189,97 @@ export default function CountriesPage() {
   return (
     <>
       <main className="max-w-6xl mx-auto p-6 space-y-10 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      {/* Hero / toolbar */}
-      <section className="rounded-2xl border border-[var(--card-border)] p-6 bg-gradient-to-br from-slate-50 to-white ring-1 ring-inset ring-[var(--card-border)] data-[theme=dark]:from-slate-800 data-[theme=dark]:to-gray-900">
-        <div className="flex flex-col md:flex-row md:items-end gap-4">
-          <div className="flex-1">
-            <h1 className="text-3xl font-semibold text-primary">Explore countries</h1>
-            <p className="text-sm text-[var(--muted)] mt-1">
-              Browse Europe and neighbours. Click a country to open its brief.
-            </p>
+        {/* Hero / toolbar — now uses themed vars (no fixed light gradient) */}
+        <section className="rounded-2xl border border-[var(--card-border)] p-6 bg-[var(--card)]">
+          <div className="flex flex-col md:flex-row md:items-end gap-4">
+            <div className="flex-1">
+              <h1 className="text-3xl font-semibold text-primary">Explore countries</h1>
+              <p className="text-sm text-[var(--muted)] mt-1">
+                Browse Europe and neighbours. Click a country to open its brief.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs px-2 py-1 rounded-full border border-[var(--card-border)] bg-[var(--card)]">
+                {shownCount}/{totalCount}
+              </span>
+              <label className="sr-only" htmlFor="country-search">Search</label>
+              <input
+                id="country-search"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Search by country or ISO3…"
+                className="w-72 max-w-full border border-[var(--card-border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[var(--card)] text-[var(--foreground)] placeholder:text-slate-500 dark:placeholder:text-slate-400"
+                autoComplete="off"
+              />
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs px-2 py-1 rounded-full border border-[var(--card-border)] bg-[var(--card)]">{shownCount}/{totalCount}</span>
-            <label className="sr-only" htmlFor="country-search">Search</label>
-            <input
-              id="country-search"
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="Search by country or ISO3…"
-              className="w-72 max-w-full border border-[var(--card-border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[var(--card)] text-[var(--foreground)]"
-              autoComplete="off"
-            />
+        </section>
+
+        {/* Groups */}
+        {filtered.length === 0 ? (
+          <div className="p-6 text-[var(--muted)] border border-[var(--card-border)] rounded-xl bg-[var(--card)]">
+            No countries match “{q}”. Try a different name or code.
           </div>
-        </div>
-      </section>
+        ) : (
+          filtered.map((group) => {
+            const accent = accentFor(group.id);
+            // While searching, auto-expand to show matches; otherwise respect user toggles
+            const isOpen = q.trim() ? true : expanded.has(group.id);
 
-      {/* Groups */}
-      {filtered.length === 0 ? (
-        <div className="p-6 text-[var(--muted)] border border-[var(--card-border)] rounded-xl bg-[var(--card)]">
-          No countries match “{q}”. Try a different name or code.
-        </div>
-      ) : (
-        filtered.map((group) => {
-          const accent = accentFor(group.id);
-          // While searching, auto-expand to show matches; otherwise respect user toggles
-          const isOpen = q.trim() ? true : expanded.has(group.id);
+            return (
+              <section key={group.id} className="space-y-3">
+                {/* Group header with toggle — now themed surface (no fixed light gradient) */}
+                <button
+                  type="button"
+                  onClick={() => toggle(group.id)}
+                  aria-expanded={isOpen}
+                  className={[
+                    'w-full rounded-xl p-4 border border-[var(--card-border)]',
+                    'bg-[var(--card)]',
+                    'flex items-center gap-3 text-left transition',
+                    'focus:outline-none focus:ring-2',
+                    accent.ring,
+                    'hover:-translate-y-0.5 hover:shadow-sm',
+                  ].join(' ')}
+                >
+                  <Chevron open={isOpen} />
+                  <span className="text-lg md:text-xl font-semibold text-primary">{group.title}</span>
+                  <span className={['ml-auto text-xs px-2 py-0.5 rounded-full border', accent.chip].join(' ')}>
+                    {group.countries.length}
+                  </span>
+                </button>
 
-          return (
-            <section key={group.id} className="space-y-3">
-              {/* Header with toggle */}
-              <button
-                type="button"
-                onClick={() => toggle(group.id)}
-                aria-expanded={isOpen}
-                className={[
-                  'w-full rounded-xl p-4 border border-[var(--card-border)] bg-gradient-to-r flex items-center gap-3 text-left',
-                  'transition focus:outline-none focus:ring-2',
-                  accent.headerFrom, accent.headerTo, accent.ring,
-                  'data-[theme=dark]:from-gray-800 data-[theme=dark]:to-gray-700',
-                ].join(' ')}
-              >
-                <Chevron open={isOpen} />
-                <span className="text-lg md:text-xl font-semibold text-primary">{group.title}</span>
-                <span className={[
-                  'ml-auto text-xs px-2 py-0.5 rounded-full border',
-                  accent.chip,
-                  'data-[theme=dark]:bg-[var(--chip-bg)] data-[theme=dark]:border-[var(--card-border)]',
-                ].join(' ')}>
-                  {group.countries.length}
-                </span>
-              </button>
-
-              {/* Collapsible content */}
-              {isOpen ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {group.countries.map((c) => {
-                    const flag = flagEmojiFromIso3(c.code);
-                    return (
+                {/* Collapsible content */}
+                {isOpen ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    {group.countries.map((c) => {
+                      const flag = flagEmojiFromIso3(c.code);
+                      return (
                         <Link
                           key={c.code}
                           href={`/country/${c.code}`}
                           className={[
-                            'group rounded-2xl border border-[var(--card-border)] p-4 shadow-sm transition focus:outline-none',
-                            'bg-[var(--card)] ring-1 ring-inset',
+                            'group rounded-2xl border border-[var(--card-border)] p-4 shadow-sm transition',
+                            'bg-[var(--card)] focus:outline-none focus:ring-2',
                             accent.ring,
-                            'hover:-translate-y-0.5 hover:shadow-md hover:bg-gradient-to-br',
-                            accent.hoverFrom,
-                            accent.hoverTo,
-                            'data-[theme=dark]:hover:from-gray-700 data-[theme=dark]:hover:to-gray-800',
+                            'hover:-translate-y-0.5 hover:shadow-md',
                           ].join(' ')}
                           aria-label={`Open ${c.name}`}
                         >
-                        <div className="flex items-center gap-3">
-                          <span className="text-2xl leading-none">{flag}</span>
-                          <span className="font-medium truncate text-primary">{highlight(c.name, q)}</span>
-                          <span className="ml-auto opacity-0 group-hover:opacity-100 transition" aria-hidden>→</span>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              ) : null}
-            </section>
-          );
-        })
-      )}
+                          <div className="flex items-center gap-3">
+                            <span className="text-2xl leading-none">{flag}</span>
+                            <span className="font-medium truncate text-primary">{highlight(c.name, q)}</span>
+                            <span className="ml-auto opacity-0 group-hover:opacity-100 transition" aria-hidden>→</span>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </section>
+            );
+          })
+        )}
       </main>
       <Footer />
     </>
