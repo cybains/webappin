@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-
 
 type Job = {
   id: string;
@@ -12,11 +11,14 @@ type Job = {
   url: string;
   job_type: string;
   candidate_required_location: string;
-  publication_date: string;
+  publication_date: string | null;
   salary: string;
-  description: string;
-  company_logo?: string; // added this based on your example
-  tags?: string[];       // added this for tags
+  description: string; // HTML
+  company_logo?: string;
+  tags?: string[];
+  company_domain?: string;
+  source?: string;
+  source_id?: string;
 };
 
 type JobsResponse = {
@@ -26,96 +28,168 @@ type JobsResponse = {
   totalJobs: number;
 };
 
-async function getJobs(page = 1, limit = 20): Promise<JobsResponse> {
-  const url = `/api/jobs?page=${page}&limit=${limit}`;
+const PAGE_WINDOW = 7;
+const PAGE_SIZES = [10, 20, 30, 50, 100];
 
+function buildPageItems(current: number, total: number, windowSize = PAGE_WINDOW): (number | '...')[] {
+  if (total <= windowSize) return Array.from({ length: total }, (_, i) => i + 1);
+  const half = Math.floor(windowSize / 2);
+  let start = Math.max(1, current - half);
+  let end = Math.min(total, start + windowSize - 1);
+  if (end - start + 1 < windowSize) start = Math.max(1, end - windowSize + 1);
+
+  const items: (number | '...')[] = [];
+  if (start > 1) {
+    items.push(1);
+    if (start > 2) items.push('...');
+  }
+  for (let p = start; p <= end; p++) items.push(p);
+  if (end < total) {
+    if (end < total - 1) items.push('...');
+    items.push(total);
+  }
+  return items;
+}
+
+async function getJobs(page = 1, limit = 20, q = "", source = ""): Promise<JobsResponse> {
+  const url = `/api/jobs?page=${page}&limit=${limit}${q ? `&q=${encodeURIComponent(q)}` : ""}${source ? `&source=${encodeURIComponent(source)}` : ""}`;
   try {
     const res = await fetch(url, { cache: 'no-store' });
-
     if (!res.ok) {
-      console.error(`Failed to fetch jobs: ${res.status}`);
+      let detail = '';
+      try { detail = JSON.stringify(await res.json()); } catch { detail = await res.text(); }
+      console.error(`Failed to fetch jobs: ${res.status} ${res.statusText} — ${detail}`);
       return { jobs: [], page, limit, totalJobs: 0 };
     }
-
-    const data = await res.json();
-    return data;
+    return await res.json();
   } catch (err) {
     console.error('Error while fetching jobs:', err);
     return { jobs: [], page, limit, totalJobs: 0 };
   }
 }
 
+function formatDate(iso: string | null) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return isNaN(d.getTime()) ? '' : d.toLocaleDateString();
+}
+
+function logoFallback(domain?: string, companyName?: string) {
+  if (domain) return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`;
+  const name = companyName?.trim() || 'C';
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&size=64&background=DDD&color=444`;
+}
 
 export default function JobsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const currentPage = parseInt(searchParams.get('page') || '1', 10);
+
+  const currentPage = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
+  const currentLimit = Math.max(1, parseInt(searchParams.get('limit') || '20', 10));
+  const currentQ = (searchParams.get('q') || '').trim();
+  const currentSource = (searchParams.get('source') || '').trim();
 
   const [jobs, setJobs] = useState<Job[]>([]);
   const [totalJobs, setTotalJobs] = useState(0);
   const [loading, setLoading] = useState(false);
   const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
-  const limit = 20;
+  const [pageSize, setPageSize] = useState(currentLimit);
+  const [modalJob, setModalJob] = useState<Job | null>(null);
+
+  const [qInput, setQInput] = useState(currentQ);
+  const [sourceInput, setSourceInput] = useState(currentSource);
+
+  const totalPages = useMemo(() => Math.max(1, Math.ceil(totalJobs / pageSize)), [totalJobs, pageSize]);
+  const pageItems = useMemo(() => buildPageItems(currentPage, totalPages), [currentPage, totalPages]);
+
+  const pushRoute = useCallback((page: number, limit = pageSize, q = currentQ, source = currentSource) => {
+    const clamped = Math.min(Math.max(1, Math.trunc(page)), Math.max(1, Math.trunc(Math.ceil(totalJobs / limit))));
+    const qs = new URLSearchParams();
+    qs.set('page', String(clamped));
+    qs.set('limit', String(Math.trunc(limit)));
+    if (q) qs.set('q', q);
+    if (source) qs.set('source', source);
+    router.push(`/jobs?${qs.toString()}`);
+  }, [router, pageSize, totalJobs, currentQ, currentSource]);
+
+  const pushPage = useCallback((page: number) => pushRoute(page), [pushRoute]);
 
   useEffect(() => {
     setLoading(true);
-    getJobs(currentPage, limit).then((data) => {
+    getJobs(currentPage, currentLimit, currentQ, currentSource).then((data) => {
       setJobs(data.jobs);
       setTotalJobs(data.totalJobs);
       setLoading(false);
-      setExpandedJobId(null); // close any expanded job on page change
+      setExpandedJobId(null);
     });
-  }, [currentPage]);
+    setPageSize(currentLimit);
+    setQInput(currentQ);
+    setSourceInput(currentSource);
+  }, [currentPage, currentLimit, currentQ, currentSource]);
 
-  const totalPages = Math.ceil(totalJobs / limit);
+  // keyboard nav
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') pushPage(currentPage - 1);
+      if (e.key === 'ArrowRight') pushPage(currentPage + 1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [currentPage, pushPage]);
 
-  const handlePageChange = (newPage: number) => {
-    router.push(`/jobs?page=${newPage}`);
+  const onPageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSize = parseInt(e.target.value, 10);
+    if (!Number.isFinite(newSize) || newSize <= 0) return;
+    setPageSize(newSize);
+    pushRoute(1, newSize);
   };
 
-  const toggleExpand = (id: string) => {
-    setExpandedJobId(expandedJobId === id ? null : id);
+  const onSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    pushRoute(1, pageSize, qInput.trim(), sourceInput.trim());
   };
 
-  const renderPageNumbers = () => {
-    const pages = [];
-
-    const start = 1;
-    const end = Math.min(5, totalPages);
-
-    for (let i = start; i <= end; i++) {
-      pages.push(
-        <button
-          key={i}
-          onClick={() => handlePageChange(i)}
-          className={`px-3 py-1 border rounded border-gray-300 dark:border-gray-600 ${currentPage === i ? 'bg-black text-white dark:bg-white dark:text-black' : ''}`}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    if (totalPages > 5) {
-      pages.push(<span key="dots" className="px-2">...</span>);
-
-      pages.push(
-        <button
-          key={totalPages}
-          onClick={() => handlePageChange(totalPages)}
-          className={`px-3 py-1 border rounded border-gray-300 dark:border-gray-600 ${currentPage === totalPages ? 'bg-black text-white dark:bg-white dark:text-black' : ''}`}
-        >
-          {totalPages}
-        </button>
-      );
-    }
-
-    return pages;
-  };
+  const toggleExpand = (id: string) => setExpandedJobId(expandedJobId === id ? null : id);
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      {/* Removed the <h1> "Remote Jobs" */}
+      {/* Search + controls */}
+      <form onSubmit={onSearchSubmit} className="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <input
+          value={qInput}
+          onChange={(e) => setQInput(e.target.value)}
+          placeholder="Search title, company, category, tags…"
+          className="px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+        />
+        <input
+          value={sourceInput}
+          onChange={(e) => setSourceInput(e.target.value)}
+          placeholder="Filter by source (e.g., remotive, arbeitnow)"
+          className="px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+        />
+        <div className="flex items-center gap-2">
+          <select
+            value={pageSize}
+            onChange={onPageSizeChange}
+            className="px-2 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+          >
+            {PAGE_SIZES.map(s => <option key={s} value={s}>{s} / page</option>)}
+          </select>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+          >
+            Search
+          </button>
+        </div>
+      </form>
 
+      <div className="mb-4 text-sm text-gray-600 dark:text-gray-300">
+        Page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span> •{' '}
+        <span className="font-medium">{totalJobs}</span> jobs{currentQ ? ` • query: "${currentQ}"` : ''}{currentSource ? ` • source: ${currentSource}` : ''}
+      </div>
+
+      {/* Results */}
       {loading ? (
         <p className="text-gray-600 dark:text-gray-300">Loading...</p>
       ) : jobs.length === 0 ? (
@@ -124,84 +198,99 @@ export default function JobsPage() {
         <div className="flex flex-col gap-4 mb-8">
           {jobs.map((job) => {
             const isExpanded = expandedJobId === job.id;
+            const bannerText = job.source ? `Source: ${job.source}` : 'Source: External';
+            const logoSrc = job.company_logo || logoFallback(job.company_domain, job.company_name);
 
             return (
-                <div
-                  key={job.id}
-                  onClick={() => toggleExpand(job.id)}
-                  className="border border-gray-200 dark:border-gray-700 rounded-xl p-4 cursor-pointer hover:shadow transition bg-white dark:bg-gray-800"
-                >
-                <div className="flex justify-between items-center mb-2">
-                  {/* Left side: Title and company logo */}
-                  <div className="flex items-center gap-3">
-                    {job.company_logo && (
-                      <img
-                        src={job.company_logo}
-                        alt={`${job.company_name} logo`}
-                        className="w-10 h-10 object-contain rounded"
-                      />
-                    )}
-                    <h2 className="text-xl font-semibold">{job.title}</h2>
-                  </div>
-
-                  {/* Right side: publication date */}
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {new Date(job.publication_date).toLocaleDateString()}
-                  </span>
+              <div
+                key={job.id}
+                className="relative border border-gray-200 dark:border-gray-700 rounded-2xl p-4 hover:shadow transition bg-white dark:bg-gray-800"
+              >
+                {/* source banner */}
+                <div className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs px-3 py-1 rounded-full shadow">
+                  {bannerText}
                 </div>
 
-                {/* Collapsed view info */}
-                  {!isExpanded && (
-                    <div className="text-sm text-gray-600 dark:text-gray-300 flex flex-wrap gap-4">
-                    <span>{job.candidate_required_location}</span>
-                    <span>{job.job_type}</span>
-                    {job.salary && <span>{job.salary}</span>}
+                {/* header (click to expand) */}
+                <button onClick={() => toggleExpand(job.id)} className="w-full text-left">
+                  <div className="flex justify-between items-start gap-3">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={logoSrc}
+                        alt={`${job.company_name} logo`}
+                        className="w-10 h-10 object-contain rounded"
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).src = logoFallback(job.company_domain, job.company_name); }}
+                      />
+                      <div>
+                        <h2 className="text-xl font-semibold">{job.title}</h2>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">
+                          {job.company_name}{job.category ? ` • ${job.category}` : ''}
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      {formatDate(job.publication_date)}
+                    </span>
                   </div>
-                )}
 
-                {/* Expanded view */}
+                  {!isExpanded && (
+                    <div className="mt-2 text-sm text-gray-600 dark:text-gray-300 flex flex-wrap gap-2">
+                      {job.candidate_required_location && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">{job.candidate_required_location}</span>}
+                      {job.job_type && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full capitalize">{job.job_type}</span>}
+                      {job.salary && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">{job.salary}</span>}
+                    </div>
+                  )}
+                </button>
+
                 {isExpanded && (
-                  <>
-                      <p className="text-gray-700 dark:text-gray-300 mt-2">
-                      <strong>Company:</strong> {job.company_name}
-                    </p>
-                      <p className="text-gray-700 dark:text-gray-300">
-                      <strong>Category:</strong> {job.category}
-                    </p>
+                  <div className="mt-4">
+                    {/* meta chips */}
+                    <div className="text-sm text-gray-600 dark:text-gray-300 flex flex-wrap gap-2 mb-3">
+                      {job.candidate_required_location && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">{job.candidate_required_location}</span>}
+                      {job.job_type && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full capitalize">{job.job_type}</span>}
+                      {job.salary && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">{job.salary}</span>}
+                    </div>
 
-                    {/* Tags */}
+                    {/* tags */}
                     {job.tags && job.tags.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {job.tags.map((tag, idx) => (
-                            <span
-                              key={idx}
-                              className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs px-2 py-1 rounded-full"
-                            >
-                            {tag}
+                      <div className="mt-1 mb-3 flex flex-wrap gap-2">
+                        {job.tags.slice(0, 12).map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 text-gray-700 dark:text-gray-200 text-xs px-2 py-1 rounded-full border border-gray-200 dark:border-gray-600"
+                          >
+                            #{tag}
                           </span>
                         ))}
                       </div>
                     )}
 
-                    {/* Description */}
+                    {/* short preview (first ~400 chars) */}
+                    <div className="prose prose-sm dark:prose-invert break-words text-gray-700 dark:text-gray-300 line-clamp-6">
                       <div
-                        className="mt-4 text-gray-700 dark:text-gray-300 max-h-96 overflow-auto"
                         dangerouslySetInnerHTML={{ __html: job.description }}
                       />
+                    </div>
 
-                    {/* Button */}
-                    <div className="mt-4">
+                    {/* Actions */}
+                    <div className="mt-3 flex flex-wrap items-center gap-3">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setModalJob(job); }}
+                        className="text-sm px-3 py-1 border rounded-lg border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                      >
+                        View full description
+                      </button>
                       <a
                         href={job.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                          className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition"
-                        onClick={(e) => e.stopPropagation()} // prevent card toggle on click
+                        className="ml-auto inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         See the job posting
                       </a>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             );
@@ -209,26 +298,79 @@ export default function JobsPage() {
         </div>
       )}
 
-      {/* Pagination Controls */}
-        <div className="flex justify-center items-center gap-2">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage <= 1}
-            className="px-4 py-2 border rounded border-gray-300 dark:border-gray-600 disabled:opacity-50"
-          >
-          Previous
-        </button>
+      {/* Pagination — sticky footer */}
+      <div className="sticky bottom-4 z-10">
+        <div className="flex flex-wrap justify-center items-center gap-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl px-3 py-2 border border-gray-200 dark:border-gray-700">
+          <button onClick={() => pushRoute(1)} disabled={currentPage === 1} className="px-3 py-1 text-sm border rounded-md border-gray-300 dark:border-gray-600 disabled:opacity-50">First</button>
+          <button onClick={() => pushRoute(currentPage - 1)} disabled={currentPage <= 1} className="px-3 py-1 text-sm border rounded-md border-gray-300 dark:border-gray-600 disabled:opacity-50">Previous</button>
 
-        {renderPageNumbers()}
+          {pageItems.map((item, idx) =>
+            item === '...' ? (
+              <span key={`dots-${idx}`} className="px-2 select-none">…</span>
+            ) : (
+              <button
+                key={item}
+                onClick={() => pushRoute(item as number)}
+                className={`px-3 py-1 text-sm border rounded-md border-gray-300 dark:border-gray-600 ${currentPage === item ? 'bg-black text-white dark:bg-white dark:text-black' : ''}`}
+              >
+                {item}
+              </button>
+            )
+          )}
 
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage >= totalPages}
-            className="px-4 py-2 border rounded border-gray-300 dark:border-gray-600 disabled:opacity-50"
-          >
-          Next
-        </button>
+          <button onClick={() => pushRoute(currentPage + 1)} disabled={currentPage >= totalPages} className="px-3 py-1 text-sm border rounded-md border-gray-300 dark:border-gray-600 disabled:opacity-50">Next</button>
+          <button onClick={() => pushRoute(totalPages)} disabled={currentPage === totalPages} className="px-3 py-1 text-sm border rounded-md border-gray-300 dark:border-gray-600 disabled:opacity-50">Last</button>
+
+          <div className="ml-2 flex items-center gap-1 text-sm">
+            <span>Go to</span>
+            <input
+              type="number"
+              min={1}
+              max={totalPages}
+              defaultValue={currentPage}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  const raw = (e.target as HTMLInputElement).value;
+                  const val = Math.trunc(Number(raw));
+                  if (Number.isFinite(val)) pushRoute(val);
+                }
+              }}
+              className="w-16 px-2 py-1 border rounded-md bg-transparent border-gray-300 dark:border-gray-600"
+            />
+          </div>
+        </div>
       </div>
+
+      {/* FULL DESCRIPTION MODAL */}
+      {modalJob && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setModalJob(null)}
+        >
+          <div
+            className="max-w-3xl w-full max-h-[80vh] overflow-auto bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h3 className="text-lg font-semibold">{modalJob.title}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {modalJob.company_name} {modalJob.category ? `• ${modalJob.category}` : ''}
+                </p>
+              </div>
+              <button
+                onClick={() => setModalJob(null)}
+                className="px-3 py-1 border rounded-lg border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+              >
+                Close
+              </button>
+            </div>
+            <div className="mt-3 prose prose-sm dark:prose-invert break-words [&_*]:max-w-full [&_img]:h-auto [&_img]:max-w-full text-gray-700 dark:text-gray-300">
+              <div dangerouslySetInnerHTML={{ __html: modalJob.description }} />
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
