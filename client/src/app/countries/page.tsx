@@ -106,13 +106,13 @@ type Accent = {
   headerFrom: string; headerTo: string; chip: string; ring: string; hoverFrom: string; hoverTo: string;
 };
 const GROUP_ACCENTS: Record<string, Accent> = {
-  EU27:  { headerFrom: 'from-blue-50',    headerTo: 'to-cyan-50',    chip: 'bg-blue-50 border-blue-300',    ring: 'ring-blue-500/30',    hoverFrom: 'from-blue-50',    hoverTo: 'to-white' },
-  EFTA:  { headerFrom: 'from-emerald-50', headerTo: 'to-teal-50',    chip: 'bg-emerald-50 border-emerald-300', ring: 'ring-emerald-500/30', hoverFrom: 'from-emerald-50', hoverTo: 'to-white' },
-  UK:    { headerFrom: 'from-indigo-50',  headerTo: 'to-sky-50',     chip: 'bg-indigo-50 border-indigo-300', ring: 'ring-indigo-500/30',  hoverFrom: 'from-indigo-50',  hoverTo: 'to-white' },
-  WBALK: { headerFrom: 'from-rose-50',    headerTo: 'to-fuchsia-50', chip: 'bg-rose-50 border-rose-300',      ring: 'ring-rose-500/30',    hoverFrom: 'from-rose-50',    hoverTo: 'to-white' },
-  E_NEI: { headerFrom: 'from-amber-50',   headerTo: 'to-orange-50',  chip: 'bg-amber-50 border-amber-300',    ring: 'ring-amber-500/30',   hoverFrom: 'from-amber-50',   hoverTo: 'to-white' },
-  CAUC:  { headerFrom: 'from-violet-50',  headerTo: 'to-purple-50',  chip: 'bg-violet-50 border-violet-300',  ring: 'ring-violet-500/30',  hoverFrom: 'from-violet-50',  hoverTo: 'to-white' },
-  MICRO: { headerFrom: 'from-teal-50',    headerTo: 'to-cyan-50',    chip: 'bg-teal-50 border-teal-300',      ring: 'ring-teal-500/30',    hoverFrom: 'from-teal-50',    hoverTo: 'to-white' },
+  EU27:  { headerFrom: 'from-blue-50',    headerTo: 'to-cyan-50',    chip: 'bg-blue-50 border-blue-300',    ring: 'ring-blue-500/30',    hoverFrom: 'hover:from-blue-50',    hoverTo: 'hover:to-white' },
+  EFTA:  { headerFrom: 'from-emerald-50', headerTo: 'to-teal-50',    chip: 'bg-emerald-50 border-emerald-300', ring: 'ring-emerald-500/30', hoverFrom: 'hover:from-emerald-50', hoverTo: 'hover:to-white' },
+  UK:    { headerFrom: 'from-indigo-50',  headerTo: 'to-sky-50',     chip: 'bg-indigo-50 border-indigo-300', ring: 'ring-indigo-500/30',  hoverFrom: 'hover:from-indigo-50',  hoverTo: 'hover:to-white' },
+  WBALK: { headerFrom: 'from-rose-50',    headerTo: 'to-fuchsia-50', chip: 'bg-rose-50 border-rose-300',      ring: 'ring-rose-500/30',    hoverFrom: 'hover:from-rose-50',    hoverTo: 'hover:to-white' },
+  E_NEI: { headerFrom: 'from-amber-50',   headerTo: 'to-orange-50',  chip: 'bg-amber-50 border-amber-300',    ring: 'ring-amber-500/30',   hoverFrom: 'hover:from-amber-50',   hoverTo: 'hover:to-white' },
+  CAUC:  { headerFrom: 'from-violet-50',  headerTo: 'to-purple-50',  chip: 'bg-violet-50 border-violet-300',  ring: 'ring-violet-500/30',  hoverFrom: 'hover:from-violet-50',  hoverTo: 'hover:to-white' },
+  MICRO: { headerFrom: 'from-teal-50',    headerTo: 'to-cyan-50',    chip: 'bg-teal-50 border-teal-300',      ring: 'ring-teal-500/30',    hoverFrom: 'hover:from-teal-50',    hoverTo: 'hover:to-white' },
 };
 
 function accentFor(id: string): Accent {
@@ -244,20 +244,20 @@ export default function CountriesPage() {
                   {group.countries.map((c) => {
                     const flag = flagEmojiFromIso3(c.code);
                     return (
-                      <Link
-                        key={c.code}
-                        href={`/country/${c.code}`}
-                        className={[
-                          'group rounded-2xl border border-[var(--card-border)] p-4 shadow-sm transition focus:outline-none',
-                          'hover:-translate-y-0.5 hover:shadow-md ring-1 ring-inset',
-                          accent.ring,
-                          'bg-gradient-to-br',
-                          accent.hoverFrom,
-                          accent.hoverTo,
-                          'dark:from-gray-800 dark:to-gray-800 dark:hover:from-gray-700 dark:hover:to-gray-800',
-                        ].join(' ')}
-                        aria-label={`Open ${c.name}`}
-                      >
+                        <Link
+                          key={c.code}
+                          href={`/country/${c.code}`}
+                          className={[
+                            'group rounded-2xl border border-[var(--card-border)] p-4 shadow-sm transition focus:outline-none',
+                            'bg-[var(--card)] ring-1 ring-inset',
+                            accent.ring,
+                            'hover:-translate-y-0.5 hover:shadow-md hover:bg-gradient-to-br',
+                            accent.hoverFrom,
+                            accent.hoverTo,
+                            'dark:hover:from-gray-700 dark:hover:to-gray-800',
+                          ].join(' ')}
+                          aria-label={`Open ${c.name}`}
+                        >
                         <div className="flex items-center gap-3">
                           <span className="text-2xl leading-none">{flag}</span>
                           <span className="font-medium truncate text-primary">{highlight(c.name, q)}</span>
