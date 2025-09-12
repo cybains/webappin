@@ -183,7 +183,7 @@ export default function CountriesPage() {
     <>
       <main className="max-w-6xl mx-auto p-6 space-y-10 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Hero / toolbar */}
-      <section className="rounded-2xl border border-[var(--card-border)] p-6 bg-gradient-to-br from-slate-50 to-white ring-1 ring-inset ring-[var(--card-border)] dark:from-slate-800 dark:to-gray-900">
+      <section className="rounded-2xl border border-[var(--card-border)] p-6 bg-gradient-to-br from-slate-50 to-white ring-1 ring-inset ring-[var(--card-border)] data-[theme=dark]:from-slate-800 data-[theme=dark]:to-gray-900">
         <div className="flex flex-col md:flex-row md:items-end gap-4">
           <div className="flex-1">
             <h1 className="text-3xl font-semibold text-primary">Explore countries</h1>
@@ -228,7 +228,7 @@ export default function CountriesPage() {
                   'w-full rounded-xl p-4 border border-[var(--card-border)] bg-gradient-to-r flex items-center gap-3 text-left',
                   'transition focus:outline-none focus:ring-2',
                   accent.headerFrom, accent.headerTo, accent.ring,
-                  'dark:from-gray-800 dark:to-gray-700',
+                  'data-[theme=dark]:from-gray-800 data-[theme=dark]:to-gray-700',
                 ].join(' ')}
               >
                 <Chevron open={isOpen} />
@@ -236,7 +236,7 @@ export default function CountriesPage() {
                 <span className={[
                   'ml-auto text-xs px-2 py-0.5 rounded-full border',
                   accent.chip,
-                  'dark:bg-[var(--chip-bg)] dark:border-[var(--card-border)]',
+                  'data-[theme=dark]:bg-[var(--chip-bg)] data-[theme=dark]:border-[var(--card-border)]',
                 ].join(' ')}>
                   {group.countries.length}
                 </span>
@@ -258,7 +258,7 @@ export default function CountriesPage() {
                             'hover:-translate-y-0.5 hover:shadow-md hover:bg-gradient-to-br',
                             accent.hoverFrom,
                             accent.hoverTo,
-                            'dark:hover:from-gray-700 dark:hover:to-gray-800',
+                            'data-[theme=dark]:hover:from-gray-700 data-[theme=dark]:hover:to-gray-800',
                           ].join(' ')}
                           aria-label={`Open ${c.name}`}
                         >
