@@ -106,13 +106,13 @@ type Accent = {
   headerFrom: string; headerTo: string; chip: string; ring: string; hoverFrom: string; hoverTo: string;
 };
 const GROUP_ACCENTS: Record<string, Accent> = {
-  EU27:  { headerFrom: 'from-blue-50',    headerTo: 'to-cyan-50',    chip: 'bg-blue-50 border-blue-300',    ring: 'ring-blue-500/30',    hoverFrom: 'from-blue-50',    hoverTo: 'to-white' },
-  EFTA:  { headerFrom: 'from-emerald-50', headerTo: 'to-teal-50',    chip: 'bg-emerald-50 border-emerald-300', ring: 'ring-emerald-500/30', hoverFrom: 'from-emerald-50', hoverTo: 'to-white' },
-  UK:    { headerFrom: 'from-indigo-50',  headerTo: 'to-sky-50',     chip: 'bg-indigo-50 border-indigo-300', ring: 'ring-indigo-500/30',  hoverFrom: 'from-indigo-50',  hoverTo: 'to-white' },
-  WBALK: { headerFrom: 'from-rose-50',    headerTo: 'to-fuchsia-50', chip: 'bg-rose-50 border-rose-300',      ring: 'ring-rose-500/30',    hoverFrom: 'from-rose-50',    hoverTo: 'to-white' },
-  E_NEI: { headerFrom: 'from-amber-50',   headerTo: 'to-orange-50',  chip: 'bg-amber-50 border-amber-300',    ring: 'ring-amber-500/30',   hoverFrom: 'from-amber-50',   hoverTo: 'to-white' },
-  CAUC:  { headerFrom: 'from-violet-50',  headerTo: 'to-purple-50',  chip: 'bg-violet-50 border-violet-300',  ring: 'ring-violet-500/30',  hoverFrom: 'from-violet-50',  hoverTo: 'to-white' },
-  MICRO: { headerFrom: 'from-teal-50',    headerTo: 'to-cyan-50',    chip: 'bg-teal-50 border-teal-300',      ring: 'ring-teal-500/30',    hoverFrom: 'from-teal-50',    hoverTo: 'to-white' },
+  EU27:  { headerFrom: 'from-blue-100',    headerTo: 'to-cyan-100',    chip: 'bg-blue-100 border-blue-400',    ring: 'ring-blue-500/40',    hoverFrom: 'hover:from-blue-100',    hoverTo: 'hover:to-blue-50' },
+  EFTA:  { headerFrom: 'from-emerald-100', headerTo: 'to-teal-100',    chip: 'bg-emerald-100 border-emerald-400', ring: 'ring-emerald-500/40', hoverFrom: 'hover:from-emerald-100', hoverTo: 'hover:to-teal-50' },
+  UK:    { headerFrom: 'from-indigo-100',  headerTo: 'to-sky-100',     chip: 'bg-indigo-100 border-indigo-400', ring: 'ring-indigo-500/40',  hoverFrom: 'hover:from-indigo-100',  hoverTo: 'hover:to-sky-50' },
+  WBALK: { headerFrom: 'from-rose-100',    headerTo: 'to-fuchsia-100', chip: 'bg-rose-100 border-rose-400',      ring: 'ring-rose-500/40',    hoverFrom: 'hover:from-rose-100',    hoverTo: 'hover:to-fuchsia-50' },
+  E_NEI: { headerFrom: 'from-amber-100',   headerTo: 'to-orange-100',  chip: 'bg-amber-100 border-amber-400',    ring: 'ring-amber-500/40',   hoverFrom: 'hover:from-amber-100',   hoverTo: 'hover:to-orange-50' },
+  CAUC:  { headerFrom: 'from-violet-100',  headerTo: 'to-purple-100',  chip: 'bg-violet-100 border-violet-400',  ring: 'ring-violet-500/40',  hoverFrom: 'hover:from-violet-100',  hoverTo: 'hover:to-purple-50' },
+  MICRO: { headerFrom: 'from-teal-100',    headerTo: 'to-cyan-100',    chip: 'bg-teal-100 border-teal-400',      ring: 'ring-teal-500/40',    hoverFrom: 'hover:from-teal-100',    hoverTo: 'hover:to-cyan-50' },
 };
 
 function accentFor(id: string): Accent {
@@ -183,23 +183,23 @@ export default function CountriesPage() {
     <>
       <main className="max-w-6xl mx-auto p-6 space-y-10 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Hero / toolbar */}
-      <section className="rounded-2xl border p-6 bg-gradient-to-br from-slate-50 to-white ring-1 ring-inset ring-slate-200 dark:from-slate-800 dark:to-gray-900 dark:border-gray-700 dark:ring-slate-700">
+      <section className="rounded-2xl border border-[var(--foreground)]/10 p-6 bg-[var(--backgroundCard)] ring-1 ring-inset ring-[var(--foreground)]/10">
         <div className="flex flex-col md:flex-row md:items-end gap-4">
           <div className="flex-1">
             <h1 className="text-3xl font-semibold">Explore countries</h1>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+            <p className="text-sm text-[var(--foreground)]/80 mt-1">
               Browse Europe and neighbours. Click a country to open its brief.
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs px-2 py-1 rounded-full border bg-white dark:bg-gray-800 dark:border-gray-600">{shownCount}/{totalCount}</span>
+            <span className="text-xs px-2 py-1 rounded-full border border-[var(--foreground)]/10 bg-[var(--backgroundCard)]">{shownCount}/{totalCount}</span>
             <label className="sr-only" htmlFor="country-search">Search</label>
             <input
               id="country-search"
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search by country or ISO3…"
-              className="w-72 max-w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
+              className="w-72 max-w-full border border-[var(--foreground)]/20 rounded-xl px-3 py-2 text-sm bg-[var(--backgroundCard)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-blue-500"
               autoComplete="off"
             />
           </div>
@@ -208,7 +208,7 @@ export default function CountriesPage() {
 
       {/* Groups */}
       {filtered.length === 0 ? (
-        <div className="p-6 text-gray-600 dark:text-gray-300 border rounded-xl bg-white dark:bg-gray-800 dark:border-gray-700">
+        <div className="p-6 text-[var(--foreground)]/80 border border-[var(--foreground)]/10 rounded-xl bg-[var(--backgroundCard)]">
           No countries match “{q}”. Try a different name or code.
         </div>
       ) : (
@@ -225,15 +225,14 @@ export default function CountriesPage() {
                 onClick={() => toggle(group.id)}
                 aria-expanded={isOpen}
                 className={[
-                  'w-full rounded-xl p-4 border bg-gradient-to-r flex items-center gap-3 text-left',
+                  'w-full rounded-xl p-4 border border-[var(--foreground)]/10 bg-[var(--backgroundCard)] bg-gradient-to-r flex items-center gap-3 text-left',
                   'transition focus:outline-none focus:ring-2',
                   accent.headerFrom, accent.headerTo, accent.ring,
-                  'dark:from-gray-800 dark:to-gray-700 dark:border-gray-700',
                 ].join(' ')}
               >
                 <Chevron open={isOpen} />
                 <span className="text-lg md:text-xl font-semibold">{group.title}</span>
-                <span className={['ml-auto text-xs px-2 py-0.5 rounded-full border', accent.chip, 'dark:bg-gray-800 dark:border-gray-600'].join(' ')}>
+                <span className={['ml-auto text-xs px-2 py-0.5 rounded-full border', accent.chip, 'text-[var(--foreground)]'].join(' ')}>
                   {group.countries.length}
                 </span>
               </button>
@@ -248,13 +247,13 @@ export default function CountriesPage() {
                         key={c.code}
                         href={`/country/${c.code}`}
                         className={[
-                          'group rounded-2xl border p-4 shadow-sm transition focus:outline-none',
+                          'group rounded-2xl border border-[var(--foreground)]/10 p-4 shadow-sm transition focus:outline-none',
                           'hover:-translate-y-0.5 hover:shadow-md ring-1 ring-inset',
                           accent.ring,
-                          'bg-gradient-to-br',
+                          'bg-[var(--backgroundCard)] text-[var(--foreground)]',
+                          'hover:bg-gradient-to-br',
                           accent.hoverFrom,
                           accent.hoverTo,
-                          'dark:border-gray-700 dark:bg-gray-800 dark:hover:from-gray-700 dark:hover:to-gray-800',
                         ].join(' ')}
                         aria-label={`Open ${c.name}`}
                       >
