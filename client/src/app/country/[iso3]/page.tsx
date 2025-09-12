@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Footer from "@/components/Footer";
+import { findNearestCountry } from "@/lib/percentiles";
 
 /** ---------- Types matching your narrative JSON ---------- */
 type Pctl = { world?: number; region?: number; income?: number };
@@ -172,6 +173,7 @@ async function fetchNameFromManifest(iso3: string): Promise<string | null> {
 export default function CountryPage() {
   const params = useParams<{ iso3: string }>();
   const iso3 = (params?.iso3 ?? '').toUpperCase();
+  const router = useRouter();
 
   const [data, setData] = useState<Narrative | null>(null);
   const [name, setName] = useState<string | null>(null);
@@ -294,11 +296,24 @@ export default function CountryPage() {
                           <span className={`inline-block text-xs px-2 py-0.5 rounded-full border ${accent.chip}`}>
                             {worldPctTxt}
                           </span>
-                            <div className="h-2 rounded bg-gray-200 dark:bg-gray-700 w-32 overflow-hidden">
+                          <div className="relative h-2 rounded bg-gray-200 dark:bg-gray-700 w-32 overflow-hidden">
                             <div
                               className={['h-2 rounded', accent.bar].join(' ')}
                               style={{ width: worldPctRaw != null ? `${Math.max(0, Math.min(100, worldPctRaw))}%` : '0%' }}
                               aria-label={`World percentile ${worldPctTxt}`}
+                            />
+                            <input
+                              type="range"
+                              min={0}
+                              max={100}
+                              step={1}
+                              defaultValue={worldPctRaw ?? 0}
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                              onChange={async (e) => {
+                                const target = Number(e.currentTarget.value);
+                                const iso = await findNearestCountry(f.code, target);
+                                if (iso && iso !== iso3) router.push(`/country/${iso.toUpperCase()}`);
+                              }}
                             />
                           </div>
                         </div>
