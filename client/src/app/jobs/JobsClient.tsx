@@ -222,7 +222,7 @@ export default function JobsPage() {
                         onError={(e) => { (e.currentTarget as HTMLImageElement).src = logoFallback(job.company_domain, job.company_name); }}
                       />
                       <div>
-                        <h2 className="text-xl font-semibold">{job.title}</h2>
+                        <h2 className="text-xl font-semibold text-primary">{job.title}</h2>
                         <div className="text-sm text-gray-600 dark:text-gray-300">
                           {job.company_name}{job.category ? ` • ${job.category}` : ''}
                         </div>
@@ -353,7 +353,7 @@ export default function JobsPage() {
           >
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h3 className="text-lg font-semibold">{modalJob.title}</h3>
+                <h3 className="text-lg font-semibold text-primary">{modalJob.title}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   {modalJob.company_name} {modalJob.category ? `• ${modalJob.category}` : ''}
                 </p>

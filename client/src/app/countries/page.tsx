@@ -186,7 +186,7 @@ export default function CountriesPage() {
       <section className="rounded-2xl border p-6 bg-gradient-to-br from-slate-50 to-white ring-1 ring-inset ring-slate-200 dark:from-slate-800 dark:to-gray-900 dark:border-gray-700 dark:ring-slate-700">
         <div className="flex flex-col md:flex-row md:items-end gap-4">
           <div className="flex-1">
-            <h1 className="text-3xl font-semibold">Explore countries</h1>
+            <h1 className="text-3xl font-semibold text-primary">Explore countries</h1>
             <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
               Browse Europe and neighbours. Click a country to open its brief.
             </p>
@@ -232,7 +232,7 @@ export default function CountriesPage() {
                 ].join(' ')}
               >
                 <Chevron open={isOpen} />
-                <span className="text-lg md:text-xl font-semibold">{group.title}</span>
+                <span className="text-lg md:text-xl font-semibold text-primary">{group.title}</span>
                 <span className={['ml-auto text-xs px-2 py-0.5 rounded-full border', accent.chip, 'dark:bg-gray-800 dark:border-gray-600'].join(' ')}>
                   {group.countries.length}
                 </span>
@@ -260,7 +260,7 @@ export default function CountriesPage() {
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-2xl leading-none">{flag}</span>
-                          <span className="font-medium truncate">{highlight(c.name, q)}</span>
+                          <span className="font-medium truncate text-primary">{highlight(c.name, q)}</span>
                           <span className="ml-auto opacity-0 group-hover:opacity-100 transition" aria-hidden>→</span>
                         </div>
                       </Link>
