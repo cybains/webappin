@@ -9,6 +9,11 @@
   --secondary: #F5A623;
   --accent: #50E3C2;
 
+  --card: #ffffff;
+  --card-border: #e5e7eb;
+  --muted: #4b5563;
+  --chip-bg: #f3f4f6;
+
   --font-sans: 'Geist Sans', sans-serif;
   --font-mono: 'Geist Mono', monospace;
 }
@@ -22,6 +27,11 @@
   --secondary: #d946ef; /* vibrant magenta */
   --accent: #64748b; /* urban smoke */
 
+  --card: #1f2937; /* gray-800 */
+  --card-border: #374151; /* gray-700 */
+  --muted: #d1d5db; /* gray-300 */
+  --chip-bg: #374151; /* gray-700 */
+
   --font-sans: 'Geist Sans', sans-serif;
   --font-mono: 'Geist Mono', monospace;
 }
@@ -33,6 +43,11 @@
   --primary: #8b5cf6; /* purple */
   --secondary: #fbbf24; /* orange */
   --accent: #10b981; /* emerald */
+
+  --card: #ffffff;
+  --card-border: #cbd5e1; /* slate-300 */
+  --muted: #4b5563; /* gray-600 */
+  --chip-bg: #f3f4f6; /* gray-100 */
 
   --font-sans: 'Geist Sans', sans-serif;
   --font-mono: 'Geist Mono', monospace;

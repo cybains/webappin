@@ -159,41 +159,41 @@ export default function JobsPage() {
           value={qInput}
           onChange={(e) => setQInput(e.target.value)}
           placeholder="Search title, company, category, tags…"
-          className="px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+          className="px-3 py-2 border rounded-md bg-[var(--card)] text-[var(--foreground)] border-[var(--card-border)]"
         />
         <input
           value={sourceInput}
           onChange={(e) => setSourceInput(e.target.value)}
           placeholder="Filter by source (e.g., remotive, arbeitnow)"
-          className="px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+          className="px-3 py-2 border rounded-md bg-[var(--card)] text-[var(--foreground)] border-[var(--card-border)]"
         />
         <div className="flex items-center gap-2">
           <select
             value={pageSize}
             onChange={onPageSizeChange}
-            className="px-2 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+            className="px-2 py-2 border rounded-md bg-[var(--card)] text-[var(--foreground)] border-[var(--card-border)]"
           >
             {PAGE_SIZES.map(s => <option key={s} value={s}>{s} / page</option>)}
           </select>
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+            className="px-4 py-2 rounded-md bg-[var(--primary)] text-white hover:brightness-90"
           >
             Search
           </button>
         </div>
       </form>
 
-      <div className="mb-4 text-sm text-gray-600 dark:text-gray-300">
+      <div className="mb-4 text-sm text-[var(--muted)]">
         Page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span> •{' '}
         <span className="font-medium">{totalJobs}</span> jobs{currentQ ? ` • query: "${currentQ}"` : ''}{currentSource ? ` • source: ${currentSource}` : ''}
       </div>
 
       {/* Results */}
       {loading ? (
-        <p className="text-gray-600 dark:text-gray-300">Loading...</p>
+        <p className="text-[var(--muted)]">Loading...</p>
       ) : jobs.length === 0 ? (
-        <p className="text-red-500 dark:text-red-400">No jobs found.</p>
+        <p className="text-red-500">No jobs found.</p>
       ) : (
         <div className="flex flex-col gap-4 mb-8">
           {jobs.map((job) => {
@@ -204,7 +204,7 @@ export default function JobsPage() {
             return (
               <div
                 key={job.id}
-                className="relative border border-gray-200 dark:border-gray-700 rounded-2xl p-4 hover:shadow transition bg-white dark:bg-gray-800"
+                className="relative border rounded-2xl p-4 hover:shadow transition bg-[var(--card)] text-[var(--foreground)] border-[var(--card-border)]"
               >
                 {/* source banner */}
                 <div className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs px-3 py-1 rounded-full shadow">
@@ -222,22 +222,22 @@ export default function JobsPage() {
                         onError={(e) => { (e.currentTarget as HTMLImageElement).src = logoFallback(job.company_domain, job.company_name); }}
                       />
                       <div>
-                        <h2 className="text-xl font-semibold">{job.title}</h2>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">
+                        <h2 className="text-xl font-semibold text-primary">{job.title}</h2>
+                        <div className="text-sm text-[var(--muted)]">
                           {job.company_name}{job.category ? ` • ${job.category}` : ''}
                         </div>
                       </div>
                     </div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                    <span className="text-sm text-[var(--muted)]">
                       {formatDate(job.publication_date)}
                     </span>
                   </div>
 
                   {!isExpanded && (
-                    <div className="mt-2 text-sm text-gray-600 dark:text-gray-300 flex flex-wrap gap-2">
-                      {job.candidate_required_location && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">{job.candidate_required_location}</span>}
-                      {job.job_type && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full capitalize">{job.job_type}</span>}
-                      {job.salary && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">{job.salary}</span>}
+                    <div className="mt-2 text-sm text-[var(--muted)] flex flex-wrap gap-2">
+                      {job.candidate_required_location && <span className="px-2 py-1 rounded-full bg-[var(--chip-bg)]">{job.candidate_required_location}</span>}
+                      {job.job_type && <span className="px-2 py-1 rounded-full bg-[var(--chip-bg)] capitalize">{job.job_type}</span>}
+                      {job.salary && <span className="px-2 py-1 rounded-full bg-[var(--chip-bg)]">{job.salary}</span>}
                     </div>
                   )}
                 </button>
@@ -245,10 +245,10 @@ export default function JobsPage() {
                 {isExpanded && (
                   <div className="mt-4">
                     {/* meta chips */}
-                    <div className="text-sm text-gray-600 dark:text-gray-300 flex flex-wrap gap-2 mb-3">
-                      {job.candidate_required_location && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">{job.candidate_required_location}</span>}
-                      {job.job_type && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full capitalize">{job.job_type}</span>}
-                      {job.salary && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">{job.salary}</span>}
+                    <div className="text-sm text-[var(--muted)] flex flex-wrap gap-2 mb-3">
+                      {job.candidate_required_location && <span className="px-2 py-1 rounded-full bg-[var(--chip-bg)]">{job.candidate_required_location}</span>}
+                      {job.job_type && <span className="px-2 py-1 rounded-full bg-[var(--chip-bg)] capitalize">{job.job_type}</span>}
+                      {job.salary && <span className="px-2 py-1 rounded-full bg-[var(--chip-bg)]">{job.salary}</span>}
                     </div>
 
                     {/* tags */}
@@ -257,7 +257,7 @@ export default function JobsPage() {
                         {job.tags.slice(0, 12).map((tag, idx) => (
                           <span
                             key={idx}
-                            className="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 text-gray-700 dark:text-gray-200 text-xs px-2 py-1 rounded-full border border-gray-200 dark:border-gray-600"
+                            className="bg-gradient-to-br from-[var(--chip-bg)] to-[var(--card)] text-[var(--muted)] text-xs px-2 py-1 rounded-full border border-[var(--card-border)]"
                           >
                             #{tag}
                           </span>
@@ -266,7 +266,7 @@ export default function JobsPage() {
                     )}
 
                     {/* short preview (first ~400 chars) */}
-                    <div className="prose prose-sm dark:prose-invert break-words text-gray-700 dark:text-gray-300 line-clamp-6">
+                    <div className="prose prose-sm break-words text-[var(--foreground)] line-clamp-6 [&_*]:text-[var(--foreground)]">
                       <div
                         dangerouslySetInnerHTML={{ __html: job.description }}
                       />
@@ -276,7 +276,7 @@ export default function JobsPage() {
                     <div className="mt-3 flex flex-wrap items-center gap-3">
                       <button
                         onClick={(e) => { e.stopPropagation(); setModalJob(job); }}
-                        className="text-sm px-3 py-1 border rounded-lg border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                        className="text-sm px-3 py-1 border rounded-lg border-[var(--card-border)] hover:bg-[var(--chip-bg)] text-[var(--foreground)]"
                       >
                         View full description
                       </button>
@@ -284,7 +284,7 @@ export default function JobsPage() {
                         href={job.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="ml-auto inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition"
+                        className="ml-auto inline-block px-4 py-2 bg-[var(--primary)] text-white rounded-lg hover:brightness-90 transition"
                         onClick={(e) => e.stopPropagation()}
                       >
                         See the job posting
@@ -300,9 +300,9 @@ export default function JobsPage() {
 
       {/* Pagination — sticky footer */}
       <div className="sticky bottom-4 z-10">
-        <div className="flex flex-wrap justify-center items-center gap-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl px-3 py-2 border border-gray-200 dark:border-gray-700">
-          <button onClick={() => pushRoute(1)} disabled={currentPage === 1} className="px-3 py-1 text-sm border rounded-md border-gray-300 dark:border-gray-600 disabled:opacity-50">First</button>
-          <button onClick={() => pushRoute(currentPage - 1)} disabled={currentPage <= 1} className="px-3 py-1 text-sm border rounded-md border-gray-300 dark:border-gray-600 disabled:opacity-50">Previous</button>
+        <div className="flex flex-wrap justify-center items-center gap-2 bg-[color:var(--card)_/_0.8] backdrop-blur rounded-xl px-3 py-2 border border-[var(--card-border)]">
+          <button onClick={() => pushRoute(1)} disabled={currentPage === 1} className="px-3 py-1 text-sm border rounded-md border-[var(--card-border)] disabled:opacity-50">First</button>
+          <button onClick={() => pushRoute(currentPage - 1)} disabled={currentPage <= 1} className="px-3 py-1 text-sm border rounded-md border-[var(--card-border)] disabled:opacity-50">Previous</button>
 
           {pageItems.map((item, idx) =>
             item === '...' ? (
@@ -311,15 +311,15 @@ export default function JobsPage() {
               <button
                 key={item}
                 onClick={() => pushRoute(item as number)}
-                className={`px-3 py-1 text-sm border rounded-md border-gray-300 dark:border-gray-600 ${currentPage === item ? 'bg-black text-white dark:bg-white dark:text-black' : ''}`}
+                className={`px-3 py-1 text-sm border rounded-md border-[var(--card-border)] ${currentPage === item ? 'bg-[var(--foreground)] text-[var(--background)]' : ''}`}
               >
                 {item}
               </button>
             )
           )}
 
-          <button onClick={() => pushRoute(currentPage + 1)} disabled={currentPage >= totalPages} className="px-3 py-1 text-sm border rounded-md border-gray-300 dark:border-gray-600 disabled:opacity-50">Next</button>
-          <button onClick={() => pushRoute(totalPages)} disabled={currentPage === totalPages} className="px-3 py-1 text-sm border rounded-md border-gray-300 dark:border-gray-600 disabled:opacity-50">Last</button>
+          <button onClick={() => pushRoute(currentPage + 1)} disabled={currentPage >= totalPages} className="px-3 py-1 text-sm border rounded-md border-[var(--card-border)] disabled:opacity-50">Next</button>
+          <button onClick={() => pushRoute(totalPages)} disabled={currentPage === totalPages} className="px-3 py-1 text-sm border rounded-md border-[var(--card-border)] disabled:opacity-50">Last</button>
 
           <div className="ml-2 flex items-center gap-1 text-sm">
             <span>Go to</span>
@@ -335,7 +335,7 @@ export default function JobsPage() {
                   if (Number.isFinite(val)) pushRoute(val);
                 }
               }}
-              className="w-16 px-2 py-1 border rounded-md bg-transparent border-gray-300 dark:border-gray-600"
+              className="w-16 px-2 py-1 border rounded-md bg-transparent border-[var(--card-border)] text-[var(--foreground)]"
             />
           </div>
         </div>
@@ -348,24 +348,24 @@ export default function JobsPage() {
           onClick={() => setModalJob(null)}
         >
           <div
-            className="max-w-3xl w-full max-h-[80vh] overflow-auto bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-4"
+            className="max-w-3xl w-full max-h-[80vh] overflow-auto bg-[var(--card)] text-[var(--foreground)] rounded-2xl shadow-xl border border-[var(--card-border)] p-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h3 className="text-lg font-semibold">{modalJob.title}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <h3 className="text-lg font-semibold text-primary">{modalJob.title}</h3>
+                <p className="text-sm text-[var(--muted)]">
                   {modalJob.company_name} {modalJob.category ? `• ${modalJob.category}` : ''}
                 </p>
               </div>
               <button
                 onClick={() => setModalJob(null)}
-                className="px-3 py-1 border rounded-lg border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="px-3 py-1 border rounded-lg border-[var(--card-border)] hover:bg-[var(--chip-bg)]"
               >
                 Close
               </button>
             </div>
-            <div className="mt-3 prose prose-sm dark:prose-invert break-words [&_*]:max-w-full [&_img]:h-auto [&_img]:max-w-full text-gray-700 dark:text-gray-300">
+            <div className="mt-3 prose prose-sm break-words [&_*]:max-w-full [&_img]:h-auto [&_img]:max-w-full text-[var(--foreground)] [&_*]:text-[var(--foreground)]">
               <div dangerouslySetInnerHTML={{ __html: modalJob.description }} />
             </div>
           </div>
