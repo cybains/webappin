@@ -125,10 +125,33 @@ export default function ContactReproPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 600));
-    setSubmitting(false);
-    setShowForm(false);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        const message = data?.error ?? "We couldn’t send your message. Please try again.";
+        window.alert(message);
+        return;
+      }
+
+      setForm({ name: "", email: "", subject: "", message: "" });
+      setShowForm(false);
+      window.alert("Message sent! We’ll get back to you soon.");
+    } catch (error) {
+      console.error("Failed to send contact form", error);
+      window.alert("We couldn’t send your message. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
