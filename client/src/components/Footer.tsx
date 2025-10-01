@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaFacebook, FaTiktok } from "react-icons/fa6";
 import ThemeToggle from "./ThemeToggle";
@@ -18,12 +19,11 @@ export default function Footer() {
         >
           <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
           <ul className="space-y-2 text-sm">
-            <li><a href="/about" className="hover:underline">About Us</a></li>
-            <li><a href="/contact" className="hover:underline">Contact</a></li>
-            <li><a href="/faq" className="hover:underline">FAQs</a></li>
-            <li><a href="/methodology" className="hover:underline">Methodology</a></li>
-            <li><a href="/privacy-policy" className="hover:underline">Privacy Policy</a></li>
-            <li><a href="/terms-conditions" className="hover:underline">Terms & Conditions</a></li>
+            <li><Link href="/about" className="hover:underline">About Us</Link></li>
+            <li><Link href="/#contact" className="hover:underline">Contact</Link></li>
+            <li><Link href="/methodology" className="hover:underline">Methodology</Link></li>
+            <li><Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link></li>
+            <li><Link href="/terms-conditions" className="hover:underline">Terms & Conditions</Link></li>
           </ul>
         </motion.div>
 

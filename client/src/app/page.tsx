@@ -41,7 +41,7 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section id="Contact">
+        <section id="contact">
           <Contact />
         </section>
       </main>
