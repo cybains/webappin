@@ -9,5 +9,6 @@ react-simple-maps
 d3-geo
 react-DOM
 requests 
+resend
 pymongo
 python-dateutil

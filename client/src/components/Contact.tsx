@@ -9,8 +9,11 @@ export default function ContactReproPage() {
   const [showForm, setShowForm] = useState(false);
 
   // data
-  const email = "support@sufoniq.com";
+  const email = "contactform@sufoniq.com"; // keep this consistent with your backend env MAIL_TO
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+
+  // 🔧 tiny bug fix:
+  // the [submitting, setSubmitting] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   // refs
@@ -32,7 +35,10 @@ export default function ContactReproPage() {
     return { subject, body };
   };
 
-  const openCompose = (provider: "gmail" | "outlook" | "mailto", overrides?: { subject?: string; body?: string }) => {
+  const openCompose = (
+    provider: "gmail" | "outlook" | "mailto",
+    overrides?: { subject?: string; body?: string }
+  ) => {
     const { subject, body } = compose(overrides);
     let url = "";
     if (provider === "gmail") {
@@ -42,7 +48,7 @@ export default function ContactReproPage() {
     } else {
       url = `mailto:${email}?subject=${subject}&body=${body}`;
     }
-    window.open(url, provider === "mailto" ? "_self" : "_blank", "noopener,noreferrer");
+    window.open(url, provider === "mailto" ? "_self" : "_blank");
     setShowEmailMenu(false);
   };
 
@@ -117,7 +123,7 @@ export default function ContactReproPage() {
     if (toOpen) setTimeout(() => firstFieldRef.current?.focus(), 420);
   };
 
-  // form utils (stubbed send → just fake delay)
+  // form utils
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
@@ -126,9 +132,25 @@ export default function ContactReproPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 600));
-    setSubmitting(false);
-    setShowForm(false);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form), // { name, email, subject, message }
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error || `Request failed (${res.status})`);
+      }
+      setForm({ name: "", email: "", subject: "", message: "" });
+      setShowForm(false);
+      // TODO: optional toast success
+    } catch (err) {
+      console.error(err);
+      // TODO: optional toast error
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
