@@ -175,7 +175,7 @@ export default function TermsAndConditionsPage() {
         <section id="your-content" className="space-y-4">
           <h2 className="text-2xl font-semibold">7) Your Content & Licenses</h2>
           <ul className="list-disc pl-6 space-y-2">
-            <li>You retain ownership of content you upload ("Your Content").</li>
+            <li>You retain ownership of content you upload (&ldquo;Your Content&rdquo;).</li>
             <li>You grant {COMPANY_LEGAL} a worldwide, non‑exclusive, royalty‑free license to host, process, transmit, reproduce, and display Your Content solely to operate, secure, maintain, and improve the Services, and to comply with law. We do not sell Your Content.</li>
             <li>You warrant you have all rights necessary and that Your Content does not infringe third‑party rights.</li>
             <li><strong>Feedback.</strong> You grant us a perpetual, irrevocable, royalty‑free license to use suggestions without restriction.</li>

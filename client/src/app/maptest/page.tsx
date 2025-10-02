@@ -7,29 +7,7 @@ import Footer from "@/components/Footer";
 
 const NUM_MARKERS = 100;
 
-function getSmartCoordinates(): [number, number] {
-  const lat = Math.random() * 120 - 50;
-  const lng = Math.random() * 360 - 180;
-  return [lng, lat];
-}
-
-function jitter([lng, lat]: [number, number]): [number, number] {
-  const deltaLat = (Math.random() - 0.5) * 0.2;
-  const deltaLng = (Math.random() - 0.5) * 0.2;
-  return [lng + deltaLng, lat + deltaLat];
-}
-
-export default function MapTest() {
-  const [positions, setPositions] = useState(
-    Array.from({ length: NUM_MARKERS }, (_, i) => ({
-      id: i,
-      coordinates: getSmartCoordinates(),
-    }))
-  );
-
-  const [popupIndex, setPopupIndex] = useState<number | null>(null);
-
-  const popupFacts = [
+const popupFacts: string[] = [
   "🌉 Tokyo: Tokyo has the world’s busiest pedestrian crossing at Shibuya, where up to 3,000 people cross at once during peak times. Japan has more pets than children, with around 17 million pets compared to 15 million children under 15 years old.",
   "🚇 Delhi: Delhi’s metro system is the world’s longest operational metro network in a single country. India hosts the Kumbh Mela, the largest human gathering on Earth, attracting over 100 million people over weeks.",
   "🏦 Shanghai: Shanghai’s Bund was nicknamed the “Wall Street of the East” for its 1920s financial importance. China owns the world’s largest high-speed rail network — more than 40,000 km.",
@@ -58,80 +36,112 @@ export default function MapTest() {
 ];
 
 const factCoordinates: [number, number][] = [
-  [139.6917, 35.6895],   // Tokyo
-  [77.1025, 28.7041],    // Delhi
-  [121.4737, 31.2304],   // Shanghai
-  [-46.6333, -23.5505],  // São Paulo
-  [-99.1332, 19.4326],   // Mexico City
-  [31.2357, 30.0444],    // Cairo
-  [72.8777, 19.076],     // Mumbai
-  [116.4074, 39.9042],   // Beijing
-  [90.4125, 23.8103],    // Dhaka
-  [135.5023, 34.6937],   // Osaka
-  [-73.935242, 40.73061],// New York City
-  [66.9905, 24.8607],    // Karachi
-  [-58.4173, -34.6118],  // Buenos Aires
-  [106.5516, 29.563],    // Chongqing
-  [28.9784, 41.0082],    // Istanbul
-  [88.3639, 22.5726],    // Kolkata
-  [120.9842, 14.5995],   // Manila
-  [3.3792, 6.5244],      // Lagos
-  [-43.1729, -22.9068],  // Rio de Janeiro
-  [117.3616, 39.3434],   // Tianjin
-  [15.2663, -4.4419],    // Kinshasa
-  [113.2644, 23.1291],   // Guangzhou
-  [-118.2437, 34.0522],  // Los Angeles
-  [37.6173, 55.7558],    // Moscow
-  [114.0579, 22.5431],   // Shenzhen
+  [139.6917, 35.6895], // Tokyo
+  [77.1025, 28.7041], // Delhi
+  [121.4737, 31.2304], // Shanghai
+  [-46.6333, -23.5505], // São Paulo
+  [-99.1332, 19.4326], // Mexico City
+  [31.2357, 30.0444], // Cairo
+  [72.8777, 19.076], // Mumbai
+  [116.4074, 39.9042], // Beijing
+  [90.4125, 23.8103], // Dhaka
+  [135.5023, 34.6937], // Osaka
+  [-73.935242, 40.73061], // New York City
+  [66.9905, 24.8607], // Karachi
+  [-58.4173, -34.6118], // Buenos Aires
+  [106.5516, 29.563], // Chongqing
+  [28.9784, 41.0082], // Istanbul
+  [88.3639, 22.5726], // Kolkata
+  [120.9842, 14.5995], // Manila
+  [3.3792, 6.5244], // Lagos
+  [-43.1729, -22.9068], // Rio de Janeiro
+  [117.3616, 39.3434], // Tianjin
+  [15.2663, -4.4419], // Kinshasa
+  [113.2644, 23.1291], // Guangzhou
+  [-118.2437, 34.0522], // Los Angeles
+  [37.6173, 55.7558], // Moscow
+  [114.0579, 22.5431], // Shenzhen
 ];
 
-useEffect(() => {
-  // Helper: Fisher-Yates shuffle to randomize popup order each cycle
-  function shuffleArray(arr: number[]) {
-    const array = [...arr];
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
+function getSmartCoordinates(): [number, number] {
+  const lat = Math.random() * 120 - 50;
+  const lng = Math.random() * 360 - 180;
+  return [lng, lat];
+}
 
-  const customTimings = [
-    { delayBeforeShow: 2000, visibleDuration: 5000 }, // 1st popup: delay 2s, visible 2.5s
-    { delayBeforeShow: 2000, visibleDuration: 5000 }, // 2nd popup: delay 2s, visible 3s
-    { delayBeforeShow: 3000, visibleDuration: 5000 }, // 3rd popup: delay 3s, visible 2s
-  ];
+function jitter([lng, lat]: [number, number]): [number, number] {
+  const deltaLat = (Math.random() - 0.5) * 0.2;
+  const deltaLng = (Math.random() - 0.5) * 0.2;
+  return [lng + deltaLng, lat + deltaLat];
+}
 
-  let popupOrder = shuffleArray(popupFacts.map((_, i) => i));
-  let index = 0;
+export default function MapTest() {
+  const [positions, setPositions] = useState(
+    Array.from({ length: NUM_MARKERS }, (_, i) => ({
+      id: i,
+      coordinates: getSmartCoordinates(),
+    }))
+  );
 
-  const cyclePopups = () => {
-    const currentPopup = popupOrder[index];
-    setPopupIndex(currentPopup);
+  const [popupIndex, setPopupIndex] = useState<number | null>(null);
 
-    const isFirstThree = index < 3;
-    const { delayBeforeShow, visibleDuration } = isFirstThree
-      ? customTimings[index]
-      : {
-          delayBeforeShow: 5000 + Math.random() * 2000, // random between 3-5 seconds
-          visibleDuration: 5000,
-        };
-
-    setTimeout(() => {
-      setPopupIndex(null);
-
-      index++;
-      if (index >= popupOrder.length) {
-        popupOrder = shuffleArray(popupFacts.map((_, i) => i)); // reshuffle on full cycle
-        index = 0;
+  useEffect(() => {
+    // Helper: Fisher-Yates shuffle to randomize popup order each cycle
+    function shuffleArray(arr: number[]) {
+      const array = [...arr];
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
       }
+      return array;
+    }
 
-      setTimeout(cyclePopups, delayBeforeShow);
-    }, visibleDuration);
-  };
+    const customTimings = [
+      { delayBeforeShow: 2000, visibleDuration: 5000 }, // 1st popup: delay 2s, visible 2.5s
+      { delayBeforeShow: 2000, visibleDuration: 5000 }, // 2nd popup: delay 2s, visible 3s
+      { delayBeforeShow: 3000, visibleDuration: 5000 }, // 3rd popup: delay 3s, visible 2s
+    ];
 
-  cyclePopups();
-}, []);
+    let popupOrder = shuffleArray(popupFacts.map((_, i) => i));
+    let index = 0;
+    const timeoutIds: ReturnType<typeof setTimeout>[] = [];
+
+    const scheduleTimeout = (callback: () => void, delay: number) => {
+      const id = setTimeout(callback, delay);
+      timeoutIds.push(id);
+      return id;
+    };
+
+    const cyclePopups = () => {
+      const currentPopup = popupOrder[index];
+      setPopupIndex(currentPopup);
+
+      const isFirstThree = index < 3;
+      const { delayBeforeShow, visibleDuration } = isFirstThree
+        ? customTimings[index]
+        : {
+            delayBeforeShow: 5000 + Math.random() * 2000, // random between 3-5 seconds
+            visibleDuration: 5000,
+          };
+
+      scheduleTimeout(() => {
+        setPopupIndex(null);
+
+        index++;
+        if (index >= popupOrder.length) {
+          popupOrder = shuffleArray(popupFacts.map((_, i) => i)); // reshuffle on full cycle
+          index = 0;
+        }
+
+        scheduleTimeout(cyclePopups, delayBeforeShow);
+      }, visibleDuration);
+    };
+
+    cyclePopups();
+    return () => {
+      timeoutIds.forEach((id) => clearTimeout(id));
+    };
+  }, []);
 
 
 

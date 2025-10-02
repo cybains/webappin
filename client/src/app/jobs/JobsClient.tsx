@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 
 type Job = {
@@ -95,6 +96,7 @@ export default function JobsPage() {
   const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
   const [pageSize, setPageSize] = useState(currentLimit);
   const [modalJob, setModalJob] = useState<Job | null>(null);
+  const [logoOverrides, setLogoOverrides] = useState<Record<string, string>>({});
 
   const [qInput, setQInput] = useState(currentQ);
   const [sourceInput, setSourceInput] = useState(currentSource);
@@ -199,7 +201,8 @@ export default function JobsPage() {
           {jobs.map((job) => {
             const isExpanded = expandedJobId === job.id;
             const bannerText = job.source ? `Source: ${job.source}` : 'Source: External';
-            const logoSrc = job.company_logo || logoFallback(job.company_domain, job.company_name);
+            const defaultLogo = job.company_logo || logoFallback(job.company_domain, job.company_name);
+            const logoSrc = logoOverrides[job.id] ?? defaultLogo;
 
             return (
               <div
@@ -215,11 +218,18 @@ export default function JobsPage() {
                 <button onClick={() => toggleExpand(job.id)} className="w-full text-left">
                   <div className="flex justify-between items-start gap-3">
                     <div className="flex items-center gap-3">
-                      <img
+                      <Image
                         src={logoSrc}
                         alt={`${job.company_name} logo`}
+                        width={40}
+                        height={40}
                         className="w-10 h-10 object-contain rounded"
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).src = logoFallback(job.company_domain, job.company_name); }}
+                        unoptimized
+                        onError={() => {
+                          const fallback = logoFallback(job.company_domain, job.company_name);
+                          if (logoSrc === fallback) return;
+                          setLogoOverrides((prev) => ({ ...prev, [job.id]: fallback }));
+                        }}
                       />
                       <div>
                         <h2 className="text-xl font-semibold text-primary">{job.title}</h2>
