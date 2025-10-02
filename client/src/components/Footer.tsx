@@ -88,7 +88,7 @@ export default function Footer() {
           <div>
             <p className="mb-4">Helping you relocate without rage-quitting since 2025.</p>
           </div>
-          <p className="text-xs text-gray-200">&copy; {new Date().getFullYear()} Inquos. All rights reserved.</p>
+          <p className="text-xs text-gray-200">&copy; {new Date().getFullYear()} UAB Skillaxis. All rights reserved.</p>
         </motion.div>
       </div>
 
