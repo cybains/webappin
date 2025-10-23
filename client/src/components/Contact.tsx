@@ -9,7 +9,7 @@ export default function ContactReproPage() {
   const [showForm, setShowForm] = useState(false);
 
   // data
-  const email = "contactform@sufoniq.com"; // keep this consistent with your backend env MAIL_TO
+  const email = "support@sufoniq.com"; // keep this consistent with your backend env MAIL_TO
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
 
   // 🔧 tiny bug fix:
@@ -22,6 +22,8 @@ export default function ContactReproPage() {
   const emailMenuRef = useRef<HTMLDivElement | null>(null);
   const formCardRef = useRef<HTMLDivElement | null>(null);
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
+  const successTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   // helpers
   const isMobileNow = () =>
@@ -90,6 +92,14 @@ export default function ContactReproPage() {
     return () => window.removeEventListener("pointerdown", onDown);
   }, [focusMode]);
 
+  useEffect(() => {
+    return () => {
+      if (successTimerRef.current) {
+        clearTimeout(successTimerRef.current);
+      }
+    };
+  }, []);
+
   // click on the section background (not on buttons/panels) → close panels but keep focus mode
   const onSectionClickAway = (e: React.MouseEvent) => {
     const t = e.target as Node;
@@ -120,7 +130,14 @@ export default function ContactReproPage() {
     setShowForm(toOpen);
     setShowEmailMenu(false);
     anchorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    if (toOpen) setTimeout(() => firstFieldRef.current?.focus(), 420);
+    if (toOpen) {
+      setTimeout(() => firstFieldRef.current?.focus(), 420);
+      setShowSuccessMessage(false);
+      if (successTimerRef.current) {
+        clearTimeout(successTimerRef.current);
+        successTimerRef.current = null;
+      }
+    }
   };
 
   // form utils
@@ -144,7 +161,14 @@ export default function ContactReproPage() {
       }
       setForm({ name: "", email: "", subject: "", message: "" });
       setShowForm(false);
-      // TODO: optional toast success
+      setShowSuccessMessage(true);
+      if (successTimerRef.current) {
+        clearTimeout(successTimerRef.current);
+      }
+      successTimerRef.current = setTimeout(() => {
+        setShowSuccessMessage(false);
+        successTimerRef.current = null;
+      }, 6000);
     } catch (err) {
       console.error(err);
       // TODO: optional toast error
@@ -311,6 +335,14 @@ export default function ContactReproPage() {
             )}
           </div>
         </div>
+
+        {showSuccessMessage && (
+          <div className="mt-6 flex justify-center">
+            <div className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-6 py-3 text-sm font-medium text-emerald-700 shadow-sm">
+              Your message has landed safely at Mission Control! Our team will review it and get back to you within 24 hours — usually sooner.
+            </div>
+          </div>
+        )}
 
         {/* MOBILE: form below buttons */}
         {showForm && (

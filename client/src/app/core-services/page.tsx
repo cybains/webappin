@@ -35,6 +35,7 @@ import {
 // If not, swap them for basic wrappers.
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
 
 const services = [
   {
@@ -151,19 +152,6 @@ interface IntakeFormValues {
   message?: string;
 }
 
-function encodeMailtoBody(values: IntakeFormValues) {
-  const lines = [
-    `Name: ${values.name}`,
-    `Email: ${values.email}`,
-    values.phone ? `Phone/WhatsApp: ${values.phone}` : undefined,
-    values.reasons?.length ? `Reason(s): ${values.reasons.join(", ")}` : undefined,
-    values.stage ? `Where I'm at: ${values.stage}` : undefined,
-    values.location ? `Preferred location: ${values.location}` : undefined,
-    values.message ? `Notes: ${values.message}` : undefined,
-  ].filter(Boolean);
-  return encodeURIComponent(lines.join("\n"));
-}
-
 function ToggleChip({
   label,
   selected,
@@ -174,7 +162,7 @@ function ToggleChip({
       type="button"
       onClick={onToggle}
       aria-pressed={selected}
-      className={`rounded-full border px-3 py-1 text-sm ${selected ? "bg-primary text-primary-foreground" : "bg-background hover:bg-muted"}`}
+      className={`rounded-full border px-3 py-1 text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${selected ? "border-transparent bg-[var(--primary)] text-[var(--primary-foreground)] shadow-sm" : "border-border bg-background text-foreground hover:bg-muted"}`}
     >
       {label}
     </button>
@@ -185,11 +173,14 @@ function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [reasons, setReasons] = useState<string[]>([]);
   const [stage, setStage] = useState<string>("");
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [error, setError] = useState<string | null>(null);
 
   const toggleReason = (r: string) =>
     setReasons((prev) => (prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]));
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const form = formRef.current!;
     const data = new FormData(form);
@@ -203,17 +194,72 @@ function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }) {
       message: String(data.get("message") || ""),
     };
 
-    // Fallback email via mailto (no backend required). In production, replace with API POST.
-    const subject = encodeURIComponent(`New inquiry via Core Services: ${values.name}`);
-    const body = encodeMailtoBody(values);
-    const mailto = `mailto:support@sufoniq.com?subject=${subject}&body=${body}`;
-    window.location.href = mailto;
+    const subject = `Core services inquiry${values.reasons.length ? ` — ${values.reasons[0]}` : ""}`;
+    const composedMessage = [
+      values.phone ? `Phone / WhatsApp: ${values.phone}` : undefined,
+      values.reasons.length ? `Reason(s): ${values.reasons.join(", ")}` : undefined,
+      values.stage ? `Current stage: ${values.stage}` : undefined,
+      values.location ? `Preferred location: ${values.location}` : undefined,
+      values.message ? `Notes:\n${values.message}` : undefined,
+    ]
+      .filter(Boolean)
+      .join("\n\n");
 
-    onSubmitted?.();
+    setSubmitting(true);
+    setError(null);
+    setStatus("idle");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          subject,
+          message: composedMessage || "Core services inquiry",
+        }),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload?.error || `Request failed (${response.status})`);
+      }
+
+      form.reset();
+      setReasons([]);
+      setStage("");
+      setStatus("success");
+      onSubmitted?.();
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <form ref={formRef} className="grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
+      {status === "success" && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900"
+        >
+          Your message has landed safely at Mission Control! Our team will review it and get back to you within 24 hours —
+          usually sooner.
+        </div>
+      )}
+      {status === "error" && error && (
+        <div
+          role="alert"
+          className="rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+        >
+          {error}
+        </div>
+      )}
       <div className="grid gap-2 md:grid-cols-2">
         <div className="grid gap-2">
           <label htmlFor="name" className="text-sm font-medium">Name</label>
@@ -257,7 +303,9 @@ function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }) {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <Button type="submit" className="rounded-2xl">Submit</Button>
+        <Button type="submit" className="rounded-2xl" disabled={submitting}>
+          {submitting ? "Sending..." : "Submit"}
+        </Button>
       </div>
     </form>
   );
@@ -551,13 +599,7 @@ export default function CoreServicesPage() {
         </div>
       </section>
 
-      {/* Footer microcopy */}
-      <footer className="mx-auto max-w-6xl px-4 py-10">
-        <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Sufoniq. Built with optimism, maintained
-          with paperwork.
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }

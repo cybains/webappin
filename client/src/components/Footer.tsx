@@ -10,7 +10,6 @@ export default function Footer() {
   return (
     <footer className="w-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-[var(--foreground)] py-16 px-8">
       <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
-        
         {/* Quick Links */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -19,11 +18,31 @@ export default function Footer() {
         >
           <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/about" className="hover:underline">About Us</Link></li>
-            <li><Link href="/#contact" className="hover:underline">Contact</Link></li>
-            <li><Link href="/methodology" className="hover:underline">Methodology</Link></li>
-            <li><Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link></li>
-            <li><Link href="/terms-conditions" className="hover:underline">Terms & Conditions</Link></li>
+            <li>
+              <Link href="/about" className="hover:underline">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link href="/#contact" className="hover:underline">
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link href="/methodology" className="hover:underline">
+                Methodology
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy-policy" className="hover:underline">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms-conditions" className="hover:underline">
+                Terms & Conditions
+              </Link>
+            </li>
           </ul>
         </motion.div>
 
@@ -58,25 +77,24 @@ export default function Footer() {
         </motion.div>
 
         {/* Powered By */}
-<motion.div
-  initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1 }}
->
-  <h3 className="text-xl font-semibold mb-4">Powered By</h3>
-  <ul className="text-sm space-y-2">
-    <li>
-      <span className="font-semibold">Remotive API</span>: remote jobs, zero fluff.
-    </li>
-    <li>
-      <span className="font-semibold">MapLibre</span>: maps with open-source manners.
-    </li>
-    <li>
-      <span className="font-semibold">WorldData API</span>: global country & economic insights.
-    </li>
-  </ul>
-</motion.div>
-
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <h3 className="text-xl font-semibold mb-4">Powered By</h3>
+          <ul className="text-sm space-y-2">
+            <li>
+              <span className="font-semibold">Remotive API</span>: remote jobs, zero fluff.
+            </li>
+            <li>
+              <span className="font-semibold">MapLibre</span>: maps with open-source manners.
+            </li>
+            <li>
+              <span className="font-semibold">WorldData API</span>: global country & economic insights.
+            </li>
+          </ul>
+        </motion.div>
 
         {/* Brand Ethos */}
         <motion.div
@@ -88,7 +106,9 @@ export default function Footer() {
           <div>
             <p className="mb-4">Helping you relocate without rage-quitting since 2025.</p>
           </div>
-          <p className="text-xs text-gray-200">&copy; {new Date().getFullYear()} UAB Skillaxis. All rights reserved.</p>
+          <p className="text-xs text-gray-200">
+            © 2025 Sufoniq. Built with optimism, maintained with paperwork.
+          </p>
         </motion.div>
       </div>
 

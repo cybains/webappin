@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const MAIL_TO = process.env.MAIL_TO || "support@sufoniq.com";
 
 const safe = (s: string) =>
   String(s).replace(/[<>&"'`]/g, (c) =>
@@ -31,7 +32,7 @@ export async function POST(req: Request) {
 
     const { data, error } = await resend.emails.send({
       from: `Sufoniq Forms <${process.env.MAIL_FROM}>`,
-      to: process.env.MAIL_TO as string,  // or: [process.env.MAIL_TO as string]
+      to: MAIL_TO,
       replyTo: email,                      // ✅ correct property name
       subject: `New contact form: ${subject} — ${name}`,
       html,
