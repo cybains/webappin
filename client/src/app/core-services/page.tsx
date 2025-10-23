@@ -35,6 +35,7 @@ import {
 // If not, swap them for basic wrappers.
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
 
 const services = [
   {
@@ -174,7 +175,7 @@ function ToggleChip({
       type="button"
       onClick={onToggle}
       aria-pressed={selected}
-      className={`rounded-full border px-3 py-1 text-sm ${selected ? "bg-primary text-primary-foreground" : "bg-background hover:bg-muted"}`}
+      className={`rounded-full border px-3 py-1 text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${selected ? "border-transparent bg-[var(--primary)] text-[var(--primary-foreground)] shadow-sm" : "border-border bg-background text-foreground hover:bg-muted"}`}
     >
       {label}
     </button>
@@ -551,13 +552,7 @@ export default function CoreServicesPage() {
         </div>
       </section>
 
-      {/* Footer microcopy */}
-      <footer className="mx-auto max-w-6xl px-4 py-10">
-        <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Sufoniq. Built with optimism, maintained
-          with paperwork.
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }
