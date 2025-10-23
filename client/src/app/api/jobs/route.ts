@@ -20,11 +20,25 @@ export type Job = {
   source_id?: string;
 };
 
+export type FacetOption = {
+  value: string;
+  label: string;
+  count: number;
+};
+
+export type JobsFacets = {
+  sources: FacetOption[];
+  jobTypes: FacetOption[];
+  locations: FacetOption[];
+  tags: FacetOption[];
+};
+
 export type JobsResponse = {
   jobs: Job[];
   page: number;
   limit: number;
   totalJobs: number;
+  facets: JobsFacets;
 };
 
 // ---- Sources ----
@@ -107,6 +121,7 @@ function normalizeRemotive(j: RemotiveJob): Job {
 function normalizeArbeitnow(j: ArbeitnowJob): Job {
   const created = toIsoOrNull(j.created_at) ?? toIsoOrNull(j.updated_at);
   const primaryType = Array.isArray(j.job_types) && j.job_types.length > 0 ? j.job_types[0] : '';
+  const formattedType = primaryType ? primaryType.replace(/[_-]+/g, ' ').trim() : '';
   return {
     id: `arbeitnow_${safeStr(j.slug) || safeStr(j.url)}`,
     source: 'arbeitnow',
@@ -115,7 +130,7 @@ function normalizeArbeitnow(j: ArbeitnowJob): Job {
     company_name: safeStr(j.company_name),
     category: '',
     url: safeStr(j.url),
-    job_type: primaryType,
+    job_type: formattedType,
     candidate_required_location: safeStr(j.location),
     publication_date: created,
     salary: safeStr(j.salary),
@@ -183,32 +198,175 @@ function parseIntParam(v: string | null, d: number): number {
   return Number.isFinite(n) && n > 0 ? n : d;
 }
 
+const canonical = (value: string) => value.trim().toLowerCase();
+const canonicalJobType = (value: string) => canonical(value.replace(/[_\s]+/g, ' '));
+
+const titleCase = (value: string) =>
+  value
+    .toLowerCase()
+    .split(' ')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+const buildFacetArray = (map: Map<string, { label: string; count: number }>, limit?: number): FacetOption[] => {
+  const arr = Array.from(map.entries())
+    .map(([value, meta]) => ({ value, label: meta.label, count: meta.count }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+  return typeof limit === 'number' ? arr.slice(0, limit) : arr;
+};
+
+const deriveFacets = (jobs: Job[]): JobsFacets => {
+  const sourceMap = new Map<string, { label: string; count: number }>();
+  const jobTypeMap = new Map<string, { label: string; count: number }>();
+  const locationMap = new Map<string, { label: string; count: number }>();
+  const tagMap = new Map<string, { label: string; count: number }>();
+
+  for (const job of jobs) {
+    const source = job.source ?? 'external';
+    const sourceKey = canonical(source);
+    const sourceLabel = titleCase(source.replace(/[_-]+/g, ' '));
+    const existingSource = sourceMap.get(sourceKey);
+    sourceMap.set(sourceKey, {
+      label: existingSource?.label ?? sourceLabel,
+      count: (existingSource?.count ?? 0) + 1,
+    });
+
+    const jobTypeKey = canonicalJobType(job.job_type);
+    if (jobTypeKey) {
+      const label = titleCase(job.job_type.replace(/[_-]+/g, ' '));
+      const existing = jobTypeMap.get(jobTypeKey);
+      jobTypeMap.set(jobTypeKey, {
+        label: existing?.label ?? label,
+        count: (existing?.count ?? 0) + 1,
+      });
+    }
+
+    const locationKey = canonical(job.candidate_required_location);
+    if (locationKey) {
+      const label = job.candidate_required_location.trim();
+      const existing = locationMap.get(locationKey);
+      locationMap.set(locationKey, {
+        label: existing?.label ?? label,
+        count: (existing?.count ?? 0) + 1,
+      });
+    }
+
+    for (const rawTag of job.tags ?? []) {
+      const tagKey = canonical(rawTag);
+      if (!tagKey) continue;
+      const label = `#${rawTag.trim().replace(/^#+/, '')}`;
+      const existing = tagMap.get(tagKey);
+      tagMap.set(tagKey, {
+        label: existing?.label ?? label,
+        count: (existing?.count ?? 0) + 1,
+      });
+    }
+  }
+
+  return {
+    sources: buildFacetArray(sourceMap),
+    jobTypes: buildFacetArray(jobTypeMap, 12),
+    locations: buildFacetArray(locationMap, 15),
+    tags: buildFacetArray(tagMap, 20),
+  };
+};
+
+const isRemoteJob = (job: Job): boolean => {
+  if (job.source === 'remotive') return true;
+  const location = canonical(job.candidate_required_location);
+  if (!location) return false;
+  if (location.includes('remote') || location.includes('anywhere')) return true;
+  const tagSet = new Set((job.tags ?? []).map((tag) => canonical(tag)));
+  if (tagSet.has('remote') || tagSet.has('work from anywhere')) return true;
+  return false;
+};
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const page = parseIntParam(searchParams.get('page'), 1);
   const limit = parseIntParam(searchParams.get('limit'), 20);
   const q = safeStr(searchParams.get('q'));
-  const sourceRaw = safeStr(searchParams.get('source')) as SourceId | '';
+  const sourceInput = safeStr(searchParams.get('source'));
+  const sourceCanonical = canonical(sourceInput);
+  const jobTypeParam = safeStr(searchParams.get('job_type'));
+  const tagParam = safeStr(searchParams.get('tag'));
+  const locationParam = safeStr(searchParams.get('location'));
+  const remoteOnly = canonical(safeStr(searchParams.get('remote_only'))) === 'true';
+  const hasSalary = canonical(safeStr(searchParams.get('has_salary'))) === 'true';
+  const postedAfterRaw = safeStr(searchParams.get('posted_after'));
+
+  const sourceFilter = sourceCanonical;
+
+  const selectedJobTypes = jobTypeParam
+    .split(',')
+    .map(canonicalJobType)
+    .filter(Boolean);
+  const selectedTags = tagParam
+    .split(',')
+    .map(canonical)
+    .filter(Boolean);
+  const selectedLocation = canonical(locationParam);
+  const postedAfterDays = Number.parseInt(postedAfterRaw, 10);
+  const postedAfterThreshold = Number.isFinite(postedAfterDays) && postedAfterDays > 0
+    ? Date.now() - postedAfterDays * 24 * 60 * 60 * 1000
+    : null;
 
   // Gather jobs based on `source` filter
   let all: Job[] = [];
-  if (!sourceRaw || sourceRaw === 'remotive') {
+  if (!sourceFilter || sourceFilter === 'remotive' || sourceFilter === 'external') {
     const r = await fetchRemotive(q);
     all = all.concat(r);
   }
-  if (!sourceRaw || sourceRaw === 'arbeitnow') {
+  if (!sourceFilter || sourceFilter === 'arbeitnow' || sourceFilter === 'external') {
     const a = await fetchArbeitnow(q);
     all = all.concat(a);
   }
 
+  const facets = deriveFacets(all);
+
+  const filtered = all.filter((job) => {
+    if (sourceFilter) {
+      const jobSource = job.source ? canonical(job.source) : '';
+      if (sourceFilter === 'external') {
+        if (jobSource && jobSource !== 'external') return false;
+      } else if (jobSource !== sourceFilter) {
+        return false;
+      }
+    }
+    if (selectedJobTypes.length > 0 && !selectedJobTypes.includes(canonicalJobType(job.job_type))) {
+      return false;
+    }
+    if (selectedTags.length > 0) {
+      const tagSet = new Set((job.tags ?? []).map((tag) => canonical(tag)));
+      const hasTag = selectedTags.some((tag) => tagSet.has(tag));
+      if (!hasTag) return false;
+    }
+    if (selectedLocation && !canonical(job.candidate_required_location).includes(selectedLocation)) {
+      return false;
+    }
+    if (remoteOnly && !isRemoteJob(job)) {
+      return false;
+    }
+    if (hasSalary && !job.salary.trim()) {
+      return false;
+    }
+    if (postedAfterThreshold) {
+      if (!job.publication_date) return false;
+      const ts = Date.parse(job.publication_date);
+      if (Number.isNaN(ts) || ts < postedAfterThreshold) return false;
+    }
+    return true;
+  });
+
   // Sort and paginate locally
-  all.sort(sortByDateDesc);
-  const totalJobs = all.length;
+  filtered.sort(sortByDateDesc);
+  const totalJobs = filtered.length;
   const startIdx = (page - 1) * limit;
   const endIdx = Math.min(totalJobs, startIdx + limit);
-  const slice = startIdx < totalJobs ? all.slice(startIdx, endIdx) : [];
+  const slice = startIdx < totalJobs ? filtered.slice(startIdx, endIdx) : [];
 
-  const payload: JobsResponse = { jobs: slice, page, limit, totalJobs };
+  const payload: JobsResponse = { jobs: slice, page, limit, totalJobs, facets };
 
   return NextResponse.json(payload, {
     headers: { 'Cache-Control': 'no-store' },
