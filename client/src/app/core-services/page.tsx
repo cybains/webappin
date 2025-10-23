@@ -248,7 +248,8 @@ function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }) {
           aria-live="polite"
           className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900"
         >
-          Message sent! We’ll be in touch soon.
+          Your message has landed safely at Mission Control! Our team will review it and get back to you within 24 hours —
+          usually sooner.
         </div>
       )}
       {status === "error" && error && (

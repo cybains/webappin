@@ -8,9 +8,9 @@ function cn(...classes: Array<string | undefined | null | false>) {
 
 const variantStyles: Record<string, string> = {
   default:
-    "bg-[color:var(--primary)] text-[color:var(--background)] hover:brightness-95",
+    "bg-primary text-primary-foreground hover:bg-primary/90 bg-[color:var(--primary)] text-[color:var(--primary-foreground)] hover:brightness-95",
   secondary:
-    "bg-[color:var(--secondary)] text-[color:var(--foreground)] hover:brightness-95",
+    "bg-secondary text-[color:var(--foreground)] hover:bg-secondary/90 bg-[color:var(--secondary)] hover:brightness-95",
   outline:
     "border border-[color:var(--card-border)] bg-transparent text-[color:var(--foreground)] hover:bg-[color:var(--card)]",
 };
