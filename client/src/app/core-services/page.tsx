@@ -291,10 +291,10 @@ devSelfTests();
 export default function CoreServicesPage() {
   const [showTopForm, setShowTopForm] = useState(false);
   const [showBottomForm, setShowBottomForm] = useState(false);
-  const topFormRef = useRef<HTMLDivElement>(null);
-  const bottomFormRef = useRef<HTMLDivElement>(null);
+  const topFormRef = useRef<HTMLDivElement | null>(null);
+  const bottomFormRef = useRef<HTMLDivElement | null>(null);
 
-  const scrollIntoView = (ref: React.RefObject<HTMLDivElement>) => {
+  const scrollIntoView = (ref: React.MutableRefObject<HTMLDivElement | null>) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
