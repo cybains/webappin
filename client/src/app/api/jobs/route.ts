@@ -324,6 +324,10 @@ export async function GET(req: NextRequest) {
         job.job_type,
         job.candidate_required_location,
         job.salary,
+        job.company_domain ?? '',
+        job.source ?? '',
+        job.source_id ?? '',
+        job.url ?? '',
         (job.tags ?? []).join(' '),
         job.description,
       ]

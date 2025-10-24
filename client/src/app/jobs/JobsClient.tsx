@@ -42,6 +42,12 @@ type JobsResponse = {
   facets: JobsFacets;
 };
 
+type KeywordSuggestion = {
+  value: string;
+  label: string;
+  isCustom?: boolean;
+};
+
 type FetchJobsOptions = {
   page?: number;
   limit?: number;
@@ -214,6 +220,13 @@ export default function JobsPage() {
     jobs.forEach((job) => {
       if (job.job_type) register(job.job_type);
       if (job.category) register(job.category);
+      if (job.title) {
+        job.title
+          .split(/[\u2013\u2014,;:\/\-|]+/)
+          .map((part) => part.trim())
+          .filter(Boolean)
+          .forEach(register);
+      }
       (job.tags ?? []).forEach(register);
     });
     [...keywordSelections, ...currentKeywords].forEach((value) => {
@@ -223,13 +236,21 @@ export default function JobsPage() {
     return map;
   }, [facets, jobs, keywordSelections, currentKeywords]);
 
-  const keywordSuggestions = useMemo(() => {
+  const keywordSuggestions = useMemo<KeywordSuggestion[]>(() => {
     const normalizedDraft = canonical(keywordDraft);
     const entries = Array.from(keywordOptions.entries()).filter(([value]) => !keywordSelections.includes(value));
     const sliced = (!normalizedDraft
       ? entries.slice(0, 8)
       : entries.filter(([value]) => value.includes(normalizedDraft)).slice(0, 8));
-    return sliced.map(([value, label]) => ({ value, label }));
+    const mapped = sliced.map(([value, label]) => ({ value, label }));
+    if (normalizedDraft && !keywordSelections.includes(normalizedDraft)) {
+      const alreadyListed = mapped.some((option) => option.value === normalizedDraft);
+      if (!alreadyListed) {
+        const display = keywordDraft.trim() || formatLabel(normalizedDraft);
+        mapped.unshift({ value: normalizedDraft, label: display, isCustom: true });
+      }
+    }
+    return mapped;
   }, [keywordDraft, keywordOptions, keywordSelections]);
 
   const locationSuggestions = useMemo(() => {
@@ -379,19 +400,21 @@ export default function JobsPage() {
   const addKeyword = useCallback(
     (value: string) => {
       const normalized = canonical(value);
-      if (!normalized || !keywordOptions.has(normalized)) return;
+      if (!normalized) return;
       setKeywordSelections((prev) => (prev.includes(normalized) ? prev : [...prev, normalized]));
       setKeywordDraft('');
       setKeywordMenuOpen(false);
     },
-    [keywordOptions],
+    [],
   );
 
   const removeKeyword = useCallback((value: string) => {
     setKeywordSelections((prev) => prev.filter((item) => item !== value));
   }, []);
 
-  const toggleExpand = (id: string) => setExpandedJobId(expandedJobId === id ? null : id);
+  const toggleExpand = useCallback((id: string) => {
+    setExpandedJobId((prev) => (prev === id ? null : id));
+  }, []);
 
   const toggleJobType = (value: string) => {
     setJobTypeSelections((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
@@ -464,10 +487,12 @@ export default function JobsPage() {
   };
 
   const handleKeywordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault();
       if (keywordSuggestions.length > 0) {
         addKeyword(keywordSuggestions[0].value);
+      } else {
+        addKeyword(keywordDraft);
       }
     } else if (e.key === 'Backspace' && !keywordDraft && keywordSelections.length > 0) {
       e.preventDefault();
@@ -570,7 +595,7 @@ export default function JobsPage() {
                     ) : (
                       <ul className="max-h-48 overflow-y-auto text-sm">
                         {keywordSuggestions.map((option) => (
-                          <li key={option.value}>
+                          <li key={`${option.value}-${option.isCustom ? 'custom' : 'preset'}`}>
                             <button
                               type="button"
                               onMouseDown={(e) => {
@@ -579,7 +604,15 @@ export default function JobsPage() {
                               }}
                               className="flex w-full items-center gap-2 px-4 py-2 text-left transition hover:bg-[color:var(--primary)_/_0.08]"
                             >
-                              <span className="font-medium text-[var(--foreground)]">{option.label}</span>
+                              <span className="font-medium text-[var(--foreground)]">
+                                {option.isCustom ? (
+                                  <>
+                                    Search for <span className="font-semibold">“{option.label}”</span>
+                                  </>
+                                ) : (
+                                  option.label
+                                )}
+                              </span>
                             </button>
                           </li>
                         ))}
@@ -781,59 +814,75 @@ export default function JobsPage() {
                 const logoSrc = logoOverrides[job.id] ?? defaultLogo;
 
                 return (
-                  <div
+                  <article
                     key={job.id}
-                    className={`group col-span-1 flex flex-col overflow-hidden rounded-3xl border border-[var(--card-border)] bg-[color:var(--card)_/_0.8] px-5 py-5 shadow-lg transition-all hover:-translate-y-1 hover:shadow-2xl ${isExpanded ? 'ring-2 ring-[color:var(--primary)_/_0.6]' : ''}`}
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={isExpanded}
+                    onClick={() => toggleExpand(job.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleExpand(job.id);
+                      }
+                    }}
+                    className={`group col-span-1 flex flex-col overflow-hidden rounded-3xl border border-[var(--card-border)] bg-[color:var(--card)_/_0.8] px-5 py-5 shadow-lg outline-none transition-all hover:-translate-y-1 hover:shadow-2xl focus-visible:ring-2 focus-visible:ring-[color:var(--primary)_/_0.6] ${isExpanded ? 'ring-2 ring-[color:var(--primary)_/_0.6]' : ''}`}
                   >
-                    <button onClick={() => toggleExpand(job.id)} className="w-full text-left">
-                      <div className="flex items-start gap-4">
-                        <Image
-                          src={logoSrc}
-                          alt={`${job.company_name} logo`}
-                          width={48}
-                          height={48}
-                          className="h-12 w-12 shrink-0 rounded-xl border border-[var(--card-border)] bg-white/70 object-contain p-2"
-                          unoptimized
-                          onError={() => {
-                            const fallback = logoFallback(job.company_domain, job.company_name);
-                            if (logoSrc === fallback) return;
-                            setLogoOverrides((prev) => ({ ...prev, [job.id]: fallback }));
-                          }}
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center gap-2 text-[0.7rem] uppercase tracking-wide text-[var(--muted)]">
-                            {jobTypeLabel && (
-                              <span className="rounded-full border border-[var(--card-border)] bg-[color:var(--primary)_/_0.12] px-2 py-0.5 text-[var(--primary)]">
-                                {jobTypeLabel}
-                              </span>
-                            )}
-                            {locationLabel && (
-                              <span className="rounded-full border border-[var(--card-border)] px-2 py-0.5 text-[var(--muted)]">
-                                {locationLabel}
-                              </span>
-                            )}
-                            {postedOn && <span className="ml-auto text-[var(--muted)] normal-case">Posted {postedOn}</span>}
-                          </div>
-                          <h2 className="line-clamp-2 text-lg font-semibold text-primary transition group-hover:text-[var(--foreground)]">
-                            {job.title}
-                          </h2>
-                          <div className="text-sm text-[var(--muted)]">
-                            {job.company_name}{job.category ? ` • ${job.category}` : ''}
-                          </div>
+                    <div className="flex items-start gap-4">
+                      <Image
+                        src={logoSrc}
+                        alt={`${job.company_name} logo`}
+                        width={48}
+                        height={48}
+                        className="h-12 w-12 shrink-0 rounded-xl border border-[var(--card-border)] bg-white/70 object-contain p-2"
+                        unoptimized
+                        onError={() => {
+                          const fallback = logoFallback(job.company_domain, job.company_name);
+                          if (logoSrc === fallback) return;
+                          setLogoOverrides((prev) => ({ ...prev, [job.id]: fallback }));
+                        }}
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2 text-[0.7rem] uppercase tracking-wide text-[var(--muted)]">
+                          {jobTypeLabel && (
+                            <span className="rounded-full border border-[var(--card-border)] bg-[color:var(--primary)_/_0.12] px-2 py-0.5 text-[var(--primary)]">
+                              {jobTypeLabel}
+                            </span>
+                          )}
+                          {locationLabel && (
+                            <span className="rounded-full border border-[var(--card-border)] px-2 py-0.5 text-[var(--muted)]">
+                              {locationLabel}
+                            </span>
+                          )}
+                          {postedOn && <span className="ml-auto text-[var(--muted)] normal-case">Posted {postedOn}</span>}
+                        </div>
+                        <h2 className="line-clamp-2 text-lg font-semibold text-primary transition group-hover:text-[var(--foreground)]">
+                          {job.title}
+                        </h2>
+                        <div className="text-sm text-[var(--muted)]">
+                          {job.company_name}{job.category ? ` • ${job.category}` : ''}
                         </div>
                       </div>
+                    </div>
 
-                      <div className="mt-3 flex flex-wrap gap-2 text-[0.7rem] text-[var(--muted)]">
-                        {job.salary && (
-                          <span className="rounded-full border border-transparent bg-[color:var(--chip-bg)_/_0.9] px-3 py-1 text-[var(--foreground)]">
-                            {job.salary}
-                          </span>
-                        )}
-                      </div>
-                    </button>
+                    <div className="mt-3 flex flex-wrap gap-2 text-[0.7rem] text-[var(--muted)]">
+                      {job.salary && (
+                        <span className="rounded-full border border-transparent bg-[color:var(--chip-bg)_/_0.9] px-3 py-1 text-[var(--foreground)]">
+                          {job.salary}
+                        </span>
+                      )}
+                    </div>
 
                     {isExpanded && (
-                      <div className="mt-4 space-y-3 text-sm text-[var(--foreground)]">
+                      <div
+                        className="mt-4 space-y-3 text-sm text-[var(--foreground)]"
+                        onClick={(e) => e.stopPropagation()}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.stopPropagation();
+                          }
+                        }}
+                      >
                         {job.tags && job.tags.length > 0 && (
                           <div className="flex flex-wrap gap-2 text-xs text-[var(--muted)]">
                             {job.tags.slice(0, 12).map((tag, idx) => (
@@ -868,7 +917,7 @@ export default function JobsPage() {
                         </div>
                       </div>
                     )}
-                  </div>
+                  </article>
                 );
               })}
             </div>
