@@ -107,7 +107,7 @@ export default function Footer() {
             <p className="mb-4">Helping you relocate without rage-quitting since 2025.</p>
           </div>
           <p className="text-xs text-gray-200">
-            © 2025 Sufoniq. Built with optimism, maintained with paperwork.
+            © 2025 UAB Skillaxis. Built with optimism, maintained with paperwork.
           </p>
         </motion.div>
       </div>
