@@ -9,6 +9,9 @@ export type LocalEuropeNode = {
   y: number;
   weight?: number;
   metricLabel?: string;
+  color?: string;
+  haloColor?: string;
+  value?: number;
 };
 
 export type LocalEuropeLink = {
@@ -27,11 +30,56 @@ export interface LocalEuropeMapProps {
 }
 
 const DEFAULT_NODES: LocalEuropeNode[] = [
-  { id: "vienna", label: "Vienna", x: 35, y: 45, weight: 0.6, metricLabel: "Digital adoption 82%" },
-  { id: "berlin", label: "Berlin", x: 45, y: 30, weight: 0.7, metricLabel: "Digital adoption 85%" },
-  { id: "amsterdam", label: "Amsterdam", x: 35, y: 25, weight: 0.8, metricLabel: "Digital adoption 91%" },
-  { id: "lisbon", label: "Lisbon", x: 8, y: 60, weight: 0.4, metricLabel: "Digital adoption 74%" },
-  { id: "vilnius", label: "Vilnius", x: 60, y: 28, weight: 0.5, metricLabel: "Digital adoption 78%" },
+  {
+    id: "vienna",
+    label: "Vienna",
+    x: 35,
+    y: 45,
+    weight: 0.6,
+    metricLabel: "Digital adoption 82%",
+    color: "#4A90E2",
+    haloColor: "rgba(74, 144, 226, 0.28)",
+  },
+  {
+    id: "berlin",
+    label: "Berlin",
+    x: 45,
+    y: 30,
+    weight: 0.7,
+    metricLabel: "Digital adoption 85%",
+    color: "#2dd4bf",
+    haloColor: "rgba(45, 212, 191, 0.3)",
+  },
+  {
+    id: "amsterdam",
+    label: "Amsterdam",
+    x: 35,
+    y: 25,
+    weight: 0.8,
+    metricLabel: "Digital adoption 91%",
+    color: "#22d3ee",
+    haloColor: "rgba(34, 211, 238, 0.35)",
+  },
+  {
+    id: "lisbon",
+    label: "Lisbon",
+    x: 8,
+    y: 60,
+    weight: 0.4,
+    metricLabel: "Digital adoption 74%",
+    color: "#f97316",
+    haloColor: "rgba(249, 115, 22, 0.26)",
+  },
+  {
+    id: "vilnius",
+    label: "Vilnius",
+    x: 60,
+    y: 28,
+    weight: 0.5,
+    metricLabel: "Digital adoption 78%",
+    color: "#8b5cf6",
+    haloColor: "rgba(139, 92, 246, 0.28)",
+  },
 ];
 
 const DEFAULT_LINKS: LocalEuropeLink[] = [
@@ -171,6 +219,8 @@ export default function LocalEuropeMap({
         {nodes.map((n) => {
           const baseRadius = 1.8;
           const radius = baseRadius + (n.weight ?? 0.4) * 2.4;
+          const haloFill = n.haloColor ?? "rgba(59, 130, 246, 0.2)";
+          const coreFill = n.color ?? "var(--primary)";
           return (
             <g
               key={n.id}
@@ -181,8 +231,13 @@ export default function LocalEuropeMap({
               onMouseLeave={() => setHoverNode(null)}
               aria-label={n.label}
             >
-              <circle cx={n.x} cy={n.y} r={radius} className="fill-primary/10" />
-              <circle cx={n.x} cy={n.y} r={Math.max(1.6, radius - 1.2)} className="fill-primary" />
+              <circle cx={n.x} cy={n.y} r={radius} style={{ fill: haloFill }} />
+              <circle
+                cx={n.x}
+                cy={n.y}
+                r={Math.max(1.6, radius - 1.2)}
+                style={{ fill: coreFill }}
+              />
               <text x={n.x + radius + 1.6} y={n.y + 0.8} className="text-[2.2px] fill-foreground opacity-80">
                 {n.label}
               </text>
