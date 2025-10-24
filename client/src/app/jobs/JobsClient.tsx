@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 
@@ -29,7 +29,6 @@ type FacetOption = {
 };
 
 type JobsFacets = {
-  sources: FacetOption[];
   jobTypes: FacetOption[];
   locations: FacetOption[];
   tags: FacetOption[];
@@ -47,7 +46,6 @@ type FetchJobsOptions = {
   page?: number;
   limit?: number;
   q?: string;
-  source?: string;
   jobTypes?: string[];
   tags?: string[];
   location?: string;
@@ -58,7 +56,6 @@ type FetchJobsOptions = {
 
 type RouteFilters = {
   q?: string;
-  source?: string;
   jobType?: string;
   tags?: string;
   location?: string;
@@ -68,8 +65,7 @@ type RouteFilters = {
 };
 
 const PAGE_WINDOW = 7;
-const PAGE_SIZES = [10, 20, 30, 50, 100];
-const EMPTY_FACETS: JobsFacets = { sources: [], jobTypes: [], locations: [], tags: [] };
+const EMPTY_FACETS: JobsFacets = { jobTypes: [], locations: [], tags: [] };
 
 function buildPageItems(current: number, total: number, windowSize = PAGE_WINDOW): (number | '...')[] {
   if (total <= windowSize) return Array.from({ length: total }, (_, i) => i + 1);
@@ -95,7 +91,6 @@ async function getJobs({
   page = 1,
   limit = 20,
   q = '',
-  source = '',
   jobTypes = [],
   tags = [],
   location = '',
@@ -107,7 +102,6 @@ async function getJobs({
   params.set('page', String(page));
   params.set('limit', String(limit));
   if (q) params.set('q', q);
-  if (source) params.set('source', source);
   if (jobTypes.length > 0) params.set('job_type', Array.from(new Set(jobTypes)).join(','));
   if (tags.length > 0) params.set('tag', Array.from(new Set(tags)).join(','));
   if (location.trim()) params.set('location', location.trim());
@@ -144,6 +138,15 @@ function logoFallback(domain?: string, companyName?: string) {
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&size=64&background=DDD&color=444`;
 }
 
+const canonical = (value: string) => value.trim().toLowerCase();
+
+const formatLabel = (value: string) =>
+  value
+    .split(/[\s_-]+/)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+
 export default function JobsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -151,7 +154,6 @@ export default function JobsPage() {
   const currentPage = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
   const currentLimit = Math.max(1, parseInt(searchParams.get('limit') || '20', 10));
   const currentQ = (searchParams.get('q') || '').trim();
-  const currentSource = (searchParams.get('source') || '').trim().toLowerCase();
   const currentJobTypeParam = (searchParams.get('job_type') || '').trim();
   const currentTagParam = (searchParams.get('tag') || '').trim();
   const currentLocationParam = (searchParams.get('location') || '').trim();
@@ -169,72 +171,127 @@ export default function JobsPage() {
     [currentTagParam],
   );
 
+  const currentKeywords = useMemo(
+    () => (currentQ ? currentQ.split(',').map((value) => canonical(value)).filter(Boolean) : []),
+    [currentQ],
+  );
+
   const [jobs, setJobs] = useState<Job[]>([]);
   const [totalJobs, setTotalJobs] = useState(0);
   const [loading, setLoading] = useState(false);
   const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
-  const [pageSize, setPageSize] = useState(currentLimit);
   const [modalJob, setModalJob] = useState<Job | null>(null);
   const [logoOverrides, setLogoOverrides] = useState<Record<string, string>>({});
   const [facets, setFacets] = useState<JobsFacets | null>(null);
 
-  const [qInput, setQInput] = useState(currentQ);
-  const [sourceInput, setSourceInput] = useState(currentSource);
+  const [keywordSelections, setKeywordSelections] = useState<string[]>(currentKeywords);
+  const [keywordDraft, setKeywordDraft] = useState('');
+  const [keywordMenuOpen, setKeywordMenuOpen] = useState(false);
   const [jobTypeSelections, setJobTypeSelections] = useState<string[]>(currentJobTypes);
   const [tagSelections, setTagSelections] = useState<string[]>(currentTags);
-  const [locationInput, setLocationInput] = useState(currentLocationParam);
+  const [selectedLocation, setSelectedLocation] = useState(currentLocationParam);
+  const [locationDraft, setLocationDraft] = useState(currentLocationParam);
+  const [locationMenuOpen, setLocationMenuOpen] = useState(false);
   const [remoteOnlyInput, setRemoteOnlyInput] = useState(currentRemoteOnlyParam);
   const [hasSalaryInput, setHasSalaryInput] = useState(currentHasSalaryParam);
   const [postedAfterInput, setPostedAfterInput] = useState(currentPostedAfterParam);
 
-  const totalPages = useMemo(() => Math.max(1, Math.ceil(totalJobs / pageSize)), [totalJobs, pageSize]);
+  const limit = Math.max(1, currentLimit);
+  const totalPages = useMemo(() => Math.max(1, Math.ceil(totalJobs / limit)), [totalJobs, limit]);
   const pageItems = useMemo(() => buildPageItems(currentPage, totalPages), [currentPage, totalPages]);
 
-  const currentFilters = useMemo<RouteFilters>(() => ({
-    q: currentQ,
-    source: currentSource,
-    jobType: currentJobTypeParam,
-    tags: currentTagParam,
-    location: currentLocationParam,
-    remoteOnly: currentRemoteOnlyParam ? 'true' : '',
-    hasSalary: currentHasSalaryParam ? 'true' : '',
-    postedAfter: currentPostedAfterParam,
+  const keywordOptions = useMemo(() => {
+    const map = new Map<string, string>();
+    const register = (raw: string) => {
+      const cleaned = raw.replace(/^#+/, '').replace(/\s+/g, ' ').trim();
+      if (!cleaned) return;
+      const key = canonical(cleaned);
+      if (!key || map.has(key)) return;
+      map.set(key, formatLabel(cleaned));
+    };
+    (facets?.tags ?? []).forEach((opt) => register(opt.label));
+    (facets?.jobTypes ?? []).forEach((opt) => register(opt.label));
+    jobs.forEach((job) => {
+      if (job.job_type) register(job.job_type);
+      if (job.category) register(job.category);
+      (job.tags ?? []).forEach(register);
+    });
+    [...keywordSelections, ...currentKeywords].forEach((value) => {
+      const key = canonical(value);
+      if (!map.has(key)) map.set(key, formatLabel(value));
+    });
+    return map;
+  }, [facets, jobs, keywordSelections, currentKeywords]);
+
+  const keywordSuggestions = useMemo(() => {
+    const normalizedDraft = canonical(keywordDraft);
+    const entries = Array.from(keywordOptions.entries()).filter(([value]) => !keywordSelections.includes(value));
+    const sliced = (!normalizedDraft
+      ? entries.slice(0, 8)
+      : entries.filter(([value]) => value.includes(normalizedDraft)).slice(0, 8));
+    return sliced.map(([value, label]) => ({ value, label }));
+  }, [keywordDraft, keywordOptions, keywordSelections]);
+
+  const locationSuggestions = useMemo(() => {
+    const options = facets?.locations ?? [];
+    const normalizedDraft = canonical(locationDraft);
+    if (!normalizedDraft) return options.slice(0, 8);
+    return options.filter((option) => canonical(option.label).includes(normalizedDraft)).slice(0, 8);
+  }, [facets, locationDraft]);
+
+  const routeFiltersFromState = useMemo<RouteFilters>(() => ({
+    q: keywordSelections.length > 0 ? keywordSelections.join(',') : '',
+    jobType: jobTypeSelections.length > 0 ? jobTypeSelections.join(',') : '',
+    tags: tagSelections.length > 0 ? tagSelections.join(',') : '',
+    location: selectedLocation.trim(),
+    remoteOnly: remoteOnlyInput ? 'true' : '',
+    hasSalary: hasSalaryInput ? 'true' : '',
+    postedAfter: postedAfterInput,
   }), [
-    currentHasSalaryParam,
-    currentJobTypeParam,
-    currentLocationParam,
-    currentPostedAfterParam,
-    currentQ,
-    currentRemoteOnlyParam,
-    currentSource,
-    currentTagParam,
+    keywordSelections,
+    jobTypeSelections,
+    tagSelections,
+    selectedLocation,
+    remoteOnlyInput,
+    hasSalaryInput,
+    postedAfterInput,
   ]);
 
-  const pushRoute = useCallback((page: number, limit = pageSize, filters: RouteFilters = currentFilters) => {
-    const clamped = Math.min(Math.max(1, Math.trunc(page)), Math.max(1, Math.trunc(Math.ceil(totalJobs / limit))));
-    const qs = new URLSearchParams();
-    qs.set('page', String(clamped));
-    qs.set('limit', String(Math.trunc(limit)));
-    if (filters.q) qs.set('q', filters.q);
-    if (filters.source) qs.set('source', filters.source);
-    if (filters.jobType) qs.set('job_type', filters.jobType);
-    if (filters.tags) qs.set('tag', filters.tags);
-    if (filters.location) qs.set('location', filters.location);
-    if (filters.remoteOnly === 'true') qs.set('remote_only', 'true');
-    if (filters.hasSalary === 'true') qs.set('has_salary', 'true');
-    if (filters.postedAfter) qs.set('posted_after', filters.postedAfter);
-    router.push(`/jobs?${qs.toString()}`);
-  }, [router, pageSize, totalJobs, currentFilters]);
+  const filtersKey = useMemo(() => JSON.stringify(routeFiltersFromState), [routeFiltersFromState]);
 
-  const pushPage = useCallback((page: number) => pushRoute(page), [pushRoute]);
+  const keywordBlurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const locationBlurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isSyncingRef = useRef(false);
+  const lastAppliedFiltersRef = useRef(filtersKey);
+
+  const pushRoute = useCallback(
+    (page: number, filters: RouteFilters) => {
+      const clampedPage = Math.min(Math.max(1, Math.trunc(page)), totalPages);
+      const qs = new URLSearchParams();
+      qs.set('page', String(clampedPage));
+      qs.set('limit', String(limit));
+      if (filters.q) qs.set('q', filters.q);
+      if (filters.jobType) qs.set('job_type', filters.jobType);
+      if (filters.tags) qs.set('tag', filters.tags);
+      if (filters.location) qs.set('location', filters.location);
+      if (filters.remoteOnly === 'true') qs.set('remote_only', 'true');
+      if (filters.hasSalary === 'true') qs.set('has_salary', 'true');
+      if (filters.postedAfter) qs.set('posted_after', filters.postedAfter);
+      const next = `/jobs?${qs.toString()}`;
+      const current = `/jobs?${searchParams.toString()}`;
+      if (next !== current) router.push(next);
+    },
+    [limit, router, searchParams, totalPages],
+  );
+
+  const pushPage = useCallback((page: number) => pushRoute(page, routeFiltersFromState), [pushRoute, routeFiltersFromState]);
 
   useEffect(() => {
     setLoading(true);
     getJobs({
       page: currentPage,
-      limit: currentLimit,
+      limit,
       q: currentQ,
-      source: currentSource,
       jobTypes: currentJobTypes,
       tags: currentTags,
       location: currentLocationParam,
@@ -248,29 +305,63 @@ export default function JobsPage() {
       setLoading(false);
       setExpandedJobId(null);
     });
-    setPageSize(currentLimit);
-    setQInput(currentQ);
-    setSourceInput(currentSource);
+
+    isSyncingRef.current = true;
+    setKeywordSelections(currentKeywords);
+    setKeywordDraft('');
+    setKeywordMenuOpen(false);
     setJobTypeSelections(currentJobTypes);
     setTagSelections(currentTags);
-    setLocationInput(currentLocationParam);
+    setSelectedLocation(currentLocationParam);
+    setLocationDraft(currentLocationParam);
+    setLocationMenuOpen(false);
     setRemoteOnlyInput(currentRemoteOnlyParam);
     setHasSalaryInput(currentHasSalaryParam);
     setPostedAfterInput(currentPostedAfterParam);
+
+    const currentRouteFilters: RouteFilters = {
+      q: currentQ,
+      jobType: currentJobTypeParam,
+      tags: currentTagParam,
+      location: currentLocationParam,
+      remoteOnly: currentRemoteOnlyParam ? 'true' : '',
+      hasSalary: currentHasSalaryParam ? 'true' : '',
+      postedAfter: currentPostedAfterParam,
+    };
+    lastAppliedFiltersRef.current = JSON.stringify(currentRouteFilters);
+
+    const timer = setTimeout(() => {
+      isSyncingRef.current = false;
+    }, 0);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [
     currentPage,
-    currentLimit,
+    limit,
     currentQ,
-    currentSource,
     currentJobTypes,
     currentTags,
     currentLocationParam,
     currentRemoteOnlyParam,
     currentHasSalaryParam,
     currentPostedAfterParam,
+    currentKeywords,
+    currentJobTypeParam,
+    currentTagParam,
   ]);
 
-  // keyboard nav
+  useEffect(() => {
+    if (isSyncingRef.current) return;
+    if (filtersKey === lastAppliedFiltersRef.current) return;
+    const timer = setTimeout(() => {
+      pushRoute(1, routeFiltersFromState);
+      lastAppliedFiltersRef.current = filtersKey;
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [filtersKey, routeFiltersFromState, pushRoute]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') pushPage(currentPage - 1);
@@ -280,27 +371,25 @@ export default function JobsPage() {
     return () => window.removeEventListener('keydown', onKey);
   }, [currentPage, pushPage]);
 
-  const onPageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newSize = parseInt(e.target.value, 10);
-    if (!Number.isFinite(newSize) || newSize <= 0) return;
-    setPageSize(newSize);
-    pushRoute(1, newSize);
-  };
+  useEffect(() => () => {
+    if (keywordBlurTimeout.current) clearTimeout(keywordBlurTimeout.current);
+    if (locationBlurTimeout.current) clearTimeout(locationBlurTimeout.current);
+  }, []);
 
-  const onSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const filters: RouteFilters = {
-      q: qInput.trim(),
-      source: sourceInput.trim(),
-      jobType: jobTypeSelections.length > 0 ? jobTypeSelections.join(',') : '',
-      tags: tagSelections.length > 0 ? tagSelections.join(',') : '',
-      location: locationInput.trim(),
-      remoteOnly: remoteOnlyInput ? 'true' : '',
-      hasSalary: hasSalaryInput ? 'true' : '',
-      postedAfter: postedAfterInput,
-    };
-    pushRoute(1, pageSize, filters);
-  };
+  const addKeyword = useCallback(
+    (value: string) => {
+      const normalized = canonical(value);
+      if (!normalized || !keywordOptions.has(normalized)) return;
+      setKeywordSelections((prev) => (prev.includes(normalized) ? prev : [...prev, normalized]));
+      setKeywordDraft('');
+      setKeywordMenuOpen(false);
+    },
+    [keywordOptions],
+  );
+
+  const removeKeyword = useCallback((value: string) => {
+    setKeywordSelections((prev) => prev.filter((item) => item !== value));
+  }, []);
 
   const toggleExpand = (id: string) => setExpandedJobId(expandedJobId === id ? null : id);
 
@@ -312,23 +401,109 @@ export default function JobsPage() {
     setTagSelections((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
   };
 
-  const formatLabel = (value: string) =>
-    value
-      .split(/[\s_-]+/)
-      .filter(Boolean)
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
+  const selectLocation = useCallback((label: string) => {
+    const normalized = label.trim();
+    if (!normalized) {
+      setSelectedLocation('');
+      setLocationDraft('');
+    } else {
+      setSelectedLocation(normalized);
+      setLocationDraft(normalized);
+    }
+    setLocationMenuOpen(false);
+  }, []);
+
+  const commitLocationDraft = useCallback(() => {
+    const normalized = canonical(locationDraft);
+    if (!normalized) {
+      setSelectedLocation('');
+      setLocationDraft('');
+      return;
+    }
+    const match = (facets?.locations ?? []).find((option) => canonical(option.label) === normalized);
+    if (match) {
+      setSelectedLocation(match.label);
+      setLocationDraft(match.label);
+    } else if (selectedLocation) {
+      setLocationDraft(selectedLocation);
+    } else {
+      setSelectedLocation('');
+      setLocationDraft('');
+    }
+  }, [facets, locationDraft, selectedLocation]);
+
+  const handleKeywordFocus = () => {
+    if (keywordBlurTimeout.current) {
+      clearTimeout(keywordBlurTimeout.current);
+      keywordBlurTimeout.current = null;
+    }
+    setKeywordMenuOpen(true);
+  };
+
+  const handleKeywordBlur = () => {
+    if (keywordBlurTimeout.current) clearTimeout(keywordBlurTimeout.current);
+    keywordBlurTimeout.current = setTimeout(() => {
+      setKeywordMenuOpen(false);
+    }, 120);
+  };
+
+  const handleLocationFocus = () => {
+    if (locationBlurTimeout.current) {
+      clearTimeout(locationBlurTimeout.current);
+      locationBlurTimeout.current = null;
+    }
+    setLocationMenuOpen(true);
+  };
+
+  const handleLocationBlur = () => {
+    if (locationBlurTimeout.current) clearTimeout(locationBlurTimeout.current);
+    locationBlurTimeout.current = setTimeout(() => {
+      commitLocationDraft();
+      setLocationMenuOpen(false);
+    }, 120);
+  };
+
+  const handleKeywordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (keywordSuggestions.length > 0) {
+        addKeyword(keywordSuggestions[0].value);
+      }
+    } else if (e.key === 'Backspace' && !keywordDraft && keywordSelections.length > 0) {
+      e.preventDefault();
+      removeKeyword(keywordSelections[keywordSelections.length - 1]);
+    } else if (e.key === 'Escape') {
+      setKeywordMenuOpen(false);
+    }
+  };
+
+  const handleLocationKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (locationSuggestions.length > 0) {
+        selectLocation(locationSuggestions[0].label);
+      } else {
+        commitLocationDraft();
+      }
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      setLocationMenuOpen(false);
+      setLocationDraft(selectedLocation);
+    }
+  };
 
   const onClearFilters = () => {
-    setQInput('');
-    setSourceInput('');
+    setKeywordSelections([]);
+    setKeywordDraft('');
+    setKeywordMenuOpen(false);
     setJobTypeSelections([]);
     setTagSelections([]);
-    setLocationInput('');
+    setSelectedLocation('');
+    setLocationDraft('');
+    setLocationMenuOpen(false);
     setRemoteOnlyInput(false);
     setHasSalaryInput(false);
     setPostedAfterInput('');
-    pushRoute(1, pageSize, {});
   };
 
   return (
@@ -336,7 +511,7 @@ export default function JobsPage() {
       <div className="lg:grid lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] lg:gap-8 xl:gap-12">
         <aside className="mb-10 lg:mb-0">
           <form
-            onSubmit={onSearchSubmit}
+            onSubmit={(event) => event.preventDefault()}
             className="space-y-6 rounded-3xl border border-[var(--card-border)] bg-[color:var(--card)_/_0.85] backdrop-blur p-6 shadow-lg lg:sticky lg:top-24"
           >
             <div className="flex items-start justify-between gap-4">
@@ -354,70 +529,109 @@ export default function JobsPage() {
             </div>
 
             <div className="space-y-4">
-              <div>
-                <label className="text-xs uppercase tracking-wide text-[var(--muted)]">Keyword</label>
-                <input
-                  value={qInput}
-                  onChange={(e) => setQInput(e.target.value)}
-                  placeholder="Search title, company, category, tags…"
-                  className="mt-1 w-full rounded-2xl border border-[var(--card-border)] bg-[var(--card)] px-4 py-2.5 text-sm focus:border-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[color:var(--primary)_/_0.2]"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs uppercase tracking-wide text-[var(--muted)]">Source</label>
-                <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
-                  <label className={`flex items-center gap-2 rounded-2xl border px-3 py-2 transition ${sourceInput === '' ? 'border-[var(--primary)] bg-[color:var(--primary)_/_0.1]' : 'border-[var(--card-border)] hover:border-[var(--primary)]'}`}>
-                    <input
-                      type="radio"
-                      name="source"
-                      value=""
-                      checked={sourceInput === ''}
-                      onChange={() => setSourceInput('')}
-                    />
-                    <span>All sources</span>
-                  </label>
-                  {(facets?.sources ?? []).map((option) => (
-                    <label
-                      key={option.value}
-                      className={`flex items-center gap-2 rounded-2xl border px-3 py-2 transition ${sourceInput === option.value ? 'border-[var(--primary)] bg-[color:var(--primary)_/_0.1]' : 'border-[var(--card-border)] hover:border-[var(--primary)]'}`}
-                    >
-                      <input
-                        type="radio"
-                        name="source"
-                        value={option.value}
-                        checked={sourceInput === option.value}
-                        onChange={() => setSourceInput(option.value)}
-                      />
-                      <span>{option.label}</span>
-                      <span className="ml-auto text-[0.65rem] text-[var(--muted)]">{option.count}</span>
-                    </label>
-                  ))}
+              <div className="relative">
+                <label className="text-xs uppercase tracking-wide text-[var(--muted)]">Keywords</label>
+                <div className="mt-1 flex min-h-[2.75rem] flex-wrap items-center gap-2 rounded-2xl border border-[var(--card-border)] bg-[var(--card)] px-3 py-2.5">
+                  {keywordSelections.length === 0 && !keywordDraft ? (
+                    <span className="text-xs text-[var(--muted)]">Start typing to add keywords</span>
+                  ) : null}
+                  {keywordSelections.map((value) => {
+                    const label = keywordOptions.get(value) ?? formatLabel(value);
+                    return (
+                      <span
+                        key={value}
+                        className="inline-flex items-center gap-1 rounded-full bg-[color:var(--primary)_/_0.12] px-3 py-1 text-xs font-medium text-primary"
+                      >
+                        {label}
+                        <button
+                          type="button"
+                          onClick={() => removeKeyword(value)}
+                          className="ml-1 rounded-full border border-transparent p-0.5 text-[0.65rem] text-primary transition hover:border-primary hover:bg-[color:var(--primary)_/_0.08]"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    );
+                  })}
+                  <input
+                    value={keywordDraft}
+                    onChange={(e) => setKeywordDraft(e.target.value)}
+                    onFocus={handleKeywordFocus}
+                    onBlur={handleKeywordBlur}
+                    onKeyDown={handleKeywordKeyDown}
+                    placeholder={keywordSelections.length === 0 ? 'Search the keyword catalog…' : 'Add another keyword…'}
+                    className="flex-1 min-w-[140px] border-none bg-transparent text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted)]"
+                  />
                 </div>
+                {keywordMenuOpen && (
+                  <div className="absolute left-0 right-0 z-20 mt-2 rounded-2xl border border-[var(--card-border)] bg-[var(--card)] shadow-xl">
+                    {keywordSuggestions.length === 0 ? (
+                      <p className="px-4 py-3 text-xs text-[var(--muted)]">No matching keywords found.</p>
+                    ) : (
+                      <ul className="max-h-48 overflow-y-auto text-sm">
+                        {keywordSuggestions.map((option) => (
+                          <li key={option.value}>
+                            <button
+                              type="button"
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                addKeyword(option.value);
+                              }}
+                              className="flex w-full items-center gap-2 px-4 py-2 text-left transition hover:bg-[color:var(--primary)_/_0.08]"
+                            >
+                              <span className="font-medium text-[var(--foreground)]">{option.label}</span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
               </div>
 
-              <div>
+
+              <div className="relative">
                 <label className="text-xs uppercase tracking-wide text-[var(--muted)]">Location</label>
                 <input
-                  value={locationInput}
-                  onChange={(e) => setLocationInput(e.target.value)}
-                  placeholder="City, country, remote keyword…"
+                  value={locationDraft}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setLocationDraft(value);
+                    if (!value.trim()) {
+                      setSelectedLocation('');
+                    }
+                  }}
+                  onFocus={handleLocationFocus}
+                  onBlur={handleLocationBlur}
+                  onKeyDown={handleLocationKeyDown}
+                  placeholder="Pick from available locations"
                   className="mt-1 w-full rounded-2xl border border-[var(--card-border)] bg-[var(--card)] px-4 py-2.5 text-sm focus:border-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[color:var(--primary)_/_0.2]"
                 />
-                {facets?.locations?.length ? (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {facets.locations.slice(0, 6).map((option) => (
-                      <button
-                        type="button"
-                        key={option.value}
-                        onClick={() => setLocationInput(option.label)}
-                        className="rounded-full border border-[var(--card-border)] px-3 py-1 text-xs text-[var(--muted)] transition hover:border-[var(--primary)] hover:text-primary"
-                      >
-                        {option.label}
-                      </button>
-                    ))}
+                {locationMenuOpen && (
+                  <div className="absolute left-0 right-0 z-20 mt-2 rounded-2xl border border-[var(--card-border)] bg-[var(--card)] shadow-xl">
+                    {locationSuggestions.length === 0 ? (
+                      <p className="px-4 py-3 text-xs text-[var(--muted)]">No matching locations.</p>
+                    ) : (
+                      <ul className="max-h-48 overflow-y-auto text-sm">
+                        {locationSuggestions.map((option) => (
+                          <li key={option.value}>
+                            <button
+                              type="button"
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                selectLocation(option.label);
+                              }}
+                              className="flex w-full items-center gap-2 px-4 py-2 text-left transition hover:bg-[color:var(--primary)_/_0.08]"
+                            >
+                              <span className="text-[var(--foreground)]">{option.label}</span>
+                              <span className="ml-auto text-[0.65rem] text-[var(--muted)]">{option.count}</span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                ) : null}
+                )}
               </div>
 
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -506,26 +720,6 @@ export default function JobsPage() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between gap-2 text-sm">
-                <label className="text-xs uppercase tracking-wide text-[var(--muted)]">Results per page</label>
-                <select
-                  value={pageSize}
-                  onChange={onPageSizeChange}
-                  className="rounded-xl border border-[var(--card-border)] bg-[var(--card)] px-3 py-1.5 text-sm focus:border-[var(--primary)] focus:outline-none"
-                >
-                  {PAGE_SIZES.map((s) => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
-              </div>
-              <button
-                type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--primary)] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[color:var(--primary)_/_0.3] transition hover:scale-[1.01] hover:shadow-xl"
-              >
-                Apply filters
-              </button>
-            </div>
           </form>
         </aside>
 
@@ -541,8 +735,14 @@ export default function JobsPage() {
                 </p>
               </div>
               <div className="flex flex-wrap gap-2 text-xs text-[var(--muted)]">
-                {currentQ && <span className="rounded-full border border-[var(--card-border)] px-3 py-1">Keyword: {currentQ}</span>}
-                {currentSource && <span className="rounded-full border border-[var(--card-border)] px-3 py-1">Source: {formatLabel(currentSource)}</span>}
+                {currentKeywords.map((keyword) => {
+                  const label = keywordOptions.get(keyword) ?? formatLabel(keyword);
+                  return (
+                    <span key={`kw-${keyword}`} className="rounded-full border border-[var(--card-border)] px-3 py-1">
+                      Keyword: {label}
+                    </span>
+                  );
+                })}
                 {currentJobTypes.map((jt) => (
                   <span key={jt} className="rounded-full border border-[var(--card-border)] px-3 py-1">Type: {formatLabel(jt)}</span>
                 ))}
@@ -574,19 +774,17 @@ export default function JobsPage() {
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {jobs.map((job) => {
                 const isExpanded = expandedJobId === job.id;
-                const bannerText = job.source ? `Source: ${job.source}` : 'Source: External';
+                const jobTypeLabel = job.job_type ? formatLabel(job.job_type) : '';
+                const locationLabel = (job.candidate_required_location || '').trim();
+                const postedOn = formatDate(job.publication_date);
                 const defaultLogo = job.company_logo || logoFallback(job.company_domain, job.company_name);
                 const logoSrc = logoOverrides[job.id] ?? defaultLogo;
 
                 return (
                   <div
                     key={job.id}
-                    className={`group relative col-span-1 flex flex-col overflow-hidden rounded-3xl border border-[var(--card-border)] bg-[color:var(--card)_/_0.8] px-5 py-5 shadow-lg transition-all hover:-translate-y-1 hover:shadow-2xl ${isExpanded ? 'ring-2 ring-[color:var(--primary)_/_0.6]' : ''}`}
+                    className={`group col-span-1 flex flex-col overflow-hidden rounded-3xl border border-[var(--card-border)] bg-[color:var(--card)_/_0.8] px-5 py-5 shadow-lg transition-all hover:-translate-y-1 hover:shadow-2xl ${isExpanded ? 'ring-2 ring-[color:var(--primary)_/_0.6]' : ''}`}
                   >
-                    <div className="absolute right-5 top-5 rounded-full bg-gradient-to-r from-[var(--primary)] to-[color:var(--primary)_/_0.6] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-wide text-white shadow">
-                      {bannerText}
-                    </div>
-
                     <button onClick={() => toggleExpand(job.id)} className="w-full text-left">
                       <div className="flex items-start gap-4">
                         <Image
@@ -602,7 +800,20 @@ export default function JobsPage() {
                             setLogoOverrides((prev) => ({ ...prev, [job.id]: fallback }));
                           }}
                         />
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2 text-[0.7rem] uppercase tracking-wide text-[var(--muted)]">
+                            {jobTypeLabel && (
+                              <span className="rounded-full border border-[var(--card-border)] bg-[color:var(--primary)_/_0.12] px-2 py-0.5 text-[var(--primary)]">
+                                {jobTypeLabel}
+                              </span>
+                            )}
+                            {locationLabel && (
+                              <span className="rounded-full border border-[var(--card-border)] px-2 py-0.5 text-[var(--muted)]">
+                                {locationLabel}
+                              </span>
+                            )}
+                            {postedOn && <span className="ml-auto text-[var(--muted)] normal-case">Posted {postedOn}</span>}
+                          </div>
                           <h2 className="line-clamp-2 text-lg font-semibold text-primary transition group-hover:text-[var(--foreground)]">
                             {job.title}
                           </h2>
@@ -610,22 +821,9 @@ export default function JobsPage() {
                             {job.company_name}{job.category ? ` • ${job.category}` : ''}
                           </div>
                         </div>
-                        <span className="ml-auto shrink-0 text-xs text-[var(--muted)]">
-                          {formatDate(job.publication_date)}
-                        </span>
                       </div>
 
                       <div className="mt-3 flex flex-wrap gap-2 text-[0.7rem] text-[var(--muted)]">
-                        {job.candidate_required_location && (
-                          <span className="rounded-full border border-transparent bg-[color:var(--chip-bg)_/_0.9] px-3 py-1 text-[var(--foreground)]">
-                            {job.candidate_required_location}
-                          </span>
-                        )}
-                        {job.job_type && (
-                          <span className="rounded-full border border-transparent bg-[color:var(--chip-bg)_/_0.9] px-3 py-1 text-[var(--foreground)]">
-                            {formatLabel(job.job_type)}
-                          </span>
-                        )}
                         {job.salary && (
                           <span className="rounded-full border border-transparent bg-[color:var(--chip-bg)_/_0.9] px-3 py-1 text-[var(--foreground)]">
                             {job.salary}
@@ -678,8 +876,8 @@ export default function JobsPage() {
 
           <div className="sticky bottom-4 z-10">
             <div className="flex flex-wrap items-center justify-center gap-2 rounded-3xl border border-[var(--card-border)] bg-[color:var(--card)_/_0.9] px-4 py-3 backdrop-blur">
-              <button onClick={() => pushRoute(1)} disabled={currentPage === 1} className="rounded-full border border-[var(--card-border)] px-3 py-1 text-xs font-medium disabled:opacity-40">First</button>
-              <button onClick={() => pushRoute(currentPage - 1)} disabled={currentPage <= 1} className="rounded-full border border-[var(--card-border)] px-3 py-1 text-xs font-medium disabled:opacity-40">Previous</button>
+              <button onClick={() => pushPage(1)} disabled={currentPage === 1} className="rounded-full border border-[var(--card-border)] px-3 py-1 text-xs font-medium disabled:opacity-40">First</button>
+              <button onClick={() => pushPage(currentPage - 1)} disabled={currentPage <= 1} className="rounded-full border border-[var(--card-border)] px-3 py-1 text-xs font-medium disabled:opacity-40">Previous</button>
 
               {pageItems.map((item, idx) =>
                 item === '...' ? (
@@ -687,7 +885,7 @@ export default function JobsPage() {
                 ) : (
                   <button
                     key={item}
-                    onClick={() => pushRoute(item as number)}
+                    onClick={() => pushPage(item as number)}
                     className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${currentPage === item ? 'border-[var(--primary)] bg-[var(--primary)] text-white shadow' : 'border-[var(--card-border)] hover:border-[var(--primary)]'}`}
                   >
                     {item}
@@ -695,8 +893,8 @@ export default function JobsPage() {
                 )
               )}
 
-              <button onClick={() => pushRoute(currentPage + 1)} disabled={currentPage >= totalPages} className="rounded-full border border-[var(--card-border)] px-3 py-1 text-xs font-medium disabled:opacity-40">Next</button>
-              <button onClick={() => pushRoute(totalPages)} disabled={currentPage === totalPages} className="rounded-full border border-[var(--card-border)] px-3 py-1 text-xs font-medium disabled:opacity-40">Last</button>
+              <button onClick={() => pushPage(currentPage + 1)} disabled={currentPage >= totalPages} className="rounded-full border border-[var(--card-border)] px-3 py-1 text-xs font-medium disabled:opacity-40">Next</button>
+              <button onClick={() => pushPage(totalPages)} disabled={currentPage === totalPages} className="rounded-full border border-[var(--card-border)] px-3 py-1 text-xs font-medium disabled:opacity-40">Last</button>
 
               <div className="ml-2 flex items-center gap-2 text-xs">
                 <span>Go to</span>
@@ -709,7 +907,7 @@ export default function JobsPage() {
                     if (e.key === 'Enter') {
                       const raw = (e.target as HTMLInputElement).value;
                       const val = Math.trunc(Number(raw));
-                      if (Number.isFinite(val)) pushRoute(val);
+                      if (Number.isFinite(val)) pushPage(val);
                     }
                   }}
                   className="w-20 rounded-xl border border-[var(--card-border)] bg-transparent px-3 py-1 text-xs focus:border-[var(--primary)] focus:outline-none"

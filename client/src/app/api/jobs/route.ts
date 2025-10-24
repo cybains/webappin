@@ -27,7 +27,6 @@ export type FacetOption = {
 };
 
 export type JobsFacets = {
-  sources: FacetOption[];
   jobTypes: FacetOption[];
   locations: FacetOption[];
   tags: FacetOption[];
@@ -142,10 +141,11 @@ function normalizeArbeitnow(j: ArbeitnowJob): Job {
 }
 
 // Fetchers return normalized jobs and never throw (they fail softly to [])
-async function fetchRemotive(q: string): Promise<Job[]> {
+async function fetchRemotive(keywords: string[]): Promise<Job[]> {
   const base = 'https://remotive.com/api/remote-jobs';
   const sp = new URLSearchParams();
-  if (q) sp.set('search', q);
+  const query = keywords.map((word) => word.trim()).filter(Boolean).join(' ');
+  if (query) sp.set('search', query);
   // Remotive supports `search` and `category`; `page` is inconsistent, so we fetch first page and paginate locally
   const url = `${base}?${sp.toString()}`;
   try {
@@ -159,7 +159,7 @@ async function fetchRemotive(q: string): Promise<Job[]> {
   }
 }
 
-async function fetchArbeitnow(q: string): Promise<Job[]> {
+async function fetchArbeitnow(keywords: string[]): Promise<Job[]> {
   const base = 'https://www.arbeitnow.com/api/job-board-api';
   try {
     const res = await fetch(base, { cache: 'no-store' });
@@ -169,13 +169,18 @@ async function fetchArbeitnow(q: string): Promise<Job[]> {
     const normalized = raw
       .filter((j) => j && typeof j === 'object')
       .map((j) => normalizeArbeitnow(j as ArbeitnowJob));
-    if (!q) return normalized;
-    const lc = q.toLowerCase();
-    return normalized.filter((j) =>
-      j.title.toLowerCase().includes(lc) ||
-      j.company_name.toLowerCase().includes(lc) ||
-      (j.tags ?? []).some((t) => t.toLowerCase().includes(lc))
-    );
+    if (keywords.length === 0) return normalized;
+    const loweredKeywords = keywords.map((word) => word.toLowerCase());
+    return normalized.filter((j) => {
+      const haystack = [
+        j.title ?? '',
+        j.company_name ?? '',
+        (j.tags ?? []).join(' '),
+        j.job_type ?? '',
+        j.description ?? '',
+      ].join(' ').toLowerCase();
+      return loweredKeywords.every((kw) => haystack.includes(kw));
+    });
   } catch {
     return [];
   }
@@ -217,21 +222,11 @@ const buildFacetArray = (map: Map<string, { label: string; count: number }>, lim
 };
 
 const deriveFacets = (jobs: Job[]): JobsFacets => {
-  const sourceMap = new Map<string, { label: string; count: number }>();
   const jobTypeMap = new Map<string, { label: string; count: number }>();
   const locationMap = new Map<string, { label: string; count: number }>();
   const tagMap = new Map<string, { label: string; count: number }>();
 
   for (const job of jobs) {
-    const source = job.source ?? 'external';
-    const sourceKey = canonical(source);
-    const sourceLabel = titleCase(source.replace(/[_-]+/g, ' '));
-    const existingSource = sourceMap.get(sourceKey);
-    sourceMap.set(sourceKey, {
-      label: existingSource?.label ?? sourceLabel,
-      count: (existingSource?.count ?? 0) + 1,
-    });
-
     const jobTypeKey = canonicalJobType(job.job_type);
     if (jobTypeKey) {
       const label = titleCase(job.job_type.replace(/[_-]+/g, ' '));
@@ -265,7 +260,6 @@ const deriveFacets = (jobs: Job[]): JobsFacets => {
   }
 
   return {
-    sources: buildFacetArray(sourceMap),
     jobTypes: buildFacetArray(jobTypeMap, 12),
     locations: buildFacetArray(locationMap, 15),
     tags: buildFacetArray(tagMap, 20),
@@ -286,17 +280,18 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const page = parseIntParam(searchParams.get('page'), 1);
   const limit = parseIntParam(searchParams.get('limit'), 20);
-  const q = safeStr(searchParams.get('q'));
-  const sourceInput = safeStr(searchParams.get('source'));
-  const sourceCanonical = canonical(sourceInput);
+  const rawKeywordParam = safeStr(searchParams.get('q'));
+  const keywordTokens = rawKeywordParam
+    .split(',')
+    .map((token) => token.trim())
+    .filter(Boolean);
+  const loweredKeywords = keywordTokens.map((token) => canonical(token));
   const jobTypeParam = safeStr(searchParams.get('job_type'));
   const tagParam = safeStr(searchParams.get('tag'));
   const locationParam = safeStr(searchParams.get('location'));
   const remoteOnly = canonical(safeStr(searchParams.get('remote_only'))) === 'true';
   const hasSalary = canonical(safeStr(searchParams.get('has_salary'))) === 'true';
   const postedAfterRaw = safeStr(searchParams.get('posted_after'));
-
-  const sourceFilter = sourceCanonical;
 
   const selectedJobTypes = jobTypeParam
     .split(',')
@@ -314,25 +309,28 @@ export async function GET(req: NextRequest) {
 
   // Gather jobs based on `source` filter
   let all: Job[] = [];
-  if (!sourceFilter || sourceFilter === 'remotive' || sourceFilter === 'external') {
-    const r = await fetchRemotive(q);
-    all = all.concat(r);
-  }
-  if (!sourceFilter || sourceFilter === 'arbeitnow' || sourceFilter === 'external') {
-    const a = await fetchArbeitnow(q);
-    all = all.concat(a);
-  }
+  const remotiveJobs = await fetchRemotive(keywordTokens);
+  const arbeitnowJobs = await fetchArbeitnow(keywordTokens);
+  all = all.concat(remotiveJobs, arbeitnowJobs);
 
   const facets = deriveFacets(all);
 
   const filtered = all.filter((job) => {
-    if (sourceFilter) {
-      const jobSource = job.source ? canonical(job.source) : '';
-      if (sourceFilter === 'external') {
-        if (jobSource && jobSource !== 'external') return false;
-      } else if (jobSource !== sourceFilter) {
-        return false;
-      }
+    if (loweredKeywords.length > 0) {
+      const haystack = [
+        job.title,
+        job.company_name,
+        job.category,
+        job.job_type,
+        job.candidate_required_location,
+        job.salary,
+        (job.tags ?? []).join(' '),
+        job.description,
+      ]
+        .join(' ')
+        .toLowerCase();
+      const matchesAll = loweredKeywords.every((kw) => haystack.includes(kw));
+      if (!matchesAll) return false;
     }
     if (selectedJobTypes.length > 0 && !selectedJobTypes.includes(canonicalJobType(job.job_type))) {
       return false;
