@@ -174,34 +174,36 @@ function buildNetworkLinks(countries: EcosystemCountry[], nodes: LocalEuropeNode
   const links: LocalEuropeLink[] = [];
   const seen = new Set<string>();
 
-  nodes.forEach((node) => {
+  for (const node of nodes) {
     let closest: { target: LocalEuropeNode; distance: number } | null = null;
-    nodes.forEach((candidate) => {
-      if (candidate.id === node.id) return;
+
+    for (const candidate of nodes) {
+      if (candidate.id === node.id) continue;
       const dx = candidate.x - node.x;
       const dy = candidate.y - node.y;
       const distance = Math.hypot(dx, dy);
       if (!closest || distance < closest.distance) {
         closest = { target: candidate, distance };
       }
-    });
+    }
 
-    if (!closest) return;
-    const key = [node.id, closest.target.id].sort().join("↔");
-    if (seen.has(key)) return;
+    if (!closest) continue;
+    const target = closest.target;
+    const key = [node.id, target.id].sort().join("↔");
+    if (seen.has(key)) continue;
     seen.add(key);
 
-    const exportValue = valueByIso.get(node.id) ?? valueByIso.get(closest.target.id) ?? min;
+    const exportValue = valueByIso.get(node.id) ?? valueByIso.get(target.id) ?? min;
     const normalised = (exportValue - min) / range;
 
     links.push({
-      id: `flow:${node.id}-${closest.target.id}`,
+      id: `flow:${node.id}-${target.id}`,
       from: node.id,
-      to: closest.target.id,
+      to: target.id,
       strength: 0.35 + normalised * 0.6,
       tooltip: `Exports ${formatIndicatorValue("NE.EXP.GNFS.ZS", exportValue)}`,
     });
-  });
+  }
 
   const exportLeaders = [...exportEntries]
     .sort((a, b) => b.value - a.value)
