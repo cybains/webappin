@@ -7,6 +7,8 @@ export type LocalEuropeNode = {
   label: string;
   x: number;
   y: number;
+  weight?: number;
+  metricLabel?: string;
 };
 
 export type LocalEuropeLink = {
@@ -14,6 +16,7 @@ export type LocalEuropeLink = {
   from: string;
   to: string;
   strength?: number;
+  tooltip?: string;
 };
 
 export interface LocalEuropeMapProps {
@@ -24,17 +27,17 @@ export interface LocalEuropeMapProps {
 }
 
 const DEFAULT_NODES: LocalEuropeNode[] = [
-  { id: "vienna", label: "Vienna", x: 35, y: 45 },
-  { id: "berlin", label: "Berlin", x: 45, y: 30 },
-  { id: "amsterdam", label: "Amsterdam", x: 35, y: 25 },
-  { id: "lisbon", label: "Lisbon", x: 8, y: 60 },
-  { id: "vilnius", label: "Vilnius", x: 60, y: 28 },
+  { id: "vienna", label: "Vienna", x: 35, y: 45, weight: 0.6, metricLabel: "Digital adoption 82%" },
+  { id: "berlin", label: "Berlin", x: 45, y: 30, weight: 0.7, metricLabel: "Digital adoption 85%" },
+  { id: "amsterdam", label: "Amsterdam", x: 35, y: 25, weight: 0.8, metricLabel: "Digital adoption 91%" },
+  { id: "lisbon", label: "Lisbon", x: 8, y: 60, weight: 0.4, metricLabel: "Digital adoption 74%" },
+  { id: "vilnius", label: "Vilnius", x: 60, y: 28, weight: 0.5, metricLabel: "Digital adoption 78%" },
 ];
 
 const DEFAULT_LINKS: LocalEuropeLink[] = [
-  { id: "lisbon→vienna", from: "lisbon", to: "vienna", strength: 0.5 },
-  { id: "amsterdam→berlin", from: "amsterdam", to: "berlin", strength: 0.7 },
-  { id: "vienna→vilnius", from: "vienna", to: "vilnius", strength: 0.6 },
+  { id: "lisbon→vienna", from: "lisbon", to: "vienna", strength: 0.5, tooltip: "Exports 45% of GDP" },
+  { id: "amsterdam→berlin", from: "amsterdam", to: "berlin", strength: 0.7, tooltip: "Exports 62% of GDP" },
+  { id: "vienna→vilnius", from: "vienna", to: "vilnius", strength: 0.6, tooltip: "Exports 52% of GDP" },
 ];
 
 function arcPath(from: LocalEuropeNode, to: LocalEuropeNode, curvature = 0.3) {
@@ -165,34 +168,45 @@ export default function LocalEuropeMap({
           `}</style>
         </g>
 
-        {nodes.map((n) => (
-          <g
-            key={n.id}
-            tabIndex={0}
-            onFocus={() => setHoverNode(n)}
-            onBlur={() => setHoverNode(null)}
-            onMouseEnter={() => setHoverNode(n)}
-            onMouseLeave={() => setHoverNode(null)}
-            aria-label={n.label}
-          >
-            <circle cx={n.x} cy={n.y} r={2.1} className="fill-primary" />
-            <circle cx={n.x} cy={n.y} r={4} className="fill-primary/10" />
-            <text x={n.x + 2.5} y={n.y + 0.8} className="text-[2.2px] fill-foreground opacity-80">
-              {n.label}
-            </text>
-          </g>
-        ))}
+        {nodes.map((n) => {
+          const baseRadius = 1.8;
+          const radius = baseRadius + (n.weight ?? 0.4) * 2.4;
+          return (
+            <g
+              key={n.id}
+              tabIndex={0}
+              onFocus={() => setHoverNode(n)}
+              onBlur={() => setHoverNode(null)}
+              onMouseEnter={() => setHoverNode(n)}
+              onMouseLeave={() => setHoverNode(null)}
+              aria-label={n.label}
+            >
+              <circle cx={n.x} cy={n.y} r={radius} className="fill-primary/10" />
+              <circle cx={n.x} cy={n.y} r={Math.max(1.6, radius - 1.2)} className="fill-primary" />
+              <text x={n.x + radius + 1.6} y={n.y + 0.8} className="text-[2.2px] fill-foreground opacity-80">
+                {n.label}
+              </text>
+            </g>
+          );
+        })}
       </svg>
 
       {(hoverNode || hoverLink) && (
         <div className="pointer-events-none absolute inset-x-0 top-2 mx-auto w-max rounded-full border bg-background/90 px-3 py-1 text-xs shadow-sm">
-          {hoverNode && <span><strong>{hoverNode.label}</strong></span>}
-          {hoverLink && (
+          {hoverNode ? (
             <span>
-              <strong className="mr-1">{hoverLink.id}</strong>
-              <span className="opacity-70">(flow)</span>
+              <strong>{hoverNode.label}</strong>
+              {hoverNode.metricLabel ? <span className="ml-2 opacity-80">{hoverNode.metricLabel}</span> : null}
             </span>
-          )}
+          ) : null}
+          {hoverLink ? (
+            <span className="ml-3">
+              <strong className="mr-1">{hoverLink.id}</strong>
+              <span className="opacity-70">
+                {hoverLink.tooltip ? hoverLink.tooltip : "(flow)"}
+              </span>
+            </span>
+          ) : null}
         </div>
       )}
     </div>
