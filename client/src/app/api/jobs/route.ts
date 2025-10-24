@@ -20,11 +20,24 @@ export type Job = {
   source_id?: string;
 };
 
+export type FacetOption = {
+  value: string;
+  label: string;
+  count: number;
+};
+
+export type JobsFacets = {
+  jobTypes: FacetOption[];
+  locations: FacetOption[];
+  tags: FacetOption[];
+};
+
 export type JobsResponse = {
   jobs: Job[];
   page: number;
   limit: number;
   totalJobs: number;
+  facets: JobsFacets;
 };
 
 // ---- Sources ----
@@ -107,6 +120,7 @@ function normalizeRemotive(j: RemotiveJob): Job {
 function normalizeArbeitnow(j: ArbeitnowJob): Job {
   const created = toIsoOrNull(j.created_at) ?? toIsoOrNull(j.updated_at);
   const primaryType = Array.isArray(j.job_types) && j.job_types.length > 0 ? j.job_types[0] : '';
+  const formattedType = primaryType ? primaryType.replace(/[_-]+/g, ' ').trim() : '';
   return {
     id: `arbeitnow_${safeStr(j.slug) || safeStr(j.url)}`,
     source: 'arbeitnow',
@@ -115,7 +129,7 @@ function normalizeArbeitnow(j: ArbeitnowJob): Job {
     company_name: safeStr(j.company_name),
     category: '',
     url: safeStr(j.url),
-    job_type: primaryType,
+    job_type: formattedType,
     candidate_required_location: safeStr(j.location),
     publication_date: created,
     salary: safeStr(j.salary),
@@ -127,10 +141,11 @@ function normalizeArbeitnow(j: ArbeitnowJob): Job {
 }
 
 // Fetchers return normalized jobs and never throw (they fail softly to [])
-async function fetchRemotive(q: string): Promise<Job[]> {
+async function fetchRemotive(keywords: string[]): Promise<Job[]> {
   const base = 'https://remotive.com/api/remote-jobs';
   const sp = new URLSearchParams();
-  if (q) sp.set('search', q);
+  const query = keywords.map((word) => word.trim()).filter(Boolean).join(' ');
+  if (query) sp.set('search', query);
   // Remotive supports `search` and `category`; `page` is inconsistent, so we fetch first page and paginate locally
   const url = `${base}?${sp.toString()}`;
   try {
@@ -144,7 +159,7 @@ async function fetchRemotive(q: string): Promise<Job[]> {
   }
 }
 
-async function fetchArbeitnow(q: string): Promise<Job[]> {
+async function fetchArbeitnow(keywords: string[]): Promise<Job[]> {
   const base = 'https://www.arbeitnow.com/api/job-board-api';
   try {
     const res = await fetch(base, { cache: 'no-store' });
@@ -154,13 +169,18 @@ async function fetchArbeitnow(q: string): Promise<Job[]> {
     const normalized = raw
       .filter((j) => j && typeof j === 'object')
       .map((j) => normalizeArbeitnow(j as ArbeitnowJob));
-    if (!q) return normalized;
-    const lc = q.toLowerCase();
-    return normalized.filter((j) =>
-      j.title.toLowerCase().includes(lc) ||
-      j.company_name.toLowerCase().includes(lc) ||
-      (j.tags ?? []).some((t) => t.toLowerCase().includes(lc))
-    );
+    if (keywords.length === 0) return normalized;
+    const loweredKeywords = keywords.map((word) => word.toLowerCase());
+    return normalized.filter((j) => {
+      const haystack = [
+        j.title ?? '',
+        j.company_name ?? '',
+        (j.tags ?? []).join(' '),
+        j.job_type ?? '',
+        j.description ?? '',
+      ].join(' ').toLowerCase();
+      return loweredKeywords.every((kw) => haystack.includes(kw));
+    });
   } catch {
     return [];
   }
@@ -183,32 +203,172 @@ function parseIntParam(v: string | null, d: number): number {
   return Number.isFinite(n) && n > 0 ? n : d;
 }
 
+const canonical = (value: string) => value.trim().toLowerCase();
+const canonicalJobType = (value: string) => canonical(value.replace(/[_\s]+/g, ' '));
+
+const titleCase = (value: string) =>
+  value
+    .toLowerCase()
+    .split(' ')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+const buildFacetArray = (map: Map<string, { label: string; count: number }>, limit?: number): FacetOption[] => {
+  const arr = Array.from(map.entries())
+    .map(([value, meta]) => ({ value, label: meta.label, count: meta.count }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+  return typeof limit === 'number' ? arr.slice(0, limit) : arr;
+};
+
+const deriveFacets = (jobs: Job[]): JobsFacets => {
+  const jobTypeMap = new Map<string, { label: string; count: number }>();
+  const locationMap = new Map<string, { label: string; count: number }>();
+  const tagMap = new Map<string, { label: string; count: number }>();
+
+  for (const job of jobs) {
+    const jobTypeKey = canonicalJobType(job.job_type);
+    if (jobTypeKey) {
+      const label = titleCase(job.job_type.replace(/[_-]+/g, ' '));
+      const existing = jobTypeMap.get(jobTypeKey);
+      jobTypeMap.set(jobTypeKey, {
+        label: existing?.label ?? label,
+        count: (existing?.count ?? 0) + 1,
+      });
+    }
+
+    const locationKey = canonical(job.candidate_required_location);
+    if (locationKey) {
+      const label = job.candidate_required_location.trim();
+      const existing = locationMap.get(locationKey);
+      locationMap.set(locationKey, {
+        label: existing?.label ?? label,
+        count: (existing?.count ?? 0) + 1,
+      });
+    }
+
+    for (const rawTag of job.tags ?? []) {
+      const tagKey = canonical(rawTag);
+      if (!tagKey) continue;
+      const label = `#${rawTag.trim().replace(/^#+/, '')}`;
+      const existing = tagMap.get(tagKey);
+      tagMap.set(tagKey, {
+        label: existing?.label ?? label,
+        count: (existing?.count ?? 0) + 1,
+      });
+    }
+  }
+
+  return {
+    jobTypes: buildFacetArray(jobTypeMap, 12),
+    locations: buildFacetArray(locationMap, 15),
+    tags: buildFacetArray(tagMap, 20),
+  };
+};
+
+const isRemoteJob = (job: Job): boolean => {
+  if (job.source === 'remotive') return true;
+  const location = canonical(job.candidate_required_location);
+  if (!location) return false;
+  if (location.includes('remote') || location.includes('anywhere')) return true;
+  const tagSet = new Set((job.tags ?? []).map((tag) => canonical(tag)));
+  if (tagSet.has('remote') || tagSet.has('work from anywhere')) return true;
+  return false;
+};
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const page = parseIntParam(searchParams.get('page'), 1);
   const limit = parseIntParam(searchParams.get('limit'), 20);
-  const q = safeStr(searchParams.get('q'));
-  const sourceRaw = safeStr(searchParams.get('source')) as SourceId | '';
+  const rawKeywordParam = safeStr(searchParams.get('q'));
+  const keywordTokens = rawKeywordParam
+    .split(',')
+    .map((token) => token.trim())
+    .filter(Boolean);
+  const loweredKeywords = keywordTokens.map((token) => canonical(token));
+  const jobTypeParam = safeStr(searchParams.get('job_type'));
+  const tagParam = safeStr(searchParams.get('tag'));
+  const locationParam = safeStr(searchParams.get('location'));
+  const remoteOnly = canonical(safeStr(searchParams.get('remote_only'))) === 'true';
+  const hasSalary = canonical(safeStr(searchParams.get('has_salary'))) === 'true';
+  const postedAfterRaw = safeStr(searchParams.get('posted_after'));
+
+  const selectedJobTypes = jobTypeParam
+    .split(',')
+    .map(canonicalJobType)
+    .filter(Boolean);
+  const selectedTags = tagParam
+    .split(',')
+    .map(canonical)
+    .filter(Boolean);
+  const selectedLocation = canonical(locationParam);
+  const postedAfterDays = Number.parseInt(postedAfterRaw, 10);
+  const postedAfterThreshold = Number.isFinite(postedAfterDays) && postedAfterDays > 0
+    ? Date.now() - postedAfterDays * 24 * 60 * 60 * 1000
+    : null;
 
   // Gather jobs based on `source` filter
   let all: Job[] = [];
-  if (!sourceRaw || sourceRaw === 'remotive') {
-    const r = await fetchRemotive(q);
-    all = all.concat(r);
-  }
-  if (!sourceRaw || sourceRaw === 'arbeitnow') {
-    const a = await fetchArbeitnow(q);
-    all = all.concat(a);
-  }
+  const remotiveJobs = await fetchRemotive(keywordTokens);
+  const arbeitnowJobs = await fetchArbeitnow(keywordTokens);
+  all = all.concat(remotiveJobs, arbeitnowJobs);
+
+  const facets = deriveFacets(all);
+
+  const filtered = all.filter((job) => {
+    if (loweredKeywords.length > 0) {
+      const haystack = [
+        job.title,
+        job.company_name,
+        job.category,
+        job.job_type,
+        job.candidate_required_location,
+        job.salary,
+        job.company_domain ?? '',
+        job.source ?? '',
+        job.source_id ?? '',
+        job.url ?? '',
+        (job.tags ?? []).join(' '),
+        job.description,
+      ]
+        .join(' ')
+        .toLowerCase();
+      const matchesAll = loweredKeywords.every((kw) => haystack.includes(kw));
+      if (!matchesAll) return false;
+    }
+    if (selectedJobTypes.length > 0 && !selectedJobTypes.includes(canonicalJobType(job.job_type))) {
+      return false;
+    }
+    if (selectedTags.length > 0) {
+      const tagSet = new Set((job.tags ?? []).map((tag) => canonical(tag)));
+      const hasTag = selectedTags.some((tag) => tagSet.has(tag));
+      if (!hasTag) return false;
+    }
+    if (selectedLocation && !canonical(job.candidate_required_location).includes(selectedLocation)) {
+      return false;
+    }
+    if (remoteOnly && !isRemoteJob(job)) {
+      return false;
+    }
+    if (hasSalary && !job.salary.trim()) {
+      return false;
+    }
+    if (postedAfterThreshold) {
+      if (!job.publication_date) return false;
+      const ts = Date.parse(job.publication_date);
+      if (Number.isNaN(ts) || ts < postedAfterThreshold) return false;
+    }
+    return true;
+  });
 
   // Sort and paginate locally
-  all.sort(sortByDateDesc);
-  const totalJobs = all.length;
+  filtered.sort(sortByDateDesc);
+  const totalJobs = filtered.length;
   const startIdx = (page - 1) * limit;
   const endIdx = Math.min(totalJobs, startIdx + limit);
-  const slice = startIdx < totalJobs ? all.slice(startIdx, endIdx) : [];
+  const slice = startIdx < totalJobs ? filtered.slice(startIdx, endIdx) : [];
 
-  const payload: JobsResponse = { jobs: slice, page, limit, totalJobs };
+  const payload: JobsResponse = { jobs: slice, page, limit, totalJobs, facets };
 
   return NextResponse.json(payload, {
     headers: { 'Cache-Control': 'no-store' },
