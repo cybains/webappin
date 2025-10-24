@@ -242,7 +242,7 @@ export default function JobsPage() {
     const sliced = (!normalizedDraft
       ? entries.slice(0, 8)
       : entries.filter(([value]) => value.includes(normalizedDraft)).slice(0, 8));
-    const mapped = sliced.map(([value, label]) => ({ value, label }));
+    const mapped = sliced.map<KeywordSuggestion>(([value, label]) => ({ value, label }));
     if (normalizedDraft && !keywordSelections.includes(normalizedDraft)) {
       const alreadyListed = mapped.some((option) => option.value === normalizedDraft);
       if (!alreadyListed) {
