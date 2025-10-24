@@ -6,7 +6,7 @@ import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import SufoniqEcosystem from "@/components/SufoniqEcosystem";
+import EcosystemSection from "@/components/EcosystemSection";
 
 // Dynamically import WorldMap for client-side only
 const WorldMap = dynamic(() => import("@/components/WorldMap"), { ssr: false });
@@ -31,9 +31,7 @@ export default function Home() {
         </section> */}
 
         {/* Ecosystem visualisation */}
-        <section id="ecosystem">
-          <SufoniqEcosystem />
-        </section>
+        <EcosystemSection />
 
         {/* How It Works Section */}
         <section id="how-it-works">

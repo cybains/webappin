@@ -543,94 +543,87 @@ export default function SufoniqEcosystem() {
   const ready = Boolean(mapNodes.length && countries.length);
 
   return (
-    <section className="relative z-10 bg-[var(--background)] text-[var(--foreground)]">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-16">
-        <div className="max-w-3xl space-y-4">
-          <p className="text-sm font-semibold uppercase tracking-wide text-primary">Sufoniq Ecosystem in Motion</p>
-          <h2 className="text-3xl font-semibold">We connect Europe&rsquo;s talent, opportunity, and mobility data.</h2>
-          <p className="text-lg text-[var(--muted)]">
-            Each country brief feeds a shared knowledge graph. These visualisations aggregate live indicators from
-            {" "}
-            {totalCountries ? `${totalCountries} countries` : "our monitored countries"} to show where skills, exports,
-            and connectivity are accelerating.
-          </p>
-        </div>
-
-        <div className="grid gap-6 xl:grid-cols-[1.6fr,1fr]">
-          <div className="rounded-3xl border border-[var(--card-border)] bg-[var(--card)] p-4">
-            {ready ? <LocalEuropeMap nodes={mapNodes} links={mapLinks} /> : <MapPlaceholder />}
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
-            <MetricCard
-              label="Countries monitored"
-              value={totalCountries ? `${totalCountries}` : loading ? "Loading" : "—"}
-              helper="Narratives synced from our country intelligence database"
-            />
-            <MetricCard
-              label="Top GDP per capita"
-              value={topGdp ? topGdp.name : loading ? "Loading" : "—"}
-              helper={topGdp ? formatIndicatorValue("NY.GDP.PCAP.KD", topGdp.value) : undefined}
-            />
-            <MetricCard
-              label="Average digital adoption"
-              value={avgDigital != null ? formatIndicatorValue("IT.NET.USER.ZS", avgDigital) : loading ? "Loading" : "—"}
-              helper="Share of population online across the network"
-            />
-            <MetricCard
-              label="Lowest unemployment"
-              value={lowestUnemployment ? lowestUnemployment.name : loading ? "Loading" : "—"}
-              helper={
-                lowestUnemployment
-                  ? formatIndicatorValue("SL.UEM.TOTL.ZS", lowestUnemployment.value)
-                  : undefined
-              }
-            />
-          </div>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-[1.5fr,1fr]">
-          <IndicatorHeatmap entries={percentileRows} countryByIso={countryByIso} />
-          <div className="grid gap-6">
-            <DistributionCard
-              indicator="NY.GDP.PCAP.KD"
-              countries={countries}
-              title="Economic output distribution"
-              helper="GDP per capita spread across the network"
-            />
-            <DistributionCard
-              indicator="SL.UEM.TOTL.ZS"
-              countries={countries}
-              title="Employment resilience"
-              helper="Tracking the countries with the lowest unemployment"
-            />
-          </div>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          <TopList
-            title="Digital adoption leaders"
-            indicator="IT.NET.USER.ZS"
-            entries={digitalLeadersList}
-            helper="Share of residents using the internet"
-          />
-          <TopList
-            title="High-value economies"
-            indicator="NY.GDP.PCAP.KD"
-            entries={gdpLeaders}
-            helper="GDP per capita in constant USD"
-          />
-          <TopList
-            title="Export intensity"
-            indicator="NE.EXP.GNFS.ZS"
-            entries={exportLeaders}
-            helper="Exports of goods & services as % of GDP"
-          />
-        </div>
-
-        {error ? (
-          <p className="text-sm text-red-500">Some ecosystem metrics failed to load. Refresh to try again.</p>
-        ) : null}
+    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-16">
+      <div className="max-w-3xl space-y-4">
+        <p className="text-sm font-semibold uppercase tracking-wide text-primary">Sufoniq Ecosystem in Motion</p>
+        <h2 className="text-3xl font-semibold">We connect Europe&rsquo;s talent, opportunity, and mobility data.</h2>
+        <p className="text-lg text-[var(--muted)]">
+          Each country brief feeds a shared knowledge graph. These visualisations aggregate live indicators from {" "}
+          {totalCountries ? `${totalCountries} countries` : "our monitored countries"} to show where skills, exports,
+          and connectivity are accelerating.
+        </p>
       </div>
-    </section>
+
+      <div className="grid gap-6 xl:grid-cols-[1.6fr,1fr]">
+        <div className="rounded-3xl border border-[var(--card-border)] bg-[var(--card)] p-4">
+          {ready ? <LocalEuropeMap nodes={mapNodes} links={mapLinks} /> : <MapPlaceholder />}
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
+          <MetricCard
+            label="Countries monitored"
+            value={totalCountries ? `${totalCountries}` : loading ? "Loading" : "—"}
+            helper="Narratives synced from our country intelligence database"
+          />
+          <MetricCard
+            label="Top GDP per capita"
+            value={topGdp ? topGdp.name : loading ? "Loading" : "—"}
+            helper={topGdp ? formatIndicatorValue("NY.GDP.PCAP.KD", topGdp.value) : undefined}
+          />
+          <MetricCard
+            label="Average digital adoption"
+            value={avgDigital != null ? formatIndicatorValue("IT.NET.USER.ZS", avgDigital) : loading ? "Loading" : "—"}
+            helper="Share of population online across the network"
+          />
+          <MetricCard
+            label="Lowest unemployment"
+            value={lowestUnemployment ? lowestUnemployment.name : loading ? "Loading" : "—"}
+            helper={lowestUnemployment ? formatIndicatorValue("SL.UEM.TOTL.ZS", lowestUnemployment.value) : undefined}
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[1.5fr,1fr]">
+        <IndicatorHeatmap entries={percentileRows} countryByIso={countryByIso} />
+        <div className="grid gap-6">
+          <DistributionCard
+            indicator="NY.GDP.PCAP.KD"
+            countries={countries}
+            title="Economic output distribution"
+            helper="GDP per capita spread across the network"
+          />
+          <DistributionCard
+            indicator="SL.UEM.TOTL.ZS"
+            countries={countries}
+            title="Employment resilience"
+            helper="Tracking the countries with the lowest unemployment"
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <TopList
+          title="Digital adoption leaders"
+          indicator="IT.NET.USER.ZS"
+          entries={digitalLeadersList}
+          helper="Share of residents using the internet"
+        />
+        <TopList
+          title="High-value economies"
+          indicator="NY.GDP.PCAP.KD"
+          entries={gdpLeaders}
+          helper="GDP per capita in constant USD"
+        />
+        <TopList
+          title="Export intensity"
+          indicator="NE.EXP.GNFS.ZS"
+          entries={exportLeaders}
+          helper="Exports of goods & services as % of GDP"
+        />
+      </div>
+
+      {error ? (
+        <p className="text-sm text-red-500">Some ecosystem metrics failed to load. Refresh to try again.</p>
+      ) : null}
+    </div>
   );
 }
