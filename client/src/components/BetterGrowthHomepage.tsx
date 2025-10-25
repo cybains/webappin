@@ -705,20 +705,8 @@ const Hero = () => (
       transition={{ duration: 0.6 }}
       className="text-4xl md:text-6xl font-semibold leading-tight"
     >
-      Better Growth.
-      <span className="block text-slate-500 text-xl md:text-2xl mt-3">
-        Data in a suit, with a smirk.
-      </span>
+      Better Growth Visuals
     </motion.h1>
-    <motion.p
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.1 }}
-      className="mt-6 text-lg md:text-xl text-slate-700 max-w-3xl"
-    >
-      Europe’s economy, without the drama. We measure what matters, ignore what doesn’t, and nudge
-      growth toward something clever, clean, and actually useful.
-    </motion.p>
   </section>
 );
 
