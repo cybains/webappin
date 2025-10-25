@@ -1,26 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Brain, Factory, Leaf, LineChart, Map, Users } from "lucide-react";
-import {
-  LineChart as RLineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  ScatterChart,
-  Scatter,
-  ReferenceLine,
-  ReferenceArea,
-  Legend,
-  AreaChart,
-  Area,
-} from "recharts";
 
 // ------------------------------------------------------------
 // Better Growth — Homepage Dissertation (React)
@@ -73,6 +55,18 @@ const growthVsInequality = [
   { country: "ES", growth: 2.0, gini: 34 },
 ];
 
+const createLinearScale = (domain: [number, number], range: [number, number]) => {
+  const [d0, d1] = domain;
+  const [r0, r1] = range;
+  if (d0 === d1) {
+    return () => (r0 + r1) / 2;
+  }
+  return (value: number) => r0 + ((value - d0) / (d1 - d0)) * (r1 - r0);
+};
+
+const formatEuroThousands = (value: number) => `€${(value / 1000).toFixed(0)}k`;
+
+
 // --- Runtime smoke tests ("test cases") ----------------------
 function runSmokeTests() {
   try {
@@ -119,6 +113,589 @@ const Card = ({ children }: CardProps) => (
   </div>
 );
 
+const GDPPerCapitaChart = () => {
+  const width = 620;
+  const height = 240;
+  const margin = { top: 20, right: 20, bottom: 28, left: 56 };
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+
+  const years = gdpPerCapitaEU.map((d) => d.year);
+  const values = gdpPerCapitaEU.flatMap((d) => [d.AT, d.DE, d.PL, d.RO]);
+  const xScale = createLinearScale([Math.min(...years), Math.max(...years)], [0, innerWidth]);
+  const yScale = createLinearScale([Math.min(...values), Math.max(...values)], [innerHeight, 0]);
+
+  const colorByKey: Record<string, string> = {
+    AT: "#1d4ed8",
+    DE: "#16a34a",
+    PL: "#f97316",
+    RO: "#9333ea",
+  };
+
+  const yTicks = useMemo(() => {
+    const count = 4;
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const step = (max - min) / count;
+    return Array.from({ length: count + 1 }, (_, i) => Math.round(min + step * i));
+  }, [values]);
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
+      <g transform={`translate(${margin.left},${margin.top})`}>
+        {/* Grid */}
+        {yTicks.map((tick) => (
+          <line
+            key={`grid-y-${tick}`}
+            x1={0}
+            y1={yScale(tick)}
+            x2={innerWidth}
+            y2={yScale(tick)}
+            stroke="#e2e8f0"
+            strokeDasharray="3 3"
+          />
+        ))}
+        {years.map((year) => (
+          <line
+            key={`grid-x-${year}`}
+            x1={xScale(year)}
+            y1={0}
+            x2={xScale(year)}
+            y2={innerHeight}
+            stroke="#f1f5f9"
+          />
+        ))}
+
+        {/* Axes */}
+        <line x1={0} y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="#94a3b8" />
+        <line x1={0} y1={0} x2={0} y2={innerHeight} stroke="#94a3b8" />
+
+        {yTicks.map((tick) => (
+          <text
+            key={`label-y-${tick}`}
+            x={-12}
+            y={yScale(tick)}
+            textAnchor="end"
+            dominantBaseline="middle"
+            className="fill-slate-500 text-[10px]"
+          >
+            {formatEuroThousands(tick)}
+          </text>
+        ))}
+
+        {years.map((year) => (
+          <text
+            key={`label-x-${year}`}
+            x={xScale(year)}
+            y={innerHeight + 18}
+            textAnchor="middle"
+            className="fill-slate-500 text-[10px]"
+          >
+            {year}
+          </text>
+        ))}
+
+        {Object.keys(colorByKey).map((key) => {
+          const path = gdpPerCapitaEU
+            .map((d, i) => {
+              const x = xScale(d.year);
+              const y = yScale((d as Record<string, number>)[key]);
+              return `${i === 0 ? "M" : "L"} ${x} ${y}`;
+            })
+            .join(" ");
+          return (
+            <path
+              key={key}
+              d={path}
+              fill="none"
+              stroke={colorByKey[key]}
+              strokeWidth={2.2}
+            />
+          );
+        })}
+      </g>
+
+      {/* Legend */}
+      <g transform={`translate(${margin.left},${height - 8})`}>
+        {Object.entries(colorByKey).map(([key, color], index) => (
+          <g key={key} transform={`translate(${index * 120},0)`}>
+            <rect width={12} height={4} y={-8} rx={2} fill={color} />
+            <text x={16} y={-5} className="fill-slate-600 text-[10px]">
+              {key === "AT"
+                ? "Austria"
+                : key === "DE"
+                ? "Germany"
+                : key === "PL"
+                ? "Poland"
+                : "Romania"}
+            </text>
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+};
+
+const ScatterRndVsGrowth = () => {
+  const width = 620;
+  const height = 240;
+  const margin = { top: 20, right: 20, bottom: 32, left: 52 };
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+  const rndValues = rndVsGrowth.map((d) => d.rnd);
+  const gdpValues = rndVsGrowth.map((d) => d.gdp);
+
+  const xScale = createLinearScale(
+    [Math.min(...rndValues) * 0.85, Math.max(...rndValues) * 1.05],
+    [0, innerWidth],
+  );
+  const yScale = createLinearScale(
+    [Math.min(...gdpValues) * 0.85, Math.max(...gdpValues) * 1.1],
+    [innerHeight, 0],
+  );
+
+  const xTicks = useMemo(() => {
+    const min = Math.floor(Math.min(...rndValues));
+    const max = Math.ceil(Math.max(...rndValues));
+    return Array.from({ length: max - min + 1 }, (_, i) => min + i);
+  }, [rndValues]);
+
+  const yTicks = useMemo(() => {
+    const min = Math.floor(Math.min(...gdpValues));
+    const max = Math.ceil(Math.max(...gdpValues));
+    return Array.from({ length: max - min + 1 }, (_, i) => min + i);
+  }, [gdpValues]);
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
+      <g transform={`translate(${margin.left},${margin.top})`}>
+        {yTicks.map((tick) => (
+          <line
+            key={`grid-y-${tick}`}
+            x1={0}
+            y1={yScale(tick)}
+            x2={innerWidth}
+            y2={yScale(tick)}
+            stroke="#e2e8f0"
+            strokeDasharray="3 3"
+          />
+        ))}
+        {xTicks.map((tick) => (
+          <line
+            key={`grid-x-${tick}`}
+            x1={xScale(tick)}
+            y1={0}
+            x2={xScale(tick)}
+            y2={innerHeight}
+            stroke="#f1f5f9"
+          />
+        ))}
+
+        <line x1={0} y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="#94a3b8" />
+        <line x1={0} y1={0} x2={0} y2={innerHeight} stroke="#94a3b8" />
+
+        {yTicks.map((tick) => (
+          <text
+            key={`label-y-${tick}`}
+            x={-10}
+            y={yScale(tick)}
+            textAnchor="end"
+            dominantBaseline="middle"
+            className="fill-slate-500 text-[10px]"
+          >
+            {`${tick}%`}
+          </text>
+        ))}
+
+        {xTicks.map((tick) => (
+          <text
+            key={`label-x-${tick}`}
+            x={xScale(tick)}
+            y={innerHeight + 16}
+            textAnchor="middle"
+            className="fill-slate-500 text-[10px]"
+          >
+            {`${tick}%`}
+          </text>
+        ))}
+
+        {/* Reference line at 2% R&D */}
+        <line
+          x1={xScale(2)}
+          y1={0}
+          x2={xScale(2)}
+          y2={innerHeight}
+          stroke="#6366f1"
+          strokeDasharray="4 4"
+        />
+
+        {rndVsGrowth.map((point) => (
+          <g key={point.country} transform={`translate(${xScale(point.rnd)},${yScale(point.gdp)})`}>
+            <circle r={6} fill="#0f172a" fillOpacity={0.12} />
+            <circle r={3} fill="#0f172a" />
+            <text y={-10} textAnchor="middle" className="fill-slate-600 text-[10px]">
+              {point.country}
+            </text>
+          </g>
+        ))}
+      </g>
+
+      <text
+        x={margin.left + innerWidth / 2}
+        y={height - 4}
+        textAnchor="middle"
+        className="fill-slate-500 text-[10px]"
+      >
+        R&D spend (% GDP)
+      </text>
+      <text
+        transform={`translate(12 ${margin.top + innerHeight / 2}) rotate(-90)`}
+        textAnchor="middle"
+        className="fill-slate-500 text-[10px]"
+      >
+        GDP growth (%)
+      </text>
+    </svg>
+  );
+};
+
+const GDPVsCO2AreaChart = () => {
+  const width = 620;
+  const height = 240;
+  const margin = { top: 20, right: 20, bottom: 28, left: 50 };
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+
+  const years = gdpVsCO2.map((d) => d.year);
+  const values = gdpVsCO2.flatMap((d) => [d.gdp, d.co2]);
+
+  const xScale = createLinearScale([Math.min(...years), Math.max(...years)], [0, innerWidth]);
+  const yScale = createLinearScale([Math.min(...values), Math.max(...values)], [innerHeight, 0]);
+
+  const baseValue = Math.min(...values);
+
+  const buildPath = (key: "gdp" | "co2") =>
+    gdpVsCO2
+      .map((d, i) => {
+        const x = xScale(d.year);
+        const y = yScale(d[key]);
+        return `${i === 0 ? "M" : "L"} ${x} ${y}`;
+      })
+      .join(" ");
+
+  const areaPath = (key: "gdp" | "co2") => {
+    const forward = gdpVsCO2.map((d, i) => {
+      const x = xScale(d.year);
+      const y = yScale(d[key]);
+      return `${i === 0 ? "M" : "L"} ${x} ${y}`;
+    });
+    const reverse = [...gdpVsCO2]
+      .reverse()
+      .map((d, i) => {
+        const x = xScale(d.year);
+        const y = yScale(baseValue);
+        return `${i === 0 ? "L" : "L"} ${x} ${y}`;
+      });
+    return `${forward.join(" ")} ${reverse.join(" ")} Z`;
+  };
+
+  const yTicks = useMemo(() => {
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const count = 5;
+    const step = (max - min) / count;
+    return Array.from({ length: count + 1 }, (_, i) => Math.round(min + step * i));
+  }, [values]);
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
+      <defs>
+        <linearGradient id="gdpGradient" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="#1d4ed8" stopOpacity={0.3} />
+          <stop offset="100%" stopColor="#1d4ed8" stopOpacity={0.05} />
+        </linearGradient>
+        <linearGradient id="co2Gradient" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="#ef4444" stopOpacity={0.25} />
+          <stop offset="100%" stopColor="#ef4444" stopOpacity={0.05} />
+        </linearGradient>
+      </defs>
+
+      <g transform={`translate(${margin.left},${margin.top})`}>
+        {yTicks.map((tick) => (
+          <line
+            key={`grid-${tick}`}
+            x1={0}
+            y1={yScale(tick)}
+            x2={innerWidth}
+            y2={yScale(tick)}
+            stroke="#e2e8f0"
+            strokeDasharray="3 3"
+          />
+        ))}
+
+        {years.map((year) => (
+          <line
+            key={`grid-x-${year}`}
+            x1={xScale(year)}
+            y1={0}
+            x2={xScale(year)}
+            y2={innerHeight}
+            stroke="#f1f5f9"
+          />
+        ))}
+
+        <line x1={0} y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="#94a3b8" />
+        <line x1={0} y1={0} x2={0} y2={innerHeight} stroke="#94a3b8" />
+
+        {yTicks.map((tick) => (
+          <text
+            key={`label-${tick}`}
+            x={-10}
+            y={yScale(tick)}
+            textAnchor="end"
+            dominantBaseline="middle"
+            className="fill-slate-500 text-[10px]"
+          >
+            {tick}
+          </text>
+        ))}
+
+        {years.map((year) => (
+          <text
+            key={`label-x-${year}`}
+            x={xScale(year)}
+            y={innerHeight + 16}
+            textAnchor="middle"
+            className="fill-slate-500 text-[10px]"
+          >
+            {year}
+          </text>
+        ))}
+
+        <path d={areaPath("co2")} fill="url(#co2Gradient)" stroke="none" />
+        <path d={areaPath("gdp")} fill="url(#gdpGradient)" stroke="none" />
+        <path d={buildPath("co2")} stroke="#ef4444" strokeWidth={2} fill="none" />
+        <path d={buildPath("gdp")} stroke="#1d4ed8" strokeWidth={2} fill="none" />
+      </g>
+
+      <g transform={`translate(${margin.left},${height - 8})`}>
+        <g className="text-[10px] fill-slate-600" transform="translate(0,-6)">
+          <rect width={12} height={4} y={-6} rx={2} fill="#1d4ed8" />
+          <text x={16} y={-3}>GDP Index</text>
+        </g>
+        <g className="text-[10px] fill-slate-600" transform="translate(120,-6)">
+          <rect width={12} height={4} y={-6} rx={2} fill="#ef4444" />
+          <text x={16} y={-3}>CO₂ Index</text>
+        </g>
+      </g>
+    </svg>
+  );
+};
+
+const MobilityBarChart = () => {
+  const width = 620;
+  const height = 240;
+  const margin = { top: 20, right: 20, bottom: 40, left: 52 };
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+  const maxValue = Math.max(...migrationBalance.map((d) => d.people));
+  const yScale = createLinearScale([0, maxValue * 1.2], [innerHeight, 0]);
+  const barWidth = innerWidth / migrationBalance.length - 16;
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
+      <g transform={`translate(${margin.left},${margin.top})`}>
+        <line x1={0} y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="#94a3b8" />
+        <line x1={0} y1={0} x2={0} y2={innerHeight} stroke="#94a3b8" />
+
+        {Array.from({ length: 4 }, (_, i) => (i + 1) * (maxValue / 4)).map((tick) => (
+          <g key={tick}>
+            <line
+              x1={0}
+              y1={yScale(tick)}
+              x2={innerWidth}
+              y2={yScale(tick)}
+              stroke="#e2e8f0"
+              strokeDasharray="3 3"
+            />
+            <text
+              x={-10}
+              y={yScale(tick)}
+              textAnchor="end"
+              dominantBaseline="middle"
+              className="fill-slate-500 text-[10px]"
+            >
+              {`${tick.toFixed(1)}k`}
+            </text>
+          </g>
+        ))}
+
+        {migrationBalance.map((route, index) => {
+          const x = index * (barWidth + 16) + 8;
+          const barHeight = innerHeight - yScale(route.people);
+          return (
+            <g key={route.route} transform={`translate(${x},${yScale(route.people)})`}>
+              <rect
+                width={barWidth}
+                height={barHeight}
+                rx={6}
+                fill="#0f172a"
+                fillOpacity={0.85}
+              />
+              <text
+                x={barWidth / 2}
+                y={-6}
+                textAnchor="middle"
+                className="fill-slate-500 text-[10px]"
+              >
+                {`${route.people.toFixed(1)}k`}
+              </text>
+              <text
+                x={barWidth / 2}
+                y={barHeight + 16}
+                textAnchor="middle"
+                className="fill-slate-600 text-[10px]"
+              >
+                {route.route}
+              </text>
+            </g>
+          );
+        })}
+      </g>
+    </svg>
+  );
+};
+
+const BalancedScatter = () => {
+  const width = 620;
+  const height = 240;
+  const margin = { top: 20, right: 20, bottom: 32, left: 56 };
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+
+  const growthValues = growthVsInequality.map((d) => d.growth);
+  const giniValues = growthVsInequality.map((d) => d.gini);
+
+  const xScale = createLinearScale(
+    [Math.min(...growthValues) * 0.85, Math.max(...growthValues) * 1.1],
+    [0, innerWidth],
+  );
+  const yScale = createLinearScale(
+    [Math.max(...giniValues) * 1.05, Math.min(...giniValues) * 0.9],
+    [0, innerHeight],
+  );
+
+  const xTicks = useMemo(() => {
+    const min = Math.floor(Math.min(...growthValues));
+    const max = Math.ceil(Math.max(...growthValues));
+    return Array.from({ length: max - min + 1 }, (_, i) => min + i);
+  }, [growthValues]);
+
+  const yTicks = useMemo(() => {
+    const min = Math.floor(Math.min(...giniValues));
+    const max = Math.ceil(Math.max(...giniValues));
+    return Array.from({ length: max - min + 1 }, (_, i) => min + i);
+  }, [giniValues]);
+
+  const highlightLeft = Math.min(xScale(1.5), xScale(3.5));
+  const highlightWidth = Math.abs(xScale(3.5) - xScale(1.5));
+  const highlightTop = Math.min(yScale(32), yScale(26));
+  const highlightHeight = Math.abs(yScale(32) - yScale(26));
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
+      <g transform={`translate(${margin.left},${margin.top})`}>
+        <rect
+          x={highlightLeft}
+          y={highlightTop}
+          width={highlightWidth}
+          height={highlightHeight}
+          fill="#22c55e"
+          opacity={0.08}
+          stroke="#22c55e"
+          strokeDasharray="4 4"
+        />
+
+        {yTicks.map((tick) => (
+          <line
+            key={`grid-y-${tick}`}
+            x1={0}
+            y1={yScale(tick)}
+            x2={innerWidth}
+            y2={yScale(tick)}
+            stroke="#e2e8f0"
+            strokeDasharray="3 3"
+          />
+        ))}
+        {xTicks.map((tick) => (
+          <line
+            key={`grid-x-${tick}`}
+            x1={xScale(tick)}
+            y1={0}
+            x2={xScale(tick)}
+            y2={innerHeight}
+            stroke="#f1f5f9"
+          />
+        ))}
+
+        <line x1={0} y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="#94a3b8" />
+        <line x1={0} y1={0} x2={0} y2={innerHeight} stroke="#94a3b8" />
+
+        {yTicks.map((tick) => (
+          <text
+            key={`label-y-${tick}`}
+            x={-12}
+            y={yScale(tick)}
+            textAnchor="end"
+            dominantBaseline="middle"
+            className="fill-slate-500 text-[10px]"
+          >
+            {tick}
+          </text>
+        ))}
+
+        {xTicks.map((tick) => (
+          <text
+            key={`label-x-${tick}`}
+            x={xScale(tick)}
+            y={innerHeight + 16}
+            textAnchor="middle"
+            className="fill-slate-500 text-[10px]"
+          >
+            {`${tick}%`}
+          </text>
+        ))}
+
+        {growthVsInequality.map((point) => (
+          <g key={point.country} transform={`translate(${xScale(point.growth)},${yScale(point.gini)})`}>
+            <circle r={6} fill="#0f172a" fillOpacity={0.15} />
+            <circle r={3} fill="#0f172a" />
+            <text y={-10} textAnchor="middle" className="fill-slate-600 text-[10px]">
+              {point.country}
+            </text>
+          </g>
+        ))}
+      </g>
+
+      <text
+        x={margin.left + innerWidth / 2}
+        y={height - 6}
+        textAnchor="middle"
+        className="fill-slate-500 text-[10px]"
+      >
+        GDP growth (%)
+      </text>
+      <text
+        transform={`translate(12 ${margin.top + innerHeight / 2}) rotate(-90)`}
+        textAnchor="middle"
+        className="fill-slate-500 text-[10px]"
+      >
+        Gini (lower is fairer)
+      </text>
+    </svg>
+  );
+};
+
 // --- Sections -------------------------------------------------
 const Hero = () => (
   <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 bg-white text-black">
@@ -155,19 +732,7 @@ const UnevenGrowth = () => (
       <Card>
         <h3 className="text-lg font-medium mb-2">GDP per capita — selected EU economies</h3>
         <div className="h-64">
-          <ResponsiveContainer>
-            <RLineChart data={gdpPerCapitaEU} margin={{ left: 10, right: 10, top: 10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="year" />
-              <YAxis tickFormatter={(v)=>`€${(v/1000).toFixed(0)}k`} />
-              <Tooltip formatter={(v)=>`€${Number(v).toLocaleString()}`} />
-              <Legend />
-              <Line type="monotone" dataKey="AT" name="Austria" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="DE" name="Germany" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="PL" name="Poland" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="RO" name="Romania" strokeWidth={2} dot={false} />
-            </RLineChart>
-          </ResponsiveContainer>
+          <GDPPerCapitaChart />
         </div>
       </Card>
       <Card>
@@ -191,16 +756,7 @@ const BrainsNotBrawn = () => (
       <Card>
         <h3 className="text-lg font-medium mb-2">R&D (% GDP) vs Real GDP growth</h3>
         <div className="h-64">
-          <ResponsiveContainer>
-            <ScatterChart margin={{ left: 10, right: 10, top: 10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="rnd" name="R&D % GDP" />
-              <YAxis dataKey="gdp" name="GDP growth %" />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} formatter={(v)=>`${v}%`} labelFormatter={()=>'Country'} />
-              <Scatter name="EU Countries" data={rndVsGrowth} fill="currentColor" />
-              <ReferenceLine x={2.0} strokeDasharray="3 3" label="R&D = 2%" />
-            </ScatterChart>
-          </ResponsiveContainer>
+          <ScatterRndVsGrowth />
         </div>
       </Card>
       <Card>
@@ -224,17 +780,7 @@ const Limits = () => (
       <Card>
         <h3 className="text-lg font-medium mb-2">Index: GDP vs CO₂ (2000 = 100)</h3>
         <div className="h-64">
-          <ResponsiveContainer>
-            <AreaChart data={gdpVsCO2} margin={{ left: 10, right: 10, top: 10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="year" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Area type="monotone" dataKey="gdp" name="GDP Index" strokeWidth={2} fillOpacity={0.2} />
-              <Area type="monotone" dataKey="co2" name="CO₂ Index" strokeWidth={2} fillOpacity={0.2} />
-            </AreaChart>
-          </ResponsiveContainer>
+          <GDPVsCO2AreaChart />
         </div>
       </Card>
       <Card>
@@ -257,15 +803,7 @@ const PeopleFlows = () => (
       <Card>
         <h3 className="text-lg font-medium mb-2">Indicative mobility routes (scaled)</h3>
         <div className="h-64">
-          <ResponsiveContainer>
-            <BarChart data={migrationBalance} margin={{ left: 10, right: 10, top: 10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="route" />
-              <YAxis tickFormatter={(v)=>`${v}k`} />
-              <Tooltip formatter={(v)=>`${v}k people`} />
-              <Bar dataKey="people" name="People (k)" />
-            </BarChart>
-          </ResponsiveContainer>
+          <MobilityBarChart />
         </div>
       </Card>
       <Card>
@@ -289,16 +827,7 @@ const Balanced = () => (
       <Card>
         <h3 className="text-lg font-medium mb-2">GDP growth vs Gini (lower is fairer)</h3>
         <div className="h-64">
-          <ResponsiveContainer>
-            <ScatterChart margin={{ left: 10, right: 10, top: 10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="growth" name="GDP growth %" />
-              <YAxis dataKey="gini" name="Gini" reversed />
-              <Tooltip formatter={(v, n)=> n === 'gini' ? `${v}` : `${v}%`} />
-              <Scatter data={growthVsInequality} name="EU Countries" />
-              <ReferenceArea x1={1.5} x2={3.5} y1={26} y2={32} label="Sweet spot" />
-            </ScatterChart>
-          </ResponsiveContainer>
+          <BalancedScatter />
         </div>
       </Card>
       <Card>
