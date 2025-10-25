@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { motion } from "framer-motion";
 import { Brain, Factory, Leaf, LineChart, Map, Users } from "lucide-react";
 
 // ------------------------------------------------------------
@@ -696,20 +695,6 @@ const BalancedScatter = () => {
   );
 };
 
-// --- Sections -------------------------------------------------
-const Hero = () => (
-  <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 bg-white text-black">
-    <motion.h1
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="text-4xl md:text-6xl font-semibold leading-tight"
-    >
-      Better Growth Visuals
-    </motion.h1>
-  </section>
-);
-
 const UnevenGrowth = () => (
   <Section id="uneven" icon={Factory} kicker="Chapter 1" title="Growth is uneven. Your strategy shouldn’t be.">
     <p>
@@ -876,7 +861,6 @@ const Services = () => (
 export default function BetterGrowthHomepage() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      <Hero />
       <UnevenGrowth />
       <BrainsNotBrawn />
       <Limits />
@@ -885,8 +869,8 @@ export default function BetterGrowthHomepage() {
       <Services />
       <footer className="border-t border-slate-200 mt-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-sm text-slate-700">
-          <p>© 2025 UAB Skillaxis — Better Growth, by design.</p>
-          <p className="mt-1">A visual dissertation of better growth in Europe — built on data, delivered with taste.</p>
+          <p>© 2025 UAB Skillaxis — We measure twice; Europe grows once.</p>
+          <p className="mt-1">A visual dissertation of better growth, built on data, shipped with taste.</p>
         </div>
       </footer>
     </div>

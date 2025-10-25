@@ -107,7 +107,8 @@ export default function Footer() {
             <p className="mb-4">Helping you relocate without rage-quitting since 2025.</p>
           </div>
           <p className="text-xs text-gray-200">
-            © 2025 UAB Skillaxis. Built with optimism, maintained with paperwork.
+            © 2025 UAB Skillaxis — We measure twice; Europe grows once.
+            <span className="block mt-1">A visual dissertation of better growth, built on data, shipped with taste.</span>
           </p>
         </motion.div>
       </div>
