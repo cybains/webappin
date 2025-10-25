@@ -88,6 +88,7 @@ type SectionProps = {
   title: string;
   kicker: string;
   children: React.ReactNode;
+  lede?: React.ReactNode;
 };
 
 type CardProps = {
@@ -95,8 +96,11 @@ type CardProps = {
 };
 
 // --- UI primitives -------------------------------------------
-const Section = ({ id, icon: Icon, title, kicker, children }: SectionProps) => (
+const Section = ({ id, icon: Icon, title, kicker, children, lede }: SectionProps) => (
   <section id={id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    {lede && (
+      <div className="mb-6 text-base md:text-lg text-slate-600">{lede}</div>
+    )}
     <div className="flex items-center gap-3 mb-6">
       <Icon className="w-5 h-5" />
       <p className="uppercase tracking-widest text-xs opacity-70">{kicker}</p>
@@ -696,10 +700,13 @@ const BalancedScatter = () => {
 };
 
 const UnevenGrowth = () => (
-  <Section id="uneven" icon={Factory} kicker="Chapter 1" title="Growth is uneven. Your strategy shouldn’t be.">
-    <p>
-      Europe’s economy, without the drama. We measure what matters, ignore what doesn’t, and nudge growth toward something clever, clean, and actually useful.
-    </p>
+  <Section
+    id="uneven"
+    icon={Factory}
+    kicker="Chapter 1"
+    title="Growth is uneven. Your strategy shouldn’t be."
+    lede="Economy, without the drama. We measure what matters, ignore what doesn’t, and nudge growth toward something clever, clean, and actually useful."
+  >
     <p>
       Some regions sprint. Others tie their shoes for twenty years. We chart divergence so you can
       make convergence happen — profitably.
