@@ -1,6 +1,10 @@
 @import url('https://geists.vercel.app/font.css');
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* Default light theme (Base theme) */
 :root {
   --background: #fafafa;

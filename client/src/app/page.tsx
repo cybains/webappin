@@ -5,8 +5,8 @@ import Hero from "@/components/Hero";
 // import SearchMe from "@/components/SearchMe"; // removed
 import HowItWorks from "@/components/HowItWorks";
 import Contact from "@/components/Contact";
-import CoreServices from "@/components/CoreServices";
 import Footer from "@/components/Footer";
+import EcosystemSection from "@/components/EcosystemSection";
 
 // Dynamically import WorldMap for client-side only
 const WorldMap = dynamic(() => import("@/components/WorldMap"), { ssr: false });
@@ -30,14 +30,12 @@ export default function Home() {
           <SearchMe />
         </section> */}
 
+        {/* Ecosystem visualisation */}
+        <EcosystemSection />
+
         {/* How It Works Section */}
         <section id="how-it-works">
           <HowItWorks />
-        </section>
-
-        {/* Core Services Section */}
-        <section id="services">
-          <CoreServices />
         </section>
 
         {/* Contact Section */}

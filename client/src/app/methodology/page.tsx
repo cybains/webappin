@@ -406,7 +406,7 @@ export default function MethodologyPage() {
       </div>
 
       <footer className="mt-12 flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-600">
-        <span>© {currentYear} Sufoniq • Data snapshot: {dumpAsOf}</span>
+        <span>© {currentYear} UAB Skillaxis • Data snapshot: {dumpAsOf}</span>
         <a href="#ingestion" className="hover:text-slate-900">Back to top ↑</a>
       </footer>
       </main>
