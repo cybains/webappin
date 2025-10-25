@@ -698,6 +698,9 @@ const BalancedScatter = () => {
 const UnevenGrowth = () => (
   <Section id="uneven" icon={Factory} kicker="Chapter 1" title="Growth is uneven. Your strategy shouldn’t be.">
     <p>
+      Europe’s economy, without the drama. We measure what matters, ignore what doesn’t, and nudge growth toward something clever, clean, and actually useful.
+    </p>
+    <p>
       Some regions sprint. Others tie their shoes for twenty years. We chart divergence so you can
       make convergence happen — profitably.
     </p>
@@ -867,10 +870,10 @@ export default function BetterGrowthHomepage() {
       <PeopleFlows />
       <Balanced />
       <Services />
-      <footer className="border-t border-slate-200 mt-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-sm text-slate-700">
-          <p>© 2025 UAB Skillaxis — We measure twice; Europe grows once.</p>
-          <p className="mt-1">A visual dissertation of better growth, built on data, shipped with taste.</p>
+      <footer className="border-y border-slate-200 mt-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-sm text-slate-700 text-center space-y-2">
+          <p className="font-medium tracking-wide uppercase">© 2025 UAB Skillaxis — We measure twice; Europe grows once.</p>
+          <p className="text-slate-600">A visual dissertation of better growth, built on data, shipped with taste.</p>
         </div>
       </footer>
     </div>

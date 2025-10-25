@@ -106,10 +106,18 @@ export default function Footer() {
           <div>
             <p className="mb-4">Helping you relocate without rage-quitting since 2025.</p>
           </div>
-          <p className="text-xs text-gray-200">
-            © 2025 UAB Skillaxis — We measure twice; Europe grows once.
-            <span className="block mt-1">A visual dissertation of better growth, built on data, shipped with taste.</span>
-          </p>
+          <div className="mt-6 w-full">
+            <div className="border-t border-white/40" />
+            <div className="py-4 text-center text-xs text-gray-100 space-y-2">
+              <p className="font-medium uppercase tracking-[0.2em]">
+                © 2025 UAB Skillaxis — We measure twice; Europe grows once.
+              </p>
+              <p className="text-[0.8rem] text-gray-200">
+                A visual dissertation of better growth, built on data, shipped with taste.
+              </p>
+            </div>
+            <div className="border-b border-white/40" />
+          </div>
         </motion.div>
       </div>
 
