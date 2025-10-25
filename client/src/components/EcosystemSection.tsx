@@ -1,6 +1,6 @@
 "use client";
 
-import SufoniqEcosystem from "@/components/SufoniqEcosystem";
+import BetterGrowthHomepage from "@/components/BetterGrowthHomepage";
 
 export default function EcosystemSection() {
   return (
@@ -8,7 +8,7 @@ export default function EcosystemSection() {
       id="ecosystem"
       className="relative z-10 bg-[var(--background)] text-[var(--foreground)]"
     >
-      <SufoniqEcosystem />
+      <BetterGrowthHomepage />
     </section>
   );
 }
