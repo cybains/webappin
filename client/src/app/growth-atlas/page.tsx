@@ -498,7 +498,7 @@ function MultiLineChartSvg({
   );
 }
 
-type BarDatum = { label: string; value: number; color?: string };
+type BarDatum = { label: string; value: number; color?: string; iso3?: string };
 
 function VerticalBarChartSvg({
   data,
@@ -762,6 +762,7 @@ const PromiseOfGrowth: React.FC = () => {
     g_years: string;
     i_year: number;
     u_year: number;
+    src?: { g?: string; i?: string; u?: string };
   };
 
   type NarrativeSnapshot = {
@@ -778,6 +779,7 @@ const PromiseOfGrowth: React.FC = () => {
     startYear: number;
     endYear: number;
     values: LineDatum[];
+    rangeLabel: string;
   };
 
   const [opportunity, setOpportunity] = useState<OpportunityRecord[]>([]);
@@ -867,6 +869,9 @@ const PromiseOfGrowth: React.FC = () => {
         })();
         const span = endYear - startYear;
         const growthRate = Number.isFinite(record.g) ? record.g / 100 : 0;
+        const rangeLabel = record.g_years && record.g_years.trim().length
+          ? record.g_years
+          : `${startYear}–${endYear}`;
         if (!latestValue || span <= 0) {
           return acc;
         }
@@ -885,6 +890,7 @@ const PromiseOfGrowth: React.FC = () => {
           startYear,
           endYear,
           values,
+          rangeLabel,
         });
         return acc;
       }, [])
@@ -905,6 +911,7 @@ const PromiseOfGrowth: React.FC = () => {
         .filter((series) => Number.isFinite(series.latestValue))
         .sort((a, b) => (b.latestValue ?? 0) - (a.latestValue ?? 0))
         .map((series) => ({
+          iso3: series.iso3,
           label: series.name,
           value: series.latestValue ?? 0,
           color: colorByIso.get(series.iso3),
@@ -912,13 +919,17 @@ const PromiseOfGrowth: React.FC = () => {
     [seriesList, colorByIso],
   );
 
-  const skylineGap = useMemo(() => {
+  const skylineExtremes = useMemo(() => {
     if (!skylineData.length) return null;
     const sorted = [...skylineData].sort((a, b) => b.value - a.value);
-    const richest = sorted[0]?.value ?? 0;
-    const poorest = sorted[sorted.length - 1]?.value ?? 0;
-    if (!richest || !poorest) return null;
-    return richest / poorest;
+    const richest = sorted[0];
+    const poorest = sorted[sorted.length - 1];
+    if (!richest || !poorest || !poorest.value) return null;
+    return {
+      richest,
+      poorest,
+      ratio: richest.value / poorest.value,
+    };
   }, [skylineData]);
 
   useEffect(() => {
@@ -951,13 +962,37 @@ const PromiseOfGrowth: React.FC = () => {
         if (!found) return null;
         return {
           id: found.iso3,
-          label: `${found.name} (${(found.growthRate * 100).toFixed(1)}% CAGR)`,
+          label: found.name,
           color: colorByIso.get(found.iso3) ?? DEFAULT_SERIES_COLORS[0],
           values: found.values.map((value) => ({ x: value.x, y: value.y })),
         };
       })
       .filter((entry): entry is MultiLineSeries => Boolean(entry));
   }, [rotatingIds, seriesList, colorByIso]);
+
+  const rotatingLegend = useMemo(
+    () =>
+      rotatingIds
+        .map((iso) => {
+          const found = seriesList.find((series) => series.iso3 === iso);
+          if (!found) return null;
+          return {
+            iso3: found.iso3,
+            name: found.name,
+            rangeLabel: found.rangeLabel,
+            growthRate: found.growthRate,
+            color: colorByIso.get(found.iso3) ?? DEFAULT_SERIES_COLORS[0],
+          };
+        })
+        .filter((entry): entry is {
+          iso3: string;
+          name: string;
+          rangeLabel: string;
+          growthRate: number;
+          color: string;
+        } => Boolean(entry)),
+    [rotatingIds, seriesList, colorByIso],
+  );
 
   const handleRotate = () => {
     if (!rotationOrder.length) return;
@@ -989,6 +1024,21 @@ const PromiseOfGrowth: React.FC = () => {
       })
       .filter((entry): entry is MultiLineSeries => Boolean(entry));
   }, [customSelection, seriesList, indexedView, colorByIso]);
+
+  const selectedRange = useMemo(() => {
+    const selected = customSelection
+      .map((iso) => seriesList.find((series) => series.iso3 === iso))
+      .filter((entry): entry is CountrySeries => Boolean(entry));
+    if (!selected.length) return null;
+    const minYear = Math.min(...selected.map((entry) => entry.startYear));
+    const maxYear = Math.max(...selected.map((entry) => entry.endYear));
+    return { minYear, maxYear };
+  }, [customSelection, seriesList]);
+
+  const gdpIndicatorCode = useMemo(
+    () => opportunity[0]?.src?.g ?? "NY.GDP.PCAP.KD",
+    [opportunity],
+  );
 
   const bandData = useMemo(() => {
     if (seriesList.length < 6) return null;
@@ -1059,10 +1109,11 @@ const PromiseOfGrowth: React.FC = () => {
           <div className="h-80">
             <VerticalBarChartSvg data={skylineData} valueFormatter={formatEuro} />
           </div>
-          {skylineGap ? (
+          {skylineExtremes ? (
             <p className="mt-4 text-sm text-slate-600">
-              The richest country still earns roughly {skylineGap.toFixed(1)}× more per person than the poorest, underscoring why
-              level snapshots alone feel so unequal.
+              In {skylineExtremes.richest.label}, residents take home about {formatEuro(skylineExtremes.richest.value)} each year,
+              compared with {formatEuro(skylineExtremes.poorest.value)} in {skylineExtremes.poorest.label}. That {skylineExtremes.ratio.toFixed(1)}×
+              gap explains why static snapshots feel unequal—even before you watch the catch-up.
             </p>
           ) : null}
         </ChartCard>
@@ -1082,13 +1133,13 @@ const PromiseOfGrowth: React.FC = () => {
           }
         >
           <div className="flex flex-wrap gap-3 text-sm text-slate-600">
-            {rotatingSeries.map((series) => (
-              <span key={series.id} className="inline-flex items-center gap-2">
-                <span
-                  className="h-3 w-3 rounded-full"
-                  style={{ backgroundColor: series.color }}
-                />
-                {series.label}
+            {rotatingLegend.map((entry) => (
+              <span key={entry.iso3} className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-2 py-1">
+                <span className="h-3 w-3 rounded-full" style={{ backgroundColor: entry.color }} />
+                <span className="font-medium text-slate-700">{entry.name}</span>
+                <span className="text-slate-500">
+                  {entry.rangeLabel} • {(entry.growthRate * 100).toFixed(1)}% CAGR
+                </span>
               </span>
             ))}
             {rotatingSeries.length === 0 ? (
@@ -1178,7 +1229,8 @@ const PromiseOfGrowth: React.FC = () => {
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
             {customSelection.map((iso) => {
-              const label = seriesList.find((series) => series.iso3 === iso)?.name ?? iso;
+              const series = seriesList.find((entry) => entry.iso3 === iso);
+              const label = series?.name ?? iso;
               const color = colorByIso.get(iso) ?? DEFAULT_SERIES_COLORS[0];
               return (
                 <button
@@ -1186,6 +1238,11 @@ const PromiseOfGrowth: React.FC = () => {
                   type="button"
                   onClick={() => setCustomSelection((prev) => prev.filter((entry) => entry !== iso))}
                   className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
+                  title={
+                    series
+                      ? `${series.rangeLabel} • ${(series.growthRate * 100).toFixed(1)}% CAGR`
+                      : undefined
+                  }
                 >
                   <span className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
                   {label}
@@ -1203,6 +1260,13 @@ const PromiseOfGrowth: React.FC = () => {
               valueFormatter={indexedView ? formatIndexed : formatEuro}
             />
           </div>
+          <p className="mt-4 text-xs text-slate-500">
+            Source: World Bank indicator {gdpIndicatorCode} stored in the static /data/v1 bundle.
+            {" "}
+            {selectedRange
+              ? `Coverage spans ${selectedRange.minYear}–${selectedRange.maxYear} across the selected economies.`
+              : "Pick a country to reveal its 2015–2024 catch-up path."}
+          </p>
         </ChartCard>
       </div>
     </div>
