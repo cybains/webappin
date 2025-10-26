@@ -442,7 +442,8 @@ const PromiseOfGrowth: React.FC = () => {
     const node = scrollRef.current;
     if (!node) return;
     const raf = requestAnimationFrame(() => {
-      node.scrollLeft = node.scrollWidth;
+      const maxScroll = Math.max(0, node.scrollWidth - node.clientWidth);
+      node.scrollTo({ left: maxScroll });
     });
     return () => cancelAnimationFrame(raf);
   }, []);
@@ -505,20 +506,14 @@ const PromiseOfGrowth: React.FC = () => {
         />
         <div
           ref={scrollRef}
-          dir="rtl"
           tabIndex={0}
           onKeyDown={handleKeyDown}
-          className="hide-scrollbar relative flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth rounded-3xl border border-slate-200 bg-white/80 px-6 py-10 shadow-sm backdrop-blur-md focus:outline-none dark:border-slate-800 dark:bg-slate-900/60"
+          className="hide-scrollbar relative flex flex-row-reverse snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth rounded-3xl border border-slate-200 bg-white/80 px-6 py-10 shadow-sm backdrop-blur-md focus:outline-none dark:border-slate-800 dark:bg-slate-900/60"
           aria-label="Chapter 1 visualisation storyline scroller"
         >
           {chapterOnePanels.map((panel) => (
-            <motion.article
+            <article
               key={panel.id}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.4 }}
-              dir="ltr"
               className="snap-end shrink-0 w-[min(90vw,420px)] rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/80"
             >
               <span className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-500">{panel.eyebrow}</span>
@@ -535,7 +530,7 @@ const PromiseOfGrowth: React.FC = () => {
                   </li>
                 ))}
               </ul>
-            </motion.article>
+            </article>
           ))}
         </div>
       </div>
