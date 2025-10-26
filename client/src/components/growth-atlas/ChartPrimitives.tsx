@@ -413,6 +413,7 @@ export function ScatterChartSvg({
   color = "#2563eb",
   xLabel,
   yLabel,
+  referenceLines,
 }: {
   data: ScatterDatum[];
   width?: number;
@@ -420,6 +421,7 @@ export function ScatterChartSvg({
   color?: string;
   xLabel?: string;
   yLabel?: string;
+  referenceLines?: { x?: number; y?: number };
 }) {
   const margin = 48;
   const mapped = mapScatterPoints(data, width, height, margin);
@@ -429,6 +431,8 @@ export function ScatterChartSvg({
   const maxX = Math.max(...xs);
   const minY = Math.min(...ys);
   const maxY = Math.max(...ys);
+  const xRange = maxX - minX || 1;
+  const yRange = maxY - minY || 1;
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} className="h-72 w-full">
@@ -443,6 +447,28 @@ export function ScatterChartSvg({
         stroke="#e2e8f0"
         className="dark:stroke-slate-700"
       />
+      {referenceLines?.x !== undefined ? (
+        <line
+          x1={margin + ((referenceLines.x - minX) / xRange) * (width - margin * 2)}
+          x2={margin + ((referenceLines.x - minX) / xRange) * (width - margin * 2)}
+          y1={margin}
+          y2={height - margin}
+          stroke="#cbd5f5"
+          strokeDasharray="6 6"
+          className="dark:stroke-slate-600"
+        />
+      ) : null}
+      {referenceLines?.y !== undefined ? (
+        <line
+          x1={margin}
+          x2={width - margin}
+          y1={height - margin - ((referenceLines.y - minY) / yRange) * (height - margin * 2)}
+          y2={height - margin - ((referenceLines.y - minY) / yRange) * (height - margin * 2)}
+          stroke="#cbd5f5"
+          strokeDasharray="6 6"
+          className="dark:stroke-slate-600"
+        />
+      ) : null}
       {mapped.map((point, index) => (
         <g key={index}>
           <circle cx={point.cx} cy={point.cy} r={point.radius} fill={color} opacity={0.65} />
