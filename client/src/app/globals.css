@@ -85,6 +85,15 @@ body {
   transition: background-color 0.3s, color 0.3s ease;
 }
 
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 @media (max-width: 768px) {
   body.hide-hero .hero {
     display: none !important;
