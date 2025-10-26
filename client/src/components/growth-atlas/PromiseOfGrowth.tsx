@@ -213,8 +213,10 @@ const PromiseOfGrowth: React.FC = () => {
     setSelectedCountries((prev) => prev.filter((item) => item !== country));
   };
 
+  const panelWrapperClasses =
+    "snap-center snap-always w-full shrink-0 basis-full md:basis-[85vw] lg:basis-[960px] flex";
   const panelBaseClasses =
-    "w-full shrink-0 basis-full rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-sm md:basis-[85vw] lg:basis-[960px] dark:border-slate-800 dark:bg-slate-900/70";
+    "h-full w-full rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900/70";
 
   const panels = [
     {
@@ -573,7 +575,7 @@ const PromiseOfGrowth: React.FC = () => {
 
       <div
         ref={sliderRef}
-        className="hide-scrollbar flex flex-row-reverse gap-6 overflow-x-auto scroll-smooth pb-6"
+        className="hide-scrollbar flex flex-row-reverse gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory"
         dir="rtl"
       >
         {panels.map((panel, index) => (
@@ -582,7 +584,7 @@ const PromiseOfGrowth: React.FC = () => {
             ref={(node) => {
               panelRefs.current[index] = node;
             }}
-            className="snap-end"
+            className={panelWrapperClasses}
             dir="ltr"
           >
             {panel.content}
