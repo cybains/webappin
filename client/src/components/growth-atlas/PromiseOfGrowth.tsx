@@ -296,6 +296,7 @@ const PromiseOfGrowth: React.FC = () => {
     "snap-center snap-always w-full shrink-0 basis-full md:basis-[85vw] lg:basis-[960px] flex";
   const panelBaseClasses =
     "h-full w-full rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900/70";
+  const availableComparisonCount = availableCountries.length;
 
   const panels = [
     {
@@ -496,6 +497,9 @@ const PromiseOfGrowth: React.FC = () => {
                   <label htmlFor="country-picker" className="block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
                     Add a country
                   </label>
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    Preview lets you plot {availableComparisonCount} of the {opportunityCountryNames.length} economies today; the full roster below arrives once the live data feed is wired in.
+                  </p>
                   <div className="mt-2 flex flex-wrap gap-3">
                     <select
                       id="country-picker"
