@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 import {
@@ -257,6 +257,7 @@ const PromiseOfGrowth: React.FC = () => {
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const dragState = useRef({ active: false, startX: 0, scrollLeft: 0 });
   const [activePanel, setActivePanel] = useState(0);
   const [cohortIndex, setCohortIndex] = useState(0);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
@@ -537,8 +538,6 @@ const PromiseOfGrowth: React.FC = () => {
     [countries]
   );
   const availableComparisonCount = availableCountryOptions.length;
-  const liveCountryCount = countries.length;
-  const manifestCountryCount = rosterNames.length;
 
   const earliestYear = useMemo(() => {
     const years = slopeEligible.flatMap((country) => country.series.map((point) => point.x));
@@ -913,23 +912,75 @@ const PromiseOfGrowth: React.FC = () => {
   const panelCount = panels.length;
   const activePanelId = panels[activePanel]?.id ?? "";
   const activePanelMeta = panelMeta[activePanelId] ?? panelMeta.default;
-  const sliderProgress =
-    panelCount > 0 ? ((Math.min(activePanel, Math.max(panelCount - 1, 0)) + 1) / panelCount) * 100 : 0;
-  const cohortCadenceSeconds = Math.round(rotationIntervalMs / 1000);
+  const panelPositionLabel =
+    panelCount > 0
+      ? `${String(Math.min(activePanel + 1, panelCount)).padStart(2, "0")} / ${String(panelCount).padStart(2, "0")}`
+      : "00 / 00";
 
-  const goToPanel = (index: number, behavior: ScrollBehavior = "smooth") => {
-    const clamped = Math.max(0, Math.min(index, panelCount - 1));
-    const node = panelRefs.current[clamped];
-    if (node) {
-      node.scrollIntoView({ behavior, inline: "center", block: "nearest" });
-    }
-    setActivePanel(clamped);
-  };
+  const goToPanel = useCallback(
+    (index: number, behavior: ScrollBehavior = "smooth") => {
+      const container = sliderRef.current;
+      if (!container || !panelCount) return;
+
+      const clamped = Math.max(0, Math.min(index, panelCount - 1));
+      const node = panelRefs.current[clamped];
+      if (!node) {
+        setActivePanel(clamped);
+        return;
+      }
+
+      const offset =
+        node.offsetLeft -
+        container.offsetLeft -
+        (container.clientWidth - node.clientWidth) / 2;
+      const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
+      const target = Math.max(0, Math.min(offset, maxScroll));
+
+      container.scrollTo({ left: target, behavior });
+      setActivePanel(clamped);
+    },
+    [panelCount]
+  );
 
   const handleStep = (direction: "prev" | "next") => {
     const target = direction === "next" ? activePanel + 1 : activePanel - 1;
     if (target < 0 || target >= panelCount) return;
     goToPanel(target);
+  };
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    const container = sliderRef.current;
+    if (!container) return;
+
+    const target = event.target as HTMLElement;
+    if (target && target.closest("button, a, input, select, textarea")) {
+      return;
+    }
+
+    dragState.current = {
+      active: true,
+      startX: event.clientX,
+      scrollLeft: container.scrollLeft,
+    };
+
+    container.setPointerCapture?.(event.pointerId);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const container = sliderRef.current;
+    if (!container || !dragState.current.active) return;
+
+    event.preventDefault();
+    const deltaX = event.clientX - dragState.current.startX;
+    container.scrollLeft = dragState.current.scrollLeft - deltaX;
+  };
+
+  const endPointerDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const container = sliderRef.current;
+    if (!container || !dragState.current.active) return;
+
+    dragState.current = { ...dragState.current, active: false };
+    container.releasePointerCapture?.(event.pointerId);
   };
 
   useEffect(() => {
@@ -958,94 +1009,54 @@ const PromiseOfGrowth: React.FC = () => {
   }, [panelCount]);
 
   useEffect(() => {
-    if (panelRefs.current[0]) {
-      panelRefs.current[0].scrollIntoView({ behavior: "auto", inline: "center", block: "nearest" });
+    if (panelCount) {
+      goToPanel(0, "auto");
     }
-  }, [panelCount]);
+  }, [goToPanel, panelCount]);
 
   return (
-    <div className="space-y-12">
-      <div className="overflow-hidden rounded-3xl border border-slate-200/70 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 shadow-xl dark:border-slate-700/60">
-        <div className="flex flex-col gap-6 p-6 md:p-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="space-y-3">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.4em] text-sky-300">Chapter 1</p>
-              <h2 className="text-3xl font-semibold text-white sm:text-4xl">Promise of Growth</h2>
-              <p className="max-w-2xl text-sm leading-relaxed text-slate-300">
-                The live data pack powers four experiences: skyline levels, slope momentum, convergence bands, and your custom comparisons.
-              </p>
-            </div>
-            <div className="w-full max-w-xs rounded-2xl border border-white/10 bg-white/5 p-4 text-left shadow-inner sm:text-right">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-300">Now viewing</p>
-              <p className="mt-2 text-lg font-semibold text-white">{activePanelMeta.label}</p>
-              <p className="mt-1 text-xs leading-relaxed text-slate-300/80">{activePanelMeta.description}</p>
-            </div>
+    <div className="space-y-10">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-600 dark:text-slate-200">
+          <span className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+            Promise of Growth
+          </span>
+          <span className="text-slate-500 dark:text-slate-400">{activePanelMeta.label}</span>
+          <span className="sr-only">{activePanelMeta.description}</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => handleStep("prev")}
+            aria-label="Go to previous panel"
+            disabled={activePanel === 0}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900"
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+          <div className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:border-slate-600 dark:text-slate-300">
+            {panelPositionLabel}
           </div>
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => handleStep("prev")}
-                aria-label="Go to previous panel"
-                disabled={activePanel === 0}
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-lg text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                <span aria-hidden="true">←</span>
-              </button>
-              <div className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-slate-200">
-                {String(Math.min(activePanel + 1, panelCount)).padStart(2, "0")} / {String(panelCount || 0).padStart(2, "0")}
-              </div>
-              <button
-                type="button"
-                onClick={() => handleStep("next")}
-                aria-label="Go to next panel"
-                disabled={activePanel === panelCount - 1}
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-lg text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                <span aria-hidden="true">→</span>
-              </button>
-            </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10 sm:max-w-xs">
-              <div
-                className="h-full rounded-full bg-sky-400 transition-all duration-500 ease-out"
-                style={{ width: `${sliderProgress}%` }}
-              />
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 shadow-inner">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-300">Live countries</p>
-              <p className="mt-2 text-2xl font-semibold text-white">
-                {loading ? "…" : liveCountryCount.toLocaleString("en-US")}
-              </p>
-              <p className="mt-1 text-xs leading-relaxed text-slate-300/80">
-                Economies with GDP-per-capita narratives wired directly into Chapter 1 today.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-inner">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-300">Country roster</p>
-              <p className="mt-2 text-2xl font-semibold text-white">
-                {loading ? "…" : manifestCountryCount.toLocaleString("en-US")}
-              </p>
-              <p className="mt-1 text-xs leading-relaxed text-slate-300/80">
-                Entries sourced from the Chapter 1 opportunity manifest and listed below.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-inner">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-300">Cohort cadence</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{cohortCadenceSeconds}s</p>
-              <p className="mt-1 text-xs leading-relaxed text-slate-300/80">
-                Rotating slope cohorts cycle automatically; use the slider controls to take manual control.
-              </p>
-            </div>
-          </div>
+          <button
+            type="button"
+            onClick={() => handleStep("next")}
+            aria-label="Go to next panel"
+            disabled={activePanel === panelCount - 1}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900"
+          >
+            <span aria-hidden="true">→</span>
+          </button>
         </div>
       </div>
 
       <div
         ref={sliderRef}
-        className="hide-scrollbar flex flex-row-reverse gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory"
-        dir="rtl"
+        className="hide-scrollbar flex cursor-grab gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory active:cursor-grabbing"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={endPointerDrag}
+        onPointerLeave={endPointerDrag}
+        onPointerCancel={endPointerDrag}
       >
         {panels.map((panel, index) => (
           <div
