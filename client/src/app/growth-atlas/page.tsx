@@ -785,7 +785,7 @@ function ScatterChartSvg({
 // 1) Promise of Growth — fully sketched Chapter 1 visuals
 const palette = ["#0ea5e9", "#f97316", "#22c55e", "#6366f1", "#ec4899", "#14b8a6", "#9333ea", "#facc15", "#06b6d4", "#ef4444"];
 
-const PromiseOfGrowth: React.FC = () => {
+export const PromiseOfGrowth: React.FC = () => {
   const skylineData = useMemo(
     () => [
       { label: "Lux", value: 134_000 },
