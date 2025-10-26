@@ -76,85 +76,6 @@ const Section: React.FC<{
 // Data layer (stubs → replace with real API calls)
 // -----------------------------
 
-// WORLD BANK v2 helper: GET json with pagination handling — replace with your fetcher or server route
-async function fetchWorldBankJSON(url: string) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`WB fetch failed: ${res.status}`);
-  return res.json();
-}
-
-// Example: GDP per capita (current US$) for a set of countries, long time series
-// API: https://api.worldbank.org/v2/country/{codes}/indicator/NY.GDP.PCAP.CD?format=json&per_page=20000
-type WorldBankSeriesEntry = {
-  country?: { value?: string };
-  countryiso3code?: string;
-  date?: string;
-  value?: number;
-};
-
-type NormalisedSeriesPoint = {
-  country: string;
-  code: string;
-  year: number;
-  value: number;
-};
-
-function isValidSeriesEntry(entry: WorldBankSeriesEntry): entry is Required<Pick<WorldBankSeriesEntry, "countryiso3code" | "date" | "value">> & { country?: { value?: string } } {
-  return (
-    typeof entry.countryiso3code === "string" &&
-    typeof entry.date === "string" &&
-    typeof entry.value === "number"
-  );
-}
-
-async function getGDPpcSeries(countryCodes: string[]): Promise<NormalisedSeriesPoint[]> {
-  const codes = countryCodes.join(";");
-  const url = `https://api.worldbank.org/v2/country/${codes}/indicator/NY.GDP.PCAP.CD?format=json&per_page=20000`;
-  const json = await fetchWorldBankJSON(url);
-  // json = [metadata, data[]]
-  const records = (Array.isArray(json?.[1]) ? json[1] : []) as WorldBankSeriesEntry[];
-  // Normalize: { country, year, value }
-  return records
-    .filter(isValidSeriesEntry)
-    .map((d) => ({
-      country: d.country?.value ?? d.countryiso3code,
-      code: d.countryiso3code,
-      year: Number(d.date),
-      value: d.value,
-    }))
-    .sort((a, b) => a.year - b.year);
-}
-
-// Example: Life expectancy series
-async function getLifeExpectancySeries(countryCodes: string[]): Promise<NormalisedSeriesPoint[]> {
-  const codes = countryCodes.join(";");
-  const url = `https://api.worldbank.org/v2/country/${codes}/indicator/SP.DYN.LE00.IN?format=json&per_page=20000`;
-  const json = await fetchWorldBankJSON(url);
-  const records = (Array.isArray(json?.[1]) ? json[1] : []) as WorldBankSeriesEntry[];
-  return records
-    .filter(isValidSeriesEntry)
-    .map((d) => ({
-      country: d.country?.value ?? d.countryiso3code,
-      code: d.countryiso3code,
-      year: Number(d.date),
-      value: d.value,
-    }))
-    .sort((a, b) => a.year - b.year);
-}
-
-// FAKE fallback data (in case API blocked during local dev)
-function makeFakeSeries(kind: "gdp" | "life", code: string, label: string = code): NormalisedSeriesPoint[] {
-  const arr: NormalisedSeriesPoint[] = [];
-  for (let y = 1960; y <= 2024; y++) {
-    const base =
-      kind === "gdp"
-        ? 500 + (y - 1960) ** 2
-        : 45 + Math.log(y - 1959) * 8;
-    arr.push({ year: y, value: Number(base.toFixed(2)), country: label, code });
-  }
-  return arr;
-}
-
 // -----------------------------
 // Chart helpers
 // -----------------------------
@@ -448,57 +369,906 @@ function ScatterChartSvg({
   );
 }
 
+// Shared palette for multi-series visuals
+const DEFAULT_SERIES_COLORS = [
+  "#2563eb",
+  "#0ea5e9",
+  "#22c55e",
+  "#f97316",
+  "#a855f7",
+  "#ef4444",
+  "#14b8a6",
+  "#fb7185",
+  "#eab308",
+];
+
+type MultiLineSeries = {
+  id: string;
+  label: string;
+  color: string;
+  values: LineDatum[];
+};
+
+function MultiLineChartSvg({
+  series,
+  width = 520,
+  height = 320,
+  valueFormatter,
+}: {
+  series: MultiLineSeries[];
+  width?: number;
+  height?: number;
+  valueFormatter?: (value: number) => string;
+}) {
+  const margin = { top: 32, right: 24, bottom: 44, left: 64 };
+  const populated = series.filter((s) => s.values.length);
+
+  if (!populated.length) {
+    return (
+      <svg viewBox={`0 0 ${width} ${height}`} className="h-80 w-full">
+        <rect
+          x={margin.left}
+          y={margin.top}
+          width={width - margin.left - margin.right}
+          height={height - margin.top - margin.bottom}
+          rx={12}
+          fill="rgba(148, 163, 184, 0.08)"
+          stroke="#e2e8f0"
+        />
+        <text x={width / 2} y={height / 2} textAnchor="middle" fontSize={12} fill="#475569">
+          No data yet
+        </text>
+      </svg>
+    );
+  }
+
+  const points = populated.flatMap((s) => s.values);
+  const xs = points.map((p) => p.x);
+  const ys = points.map((p) => p.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+  const xRange = maxX - minX || 1;
+  const yRange = maxY - minY || 1;
+  const xTicks = Array.from({ length: 5 }, (_, i) => minX + (i / 4) * xRange);
+  const yTicks = Array.from({ length: 5 }, (_, i) => minY + (i / 4) * yRange);
+
+  const scaleX = (x: number) => margin.left + ((x - minX) / (xRange || 1)) * innerWidth;
+  const scaleY = (y: number) => margin.top + innerHeight - ((y - minY) / (yRange || 1)) * innerHeight;
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="h-80 w-full">
+      <rect
+        x={margin.left}
+        y={margin.top}
+        width={innerWidth}
+        height={innerHeight}
+        rx={12}
+        fill="rgba(148, 163, 184, 0.08)"
+        stroke="#e2e8f0"
+      />
+      {xTicks.map((tick, idx) => {
+        const x = scaleX(tick);
+        return <line key={`x-grid-${idx}`} x1={x} x2={x} y1={margin.top} y2={height - margin.bottom} stroke="rgba(226,232,240,0.55)" />;
+      })}
+      {yTicks.map((tick, idx) => {
+        const y = scaleY(tick);
+        return <line key={`y-grid-${idx}`} x1={margin.left} x2={width - margin.right} y1={y} y2={y} stroke="rgba(226,232,240,0.55)" />;
+      })}
+      {populated.map((serie) => {
+        const d = serie.values
+          .map((point, index) => `${index === 0 ? "M" : "L"}${scaleX(point.x).toFixed(2)},${scaleY(point.y).toFixed(2)}`)
+          .join(" ");
+        const latest = serie.values[serie.values.length - 1];
+        return (
+          <g key={serie.id}>
+            <path d={d} fill="none" stroke={serie.color} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx={scaleX(latest.x)} cy={scaleY(latest.y)} r={4.5} fill={serie.color} />
+          </g>
+        );
+      })}
+      {xTicks.map((tick) => {
+        const x = scaleX(tick);
+        return (
+          <text key={`x-label-${tick}`} x={x} y={height - margin.bottom + 18} fontSize={11} textAnchor="middle" fill="#475569">
+            {Math.round(tick).toString()}
+          </text>
+        );
+      })}
+      {yTicks.map((tick) => {
+        const y = scaleY(tick);
+        return (
+          <text
+            key={`y-label-${tick}`}
+            x={margin.left - 12}
+            y={y}
+            fontSize={11}
+            textAnchor="end"
+            alignmentBaseline="middle"
+            fill="#475569"
+          >
+            {valueFormatter ? valueFormatter(tick) : Math.round(tick).toLocaleString()}
+          </text>
+        );
+      })}
+    </svg>
+  );
+}
+
+type BarDatum = { label: string; value: number; color?: string; iso3?: string };
+
+function VerticalBarChartSvg({
+  data,
+  width = 520,
+  height = 320,
+  valueFormatter,
+}: {
+  data: BarDatum[];
+  width?: number;
+  height?: number;
+  valueFormatter?: (value: number) => string;
+}) {
+  const margin = { top: 32, right: 24, bottom: 80, left: 72 };
+  if (!data.length) {
+    return (
+      <svg viewBox={`0 0 ${width} ${height}`} className="h-80 w-full">
+        <rect
+          x={margin.left}
+          y={margin.top}
+          width={width - margin.left - margin.right}
+          height={height - margin.top - margin.bottom}
+          rx={12}
+          fill="rgba(148, 163, 184, 0.08)"
+          stroke="#e2e8f0"
+        />
+        <text x={width / 2} y={height / 2} textAnchor="middle" fontSize={12} fill="#475569">
+          No data yet
+        </text>
+      </svg>
+    );
+  }
+
+  const sorted = [...data].sort((a, b) => b.value - a.value);
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+  const barWidth = innerWidth / sorted.length;
+  const maxValue = Math.max(...sorted.map((d) => d.value));
+  const yTicks = Array.from({ length: 5 }, (_, i) => (i / 4) * maxValue);
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="h-80 w-full">
+      <rect
+        x={margin.left}
+        y={margin.top}
+        width={innerWidth}
+        height={innerHeight}
+        rx={12}
+        fill="rgba(148, 163, 184, 0.08)"
+        stroke="#e2e8f0"
+      />
+      {yTicks.map((tick, idx) => {
+        const y = margin.top + innerHeight - ((tick / (maxValue || 1)) * innerHeight || 0);
+        return <line key={`y-grid-${idx}`} x1={margin.left} x2={width - margin.right} y1={y} y2={y} stroke="rgba(226,232,240,0.55)" />;
+      })}
+      {sorted.map((datum, idx) => {
+        const x = margin.left + idx * barWidth;
+        const barHeight = ((datum.value / (maxValue || 1)) * innerHeight || 0);
+        const y = margin.top + innerHeight - barHeight;
+        return (
+          <g key={datum.label}>
+            <rect
+              x={x + barWidth * 0.1}
+              y={y}
+              width={barWidth * 0.8}
+              height={barHeight}
+              rx={6}
+              fill={datum.color ?? "#1d4ed8"}
+              opacity={0.85}
+            />
+            <text
+              x={x + barWidth / 2}
+              y={y - 8}
+              fontSize={11}
+              textAnchor="middle"
+              fill="#1f2937"
+            >
+              {valueFormatter ? valueFormatter(datum.value) : Math.round(datum.value).toLocaleString()}
+            </text>
+            <text
+              x={x + barWidth / 2}
+              y={height - margin.bottom + 32}
+              transform={`rotate(-45 ${x + barWidth / 2} ${height - margin.bottom + 32})`}
+              fontSize={11}
+              textAnchor="end"
+              fill="#475569"
+            >
+              {datum.label}
+            </text>
+          </g>
+        );
+      })}
+      {yTicks.map((tick) => {
+        const y = margin.top + innerHeight - ((tick / (maxValue || 1)) * innerHeight || 0);
+        return (
+          <text
+            key={`y-label-${tick}`}
+            x={margin.left - 14}
+            y={y}
+            fontSize={11}
+            alignmentBaseline="middle"
+            textAnchor="end"
+            fill="#475569"
+          >
+            {valueFormatter ? valueFormatter(tick) : Math.round(tick).toLocaleString()}
+          </text>
+        );
+      })}
+    </svg>
+  );
+}
+
+type BandSeries = { upper: LineDatum[]; lower: LineDatum[] };
+
+function BandAreaChartSvg({
+  band,
+  width = 720,
+  height = 320,
+  valueFormatter,
+}: {
+  band: BandSeries;
+  width?: number;
+  height?: number;
+  valueFormatter?: (value: number) => string;
+}) {
+  const margin = { top: 32, right: 24, bottom: 44, left: 72 };
+  const { upper, lower } = band;
+  if (!upper.length || !lower.length) {
+    return (
+      <svg viewBox={`0 0 ${width} ${height}`} className="h-80 w-full">
+        <rect
+          x={margin.left}
+          y={margin.top}
+          width={width - margin.left - margin.right}
+          height={height - margin.top - margin.bottom}
+          rx={12}
+          fill="rgba(148, 163, 184, 0.08)"
+          stroke="#e2e8f0"
+        />
+        <text x={width / 2} y={height / 2} textAnchor="middle" fontSize={12} fill="#475569">
+          No data yet
+        </text>
+      </svg>
+    );
+  }
+
+  const points = [...upper, ...lower];
+  const xs = points.map((p) => p.x);
+  const ys = points.map((p) => p.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+  const xRange = maxX - minX || 1;
+  const yRange = maxY - minY || 1;
+
+  const scaleX = (x: number) => margin.left + ((x - minX) / (xRange || 1)) * innerWidth;
+  const scaleY = (y: number) => margin.top + innerHeight - ((y - minY) / (yRange || 1)) * innerHeight;
+
+  const areaPath = upper
+    .map((point, index) => `${index === 0 ? "M" : "L"}${scaleX(point.x).toFixed(2)},${scaleY(point.y).toFixed(2)}`)
+    .join(" ");
+  const lowerPath = lower
+    .slice()
+    .reverse()
+    .map((point) => `L${scaleX(point.x).toFixed(2)},${scaleY(point.y).toFixed(2)}`)
+    .join(" ");
+
+  const xTicks = Array.from({ length: 5 }, (_, i) => minX + (i / 4) * xRange);
+  const yTicks = Array.from({ length: 5 }, (_, i) => minY + (i / 4) * yRange);
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="h-80 w-full">
+      <rect
+        x={margin.left}
+        y={margin.top}
+        width={innerWidth}
+        height={innerHeight}
+        rx={12}
+        fill="rgba(148, 163, 184, 0.08)"
+        stroke="#e2e8f0"
+      />
+      <path d={`${areaPath} ${lowerPath} Z`} fill="rgba(37, 99, 235, 0.18)" stroke="none" />
+      <path d={areaPath} fill="none" stroke="#1d4ed8" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d={lower
+          .map((point, index) => `${index === 0 ? "M" : "L"}${scaleX(point.x).toFixed(2)},${scaleY(point.y).toFixed(2)}`)
+          .join(" ")}
+        fill="none"
+        stroke="#0369a1"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {xTicks.map((tick) => {
+        const x = scaleX(tick);
+        return (
+          <text key={`x-label-${tick}`} x={x} y={height - margin.bottom + 18} fontSize={11} textAnchor="middle" fill="#475569">
+            {Math.round(tick).toString()}
+          </text>
+        );
+      })}
+      {yTicks.map((tick) => {
+        const y = scaleY(tick);
+        return (
+          <text
+            key={`y-label-${tick}`}
+            x={margin.left - 14}
+            y={y}
+            fontSize={11}
+            alignmentBaseline="middle"
+            textAnchor="end"
+            fill="#475569"
+          >
+            {valueFormatter ? valueFormatter(tick) : Math.round(tick).toLocaleString()}
+          </text>
+        );
+      })}
+    </svg>
+  );
+}
+
+const ChartCard: React.FC<{
+  title: string;
+  subtitle?: string;
+  actions?: React.ReactNode;
+  className?: string;
+  children: React.ReactNode;
+}> = ({ title, subtitle, actions, className = "", children }) => (
+  <motion.div
+    variants={fadeUp}
+    initial="hidden"
+    whileInView="show"
+    viewport={{ once: true, margin: "-100px" }}
+    className={`rounded-2xl border border-slate-200 bg-white p-6 shadow-sm ${className}`}
+  >
+    <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+        {subtitle ? <p className="text-sm text-slate-600">{subtitle}</p> : null}
+      </div>
+      {actions ? <div className="flex-shrink-0 text-sm text-slate-600">{actions}</div> : null}
+    </div>
+    <div className="mt-4">{children}</div>
+  </motion.div>
+);
+
 // -----------------------------
 // Section Components
 // -----------------------------
 
-// 1) Promise of Growth — GDPpc + Life Expectancy (dual visuals)
+// 1) Promise of Growth — interactive convergence studio
 const PromiseOfGrowth: React.FC = () => {
-  const [gdp, setGdp] = useState<NormalisedSeriesPoint[]>([]);
-  const [le, setLe] = useState<NormalisedSeriesPoint[]>([]);
+  type OpportunityRecord = {
+    country: string;
+    score: number;
+    g: number;
+    i: number;
+    u: number;
+    g_years: string;
+    i_year: number;
+    u_year: number;
+    src?: { g?: string; i?: string; u?: string };
+  };
+
+  type NarrativeSnapshot = {
+    iso3: string;
+    country_name?: string;
+    facts_used?: Array<{ code: string; value?: number; year?: number }>;
+  };
+
+  type CountrySeries = {
+    iso3: string;
+    name: string;
+    latestValue?: number;
+    growthRate: number;
+    startYear: number;
+    endYear: number;
+    values: LineDatum[];
+    rangeLabel: string;
+  };
+
+  const [opportunity, setOpportunity] = useState<OpportunityRecord[]>([]);
+  const [snapshots, setSnapshots] = useState<Record<string, NarrativeSnapshot>>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [rotationIndex, setRotationIndex] = useState(0);
+  const [customSelection, setCustomSelection] = useState<string[]>([]);
+  const [indexedView, setIndexedView] = useState(false);
+  const [pickerValue, setPickerValue] = useState<string>("");
 
   useEffect(() => {
-    (async () => {
+    let cancelled = false;
+    const load = async () => {
       try {
-        const [gdpS, leS] = await Promise.all([
-          getGDPpcSeries(["AUT", "IND", "DEU", "NLD"]).catch(() => makeFakeSeries("gdp", "AUT", "Austria")),
-          getLifeExpectancySeries(["AUT", "IND", "DEU", "NLD"]).catch(() => makeFakeSeries("life", "AUT", "Austria")),
+        const [opportunityRes, indexRes] = await Promise.all([
+          fetch("/data/v1/ch1_opportunity.json"),
+          fetch("/data/v1/index.json"),
         ]);
-        // For demo, reduce to 2 lines by aggregating per year (world vs sample) or filter for 2 codes
-        const pick = (arr: NormalisedSeriesPoint[], code: string) => arr.filter((d) => d.code === code);
-        setGdp(pick(gdpS, "AUT"));
-        setLe(pick(leS, "AUT"));
-      } catch {
-        setGdp(makeFakeSeries("gdp", "AUT", "Austria"));
-        setLe(makeFakeSeries("life", "AUT", "Austria"));
+        if (!opportunityRes.ok) throw new Error("Failed to load opportunity dataset");
+        if (!indexRes.ok) throw new Error("Failed to load index dataset");
+        const [opportunityJson, indexJson] = await Promise.all([
+          opportunityRes.json(),
+          indexRes.json(),
+        ]);
+        if (cancelled) return;
+        const records = Array.isArray(opportunityJson) ? (opportunityJson as OpportunityRecord[]) : [];
+        setOpportunity(records);
+
+        const countryEntries: Array<{ iso3: string; path: string }> = Array.isArray(indexJson?.countries)
+          ? (indexJson.countries as Array<{ iso3: string; files?: { narrative?: string } }>).
+              map((entry) => ({ iso3: entry.iso3, path: entry.files?.narrative ?? "" }))
+              .filter((entry) => entry.path)
+          : [];
+
+        const neededIso = new Set(records.map((record) => record.country));
+        const relevantEntries = countryEntries.filter((entry) => neededIso.has(entry.iso3));
+
+        const narrativePairs = await Promise.all(
+          relevantEntries.map(async (entry) => {
+            try {
+              const res = await fetch(entry.path);
+              if (!res.ok) throw new Error(`Failed to load narrative for ${entry.iso3}`);
+              const json = (await res.json()) as NarrativeSnapshot;
+              return [entry.iso3, json] as const;
+            } catch (err) {
+              console.warn(err);
+              return [entry.iso3, { iso3: entry.iso3 }] as const;
+            }
+          }),
+        );
+        if (cancelled) return;
+        setSnapshots(Object.fromEntries(narrativePairs));
+      } catch (err) {
+        if (!cancelled) {
+          console.error(err);
+          setError(err instanceof Error ? err.message : "Failed to load chapter data");
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-    })();
+    };
+
+    void load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const gdpSeries = useMemo(() => gdp.map((point) => ({ x: point.year, y: point.value })), [gdp]);
-  const leSeries = useMemo(() => le.map((point) => ({ x: point.year, y: point.value })), [le]);
+  const seriesList = useMemo<CountrySeries[]>(() => {
+    if (!opportunity.length) return [];
+    return opportunity
+      .reduce<CountrySeries[]>((acc, record) => {
+        const narrative = snapshots[record.country];
+        const gdpFact = narrative?.facts_used?.find((fact) => fact.code === "NY.GDP.PCAP.KD");
+        const latestValue = gdpFact?.value;
+        const [startYear, endYear] = (() => {
+          const match = record.g_years?.split(/–|-/);
+          if (match?.length === 2) {
+            const start = Number(match[0].replace(/[^0-9]/g, ""));
+            const end = Number(match[1].replace(/[^0-9]/g, ""));
+            if (!Number.isNaN(start) && !Number.isNaN(end) && end > start) {
+              return [start, end] as const;
+            }
+          }
+          return [2015, 2024] as const;
+        })();
+        const span = endYear - startYear;
+        const growthRate = Number.isFinite(record.g) ? record.g / 100 : 0;
+        const rangeLabel = record.g_years && record.g_years.trim().length
+          ? record.g_years
+          : `${startYear}–${endYear}`;
+        if (!latestValue || span <= 0) {
+          return acc;
+        }
+        const base = latestValue / Math.pow(1 + growthRate, span);
+        const values: LineDatum[] = [];
+        for (let year = startYear; year <= endYear; year++) {
+          const yearsSinceStart = year - startYear;
+          const value = base * Math.pow(1 + growthRate, yearsSinceStart);
+          values.push({ x: year, y: Number(value.toFixed(2)) });
+        }
+        acc.push({
+          iso3: record.country,
+          name: narrative?.country_name ?? record.country,
+          latestValue,
+          growthRate,
+          startYear,
+          endYear,
+          values,
+          rangeLabel,
+        });
+        return acc;
+      }, [])
+      .sort((a, b) => b.growthRate - a.growthRate);
+  }, [opportunity, snapshots]);
+
+  const colorByIso = useMemo(() => {
+    const map = new Map<string, string>();
+    seriesList.forEach((series, idx) => {
+      map.set(series.iso3, DEFAULT_SERIES_COLORS[idx % DEFAULT_SERIES_COLORS.length]);
+    });
+    return map;
+  }, [seriesList]);
+
+  const skylineData = useMemo(
+    () =>
+      [...seriesList]
+        .filter((series) => Number.isFinite(series.latestValue))
+        .sort((a, b) => (b.latestValue ?? 0) - (a.latestValue ?? 0))
+        .map((series) => ({
+          iso3: series.iso3,
+          label: series.name,
+          value: series.latestValue ?? 0,
+          color: colorByIso.get(series.iso3),
+        })),
+    [seriesList, colorByIso],
+  );
+
+  const skylineExtremes = useMemo(() => {
+    if (!skylineData.length) return null;
+    const sorted = [...skylineData].sort((a, b) => b.value - a.value);
+    const richest = sorted[0];
+    const poorest = sorted[sorted.length - 1];
+    if (!richest || !poorest || !poorest.value) return null;
+    return {
+      richest,
+      poorest,
+      ratio: richest.value / poorest.value,
+    };
+  }, [skylineData]);
+
+  useEffect(() => {
+    if (seriesList.length && customSelection.length === 0) {
+      setCustomSelection(seriesList.slice(0, Math.min(3, seriesList.length)).map((series) => series.iso3));
+    }
+  }, [seriesList, customSelection.length]);
+
+  const rotationOrder = useMemo(() => seriesList.map((series) => series.iso3), [seriesList]);
+  const rotationWindow = Math.min(4, rotationOrder.length || 0);
+
+  useEffect(() => {
+    if (!rotationOrder.length || rotationWindow === 0) return;
+    setRotationIndex(0);
+    const interval = window.setInterval(() => {
+      setRotationIndex((prev) => (prev + rotationWindow) % rotationOrder.length);
+    }, 10000);
+    return () => window.clearInterval(interval);
+  }, [rotationOrder, rotationWindow]);
+
+  const rotatingIds = useMemo(() => {
+    if (!rotationOrder.length) return [] as string[];
+    return Array.from({ length: rotationWindow }, (_, offset) => rotationOrder[(rotationIndex + offset) % rotationOrder.length]);
+  }, [rotationOrder, rotationIndex, rotationWindow]);
+
+  const rotatingSeries = useMemo(() => {
+    return rotatingIds
+      .map((iso) => {
+        const found = seriesList.find((series) => series.iso3 === iso);
+        if (!found) return null;
+        return {
+          id: found.iso3,
+          label: found.name,
+          color: colorByIso.get(found.iso3) ?? DEFAULT_SERIES_COLORS[0],
+          values: found.values.map((value) => ({ x: value.x, y: value.y })),
+        };
+      })
+      .filter((entry): entry is MultiLineSeries => Boolean(entry));
+  }, [rotatingIds, seriesList, colorByIso]);
+
+  const rotatingLegend = useMemo(
+    () =>
+      rotatingIds
+        .map((iso) => {
+          const found = seriesList.find((series) => series.iso3 === iso);
+          if (!found) return null;
+          return {
+            iso3: found.iso3,
+            name: found.name,
+            rangeLabel: found.rangeLabel,
+            growthRate: found.growthRate,
+            color: colorByIso.get(found.iso3) ?? DEFAULT_SERIES_COLORS[0],
+          };
+        })
+        .filter((entry): entry is {
+          iso3: string;
+          name: string;
+          rangeLabel: string;
+          growthRate: number;
+          color: string;
+        } => Boolean(entry)),
+    [rotatingIds, seriesList, colorByIso],
+  );
+
+  const handleRotate = () => {
+    if (!rotationOrder.length) return;
+    setRotationIndex((prev) => (prev + rotationWindow) % rotationOrder.length);
+  };
+
+  const availableForPicker = useMemo(() => {
+    return [...seriesList]
+      .filter((series) => !customSelection.includes(series.iso3))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [seriesList, customSelection]);
+
+  const userSeries = useMemo(() => {
+    return customSelection
+      .map((iso) => {
+        const found = seriesList.find((series) => series.iso3 === iso);
+        if (!found) return null;
+        const base = found.values[0]?.y ?? 1;
+        const values = found.values.map((value) => ({
+          x: value.x,
+          y: indexedView && base ? Number(((value.y / base) * 100).toFixed(2)) : value.y,
+        }));
+        return {
+          id: found.iso3,
+          label: found.name,
+          color: colorByIso.get(found.iso3) ?? DEFAULT_SERIES_COLORS[0],
+          values,
+        };
+      })
+      .filter((entry): entry is MultiLineSeries => Boolean(entry));
+  }, [customSelection, seriesList, indexedView, colorByIso]);
+
+  const selectedRange = useMemo(() => {
+    const selected = customSelection
+      .map((iso) => seriesList.find((series) => series.iso3 === iso))
+      .filter((entry): entry is CountrySeries => Boolean(entry));
+    if (!selected.length) return null;
+    const minYear = Math.min(...selected.map((entry) => entry.startYear));
+    const maxYear = Math.max(...selected.map((entry) => entry.endYear));
+    return { minYear, maxYear };
+  }, [customSelection, seriesList]);
+
+  const gdpIndicatorCode = useMemo(
+    () => opportunity[0]?.src?.g ?? "NY.GDP.PCAP.KD",
+    [opportunity],
+  );
+
+  const bandData = useMemo(() => {
+    if (seriesList.length < 6) return null;
+    const sorted = [...seriesList].sort((a, b) => {
+      const baseA = a.values[0]?.y ?? 0;
+      const baseB = b.values[0]?.y ?? 0;
+      return baseA - baseB;
+    });
+    const groupSize = Math.min(5, Math.floor(sorted.length / 2));
+    if (groupSize <= 0) return null;
+    const poorest = sorted.slice(0, groupSize);
+    const richest = sorted.slice(-groupSize);
+    const years = richest[0]?.values.map((value) => value.x) ?? [];
+    if (!years.length) return null;
+    const averageSeries = (group: CountrySeries[]) =>
+      years.map((year) => {
+        const total = group.reduce((sum, series) => {
+          const match = series.values.find((value) => value.x === year);
+          return sum + (match?.y ?? 0);
+        }, 0);
+        return { x: year, y: Number((total / group.length).toFixed(2)) };
+      });
+    const upper = averageSeries(richest);
+    const lower = averageSeries(poorest);
+    const ratioStart = lower[0]?.y ? upper[0].y / lower[0].y : null;
+    const ratioEnd = lower[lower.length - 1]?.y
+      ? upper[upper.length - 1].y / lower[lower.length - 1].y
+      : null;
+    return { upper, lower, ratioStart, ratioEnd };
+  }, [seriesList]);
+
+  const formatEuro = (value: number) => `€${formatCompact(Math.round(value))}`;
+  const formatIndexed = (value: number) => `${value.toFixed(0)}`;
+
+  if (loading) {
+    return (
+      <div className="grid gap-6 lg:grid-cols-2">
+        <ChartCard title="Loading chapter visuals">
+          <p className="text-sm text-slate-600">We are preparing the convergence panels…</p>
+        </ChartCard>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <ChartCard title="Unable to load data" subtitle="Chapter 1 dataset">
+        <p className="text-sm text-rose-600">{error}</p>
+      </ChartCard>
+    );
+  }
+
+  if (!seriesList.length) {
+    return (
+      <ChartCard title="No data available">
+        <p className="text-sm text-slate-600">The static data bundle is missing GDP per capita snapshots.</p>
+      </ChartCard>
+    );
+  }
 
   return (
-    <div className="grid md:grid-cols-2 gap-8">
-      <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="rounded-2xl border p-4">
-        <h3 className="mb-1 font-medium">GDP per capita (sample)</h3>
-        <p className="mb-4 text-sm text-gray-600">Log-scaled y-axis recommended in final build; here linear for simplicity.</p>
-        <div className="h-72">
-          <LineChartSvg data={gdpSeries} formatter={(value) => formatCompact(Math.round(value))} />
-        </div>
-      </motion.div>
+    <div className="space-y-10">
+      <div className="grid gap-8 lg:grid-cols-2">
+        <ChartCard
+          title="The skyline — GDP per capita (2024)"
+          subtitle="Sorts every European economy by its latest GDP per capita level."
+        >
+          <div className="h-80">
+            <VerticalBarChartSvg data={skylineData} valueFormatter={formatEuro} />
+          </div>
+          {skylineExtremes ? (
+            <p className="mt-4 text-sm text-slate-600">
+              In {skylineExtremes.richest.label}, residents take home about {formatEuro(skylineExtremes.richest.value)} each year,
+              compared with {formatEuro(skylineExtremes.poorest.value)} in {skylineExtremes.poorest.label}. That {skylineExtremes.ratio.toFixed(1)}×
+              gap explains why static snapshots feel unequal—even before you watch the catch-up.
+            </p>
+          ) : null}
+        </ChartCard>
 
-      <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="rounded-2xl border p-4">
-        <h3 className="mb-1 font-medium">Life expectancy (sample)</h3>
-        <p className="mb-4 text-sm text-gray-600">Correlates with rising incomes over the long run.</p>
-        <div className="h-72">
-          <LineChartSvg
-            data={leSeries}
-            color="#059669"
-            formatter={(value) => `${value.toFixed(1)}`}
-          />
-        </div>
-      </motion.div>
+        <ChartCard
+          title="The slope — rotating cohorts"
+          subtitle="Every 10 seconds, a fresh set of economies shows its catch-up path."
+          actions={
+            <button
+              type="button"
+              onClick={handleRotate}
+              className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-600 transition hover:border-slate-400 hover:text-slate-800"
+              disabled={!rotationWindow}
+            >
+              Next countries
+            </button>
+          }
+        >
+          <div className="flex flex-wrap gap-3 text-sm text-slate-600">
+            {rotatingLegend.map((entry) => (
+              <span key={entry.iso3} className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-2 py-1">
+                <span className="h-3 w-3 rounded-full" style={{ backgroundColor: entry.color }} />
+                <span className="font-medium text-slate-700">{entry.name}</span>
+                <span className="text-slate-500">
+                  {entry.rangeLabel} • {(entry.growthRate * 100).toFixed(1)}% CAGR
+                </span>
+              </span>
+            ))}
+            {rotatingSeries.length === 0 ? (
+              <span className="text-sm text-slate-500">Waiting for cohorts…</span>
+            ) : null}
+          </div>
+          <div className="mt-4 h-80">
+            <MultiLineChartSvg series={rotatingSeries} valueFormatter={formatEuro} />
+          </div>
+          <p className="mt-4 text-sm text-slate-600">
+            The message: don’t stare at the skyline. Watch the slope — convergence is a motion story.
+          </p>
+        </ChartCard>
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-2">
+        <ChartCard
+          className="lg:col-span-2"
+          title="The gap — richest vs poorest band"
+          subtitle="Average GDP per capita for the top and bottom cohorts, 2015–2024."
+        >
+          <div className="h-80">
+            {bandData ? (
+              <BandAreaChartSvg band={{ upper: bandData.upper, lower: bandData.lower }} valueFormatter={formatEuro} />
+            ) : (
+              <div className="flex h-full items-center justify-center text-sm text-slate-500">
+                Need at least six comparable countries to form the convergence band.
+              </div>
+            )}
+          </div>
+          {bandData?.ratioStart && bandData?.ratioEnd ? (
+            <p className="mt-4 text-sm text-slate-600">
+              Rich/poor ratio squeezes from {bandData.ratioStart.toFixed(1)}× to {bandData.ratioEnd.toFixed(1)}× across the decade.
+            </p>
+          ) : null}
+        </ChartCard>
+
+        <ChartCard
+          className="lg:col-span-2"
+          title="Your view — choose any cohort"
+          subtitle="Pick up to five countries and toggle between absolute and indexed growth."
+        >
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-wrap items-center gap-2">
+              <label htmlFor="country-picker" className="text-sm font-medium text-slate-700">
+                Add country
+              </label>
+              <select
+                id="country-picker"
+                value={pickerValue}
+                onChange={(event) => setPickerValue(event.target.value)}
+                className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 focus:border-slate-500 focus:outline-none"
+              >
+                <option value="">Select…</option>
+                {availableForPicker.map((series) => (
+                  <option key={series.iso3} value={series.iso3}>
+                    {series.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => {
+                  if (!pickerValue) return;
+                  setCustomSelection((prev) => {
+                    if (prev.includes(pickerValue)) return prev;
+                    const next = [...prev, pickerValue].slice(0, 5);
+                    return next;
+                  });
+                  setPickerValue("");
+                }}
+                className="inline-flex items-center rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+                disabled={!pickerValue}
+              >
+                Add
+              </button>
+            </div>
+            <label className="flex items-center gap-2 text-sm text-slate-600">
+              <input
+                type="checkbox"
+                className="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-500"
+                checked={indexedView}
+                onChange={(event) => setIndexedView(event.target.checked)}
+              />
+              Indexed view (start year = 100)
+            </label>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {customSelection.map((iso) => {
+              const series = seriesList.find((entry) => entry.iso3 === iso);
+              const label = series?.name ?? iso;
+              const color = colorByIso.get(iso) ?? DEFAULT_SERIES_COLORS[0];
+              return (
+                <button
+                  key={iso}
+                  type="button"
+                  onClick={() => setCustomSelection((prev) => prev.filter((entry) => entry !== iso))}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
+                  title={
+                    series
+                      ? `${series.rangeLabel} • ${(series.growthRate * 100).toFixed(1)}% CAGR`
+                      : undefined
+                  }
+                >
+                  <span className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
+                  {label}
+                  <span aria-hidden>×</span>
+                </button>
+              );
+            })}
+            {customSelection.length === 0 ? (
+              <span className="text-sm text-slate-500">Select up to five countries to draw your own comparison.</span>
+            ) : null}
+          </div>
+          <div className="mt-4 h-80">
+            <MultiLineChartSvg
+              series={userSeries}
+              valueFormatter={indexedView ? formatIndexed : formatEuro}
+            />
+          </div>
+          <p className="mt-4 text-xs text-slate-500">
+            Source: World Bank indicator {gdpIndicatorCode} stored in the static /data/v1 bundle.
+            {" "}
+            {selectedRange
+              ? `Coverage spans ${selectedRange.minYear}–${selectedRange.maxYear} across the selected economies.`
+              : "Pick a country to reveal its 2015–2024 catch-up path."}
+          </p>
+        </ChartCard>
+      </div>
     </div>
   );
 };
