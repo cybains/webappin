@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState, useId } from "react";
+import React, { useEffect, useMemo, useRef, useId } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 /**
@@ -73,87 +73,10 @@ const Section: React.FC<{
 );
 
 // -----------------------------
-// Data layer (stubs → replace with real API calls)
+// Data layer placeholder
 // -----------------------------
 
-// WORLD BANK v2 helper: GET json with pagination handling — replace with your fetcher or server route
-async function fetchWorldBankJSON(url: string) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`WB fetch failed: ${res.status}`);
-  return res.json();
-}
-
-// Example: GDP per capita (current US$) for a set of countries, long time series
-// API: https://api.worldbank.org/v2/country/{codes}/indicator/NY.GDP.PCAP.CD?format=json&per_page=20000
-type WorldBankSeriesEntry = {
-  country?: { value?: string };
-  countryiso3code?: string;
-  date?: string;
-  value?: number;
-};
-
-type NormalisedSeriesPoint = {
-  country: string;
-  code: string;
-  year: number;
-  value: number;
-};
-
-function isValidSeriesEntry(entry: WorldBankSeriesEntry): entry is Required<Pick<WorldBankSeriesEntry, "countryiso3code" | "date" | "value">> & { country?: { value?: string } } {
-  return (
-    typeof entry.countryiso3code === "string" &&
-    typeof entry.date === "string" &&
-    typeof entry.value === "number"
-  );
-}
-
-async function getGDPpcSeries(countryCodes: string[]): Promise<NormalisedSeriesPoint[]> {
-  const codes = countryCodes.join(";");
-  const url = `https://api.worldbank.org/v2/country/${codes}/indicator/NY.GDP.PCAP.CD?format=json&per_page=20000`;
-  const json = await fetchWorldBankJSON(url);
-  // json = [metadata, data[]]
-  const records = (Array.isArray(json?.[1]) ? json[1] : []) as WorldBankSeriesEntry[];
-  // Normalize: { country, year, value }
-  return records
-    .filter(isValidSeriesEntry)
-    .map((d) => ({
-      country: d.country?.value ?? d.countryiso3code,
-      code: d.countryiso3code,
-      year: Number(d.date),
-      value: d.value,
-    }))
-    .sort((a, b) => a.year - b.year);
-}
-
-// Example: Life expectancy series
-async function getLifeExpectancySeries(countryCodes: string[]): Promise<NormalisedSeriesPoint[]> {
-  const codes = countryCodes.join(";");
-  const url = `https://api.worldbank.org/v2/country/${codes}/indicator/SP.DYN.LE00.IN?format=json&per_page=20000`;
-  const json = await fetchWorldBankJSON(url);
-  const records = (Array.isArray(json?.[1]) ? json[1] : []) as WorldBankSeriesEntry[];
-  return records
-    .filter(isValidSeriesEntry)
-    .map((d) => ({
-      country: d.country?.value ?? d.countryiso3code,
-      code: d.countryiso3code,
-      year: Number(d.date),
-      value: d.value,
-    }))
-    .sort((a, b) => a.year - b.year);
-}
-
-// FAKE fallback data (in case API blocked during local dev)
-function makeFakeSeries(kind: "gdp" | "life", code: string, label: string = code): NormalisedSeriesPoint[] {
-  const arr: NormalisedSeriesPoint[] = [];
-  for (let y = 1960; y <= 2024; y++) {
-    const base =
-      kind === "gdp"
-        ? 500 + (y - 1960) ** 2
-        : 45 + Math.log(y - 1959) * 8;
-    arr.push({ year: y, value: Number(base.toFixed(2)), country: label, code });
-  }
-  return arr;
-}
+// Data loading hooks will live alongside the visual components once the Chapter 1 pack is wired in.
 
 // -----------------------------
 // Chart helpers
@@ -161,11 +84,6 @@ function makeFakeSeries(kind: "gdp" | "life", code: string, label: string = code
 
 function formatYear(tick: number) {
   return String(tick);
-}
-
-function formatCompact(n?: number) {
-  if (n == null) return "";
-  return new Intl.NumberFormat(undefined, { notation: "compact", maximumFractionDigits: 1 }).format(n);
 }
 
 type LineDatum = { x: number; y: number };
@@ -452,53 +370,175 @@ function ScatterChartSvg({
 // Section Components
 // -----------------------------
 
-// 1) Promise of Growth — GDPpc + Life Expectancy (dual visuals)
+// 1) Promise of Growth — horizontal scroller highlighting the four Chapter 1 visuals
+type ChapterOnePanel = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  placeholder: string;
+  highlights: string[];
+};
+
+const chapterOnePanels: ChapterOnePanel[] = [
+  {
+    id: "skyline",
+    eyebrow: "Skyline",
+    title: "Levels snapshot",
+    description:
+      "Kick off with the richest-to-poorest skyline so readers see the stark spread that Susskind critiques before we pivot to motion.",
+    placeholder: "SKYLINE BAR CHART",
+    highlights: [
+      "Order economies by latest GDP per capita pulled from the Chapter 1 pack.",
+      "Annotate the richest versus poorest gap to anchor the visual story.",
+      "Underline that this is the familiar static picture the rest of the chapter complicates.",
+    ],
+  },
+  {
+    id: "slope",
+    eyebrow: "Slope",
+    title: "Rotating cohorts",
+    description:
+      "Scroll again to meet the moving window of four countries. This panel previews how we rotate cohorts every few seconds to emphasise trajectories.",
+    placeholder: "ROTATING COHORTS",
+    highlights: [
+      "Cycle through opportunity clusters without leaving the horizontal flow.",
+      "Pair motion copy with the growth-rate slope the eventual chart will plot.",
+      "Provide a manual “Next countries” affordance alongside the auto-rotation.",
+    ],
+  },
+  {
+    id: "gap",
+    eyebrow: "Gap",
+    title: "Convergence band",
+    description:
+      "The third card introduces the shaded convergence band that averages rich and poor cohorts to show the gap compressing over time.",
+    placeholder: "CONVERGENCE BAND",
+    highlights: [
+      "Shade between cohort averages to depict the shrinking ratio.",
+      "Annotate the rich-to-poor multiple so the narrative stays quantitative.",
+      "Cue supporting text that points back to the skyline for contrast.",
+    ],
+  },
+  {
+    id: "your-view",
+    eyebrow: "Your view",
+    title: "Reader agency tools",
+    description:
+      "Finally, invite the reader to craft their own comparison with a picker that accepts up to five countries and toggles euro levels vs indexed growth.",
+    placeholder: "INTERACTIVE CONTROLS",
+    highlights: [
+      "List the chips, toggles, and helper copy that empower exploration.",
+      "Explain how we surface GDP-per-capita levels alongside indexed progress.",
+      "Encourage readers to validate the convergence story with their own mix.",
+    ],
+  },
+];
+
 const PromiseOfGrowth: React.FC = () => {
-  const [gdp, setGdp] = useState<NormalisedSeriesPoint[]>([]);
-  const [le, setLe] = useState<NormalisedSeriesPoint[]>([]);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const [gdpS, leS] = await Promise.all([
-          getGDPpcSeries(["AUT", "IND", "DEU", "NLD"]).catch(() => makeFakeSeries("gdp", "AUT", "Austria")),
-          getLifeExpectancySeries(["AUT", "IND", "DEU", "NLD"]).catch(() => makeFakeSeries("life", "AUT", "Austria")),
-        ]);
-        // For demo, reduce to 2 lines by aggregating per year (world vs sample) or filter for 2 codes
-        const pick = (arr: NormalisedSeriesPoint[], code: string) => arr.filter((d) => d.code === code);
-        setGdp(pick(gdpS, "AUT"));
-        setLe(pick(leS, "AUT"));
-      } catch {
-        setGdp(makeFakeSeries("gdp", "AUT", "Austria"));
-        setLe(makeFakeSeries("life", "AUT", "Austria"));
-      }
-    })();
+    const node = scrollRef.current;
+    if (!node) return;
+    const raf = requestAnimationFrame(() => {
+      node.scrollLeft = node.scrollWidth;
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
 
-  const gdpSeries = useMemo(() => gdp.map((point) => ({ x: point.year, y: point.value })), [gdp]);
-  const leSeries = useMemo(() => le.map((point) => ({ x: point.year, y: point.value })), [le]);
+  const handleStep = (direction: "forward" | "backward") => {
+    const node = scrollRef.current;
+    if (!node) return;
+    const delta = node.clientWidth * 0.85;
+    const step = direction === "forward" ? -delta : delta;
+    node.scrollBy({ left: step, behavior: "smooth" });
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      handleStep("forward");
+    }
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      handleStep("backward");
+    }
+  };
 
   return (
-    <div className="grid md:grid-cols-2 gap-8">
-      <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="rounded-2xl border p-4">
-        <h3 className="mb-1 font-medium">GDP per capita (sample)</h3>
-        <p className="mb-4 text-sm text-gray-600">Log-scaled y-axis recommended in final build; here linear for simplicity.</p>
-        <div className="h-72">
-          <LineChartSvg data={gdpSeries} formatter={(value) => formatCompact(Math.round(value))} />
+    <div className="relative">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div className="max-w-2xl space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">Scroll the argument</p>
+          <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">A right-to-left reel for Chapter 1</h3>
+          <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+            Glide sideways to preview each piece of the convergence story—skyline, slope, gap, and your view—before we drop in the live data visualisations.
+          </p>
         </div>
-      </motion.div>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => handleStep("backward")}
+            className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 dark:focus:ring-slate-500"
+          >
+            ← Prev
+          </button>
+          <button
+            type="button"
+            onClick={() => handleStep("forward")}
+            className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 dark:focus:ring-slate-500"
+          >
+            Next →
+          </button>
+        </div>
+      </div>
 
-      <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="rounded-2xl border p-4">
-        <h3 className="mb-1 font-medium">Life expectancy (sample)</h3>
-        <p className="mb-4 text-sm text-gray-600">Correlates with rising incomes over the long run.</p>
-        <div className="h-72">
-          <LineChartSvg
-            data={leSeries}
-            color="#059669"
-            formatter={(value) => `${value.toFixed(1)}`}
-          />
+      <div className="relative">
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white via-white/80 to-transparent dark:from-slate-950 dark:via-slate-950/80"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white via-white/80 to-transparent dark:from-slate-950 dark:via-slate-950/80"
+          aria-hidden="true"
+        />
+        <div
+          ref={scrollRef}
+          dir="rtl"
+          tabIndex={0}
+          onKeyDown={handleKeyDown}
+          className="hide-scrollbar relative flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth rounded-3xl border border-slate-200 bg-white/80 px-6 py-10 shadow-sm backdrop-blur-md focus:outline-none dark:border-slate-800 dark:bg-slate-900/60"
+          aria-label="Chapter 1 visualisation storyline scroller"
+        >
+          {chapterOnePanels.map((panel) => (
+            <motion.article
+              key={panel.id}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.4 }}
+              dir="ltr"
+              className="snap-end shrink-0 w-[min(90vw,420px)] rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/80"
+            >
+              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-500">{panel.eyebrow}</span>
+              <h4 className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">{panel.title}</h4>
+              <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{panel.description}</p>
+              <div className="mt-6 flex h-40 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-gradient-to-br from-slate-50 to-white text-center text-xs font-semibold uppercase tracking-[0.3em] text-slate-400 dark:border-slate-600 dark:from-slate-800 dark:to-slate-900 dark:text-slate-500">
+                {panel.placeholder}
+              </div>
+              <ul className="mt-6 space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                {panel.highlights.map((item, index) => (
+                  <li key={`${panel.id}-${index}`} className="flex gap-3">
+                    <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-sky-500" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.article>
+          ))}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };
