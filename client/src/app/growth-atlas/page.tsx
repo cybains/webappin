@@ -850,7 +850,7 @@ const PromiseOfGrowth: React.FC = () => {
   const seriesList = useMemo<CountrySeries[]>(() => {
     if (!opportunity.length) return [];
     return opportunity
-      .map((record) => {
+      .reduce<CountrySeries[]>((acc, record) => {
         const narrative = snapshots[record.country];
         const gdpFact = narrative?.facts_used?.find((fact) => fact.code === "NY.GDP.PCAP.KD");
         const latestValue = gdpFact?.value;
@@ -868,7 +868,7 @@ const PromiseOfGrowth: React.FC = () => {
         const span = endYear - startYear;
         const growthRate = Number.isFinite(record.g) ? record.g / 100 : 0;
         if (!latestValue || span <= 0) {
-          return null;
+          return acc;
         }
         const base = latestValue / Math.pow(1 + growthRate, span);
         const values: LineDatum[] = [];
@@ -877,17 +877,17 @@ const PromiseOfGrowth: React.FC = () => {
           const value = base * Math.pow(1 + growthRate, yearsSinceStart);
           values.push({ x: year, y: Number(value.toFixed(2)) });
         }
-        return {
+        acc.push({
           iso3: record.country,
           name: narrative?.country_name ?? record.country,
           latestValue,
           growthRate,
           startYear,
           endYear,
-          values
-        };
-      })
-      .filter((entry): entry is CountrySeries => Boolean(entry?.values?.length))
+          values,
+        });
+        return acc;
+      }, [])
       .sort((a, b) => b.growthRate - a.growthRate);
   }, [opportunity, snapshots]);
 
