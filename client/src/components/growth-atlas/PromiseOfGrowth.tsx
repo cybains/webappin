@@ -135,12 +135,9 @@ const useCohortRotation = (activeIndex: number, setActiveIndex: React.Dispatch<R
   return slopeCohorts[activeIndex % slopeCohorts.length];
 };
 
-type OpportunityCountry = {
-  iso3: string;
-};
-
-const opportunityCountries = (ch1Opportunity as OpportunityCountry[]) ?? [];
-const opportunityCountryCount = opportunityCountries.length;
+const opportunityCountryCount = Array.isArray(ch1Opportunity)
+  ? ch1Opportunity.length
+  : 0;
 
 const PromiseOfGrowth: React.FC = () => {
   const richest = skylineData[0];
