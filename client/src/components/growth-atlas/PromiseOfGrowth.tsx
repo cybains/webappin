@@ -92,11 +92,12 @@ const palette = [
 
 const panelMeta: Record<string, { label: string; description: string }> = {
   default: {
-    label: "Chapter 1 flow",
-    description: "Navigate the skyline, slope, gap, and custom comparison panels powered by the live dataset.",
+    label: "GDP per capita — selected EU economies",
+    description:
+      "Swipe through skyline levels, slope momentum, convergence bands, and your custom comparisons powered by the live dataset.",
   },
   loading: {
-    label: "Loading data",
+    label: "Loading live narratives",
     description: "Fetching GDP per capita narratives and opportunity scores for Chapter 1.",
   },
   error: {
@@ -108,19 +109,19 @@ const panelMeta: Record<string, { label: string; description: string }> = {
     description: "Add GDP per capita narratives to the data pack to unlock the visuals.",
   },
   skyline: {
-    label: "Skyline",
+    label: "GDP per capita — selected EU economies",
     description: "Rich-to-poor snapshot of GDP per capita across the roster.",
   },
   slope: {
-    label: "Slope",
+    label: "Growth momentum — rotating cohorts",
     description: "Rotating cohorts climb the growth slope every 10 seconds.",
   },
   gap: {
-    label: "Convergence band",
+    label: "Convergence band — richest vs poorest averages",
     description: "Watch the rich-to-poor gap compress as averages converge.",
   },
   "your-view": {
-    label: "Your comparison",
+    label: "Build your comparison — choose up to five economies",
     description: "Build a custom set of economies and toggle indexed momentum.",
   },
 };
@@ -561,8 +562,7 @@ const PromiseOfGrowth: React.FC = () => {
     setSelectedCountries((previous) => previous.filter((country) => country !== iso3));
   };
 
-  const panelWrapperClasses =
-    "snap-center snap-always w-full shrink-0 basis-full md:basis-[85vw] lg:basis-[960px] flex";
+  const panelWrapperClasses = "snap-center snap-always w-full shrink-0 basis-full flex";
   const panelBaseClasses =
     "h-full w-full rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900/70";
 
@@ -1016,74 +1016,84 @@ const PromiseOfGrowth: React.FC = () => {
 
   return (
     <div className="space-y-10">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-600 dark:text-slate-200">
-          <span className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-            Promise of Growth
-          </span>
-          <span className="text-slate-500 dark:text-slate-400">{activePanelMeta.label}</span>
-          <span className="sr-only">{activePanelMeta.description}</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => handleStep("prev")}
-            aria-label="Go to previous panel"
-            disabled={activePanel === 0}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900"
-          >
-            <span aria-hidden="true">←</span>
-          </button>
-          <div className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:border-slate-600 dark:text-slate-300">
-            {panelPositionLabel}
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+        <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-white">{activePanelMeta.label}</h3>
+              <p className="sr-only">{activePanelMeta.description}</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => handleStep("prev")}
+                aria-label="Go to previous panel"
+                disabled={activePanel === 0}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900"
+              >
+                <span aria-hidden="true">←</span>
+              </button>
+              <div className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:border-slate-600 dark:text-slate-300">
+                {panelPositionLabel}
+              </div>
+              <button
+                type="button"
+                onClick={() => handleStep("next")}
+                aria-label="Go to next panel"
+                disabled={activePanel === panelCount - 1}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900"
+              >
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={() => handleStep("next")}
-            aria-label="Go to next panel"
-            disabled={activePanel === panelCount - 1}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900"
-          >
-            <span aria-hidden="true">→</span>
-          </button>
-        </div>
-      </div>
 
-      <div
-        ref={sliderRef}
-        className="hide-scrollbar flex cursor-grab gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory active:cursor-grabbing"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={endPointerDrag}
-        onPointerLeave={endPointerDrag}
-        onPointerCancel={endPointerDrag}
-      >
-        {panels.map((panel, index) => (
-          <div
-            key={panel.id}
-            ref={(node) => {
-              panelRefs.current[index] = node;
-            }}
-            className={panelWrapperClasses}
-            dir="ltr"
-          >
-            {panel.content}
+          <div className="mt-6">
+            <div
+              ref={sliderRef}
+              className="hide-scrollbar flex cursor-grab gap-6 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory active:cursor-grabbing"
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={endPointerDrag}
+              onPointerLeave={endPointerDrag}
+              onPointerCancel={endPointerDrag}
+            >
+              {panels.map((panel, index) => (
+                <div
+                  key={panel.id}
+                  ref={(node) => {
+                    panelRefs.current[index] = node;
+                  }}
+                  className={panelWrapperClasses}
+                  dir="ltr"
+                >
+                  {panel.content}
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
 
-      <div className="flex items-center justify-center gap-2">
-        {Array.from({ length: panelCount }).map((_, index) => (
-          <button
-            type="button"
-            key={index}
-            onClick={() => goToPanel(index)}
-            aria-label={`Go to panel ${index + 1}`}
-            className={`h-2.5 w-2.5 rounded-full transition ${
-              index === activePanel ? "bg-sky-500" : "bg-slate-300 dark:bg-slate-700"
-            }`}
-          />
-        ))}
+          <div className="mt-6 flex items-center justify-center gap-2">
+            {Array.from({ length: panelCount }).map((_, index) => (
+              <button
+                type="button"
+                key={index}
+                onClick={() => goToPanel(index)}
+                aria-label={`Go to panel ${index + 1}`}
+                className={`h-2.5 w-2.5 rounded-full transition ${
+                  index === activePanel ? "bg-sky-500" : "bg-slate-300 dark:bg-slate-700"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <aside className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/70 flex flex-col gap-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Takeaway</p>
+          <p className="text-base leading-relaxed text-slate-600 dark:text-slate-300">
+            Convergence is real — and incomplete. Strategy tip: aim hiring pipelines where the slope is steepest, not where the skyline is tallest.
+          </p>
+        </aside>
       </div>
 
       {rosterNames.length ? (
