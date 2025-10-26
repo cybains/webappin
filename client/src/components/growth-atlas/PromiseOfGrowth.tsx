@@ -90,6 +90,41 @@ const palette = [
   "#ef4444",
 ];
 
+const panelMeta: Record<string, { label: string; description: string }> = {
+  default: {
+    label: "Chapter 1 flow",
+    description: "Navigate the skyline, slope, gap, and custom comparison panels powered by the live dataset.",
+  },
+  loading: {
+    label: "Loading data",
+    description: "Fetching GDP per capita narratives and opportunity scores for Chapter 1.",
+  },
+  error: {
+    label: "Unable to load",
+    description: "Check the data pack paths or refresh to try again.",
+  },
+  empty: {
+    label: "No countries loaded",
+    description: "Add GDP per capita narratives to the data pack to unlock the visuals.",
+  },
+  skyline: {
+    label: "Skyline",
+    description: "Rich-to-poor snapshot of GDP per capita across the roster.",
+  },
+  slope: {
+    label: "Slope",
+    description: "Rotating cohorts climb the growth slope every 10 seconds.",
+  },
+  gap: {
+    label: "Convergence band",
+    description: "Watch the rich-to-poor gap compress as averages converge.",
+  },
+  "your-view": {
+    label: "Your comparison",
+    description: "Build a custom set of economies and toggle indexed momentum.",
+  },
+};
+
 type OpportunityEntry = {
   country: string;
   score?: number;
@@ -216,9 +251,7 @@ const maxSelections = 5;
 
 const PromiseOfGrowth: React.FC = () => {
   const [countries, setCountries] = useState<ChapterCountry[]>([]);
-  const [opportunityCountryCount, setOpportunityCountryCount] = useState(0);
   const [rosterNames, setRosterNames] = useState<string[]>([]);
-  const [awaitingNames, setAwaitingNames] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -253,10 +286,6 @@ const PromiseOfGrowth: React.FC = () => {
         const manifestMap = new Map(
           (manifest.countries ?? []).map((entry) => [entry.iso3, entry])
         );
-
-        if (!cancelled) {
-          setOpportunityCountryCount(opportunityData.length);
-        }
 
         const roster = opportunityData
           .map((entry) => {
@@ -338,21 +367,7 @@ const PromiseOfGrowth: React.FC = () => {
             array.findIndex((other) => other.iso3 === country.iso3) === index
         );
 
-        const missingIso = opportunityData
-          .map((entry) => entry.country)
-          .filter((iso3) => !uniqueCountries.some((country) => country.iso3 === iso3));
-        const missingNames = missingIso
-          .map((iso3) => {
-            const manifestEntry = manifestMap.get(iso3);
-            if (manifestEntry?.name && manifestEntry.name.trim().length) {
-              return manifestEntry.name;
-            }
-            return iso3ToName[iso3] ?? iso3;
-          })
-          .sort((a, b) => a.localeCompare(b));
-
         setCountries(uniqueCountries);
-        setAwaitingNames(missingNames);
         setSelectedCountries((previous) =>
           previous.length ? previous : uniqueCountries.slice(0, 4).map((country) => country.iso3)
         );
@@ -522,6 +537,8 @@ const PromiseOfGrowth: React.FC = () => {
     [countries]
   );
   const availableComparisonCount = availableCountryOptions.length;
+  const liveCountryCount = countries.length;
+  const manifestCountryCount = rosterNames.length;
 
   const earliestYear = useMemo(() => {
     const years = slopeEligible.flatMap((country) => country.series.map((point) => point.x));
@@ -797,7 +814,7 @@ const PromiseOfGrowth: React.FC = () => {
                       Add a country
                     </label>
                     <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                      Plot {availableComparisonCount} economies today. {awaitingNames.length ? `${awaitingNames.length} more await narrative refresh.` : ""}
+                      Plot {availableComparisonCount} economies pulled directly from the live data pack.
                     </p>
                     <div className="mt-2 flex flex-wrap gap-3">
                       <select
@@ -894,6 +911,11 @@ const PromiseOfGrowth: React.FC = () => {
   }
 
   const panelCount = panels.length;
+  const activePanelId = panels[activePanel]?.id ?? "";
+  const activePanelMeta = panelMeta[activePanelId] ?? panelMeta.default;
+  const sliderProgress =
+    panelCount > 0 ? ((Math.min(activePanel, Math.max(panelCount - 1, 0)) + 1) / panelCount) * 100 : 0;
+  const cohortCadenceSeconds = Math.round(rotationIntervalMs / 1000);
 
   const goToPanel = (index: number, behavior: ScrollBehavior = "smooth") => {
     const clamped = Math.max(0, Math.min(index, panelCount - 1));
@@ -942,42 +964,81 @@ const PromiseOfGrowth: React.FC = () => {
   }, [panelCount]);
 
   return (
-    <div className="space-y-10">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div className="space-y-1 text-slate-600 dark:text-slate-300">
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-500">Chapter 1 coverage</p>
-          <p className="text-sm">
-            {loading ? (
-              <span>Loading Chapter 1 coverage…</span>
-            ) : (
-              <>
-                The data pack tracks <strong>{opportunityCountryCount}</strong> countries and we have GDP per capita series for <strong>{availableComparisonCount}</strong> today.
-              </>
-            )}
-          </p>
-          {awaitingNames.length ? (
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Awaiting narrative refresh: {awaitingNames.join(", ")}
-            </p>
-          ) : null}
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => handleStep("prev")}
-            disabled={activePanel === 0}
-            className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 dark:focus:ring-slate-500"
-          >
-            ← Previous
-          </button>
-          <button
-            type="button"
-            onClick={() => handleStep("next")}
-            disabled={activePanel === panelCount - 1}
-            className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 dark:focus:ring-slate-500"
-          >
-            Next →
-          </button>
+    <div className="space-y-12">
+      <div className="overflow-hidden rounded-3xl border border-slate-200/70 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 shadow-xl dark:border-slate-700/60">
+        <div className="flex flex-col gap-6 p-6 md:p-8">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="space-y-3">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.4em] text-sky-300">Chapter 1</p>
+              <h2 className="text-3xl font-semibold text-white sm:text-4xl">Promise of Growth</h2>
+              <p className="max-w-2xl text-sm leading-relaxed text-slate-300">
+                The live data pack powers four experiences: skyline levels, slope momentum, convergence bands, and your custom comparisons.
+              </p>
+            </div>
+            <div className="w-full max-w-xs rounded-2xl border border-white/10 bg-white/5 p-4 text-left shadow-inner sm:text-right">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-300">Now viewing</p>
+              <p className="mt-2 text-lg font-semibold text-white">{activePanelMeta.label}</p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-300/80">{activePanelMeta.description}</p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => handleStep("prev")}
+                aria-label="Go to previous panel"
+                disabled={activePanel === 0}
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-lg text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <span aria-hidden="true">←</span>
+              </button>
+              <div className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-slate-200">
+                {String(Math.min(activePanel + 1, panelCount)).padStart(2, "0")} / {String(panelCount || 0).padStart(2, "0")}
+              </div>
+              <button
+                type="button"
+                onClick={() => handleStep("next")}
+                aria-label="Go to next panel"
+                disabled={activePanel === panelCount - 1}
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-lg text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10 sm:max-w-xs">
+              <div
+                className="h-full rounded-full bg-sky-400 transition-all duration-500 ease-out"
+                style={{ width: `${sliderProgress}%` }}
+              />
+            </div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 shadow-inner">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-300">Live countries</p>
+              <p className="mt-2 text-2xl font-semibold text-white">
+                {loading ? "…" : liveCountryCount.toLocaleString("en-US")}
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-300/80">
+                Economies with GDP-per-capita narratives wired directly into Chapter 1 today.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-inner">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-300">Country roster</p>
+              <p className="mt-2 text-2xl font-semibold text-white">
+                {loading ? "…" : manifestCountryCount.toLocaleString("en-US")}
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-300/80">
+                Entries sourced from the Chapter 1 opportunity manifest and listed below.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-inner">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-300">Cohort cadence</p>
+              <p className="mt-2 text-2xl font-semibold text-white">{cohortCadenceSeconds}s</p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-300/80">
+                Rotating slope cohorts cycle automatically; use the slider controls to take manual control.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1018,7 +1079,7 @@ const PromiseOfGrowth: React.FC = () => {
         <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-500">Countries in the data pack</p>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            Chapter 1 currently covers <strong>{rosterNames.length}</strong> economies. They’re ready to plug into the visuals as soon as fresh narratives land.
+            Chapter 1 currently covers <strong>{rosterNames.length}</strong> economies. Explore the full roster below.
           </p>
           <ul className="mt-4 flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
             {rosterNames.map((name) => (
