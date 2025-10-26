@@ -465,6 +465,12 @@ const PromiseOfGrowth: React.FC = () => {
       .filter(Boolean) as MultiLineSeries[];
   }, [activeCohortIso, countriesMap, colorMap]);
 
+  const activeCohortDetails = useMemo(() => {
+    return activeCohortIso
+      .map((iso3) => countriesMap.get(iso3))
+      .filter(Boolean) as ChapterCountry[];
+  }, [activeCohortIso, countriesMap]);
+
   useEffect(() => {
     if (slopeCohorts.length < 2) return;
     const id = window.setInterval(() => {
@@ -540,11 +546,6 @@ const PromiseOfGrowth: React.FC = () => {
   );
   const availableComparisonCount = availableCountryOptions.length;
 
-  const earliestYear = useMemo(() => {
-    const years = slopeEligible.flatMap((country) => country.series.map((point) => point.x));
-    return years.length ? Math.min(...years) : null;
-  }, [slopeEligible]);
-
   const handleAddCountry = (event: React.FormEvent) => {
     event.preventDefault();
     if (!pendingCountry) return;
@@ -564,7 +565,7 @@ const PromiseOfGrowth: React.FC = () => {
 
   const panelWrapperClasses = "snap-center snap-always w-full shrink-0 basis-full flex";
   const panelBaseClasses =
-    "h-full w-full rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900/70";
+    "h-full w-full rounded-3xl border border-slate-200 bg-white p-8 shadow-sm";
 
   let panels: Array<{ id: string; content: React.ReactNode }> = [];
 
@@ -574,7 +575,7 @@ const PromiseOfGrowth: React.FC = () => {
         id: "loading",
         content: (
           <article className={panelBaseClasses}>
-            <p className="text-sm text-slate-600 dark:text-slate-300">Loading Chapter 1 visuals…</p>
+            <p className="text-sm text-slate-600">Loading Chapter 1 visuals…</p>
           </article>
         ),
       },
@@ -585,7 +586,7 @@ const PromiseOfGrowth: React.FC = () => {
         id: "error",
         content: (
           <article className={panelBaseClasses}>
-            <p className="text-sm text-rose-600 dark:text-rose-300">{error}</p>
+            <p className="text-sm text-rose-600">{error}</p>
           </article>
         ),
       },
@@ -596,7 +597,7 @@ const PromiseOfGrowth: React.FC = () => {
         id: "empty",
         content: (
           <article className={panelBaseClasses}>
-            <p className="text-sm text-slate-600 dark:text-slate-300">
+            <p className="text-sm text-slate-600">
               We couldn’t find enough countries with GDP per capita data yet. Please check back once the data pack refreshes.
             </p>
           </article>
@@ -615,15 +616,28 @@ const PromiseOfGrowth: React.FC = () => {
             viewport={{ once: true, margin: "-100px" }}
             className={panelBaseClasses}
           >
-            <div className="flex flex-wrap items-baseline gap-3">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-500">Skyline</span>
-              <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">Levels snapshot</h3>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Richest</p>
+                <p className="mt-2 text-lg font-semibold text-slate-900">{richestCountry.name}</p>
+                <p className="text-sm text-slate-500">{formatUsdCompact(richestCountry.gdpPerCapita)} per person</p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Poorest</p>
+                <p className="mt-2 text-lg font-semibold text-slate-900">{poorestCountry.name}</p>
+                <p className="text-sm text-slate-500">{formatUsdCompact(poorestCountry.gdpPerCapita)} per person</p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Gap</p>
+                <p className="mt-2 text-2xl font-semibold text-slate-900">
+                  {skylineRatio ? skylineRatio.toFixed(1) : "—"}
+                  <span className="ml-1 text-sm font-medium text-slate-500">×</span>
+                </p>
+                <p className="text-sm text-slate-500">{formatUsdCompact(skylineGap)} difference</p>
+              </div>
             </div>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-              Start with the skyline: GDP per capita ordered richest to poorest. It makes the gulf impossible to ignore—and sets the stage for why trajectories matter more than a static photo.
-            </p>
-            <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-              <div className="relative">
+            <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+              <div>
                 <BarChartSvg
                   data={skylineData}
                   width={760}
@@ -631,31 +645,30 @@ const PromiseOfGrowth: React.FC = () => {
                   accent="#0ea5e9"
                   valueFormatter={formatUsdCompact}
                 />
-                <div className="absolute right-6 top-6 rounded-full border border-sky-200 bg-white/90 px-4 py-2 text-sm font-medium text-sky-700 shadow-sm dark:border-sky-500/40 dark:bg-slate-900/90 dark:text-sky-200">
-                  Richest vs poorest gap: {formatUsdCompact(skylineGap)} ({skylineRatio.toFixed(1)}×)
-                </div>
               </div>
-              <div className="space-y-4 text-sm text-slate-600 dark:text-slate-300">
-                <p>
-                  <strong>{richestCountry.name}</strong> tops the skyline at <strong>{formatUsdCompact(richestCountry.gdpPerCapita)}</strong>, while <strong>{poorestCountry.name}</strong> closes the ladder at <strong>{formatUsdCompact(poorestCountry.gdpPerCapita)}</strong>.
-                </p>
-                <p>
-                  That spread—{formatUsdCompact(skylineGap)}—is the static gap. The next panels show why momentum and convergence make the story more interesting than a single year.
-                </p>
-                <ul className="space-y-2">
-                  <li className="flex gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-500" aria-hidden="true" />
-                    <span>Sorted by the latest constant-USD value pulled straight from the narratives.</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-500" aria-hidden="true" />
-                    <span>Labels lean on ISO3 codes so 40+ economies stay legible even on smaller screens.</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-500" aria-hidden="true" />
-                    <span>Gap annotation keeps the headline number anchored to the data.</span>
-                  </li>
-                </ul>
+              <div className="grid gap-4 text-sm text-slate-600">
+                <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Top five</p>
+                  <ol className="mt-2 space-y-1 text-sm text-slate-600">
+                    {sortedByGdp.slice(0, 5).map((country) => (
+                      <li key={country.iso3} className="flex items-baseline justify-between gap-3">
+                        <span className="font-medium text-slate-900">{country.name}</span>
+                        <span className="text-slate-500">{formatUsdCompact(country.gdpPerCapita)}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+                <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Bottom five</p>
+                  <ol className="mt-2 space-y-1 text-sm text-slate-600">
+                    {sortedByGdp.slice(-5).map((country) => (
+                      <li key={country.iso3} className="flex items-baseline justify-between gap-3">
+                        <span className="font-medium text-slate-900">{country.name}</span>
+                        <span className="text-slate-500">{formatUsdCompact(country.gdpPerCapita)}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
               </div>
             </div>
           </motion.article>
@@ -671,14 +684,33 @@ const PromiseOfGrowth: React.FC = () => {
             viewport={{ once: true, margin: "-100px" }}
             className={panelBaseClasses}
           >
-            <div className="flex flex-wrap items-baseline gap-3">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-500">Slope</span>
-              <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">Rotating cohorts</h3>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap gap-3">
+                {activeSeries.map((series) => (
+                  <span
+                    key={series.id}
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-700"
+                  >
+                    <span
+                      className="h-2.5 w-2.5 rounded-full"
+                      style={{ backgroundColor: series.color }}
+                      aria-hidden="true"
+                    />
+                    {series.id}
+                  </span>
+                ))}
+              </div>
+              {slopeCohorts.length > 1 ? (
+                <button
+                  type="button"
+                  onClick={() => setCohortIndex((prev) => (prev + 1) % Math.max(1, slopeCohorts.length))}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                >
+                  Next cohort
+                </button>
+              ) : null}
             </div>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-              Every ten seconds a new cohort rotates in. The legend highlights the active set so you can see how steep the catch-up is versus the incumbents.
-            </p>
-            <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+            <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
               <div>
                 <MultiLineChartSvg
                   series={activeSeries}
@@ -687,38 +719,31 @@ const PromiseOfGrowth: React.FC = () => {
                   formatter={formatUsdCompact}
                 />
               </div>
-              <div className="space-y-4 text-sm text-slate-600 dark:text-slate-300">
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="rounded-full border border-slate-200 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-500 dark:border-slate-700">Active cohort</span>
-                  <span className="text-base font-medium text-slate-900 dark:text-white">
-                    {activeCohortIso.map((iso3) => countriesMap.get(iso3)?.name ?? iso3).join(" • ")}
-                  </span>
+              <div className="grid gap-4 text-sm text-slate-600">
+                <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Growth rate (CAGR)</p>
+                  <ul className="mt-2 space-y-1">
+                    {activeCohortDetails.map((country) => (
+                      <li key={country.iso3} className="flex items-baseline justify-between gap-3">
+                        <span className="font-medium text-slate-900">{country.name}</span>
+                        <span className="text-slate-500">
+                          {country.growthRate !== null ? `${country.growthRate.toFixed(1)}%` : "—"}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="flex flex-wrap gap-3">
-                  {activeSeries.map((series) => (
-                    <span
-                      key={series.id}
-                      className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-700 dark:border-slate-700 dark:text-slate-100"
-                    >
-                      <span
-                        className="h-2.5 w-2.5 rounded-full"
-                        style={{ backgroundColor: series.color }}
-                        aria-hidden="true"
-                      />
-                      {series.id}
-                    </span>
-                  ))}
+                <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Latest level</p>
+                  <ul className="mt-2 space-y-1">
+                    {activeCohortDetails.map((country) => (
+                      <li key={`${country.iso3}-level`} className="flex items-baseline justify-between gap-3">
+                        <span className="font-medium text-slate-900">{country.name}</span>
+                        <span className="text-slate-500">{formatUsdCompact(country.gdpPerCapita)}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <p>
-                  Rich incumbents crawl higher while newer members climb faster—illustrating why momentum matters more than the skyline snapshot.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setCohortIndex((prev) => (prev + 1) % Math.max(1, slopeCohorts.length))}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800 dark:focus:ring-slate-500"
-                >
-                  Next countries →
-                </button>
               </div>
             </div>
           </motion.article>
@@ -734,14 +759,26 @@ const PromiseOfGrowth: React.FC = () => {
             viewport={{ once: true, margin: "-100px" }}
             className={panelBaseClasses}
           >
-            <div className="flex flex-wrap items-baseline gap-3">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-500">Gap</span>
-              <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">Convergence band</h3>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Starting ratio</p>
+                <p className="mt-2 text-2xl font-semibold text-slate-900">{firstRatio ? firstRatio.toFixed(1) : "—"}×</p>
+                <p className="text-sm text-slate-500">{bandSeries.upper[0]?.x ?? ""}</p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Latest ratio</p>
+                <p className="mt-2 text-2xl font-semibold text-slate-900">{latestRatio ? latestRatio.toFixed(1) : "—"}×</p>
+                <p className="text-sm text-slate-500">{bandSeries.upper[bandSeries.upper.length - 1]?.x ?? ""}</p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Change</p>
+                <p className="mt-2 text-2xl font-semibold text-slate-900">
+                  {firstRatio && latestRatio ? (latestRatio - firstRatio).toFixed(1) : "—"}
+                </p>
+                <p className="text-sm text-slate-500">Rich average vs poor average</p>
+              </div>
             </div>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-              Averaging the richest and poorest cohorts shades the convergence band. As poorer economies grow faster, the ratio compresses.
-            </p>
-            <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+            <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
               <div>
                 <BandChartSvg
                   upper={bandSeries.upper}
@@ -754,27 +791,27 @@ const PromiseOfGrowth: React.FC = () => {
                   strokeLower="#22c55e"
                 />
               </div>
-              <div className="space-y-4 text-sm text-slate-600 dark:text-slate-300">
-                <p>
-                  Rich cohort ({richCohortNames.join(", ")}) vs. poorer cohort ({poorCohortNames.join(", ")}). Ratio shrinks from <strong>{firstRatio.toFixed(1)}×</strong> at the start of the window to <strong>{latestRatio.toFixed(1)}×</strong> today.
-                </p>
-                <p>
-                  The shaded band makes the compression visible; future annotations can call out milestones like EU accession or post-crisis recovery.
-                </p>
-                <ul className="space-y-2">
-                  <li className="flex gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-500" aria-hidden="true" />
-                    <span>Band width = rich average − poor average.</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-500" aria-hidden="true" />
-                    <span>Ratio label updates automatically as cohorts converge.</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-500" aria-hidden="true" />
-                    <span>Next step: hover states to reveal each cohort member’s contribution.</span>
-                  </li>
-                </ul>
+              <div className="grid gap-4 text-sm text-slate-600">
+                <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Rich cohort</p>
+                  <ul className="mt-2 space-y-1">
+                    {richCohortNames.map((name) => (
+                      <li key={`rich-${name}`} className="flex items-baseline justify-between gap-3">
+                        <span className="font-medium text-slate-900">{name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Poorest cohort</p>
+                  <ul className="mt-2 space-y-1">
+                    {poorCohortNames.map((name) => (
+                      <li key={`poor-${name}`} className="flex items-baseline justify-between gap-3">
+                        <span className="font-medium text-slate-900">{name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </motion.article>
@@ -790,14 +827,11 @@ const PromiseOfGrowth: React.FC = () => {
             viewport={{ once: true, margin: "-100px" }}
             className={panelBaseClasses}
           >
-            <div className="flex flex-wrap items-baseline gap-3">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-500">Your view</span>
-              <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">Build your own comparison</h3>
+            <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-slate-600">
+              <span>Selected {selectedCountries.length} / {maxSelections}</span>
+              <span>Available {availableComparisonCount}</span>
             </div>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-              Let readers add up to five economies, toggle levels versus indexed momentum, and remove chips. The scaffolding now pulls directly from the Chapter 1 data pack.
-            </p>
-            <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+            <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
               <div>
                 <MultiLineChartSvg
                   series={yourViewSeries}
@@ -806,21 +840,18 @@ const PromiseOfGrowth: React.FC = () => {
                   formatter={formatterForMode}
                 />
               </div>
-              <div className="space-y-6 text-sm text-slate-600 dark:text-slate-300">
-                <form onSubmit={handleAddCountry} className="space-y-4 rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+              <div className="space-y-6 text-sm text-slate-600">
+                <form onSubmit={handleAddCountry} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                   <div>
                     <label htmlFor="country-picker" className="block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
                       Add a country
                     </label>
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                      Plot {availableComparisonCount} economies pulled directly from the live data pack.
-                    </p>
                     <div className="mt-2 flex flex-wrap gap-3">
                       <select
                         id="country-picker"
                         value={pendingCountry}
                         onChange={(event) => setPendingCountry(event.target.value)}
-                        className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:border-slate-700 dark:bg-slate-900"
+                        className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-400"
                       >
                         <option value="">Select a country…</option>
                         {availableCountryOptions.map((country) => (
@@ -850,7 +881,7 @@ const PromiseOfGrowth: React.FC = () => {
                       ].map((option) => (
                         <label
                           key={option.value}
-                          className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-3 py-2 text-xs font-medium text-slate-700 dark:border-slate-600 dark:text-slate-100"
+                          className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-3 py-2 text-xs font-medium text-slate-700"
                         >
                           <input
                             type="radio"
@@ -875,7 +906,7 @@ const PromiseOfGrowth: React.FC = () => {
                       return (
                         <span
                           key={iso3}
-                          className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-700 dark:border-slate-700 dark:text-slate-100"
+                          className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-700"
                         >
                           <span
                             className="h-2.5 w-2.5 rounded-full"
@@ -886,7 +917,7 @@ const PromiseOfGrowth: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleRemoveCountry(iso3)}
-                            className="rounded-full bg-slate-100 px-2 py-1 text-[10px] uppercase tracking-[0.2em] text-slate-500 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                            className="rounded-full bg-slate-100 px-2 py-1 text-[10px] uppercase tracking-[0.2em] text-slate-500 transition hover:bg-slate-200"
                           >
                             ×
                           </button>
@@ -898,9 +929,6 @@ const PromiseOfGrowth: React.FC = () => {
                     ) : null}
                   </div>
                 </div>
-                <p>
-                  Indexed mode normalises each series to 100 in {earliestYear ?? "the first shared year"}, making momentum comparisons easier even when levels differ.
-                </p>
               </div>
             </div>
           </motion.article>
@@ -911,7 +939,38 @@ const PromiseOfGrowth: React.FC = () => {
 
   const panelCount = panels.length;
   const activePanelId = panels[activePanel]?.id ?? "";
-  const activePanelMeta = panelMeta[activePanelId] ?? panelMeta.default;
+
+  const dynamicLabels = useMemo(() => {
+    return {
+      skyline:
+        richestCountry && poorestCountry
+          ? `${richestCountry.name} vs ${poorestCountry.name}`
+          : panelMeta.skyline.label,
+      slope: activeCohortDetails.length
+        ? activeCohortDetails.map((country) => country.name).join(" • ")
+        : panelMeta.slope.label,
+      gap:
+        firstRatio && latestRatio
+          ? `Gap ${firstRatio.toFixed(1)}× → ${latestRatio.toFixed(1)}×`
+          : panelMeta.gap.label,
+      "your-view": selectedCountries.length
+        ? `${selectedCountries.length} selected`
+        : panelMeta["your-view"].label,
+    };
+  }, [
+    richestCountry,
+    poorestCountry,
+    activeCohortDetails,
+    firstRatio,
+    latestRatio,
+    selectedCountries,
+  ]);
+
+  const activePanelMeta = {
+    ...(panelMeta[activePanelId] ?? panelMeta.default),
+    label: dynamicLabels[activePanelId as keyof typeof dynamicLabels] ??
+      (panelMeta[activePanelId]?.label ?? panelMeta.default.label),
+  };
   const panelPositionLabel =
     panelCount > 0
       ? `${String(Math.min(activePanel + 1, panelCount)).padStart(2, "0")} / ${String(panelCount).padStart(2, "0")}`
@@ -1017,10 +1076,10 @@ const PromiseOfGrowth: React.FC = () => {
   return (
     <div className="space-y-10">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-        <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
+        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-white">{activePanelMeta.label}</h3>
+              <h3 className="text-xl font-semibold text-slate-900">{activePanelMeta.label}</h3>
               <p className="sr-only">{activePanelMeta.description}</p>
             </div>
             <div className="flex items-center gap-3">
@@ -1029,11 +1088,11 @@ const PromiseOfGrowth: React.FC = () => {
                 onClick={() => handleStep("prev")}
                 aria-label="Go to previous panel"
                 disabled={activePanel === 0}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <span aria-hidden="true">←</span>
               </button>
-              <div className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:border-slate-600 dark:text-slate-300">
+              <div className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
                 {panelPositionLabel}
               </div>
               <button
@@ -1041,7 +1100,7 @@ const PromiseOfGrowth: React.FC = () => {
                 onClick={() => handleStep("next")}
                 aria-label="Go to next panel"
                 disabled={activePanel === panelCount - 1}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:focus:ring-offset-slate-900"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <span aria-hidden="true">→</span>
               </button>
@@ -1081,32 +1140,32 @@ const PromiseOfGrowth: React.FC = () => {
                 onClick={() => goToPanel(index)}
                 aria-label={`Go to panel ${index + 1}`}
                 className={`h-2.5 w-2.5 rounded-full transition ${
-                  index === activePanel ? "bg-sky-500" : "bg-slate-300 dark:bg-slate-700"
+                  index === activePanel ? "bg-sky-500" : "bg-slate-300"
                 }`}
               />
             ))}
           </div>
         </div>
 
-        <aside className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/70 flex flex-col gap-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Takeaway</p>
-          <p className="text-base leading-relaxed text-slate-600 dark:text-slate-300">
+        <aside className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">Takeaway</p>
+          <p className="text-base leading-relaxed text-slate-600">
             Convergence is real — and incomplete. Strategy tip: aim hiring pipelines where the slope is steepest, not where the skyline is tallest.
           </p>
         </aside>
       </div>
 
       {rosterNames.length ? (
-        <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-500">Countries in the data pack</p>
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          <p className="mt-2 text-sm text-slate-600">
             Chapter 1 currently covers <strong>{rosterNames.length}</strong> economies. Explore the full roster below.
           </p>
-          <ul className="mt-4 flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
+          <ul className="mt-4 flex flex-wrap gap-2 text-xs text-slate-600">
             {rosterNames.map((name) => (
               <li
                 key={name}
-                className="rounded-full border border-slate-200 bg-white px-3 py-1 shadow-sm dark:border-slate-600 dark:bg-slate-800"
+                className="rounded-full border border-slate-200 bg-white px-3 py-1 shadow-sm"
               >
                 {name}
               </li>
