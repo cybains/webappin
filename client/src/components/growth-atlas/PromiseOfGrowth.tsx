@@ -12,6 +12,67 @@ import {
 } from "./ChartPrimitives";
 import ch1Opportunity from "../../../public/data/v1/ch1_opportunity.json";
 
+const iso3ToName: Record<string, string> = {
+  ALB: "Albania",
+  AND: "Andorra",
+  ARM: "Armenia",
+  AUT: "Austria",
+  AZE: "Azerbaijan",
+  BEL: "Belgium",
+  BGR: "Bulgaria",
+  BIH: "Bosnia and Herzegovina",
+  BLR: "Belarus",
+  CHE: "Switzerland",
+  CHI: "Channel Islands",
+  CYP: "Cyprus",
+  CZE: "Czechia",
+  DEU: "Germany",
+  DNK: "Denmark",
+  ESP: "Spain",
+  EST: "Estonia",
+  FIN: "Finland",
+  FRA: "France",
+  FRO: "Faroe Islands",
+  GBR: "United Kingdom",
+  GEO: "Georgia",
+  GIB: "Gibraltar",
+  GRC: "Greece",
+  GRL: "Greenland",
+  HRV: "Croatia",
+  HUN: "Hungary",
+  IMN: "Isle of Man",
+  IRL: "Ireland",
+  ISL: "Iceland",
+  ITA: "Italy",
+  KAZ: "Kazakhstan",
+  KGZ: "Kyrgyzstan",
+  LTU: "Lithuania",
+  LUX: "Luxembourg",
+  LVA: "Latvia",
+  LIE: "Liechtenstein",
+  MCO: "Monaco",
+  MDA: "Moldova",
+  MKD: "North Macedonia",
+  MNE: "Montenegro",
+  NLD: "Netherlands",
+  NOR: "Norway",
+  POL: "Poland",
+  PRT: "Portugal",
+  ROU: "Romania",
+  RUS: "Russia",
+  SMR: "San Marino",
+  SRB: "Serbia",
+  SVK: "Slovakia",
+  SVN: "Slovenia",
+  SWE: "Sweden",
+  TJK: "Tajikistan",
+  TKM: "Turkmenistan",
+  TUR: "Turkey",
+  UKR: "Ukraine",
+  UZB: "Uzbekistan",
+  XKX: "Kosovo",
+};
+
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -138,6 +199,24 @@ const useCohortRotation = (activeIndex: number, setActiveIndex: React.Dispatch<R
 const opportunityCountryCount = Array.isArray(ch1Opportunity)
   ? ch1Opportunity.length
   : 0;
+
+const opportunityCountryNames = Array.isArray(ch1Opportunity)
+  ? Array.from(
+      new Set(
+        ch1Opportunity
+          .map((entry) => {
+            if (entry && typeof entry === "object" && "country" in entry) {
+              const code = (entry as { country?: string }).country;
+              if (typeof code === "string") {
+                return iso3ToName[code] ?? code;
+              }
+            }
+            return undefined;
+          })
+          .filter((value): value is string => Boolean(value))
+      )
+    ).sort((a, b) => a.localeCompare(b))
+  : [];
 
 const PromiseOfGrowth: React.FC = () => {
   const richest = skylineData[0];
@@ -605,6 +684,26 @@ const PromiseOfGrowth: React.FC = () => {
           />
         ))}
       </div>
+
+      {opportunityCountryNames.length > 0 ? (
+        <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-sky-500">Countries in the data pack</p>
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+            Chapter 1 currently covers <strong>{opportunityCountryNames.length}</strong> economies. Here’s the full roster ready to
+            plug into the visualisations once we wire in the live dataset:
+          </p>
+          <ul className="mt-4 flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
+            {opportunityCountryNames.map((name) => (
+              <li
+                key={name}
+                className="rounded-full border border-slate-200 bg-white px-3 py-1 shadow-sm dark:border-slate-600 dark:bg-slate-800"
+              >
+                {name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </div>
   );
 };
