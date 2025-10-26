@@ -7,7 +7,7 @@ import HowItWorks from "@/components/HowItWorks";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import EcosystemSection from "@/components/EcosystemSection";
-import { PromiseOfGrowth } from "./growth-atlas/page";
+import PromiseOfGrowth from "@/components/growth-atlas/PromiseOfGrowth";
 
 // Dynamically import WorldMap for client-side only
 const WorldMap = dynamic(() => import("@/components/WorldMap"), { ssr: false });
