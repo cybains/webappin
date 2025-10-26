@@ -901,8 +901,9 @@ const PromiseOfGrowth: React.FC = () => {
 
   const skylineData = useMemo(
     () =>
-      seriesList
+      [...seriesList]
         .filter((series) => Number.isFinite(series.latestValue))
+        .sort((a, b) => (b.latestValue ?? 0) - (a.latestValue ?? 0))
         .map((series) => ({
           label: series.name,
           value: series.latestValue ?? 0,
@@ -963,10 +964,11 @@ const PromiseOfGrowth: React.FC = () => {
     setRotationIndex((prev) => (prev + rotationWindow) % rotationOrder.length);
   };
 
-  const availableForPicker = useMemo(
-    () => seriesList.filter((series) => !customSelection.includes(series.iso3)),
-    [seriesList, customSelection],
-  );
+  const availableForPicker = useMemo(() => {
+    return [...seriesList]
+      .filter((series) => !customSelection.includes(series.iso3))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [seriesList, customSelection]);
 
   const userSeries = useMemo(() => {
     return customSelection
