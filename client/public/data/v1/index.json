@@ -443,5 +443,16 @@
         "narrative": "/data/v1/countries/XKX_narrative.json"
       }
     }
+  ],
+  "visual_essays": [
+    {
+      "id": "better_growth",
+      "title": "Better Growth Dissertation",
+      "updated_at": "2025-10-25",
+      "has_api": false,
+      "files": {
+        "chapters": "/data/v1/better_growth.json"
+      }
+    }
   ]
 }

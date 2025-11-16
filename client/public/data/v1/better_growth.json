@@ -1,0 +1,238 @@
+{
+  "id": "better_growth",
+  "title": "Economy, without the drama",
+  "tagline": "We measure what matters, ignore what doesn’t, and nudge growth toward something clever, clean, and actually useful.",
+  "chapters": [
+    {
+      "id": "chapter_1",
+      "kicker": "Chapter 1",
+      "title": "Growth is uneven. Your strategy shouldn’t be.",
+      "lede": "Some regions sprint. Others tie their shoes for twenty years. We chart divergence so you can make convergence happen — profitably.",
+      "chart": {
+        "title": "GDP per capita — selected EU economies",
+        "type": "multi_line",
+        "x_axis": {
+          "label": "Year",
+          "min": 2000,
+          "max": 2024
+        },
+        "y_axis": {
+          "label": "GDP per capita (euros)",
+          "ticks": [8000, 20000, 32000, 44000, 56000]
+        },
+        "series": [
+          {
+            "id": "Austria",
+            "values": [
+              { "year": 2000, "value": 28000 },
+              { "year": 2005, "value": 34000 },
+              { "year": 2010, "value": 42000 },
+              { "year": 2015, "value": 47000 },
+              { "year": 2020, "value": 52000 },
+              { "year": 2024, "value": 56000 }
+            ]
+          },
+          {
+            "id": "Germany",
+            "values": [
+              { "year": 2000, "value": 25500 },
+              { "year": 2005, "value": 31000 },
+              { "year": 2010, "value": 39500 },
+              { "year": 2015, "value": 44000 },
+              { "year": 2020, "value": 50000 },
+              { "year": 2024, "value": 54000 }
+            ]
+          },
+          {
+            "id": "Poland",
+            "values": [
+              { "year": 2000, "value": 12500 },
+              { "year": 2005, "value": 16000 },
+              { "year": 2010, "value": 22000 },
+              { "year": 2015, "value": 27000 },
+              { "year": 2020, "value": 31500 },
+              { "year": 2024, "value": 35500 }
+            ]
+          },
+          {
+            "id": "Romania",
+            "values": [
+              { "year": 2000, "value": 8000 },
+              { "year": 2005, "value": 10500 },
+              { "year": 2010, "value": 14500 },
+              { "year": 2015, "value": 19500 },
+              { "year": 2020, "value": 24500 },
+              { "year": 2024, "value": 28500 }
+            ]
+          }
+        ]
+      },
+      "takeaway": "Convergence is real — and incomplete. Strategy tip: aim hiring pipelines where the slope is steepest, not where the skyline is tallest."
+    },
+    {
+      "id": "chapter_2",
+      "kicker": "Chapter 2",
+      "title": "Growth needs brains. (And decent Wi‑Fi)",
+      "lede": "Ideas scale. Smokestacks don’t. We map R&D to growth to find places where cleverness compounds.",
+      "chart": {
+        "title": "R&D (% GDP) vs Real GDP growth",
+        "type": "scatter",
+        "x_axis": {
+          "label": "R&D spend (% GDP)",
+          "min": 0,
+          "max": 4
+        },
+        "y_axis": {
+          "label": "GDP growth (%)",
+          "min": 0,
+          "max": 4
+        },
+        "points": [
+          { "country": "Austria", "code": "AT", "rnd": 3.2, "growth": 1.7 },
+          { "country": "Germany", "code": "DE", "rnd": 3.1, "growth": 1.5 },
+          { "country": "Netherlands", "code": "NL", "rnd": 2.4, "growth": 1.9 },
+          { "country": "Poland", "code": "PL", "rnd": 1.4, "growth": 3.0 },
+          { "country": "Romania", "code": "RO", "rnd": 0.5, "growth": 3.2 },
+          { "country": "Estonia", "code": "EE", "rnd": 1.8, "growth": 2.5 }
+        ]
+      },
+      "takeaway": "Put talent where the ideas budget isn’t just a press release. High R&D ecosystems amplify skilled people — and margins."
+    },
+    {
+      "id": "chapter_3",
+      "kicker": "Chapter 3",
+      "title": "Growth has limits. Math says hi.",
+      "lede": "Infinite curves are cute until the planet disagrees. We look for decoupling — more value, less damage — and build hiring that supports it.",
+      "chart": {
+        "title": "Index: GDP vs CO₂ (2000 = 100)",
+        "type": "dual_line",
+        "x_axis": {
+          "label": "Year",
+          "min": 2000,
+          "max": 2024
+        },
+        "y_axis": {
+          "label": "Index (2000 = 100)",
+          "ticks": [78, 92, 107, 121, 136, 150]
+        },
+        "series": [
+          {
+            "id": "GDP Index",
+            "values": [
+              { "year": 2000, "value": 100 },
+              { "year": 2005, "value": 115 },
+              { "year": 2010, "value": 125 },
+              { "year": 2015, "value": 135 },
+              { "year": 2020, "value": 140 },
+              { "year": 2024, "value": 150 }
+            ]
+          },
+          {
+            "id": "CO₂ Index",
+            "values": [
+              { "year": 2000, "value": 100 },
+              { "year": 2005, "value": 105 },
+              { "year": 2010, "value": 98 },
+              { "year": 2015, "value": 90 },
+              { "year": 2020, "value": 82 },
+              { "year": 2024, "value": 78 }
+            ]
+          }
+        ]
+      },
+      "takeaway": "Decoupling isn’t magic; it’s policy + technology + better choices. We prioritise sectors where output rises and footprints drop."
+    },
+    {
+      "id": "chapter_4",
+      "kicker": "Chapter 4",
+      "title": "Growth is people. Borders are paperwork.",
+      "lede": "Europe runs on human movement. We make it ethical, legal, and pleasantly uneventful.",
+      "chart": {
+        "title": "Indicative mobility routes (scaled)",
+        "type": "bar",
+        "x_axis": {
+          "label": "Route",
+          "categories": ["IN → AT", "IN → DE", "AE → AT", "QA → DE", "IN → NL"]
+        },
+        "y_axis": {
+          "label": "People moved (thousands)",
+          "ticks": [0.9, 1.1, 2.0, 3.2, 7.8]
+        },
+        "bars": [
+          { "route": "IN → AT", "people_thousands": 3.2 },
+          { "route": "IN → DE", "people_thousands": 7.8 },
+          { "route": "AE → AT", "people_thousands": 1.1 },
+          { "route": "QA → DE", "people_thousands": 0.9 },
+          { "route": "IN → NL", "people_thousands": 2.0 }
+        ]
+      },
+      "takeaway": "The shortest path between talent and demand is paperwork done right. We handle the dull bits so Europe keeps moving."
+    },
+    {
+      "id": "chapter_5",
+      "kicker": "Chapter 5",
+      "title": "Better growth is balanced. (Yes, like a budget)",
+      "lede": "More GDP with less inequality is a thing. Rare, but a thing. We aim hiring where the balance is feasible — and help make it feasible where it isn’t.",
+      "chart": {
+        "title": "GDP growth vs Gini (lower is fairer)",
+        "type": "scatter",
+        "x_axis": {
+          "label": "GDP growth (%)",
+          "min": 1,
+          "max": 4
+        },
+        "y_axis": {
+          "label": "Gini (lower is fairer)",
+          "min": 28,
+          "max": 35
+        },
+        "points": [
+          { "country": "Austria", "code": "AT", "growth": 1.6, "gini": 30 },
+          { "country": "Germany", "code": "DE", "growth": 1.4, "gini": 32 },
+          { "country": "Netherlands", "code": "NL", "growth": 1.8, "gini": 28 },
+          { "country": "Poland", "code": "PL", "growth": 3.1, "gini": 31 },
+          { "country": "Romania", "code": "RO", "growth": 3.0, "gini": 35 },
+          { "country": "Spain", "code": "ES", "growth": 2.0, "gini": 34 }
+        ]
+      },
+      "takeaway": "Growth that actually lands in people’s lives is the only kind that lasts. We optimise for durable demand — not quarterly applause."
+    },
+    {
+      "id": "chapter_6",
+      "kicker": "Chapter 6",
+      "title": "What we actually do (apart from tidy charts)",
+      "lede": "Practical services that turn the analysis into motion.",
+      "services": [
+        {
+          "title": "Market Intelligence",
+          "description": "World‑Bank‑powered dashboards that find where talent meets demand — without the guesswork."
+        },
+        {
+          "title": "Ethical Mobility",
+          "description": "Recruitment, compliance, visas. Legal, boring, effective — the holy trinity."
+        },
+        {
+          "title": "Sector Pipelines",
+          "description": "Building repeatable hiring for logistics, seasonal, and clean‑industry roles."
+        },
+        {
+          "title": "Sustainability by Design",
+          "description": "Prioritising decoupling sectors: more output, less footprint, fewer headaches."
+        },
+        {
+          "title": "Custom Visual Essays",
+          "description": "We’ll tailor this dissertation to your boardroom. Bring questions; we’ll bring receipts."
+        },
+        {
+          "title": "Partner Programs",
+          "description": "Licensed local partners for leasing; direct placements where it’s simpler. Sensible beats flashy."
+        }
+      ],
+      "takeaway": "A services stack built to move talent and capital where it matters."
+    }
+  ],
+  "footer": {
+    "copyright": "© 2025 UAB Skillaxis — We measure twice; Europe grows once.",
+    "note": "A visual dissertation of better growth, built on data, shipped with taste."
+  }
+}
