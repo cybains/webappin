@@ -693,12 +693,6 @@ const Hero: React.FC = () => {
   );
 };
 
-const Footer: React.FC = () => (
-  <footer className="py-10 text-center text-sm text-gray-500">
-    © {new Date().getFullYear()} UAB Skillaxis · Data from the World Bank and public sources.
-  </footer>
-);
-
 const GrowthAtlasPage: React.FC = () => {
   return (
     <main className="min-h-screen">
@@ -728,7 +722,6 @@ const GrowthAtlasPage: React.FC = () => {
         <ValueProp />
       </Section>
 
-      <Footer />
     </main>
   );
 };

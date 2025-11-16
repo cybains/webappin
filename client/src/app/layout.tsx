@@ -1,9 +1,7 @@
-
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/navbar"; // ✅ Modular header
-
-
+import Navbar from "@/components/navbar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "SUFONIQ",
@@ -19,8 +17,8 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased flex min-h-screen flex-col">
         <Navbar />
-
         <div className="flex-1">{children}</div>
+        <Footer />
       </body>
     </html>
   );

@@ -35,7 +35,6 @@ import {
 // If not, swap them for basic wrappers.
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Footer from "@/components/Footer";
 import IntakeForm, { REASONS, STAGES } from "@/components/IntakeForm";
 
 const services = [
@@ -413,7 +412,6 @@ export default function CoreServicesPage() {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 }

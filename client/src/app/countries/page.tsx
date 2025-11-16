@@ -3,7 +3,6 @@
 import type React from 'react';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import Footer from "@/components/Footer";
 
 type Country = { code: string; name: string };
 type Group = { id: string; title: string; countries: Country[] };
@@ -187,7 +186,6 @@ export default function CountriesPage() {
   }
 
   return (
-    <>
       <main className="max-w-6xl mx-auto p-6 space-y-10 min-h-screen bg-[var(--background)] text-[var(--foreground)]">
         {/* Hero / toolbar — now uses themed vars (no fixed light gradient) */}
         <section className="rounded-2xl border border-[var(--card-border)] p-6 bg-[var(--card)]">
@@ -281,7 +279,5 @@ export default function CountriesPage() {
           })
         )}
       </main>
-      <Footer />
-    </>
   );
 }

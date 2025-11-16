@@ -1,8 +1,6 @@
-import Footer from "@/components/Footer";
 
 export default function AboutPage() {
   return (
-    <>
       <main className="max-w-5xl mx-auto px-6 py-16 text-base leading-relaxed">
       <h1 className="text-4xl font-bold mb-10">About Us</h1>
 
@@ -41,7 +39,5 @@ export default function AboutPage() {
         </p>
       </section>
       </main>
-      <Footer />
-    </>
   );
 }
