@@ -3,20 +3,324 @@
 // Sufoniq / Skillaxis – Ghana Truck Driver Mobility Page
 // Single light-mode page for Ghanaian drivers, Lithuanian employers, and Ghana recruitment agencies.
 
-import React from "react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+
+type SectionKey = "drivers" | "agencies" | "employers" | "skillaxis";
+
+type ListEntry = string | { label: string; value: string };
+
+type AudienceSection = {
+  key: SectionKey;
+  label: string;
+  title: string;
+  description: string;
+  highlights: { title: string; detail: string; accent?: string }[];
+  dualLists?: { title: string; entries: string[]; accentTitle?: string }[];
+  lists?: { title: string; entries: ListEntry[]; footnote?: string }[];
+};
+
+const timelineEntries: ListEntry[] = [
+  { label: "Registration & document check", value: "3-7 days" },
+  { label: "Employer match & confirmation", value: "1-2 weeks" },
+  { label: "Ghana procedures (medicals, police clearance)", value: "1-3 weeks" },
+  { label: "Work permit processing (Lithuania)", value: "2-4 weeks" },
+  { label: "Visa submission & approval", value: "1-2 weeks" },
+  { label: "Flight booking & arrival", value: "Immediately after visa approval" },
+];
+
+const costEntries: ListEntry[] = [
+  { label: "Medical exam", value: "GHS 400-800" },
+  { label: "Police clearance", value: "GHS 100-200" },
+  { label: "Passport (new or renewal)", value: "GHS 600-1,000" },
+  { label: "Document notarisation / attestation", value: "GHS 300-700" },
+  { label: "Translations if needed", value: "GHS 200-500" },
+  { label: "Flight to Lithuania", value: "USD 600-900" },
+  { label: "Personal travel preparation", value: "GHS 200-600" },
+  { label: "Optional Code 95 training (Ghana)", value: "GHS 2,500-4,500" },
+];
+
+const audienceSections: AudienceSection[] = [
+  {
+    key: "drivers",
+    label: "Drivers",
+    title: "For Ghanaian professional drivers",
+    description:
+      "We focus on Category C/CE truck drivers with real experience who want a legal, stable path to Europe. Everything is built around clarity: confirmed jobs, clean legal processes, and honest expectations.",
+    highlights: [
+      {
+        title: "Guaranteed job in Lithuania",
+        detail: "Drivers receive a confirmed Lithuanian employer and position outline before any paperwork starts.",
+      },
+      {
+        title: "Work visa + TRP support",
+        detail: "Skillaxis manages Lithuanian work permit, TRP, and MIGRIS submissions in partnership with the employer.",
+      },
+      {
+        title: "Code 95 & tachograph guidance",
+        detail: "We show you whether to secure your Code 95 and tachograph card in Ghana or after arrival.",
+      },
+      {
+        title: "Relocation & onboarding",
+        detail: "Airport pickup, registration, training, and integration are handled so you can focus on the road.",
+      },
+      {
+        title: "No recruitment fees",
+        detail: "Drivers only cover legitimate travel and document costs—never charges to secure a job.",
+        accent: "text-emerald-600",
+      },
+    ],
+    dualLists: [
+      {
+        title: "Drivers cover",
+        entries: [
+          "Medical examination in Ghana",
+          "Police clearance",
+          "Passport (new or renewal)",
+          "Document notarisation / attestation",
+          "Translations if needed",
+          "Air ticket to Lithuania",
+          "Personal travel preparation costs",
+          "Optional: Code 95 training (if done in Ghana)",
+        ],
+      },
+      {
+        title: "Drivers do NOT pay",
+        entries: [
+          "Recruitment fees",
+          "Visa fees",
+          "Work permit fees",
+          "Temporary residence permit (TRP) fees",
+          "Any fee to secure or reserve the job",
+        ],
+        accentTitle: "text-green-700",
+      },
+    ],
+    lists: [
+      {
+        title: "Requirements for Ghanaian drivers",
+        entries: [
+          "Valid Ghanaian driving licence - Category C/CE or equivalent",
+          "Minimum 2+ years heavy truck / articulated experience",
+          "Clean police clearance and medically fit for professional driving",
+          "Good verbal English communication skills",
+          "Passport valid for at least 18 months",
+          "Willingness to complete EU Code 95 and tachograph certification",
+        ],
+      },
+      {
+        title: "Step-by-step deployment process",
+        entries: [
+          "Registration - sign up via our Ghana partner",
+          "Document check - passport, licence, and experience verified",
+          "Employer match - driver matched to a Lithuanian transport company",
+          "Ghana procedures - medicals, police clearance, and travel prep",
+          "Visa & permits - Skillaxis manages the Lithuanian legal steps",
+          "Visa approval - immigration processing fee is paid and the flight is booked",
+          "Arrival & onboarding - training, testing, and integration in Lithuania",
+          "Employment start - driver begins full-time work after passing",
+        ],
+      },
+      {
+        title: "Deployment timeline (6-10 weeks)",
+        entries: timelineEntries,
+        footnote: "*Fastest deployments happen when documents are completed early.",
+      },
+      {
+        title: "Approximate driver costs (Ghana side)",
+        entries: costEntries,
+        footnote: "*These are third-party costs. Skillaxis never charges recruitment fees.",
+      },
+    ],
+  },
+  {
+    key: "agencies",
+    label: "Agencies",
+    title: "For Ghana recruitment agencies",
+    description:
+      "Our model is built on trust and compliance. We work with one exclusive partner per sending country so that quality and ILO standards are maintained.",
+    highlights: [
+      {
+        title: "Exclusive partnership",
+        detail: "We only collaborate with one Ghana partner at a time to protect standards and transparency.",
+      },
+      {
+        title: "Fair recruitment",
+        detail: "Partner agencies must fully comply with ILO fair recruitment guidelines and ethical handling.",
+      },
+      {
+        title: "Paid after success",
+        detail: "Payments are released only after the driver visa is approved—no upfront driver charges.",
+      },
+    ],
+    lists: [
+      {
+        title: "Why connect with Skillaxis?",
+        entries: [
+          "Skillaxis works with one exclusive recruitment partner per country.",
+          "Partners must fully comply with ILO fair recruitment guidelines.",
+          "We evaluate documentation integrity, ethics, and candidate handling.",
+          "Agencies are paid only after driver visa approval (no upfront driver charges).",
+          "Introduce yourself via the contact form and mention \"Agency\" in the message.",
+        ],
+      },
+    ],
+  },
+  {
+    key: "employers",
+    label: "Employers",
+    title: "For Lithuanian transport employers",
+    description:
+      "We build stable, compliant driver pipelines from Ghana, managed from Europe. Our model is designed to reduce risk and increase retention.",
+    highlights: [
+      {
+        title: "Large pool of drivers",
+        detail: "Experienced LT/TTD and heavy truck drivers with regional road discipline are available.",
+      },
+      {
+        title: "Fast documentation",
+        detail: "Ghanaian timelines compare favorably with many other sending regions.",
+      },
+      {
+        title: "Retention & ethics",
+        detail: "We focus on performance, transparency, and a mutual code of conduct.",
+      },
+    ],
+    lists: [
+      {
+        title: "Why Ghana?",
+        entries: [
+          "Large pool of experienced LT/TTD and heavy truck drivers",
+          "Strong road discipline, often from GCC experience (KSA, UAE, Qatar)",
+          "Fast documentation timelines compared with many other regions",
+          "High English proficiency and a compatible work ethic",
+          "Higher retention rates compared with some Asian recruitment channels",
+        ],
+      },
+      {
+        title: "Why Skillaxis?",
+        entries: [
+          "European-managed company based in Lithuania and Austria",
+          "End-to-end mobility partner, not just a CV forwarding agency",
+          "Structured, transparent processes and documentation",
+          "ILO-compliant, zero recruitment fees for drivers",
+          "Low risk for employers with a focus on performance and retention",
+          "Exclusive Ghana partnership keeps standards and integrity aligned",
+        ],
+      },
+    ],
+  },
+  {
+    key: "skillaxis",
+    label: "Skillaxis",
+    title: "About Skillaxis",
+    description:
+      "For drivers and employers we keep the model simple: recruitment is free for drivers and legal mobility work is covered on the European side.",
+    highlights: [
+      {
+        title: "Permit support",
+        detail: "Work permit, TRP, and MIGRIS handling is managed directly from Lithuania.",
+      },
+      {
+        title: "Clear communication",
+        detail: "Structured documentation and timeline updates keep everyone aligned.",
+      },
+      {
+        title: "Fair service fee",
+        detail: "A small immigration processing fee is invoiced only after visa approval.",
+      },
+    ],
+    lists: [
+      {
+        title: "Skillaxis covers",
+        entries: [
+          "Work permit fee in Lithuania",
+          "Temporary residence permit (TRP) fee",
+          "MIGRIS and other Lithuanian processing fees",
+          "Employer coordination and documentation",
+          "Relocation administration on the European side",
+        ],
+      },
+      {
+        title: "How Skillaxis is paid",
+        entries: [
+          "Small immigration processing fee after the driver visa is approved",
+          "The fee is not a recruitment charge—job access remains free for drivers",
+          "Payments fund our vetted Ghana partner and the legal team",
+        ],
+        footnote: "Service fee is charged after visa approval; typical range USD 250-450.",
+      },
+    ],
+  },
+];
 
 export default function Page() {
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [error, setError] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<SectionKey>("drivers");
+  const currentIndex = audienceSections.findIndex((section) => section.key === activeSection);
+  const normalizedIndex = currentIndex === -1 ? 0 : currentIndex;
+  const tabWidth = 100 / audienceSections.length;
+  const slidePercent = tabWidth * normalizedIndex;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    const name = String(data.get("name") || "");
+    const email = String(data.get("email") || "");
+    const role = String(data.get("role") || "");
+    const phone = String(data.get("phone") || "");
+    const message = String(data.get("message") || "");
+
+    const subject = `Ghana TDE inquiry — ${role || "General"}`;
+    const composedMessage = [
+      `Role: ${role}`,
+      phone ? `Phone / WhatsApp: ${phone}` : undefined,
+      message ? `Message:\n${message}` : undefined,
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+
+    setSubmitting(true);
+    setError(null);
+    setStatus("idle");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          subject,
+          message: composedMessage || "Ghana TDE inquiry",
+        }),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload?.error || `Request failed (${response.status})`);
+      }
+
+      form.reset();
+      setStatus("success");
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
       {/* Top bar / brand */}
       <header className="w-full border-b border-slate-200 bg-white/90 backdrop-blur sticky top-0 z-20 shadow-[0_2px_16px_rgba(15,23,42,0.05)]">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 md:px-6">
-          <div className="flex items-center gap-2 font-semibold tracking-wide">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 border border-slate-300">
-              <span className="text-xs font-bold text-slate-800">SQ</span>
-            </div>
-            <span className="text-sm md:text-base uppercase text-slate-900">Sufoniq / Skillaxis</span>
-          </div>
           <span className="hidden text-xs text-slate-500 md:inline">
             Ghana · Lithuania · Truck Driver Mobility
           </span>
@@ -148,293 +452,125 @@ export default function Page() {
       </section>
 
       {/* Section – What we offer Ghanaian drivers */}
-      <section className="border-t border-slate-200 bg-slate-50 py-12 md:py-16">
-        <div className="mx-auto max-w-5xl px-4 md:px-6 space-y-8">
-          <div className="max-w-2xl space-y-3">
-            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">For Ghanaian professional drivers</h2>
-            <p className="text-sm text-slate-700 md:text-base">
-              We focus on Category C/CE truck drivers with real experience who want a legal, stable path to Europe.
-              Everything is built around clarity: confirmed job, clean legal process, and honest expectations.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 text-sm">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-base font-medium text-slate-900">✔ Guaranteed job in Lithuania</p>
-              <p className="mt-2 text-xs text-slate-700">
-                Before any documents are processed, drivers receive a confirmed Lithuanian employer and position
-                outline.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-base font-medium text-slate-900">✔ Work visa + TRP support</p>
-              <p className="mt-2 text-xs text-slate-700">
-                Skillaxis handles Lithuanian‑side processes: work permit, TRP, and MIGRIS submissions in coordination
-                with the employer.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-base font-medium text-slate-900">✔ Code 95 & tachograph guidance</p>
-              <p className="mt-2 text-xs text-slate-700">
-                We guide you on EU professional driver requirements and where Code 95 and tachograph card are obtained –
-                whether in Ghana or after arrival in Lithuania.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-base font-medium text-slate-900">✔ Relocation & onboarding support</p>
-              <p className="mt-2 text-xs text-slate-700">
-                From airport pickup and local registration to company onboarding and integration, you are not left
-                alone to guess.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-green-600/70 bg-white p-5 shadow-sm">
-              <p className="text-base font-medium text-green-700">✔ No recruitment fees – ever</p>
-              <p className="mt-2 text-xs text-green-700/80">
-                Drivers never pay to access a job. You only cover personal documentation and travel. This is fully
-                aligned with ILO guidelines for fair recruitment.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section – What drivers pay vs do not pay */}
-      <section className="border-t border-slate-200 bg-slate-50 py-12 md:py-16">
-        <div className="mx-auto max-w-5xl px-4 md:px-6 space-y-8">
-          <div className="max-w-2xl space-y-3">
-            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">What drivers pay – and what they don&apos;t</h2>
-            <p className="text-sm text-slate-700 md:text-base">
-              To keep everything transparent and ILO‑compliant, we clearly separate the costs that belong to the driver
-              from those that belong to the employer / Skillaxis.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 text-sm">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-base font-semibold text-slate-900">Drivers cover:</p>
-              <ul className="mt-2 space-y-1 text-xs text-slate-700 list-disc list-inside">
-                <li>Medical examination in Ghana</li>
-                <li>Police clearance</li>
-                <li>Passport (new or renewal)</li>
-                <li>Document notarisation / attestation</li>
-                <li>Translations if needed</li>
-                <li>Air ticket to Lithuania</li>
-                <li>Personal travel preparation costs</li>
-                <li>Optional: Code 95 training (if done in Ghana)</li>
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-green-600/70 bg-white p-5 shadow-sm">
-              <p className="text-base font-semibold text-green-700">Drivers do NOT pay:</p>
-              <ul className="mt-2 space-y-1 text-xs text-green-700/90 list-disc list-inside">
-                <li>Recruitment fees</li>
-                <li>Visa fees</li>
-                <li>Work permit fees</li>
-                <li>Temporary residence permit (TRP) fees</li>
-                <li>Any fee to &quot;secure&quot; or &quot;reserve&quot; the job</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section – What Skillaxis pays & how we earn */}
-      <section className="border-t border-slate-200 bg-slate-50 py-12 md:py-16">
-        <div className="mx-auto max-w-5xl px-4 md:px-6 space-y-8">
-          <div className="max-w-2xl space-y-3">
-            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">What Skillaxis covers</h2>
-            <p className="text-sm text-slate-700 md:text-base">
-              For drivers and employers, we keep our model simple. Recruitment is free for drivers; legal and mobility
-              work is covered and only charged after success.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 text-sm">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-base font-semibold text-slate-900">Skillaxis covers:</p>
-              <ul className="mt-2 space-y-1 text-xs text-slate-700 list-disc list-inside">
-                <li>Work permit fee in Lithuania</li>
-                <li>TRP (temporary residence permit) fee</li>
-                <li>MIGRIS and other Lithuanian processing fees</li>
-                <li>Employer coordination and documentation</li>
-                <li>Relocation administration on the European side</li>
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-base font-semibold text-slate-900">How Skillaxis is paid:</p>
-              <ul className="mt-2 space-y-1 text-xs text-slate-700 list-disc list-inside">
-                <li>
-                  We charge a small immigration processing fee only after the driver&apos;s visa is issued and travel is
-                  ready.
-                </li>
-                <li>This fee is not a recruitment fee – job access remains free for the driver.</li>
-                <li>The fee is used to pay our vetted Ghana recruitment partner for their work.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section – Requirements & process for drivers */}
-      <section className="border-t border-slate-200 bg-slate-50 py-12 md:py-16">
-        <div className="mx-auto max-w-5xl px-4 md:px-6 space-y-8">
-          <div className="grid gap-8 md:grid-cols-2 md:items-start">
-            <div className="space-y-3">
-              <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">Requirements for Ghanaian drivers</h2>
-              <p className="text-sm text-slate-700 md:text-base">
-                We focus on professional, safety‑minded drivers who can succeed in European operations.
-              </p>
-              <ul className="mt-2 space-y-1 text-xs text-slate-700 list-disc list-inside">
-                <li>Valid Ghanaian driving licence – Category C/CE or equivalent</li>
-                <li>Minimum 2+ years heavy truck / articulated driving experience</li>
-                <li>Clean police clearance and medically fit for professional driving</li>
-                <li>Good verbal English communication skills</li>
-                <li>Passport valid for at least 18 months</li>
-                <li>Willingness to complete EU Code 95 and tachograph certification</li>
-              </ul>
-            </div>
-
-            <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-slate-900">Step‑by‑step deployment process</h3>
-              <ol className="mt-2 space-y-2 text-xs text-slate-700">
-                <li><span className="font-semibold text-green-700">1. Registration –</span> sign up via our Ghana partner.</li>
-                <li><span className="font-semibold text-green-700">2. Document check –</span> passport, licence, and experience verified.</li>
-                <li><span className="font-semibold text-green-700">3. Employer match –</span> driver matched to Lithuanian transport company.</li>
-                <li><span className="font-semibold text-green-700">4. Ghana procedures –</span> medicals, police clearance, and travel preparation.</li>
-                <li><span className="font-semibold text-green-700">5. Visa & permits –</span> Skillaxis manages Lithuanian legal steps.</li>
-                <li><span className="font-semibold text-green-700">6. Visa approval –</span> immigration processing fee is paid; flight booked.</li>
-                <li><span className="font-semibold text-green-700">7. Arrival & onboarding –</span> training, testing, and integration in Lithuania.</li>
-                <li><span className="font-semibold text-green-700">8. Employment start –</span> driver begins full‑time work after passing.</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section – Timeline & Approximate Costs */}
-      <section className="border-t border-slate-200 bg-slate-50 py-12 md:py-16">
-        <div className="mx-auto max-w-5xl px-4 md:px-6 space-y-8">
-          <div className="max-w-3xl space-y-3">
-            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">Deployment timeline & approximate costs</h2>
-            <p className="text-sm text-slate-700 md:text-base">
-              These timelines and costs are averages based on previous Ghana → Lithuania deployments. They help drivers,
-              employers, and agencies understand realistic expectations.
-            </p>
-          </div>
-
-          {/* Timeline */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 space-y-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-slate-900">Average timeline (6–10 weeks)</h3>
-            <ol className="mt-3 space-y-3 text-xs text-slate-700 list-decimal list-inside">
-              <li><span className="font-semibold text-green-700">Registration & document check:</span> 3–7 days</li>
-              <li><span className="font-semibold text-green-700">Employer match & confirmation:</span> 1–2 weeks</li>
-              <li><span className="font-semibold text-green-700">Ghana procedures (medicals, police clearance):</span> 1–3 weeks</li>
-              <li><span className="font-semibold text-green-700">Work permit processing (Lithuania):</span> 2–4 weeks</li>
-              <li><span className="font-semibold text-green-700">Visa submission & approval:</span> 1–2 weeks</li>
-              <li><span className="font-semibold text-green-700">Flight booking & arrival:</span> immediately after visa approval</li>
-            </ol>
-            <p className="text-[11px] text-slate-500">*Fastest deployments happen when documents are completed early.</p>
-          </div>
-
-          {/* Costs */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 space-y-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-slate-900">Approximate driver costs (Ghana side)</h3>
-            <ul className="mt-2 space-y-2 text-xs text-slate-700 list-disc list-inside">
-              <li><span className="font-semibold text-green-700">Medical exam:</span> GHS 400 – 800</li>
-              <li><span className="font-semibold text-green-700">Police clearance:</span> GHS 100 – 200</li>
-              <li><span className="font-semibold text-green-700">Passport (new or renewal):</span> GHS 600 – 1,000</li>
-              <li><span className="font-semibold text-green-700">Notarisation / attestation:</span> GHS 300 – 700</li>
-              <li><span className="font-semibold text-green-700">Translations:</span> GHS 200 – 500</li>
-              <li><span className="font-semibold text-green-700">Flight to Lithuania:</span> USD 600 – 900</li>
-              <li><span className="font-semibold text-green-700">Personal travel preparation:</span> GHS 200 – 600</li>
-              <li><span className="font-semibold text-green-700">Optional: Code 95 training (Ghana):</span> GHS 2,500 – 4,500</li>
-            </ul>
-            <p className="text-[11px] text-slate-500">*These are third‑party costs. Skillaxis never charges recruitment fees.</p>
-          </div>
-
-          {/* Skillaxis fee */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-slate-900">Skillaxis service fee (after visa approval)</h3>
-            <p className="mt-2 text-xs text-slate-700">
-              A small immigration processing fee is charged only after the driver&apos;s visa is successfully approved.
-            </p>
-            <p className="mt-2 text-xs text-slate-700">
-              Typical range: <span className="font-semibold text-green-700">USD 250 – 450</span>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Section – For Lithuanian employers */}
+      {/* Audience sections slider */}
       <section className="border-t border-slate-200 bg-slate-50 py-12 md:py-16">
         <div className="mx-auto max-w-5xl px-4 md:px-6 space-y-8">
           <div className="space-y-3">
-            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">For Lithuanian transport employers</h2>
+            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">Four lenses, one story</h2>
             <p className="text-sm text-slate-700 md:text-base">
-              We build stable, compliant driver pipelines from Ghana, managed from Europe. Our model is designed to
-              reduce risk and increase retention.
+              Tap each audience to see the promises, the expectations, and the smallest moving parts we keep under control.
             </p>
           </div>
-
-          <div className="grid gap-6 md:grid-cols-2 text-sm">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-base font-semibold text-slate-900">Why Ghana?</p>
-              <ul className="mt-2 space-y-1 text-xs text-slate-700 list-disc list-inside">
-                <li>Large pool of experienced LT/TTD and heavy truck drivers</li>
-                <li>Strong road discipline, often from GCC experience (KSA, UAE, Qatar, etc.)</li>
-                <li>Fast documentation timelines compared with many other regions</li>
-                <li>High English proficiency and compatible work ethic</li>
-                <li>Higher retention rates compared with some Asian recruitment channels</li>
-              </ul>
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="flex flex-wrap gap-2">
+              {audienceSections.map((section) => (
+                <button
+                  key={section.key}
+                  type="button"
+                  onClick={() => setActiveSection(section.key)}
+                  aria-pressed={activeSection === section.key}
+                  className={`rounded-full px-4 py-1 text-xs font-semibold transition ${
+                    activeSection === section.key
+                      ? "bg-green-600 text-white shadow-sm"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  }`}
+                >
+                  {section.label}
+                </button>
+              ))}
             </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-base font-semibold text-slate-900">Why Skillaxis?</p>
-              <ul className="mt-2 space-y-1 text-xs text-slate-700 list-disc list-inside">
-                <li>European‑managed company, based in Lithuania and Austria</li>
-                <li>End‑to‑end mobility partner – not just a CV forwarding agency</li>
-                <li>Structured, transparent process and documentation</li>
-                <li>ILO‑compliant, zero recruitment fees for drivers</li>
-                <li>Low risk for employers – focus on performance and retention</li>
-                <li>Exclusive Ghana partnership ensures consistent standards and integrity</li>
-              </ul>
+            <div className="relative mt-3 h-1 rounded-full bg-slate-100">
+              <motion.span
+                className="absolute top-0 h-full rounded-full bg-gradient-to-r from-emerald-400 to-lime-500"
+                style={{ width: `${tabWidth}%` }}
+                animate={{ left: `${slidePercent}%` }}
+                transition={{ type: "spring", stiffness: 140, damping: 25 }}
+              />
+            </div>
+            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
+              <motion.div
+                className="flex"
+                style={{ width: `${audienceSections.length * 100}%` }}
+                animate={{ x: `-${slidePercent}%` }}
+                transition={{ type: "spring", stiffness: 120, damping: 25 }}
+              >
+                {audienceSections.map((section) => (
+                  <article
+                    key={section.key}
+                    aria-hidden={activeSection !== section.key}
+                    className="w-full shrink-0"
+                    style={{ width: `${100 / audienceSections.length}%` }}
+                  >
+                    <div className="p-6 md:p-8">
+                      <h3 className="text-lg font-semibold text-slate-900">{section.title}</h3>
+                      <p className="mt-2 text-sm text-slate-700">{section.description}</p>
+                      <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        {section.highlights.map((highlight) => (
+                          <div
+                            key={highlight.title}
+                            className="rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700 shadow-sm"
+                          >
+                            <p className="font-semibold text-slate-900">{highlight.title}</p>
+                            <p
+                              className={`mt-1 leading-relaxed ${
+                                highlight.accent ?? "text-slate-700"
+                              }`}
+                            >
+                              {highlight.detail}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                      {section.dualLists && (
+                        <div className="mt-6 grid gap-4 md:grid-cols-2">
+                          {section.dualLists.map((list) => (
+                            <div
+                              key={list.title}
+                              className="rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700 shadow-sm"
+                            >
+                              <p className={`font-semibold ${list.accentTitle ?? "text-slate-900"}`}>{list.title}</p>
+                              <ul className="mt-2 space-y-1 list-disc pl-4">
+                                {list.entries.map((entry) => (
+                                  <li key={entry}>{entry}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {section.lists?.map((list) => (
+                        <div key={list.title} className="mt-6 space-y-2">
+                          <p className="text-sm font-semibold text-slate-900">{list.title}</p>
+                          <ul className="space-y-1 text-xs text-slate-700">
+                            {list.entries.map((entry, index) => (
+                              <li
+                                key={`${list.title}-${index}`}
+                                className="flex justify-between gap-3"
+                              >
+                                {typeof entry === "string" ? (
+                                  <span className="block flex-1">{entry}</span>
+                                ) : (
+                                  <>
+                                    <span className="text-slate-700">{entry.label}</span>
+                                    <span className="font-semibold text-slate-900">{entry.value}</span>
+                                  </>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                          {list.footnote && (
+                            <p className="text-[11px] text-slate-500">{list.footnote}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Section – For Ghana recruitment agencies */}
-      <section className="border-t border-slate-200 bg-slate-50 py-12 md:py-16">
-        <div className="mx-auto max-w-5xl px-4 md:px-6 space-y-6">
-          <div className="max-w-3xl space-y-3">
-            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">For Ghana recruitment agencies</h2>
-            <p className="text-sm text-slate-700 md:text-base">
-              Our model is built on trust and compliance. We work with one exclusive partner per sending country to
-              maintain quality and alignment with ILO standards.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 text-sm shadow-sm">
-            <ul className="space-y-1 text-xs text-slate-700 list-disc list-inside">
-              <li>Skillaxis works with one exclusive recruitment partner per country.</li>
-              <li>Partners must fully comply with ILO fair recruitment guidelines.</li>
-              <li>We evaluate documentation integrity, ethics, and candidate handling.</li>
-              <li>Agencies are paid only after driver visa approval (no upfront driver charges).</li>
-              <li>
-                Interested agencies can introduce themselves via the contact form, indicating &quot;Agency&quot; in the
-                message.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Callback / contact form – shared for all audiences */}
       <section
         id="callback"
         className="border-t border-slate-200 bg-white py-10 md:py-12"
@@ -455,7 +591,24 @@ export default function Page() {
               </p>
             </div>
 
-            <form className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm shadow-sm">
+            <form onSubmit={handleSubmit} className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm shadow-sm">
+              {status === "success" && (
+                <div
+                  role="status"
+                  aria-live="polite"
+                  className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900"
+                >
+                  Your message has been sent! We&apos;ll respond within 24 hours.
+                </div>
+              )}
+              {status === "error" && error && (
+                <div
+                  role="alert"
+                  className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-900"
+                >
+                  {error}
+                </div>
+              )}
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-slate-800" htmlFor="name">
@@ -531,31 +684,16 @@ export default function Page() {
 
               <button
                 type="submit"
-                className="mt-1 inline-flex w-full items-center justify-center rounded-full border border-green-600 bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-green-600/30 transition hover:bg-yellow-400 hover:border-yellow-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50"
+                disabled={submitting}
+                className="mt-1 inline-flex w-full items-center justify-center rounded-full border border-green-600 bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-green-600/30 transition hover:bg-yellow-400 hover:border-yellow-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send my request
+                {submitting ? "Sending..." : "Send my request"}
               </button>
-
-              <p className="text-[10px] leading-relaxed text-slate-500">
-                This is a static example form. Connect it to your preferred backend or form handler (for example, an API route in Next.js, CRM, or email handler) to start receiving requests.
-              </p>
             </form>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-slate-200 bg-white py-4">
-        <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-2 px-4 text-[11px] text-slate-600 md:flex-row md:items-center md:px-6">
-          <span>© {new Date().getFullYear()} UAB Skillaxis · Sufoniq. All rights reserved.</span>
-          <div className="flex flex-wrap items-center gap-3">
-            <span>Beneficiary: UAB Skillaxis</span>
-            <span>Payer: UAB Skillaxis</span>
-            <a href="#" className="underline-offset-2 hover:underline">
-              Privacy
-            </a>
-          </div>
-        </div>
-      </footer>
     </main>
   );
 }
