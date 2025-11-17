@@ -10,6 +10,15 @@ type SectionKey = "drivers" | "agencies" | "employers" | "skillaxis";
 
 type ListEntry = string | { label: string; value: string };
 
+type DriverSubSection = {
+  key: string;
+  label: string;
+  description?: string;
+  highlights?: { title: string; detail: string; accent?: string }[];
+  dualLists?: { title: string; entries: string[]; accentTitle?: string }[];
+  lists?: { title: string; entries: ListEntry[]; footnote?: string }[];
+};
+
 type AudienceSection = {
   key: SectionKey;
   label: string;
@@ -18,6 +27,7 @@ type AudienceSection = {
   highlights: { title: string; detail: string; accent?: string }[];
   dualLists?: { title: string; entries: string[]; accentTitle?: string }[];
   lists?: { title: string; entries: ListEntry[]; footnote?: string }[];
+  subSections?: DriverSubSection[];
 };
 
 const timelineEntries: ListEntry[] = [
@@ -40,6 +50,95 @@ const costEntries: ListEntry[] = [
   { label: "Optional Code 95 training (Ghana)", value: "GHS 2,500-4,500" },
 ];
 
+const driverHighlights = [
+  {
+    title: "Guaranteed job in Lithuania",
+    detail: "Drivers receive a confirmed Lithuanian employer and position outline before any paperwork starts.",
+  },
+  {
+    title: "Work visa + TRP support",
+    detail: "Skillaxis manages Lithuanian work permit, TRP, and MIGRIS submissions in partnership with the employer.",
+  },
+  {
+    title: "Code 95 & tachograph guidance",
+    detail: "We show you whether to secure your Code 95 and tachograph card in Ghana or after arrival.",
+  },
+  {
+    title: "Relocation & onboarding",
+    detail: "Airport pickup, registration, training, and integration are handled so you can focus on the road.",
+  },
+  {
+    title: "No recruitment fees",
+    detail: "Drivers only cover legitimate travel and document costs—never charges to secure a job.",
+    accent: "text-emerald-600",
+  },
+];
+
+const driverDualLists = [
+  {
+    title: "Drivers cover",
+    entries: [
+      "Medical examination in Ghana",
+      "Police clearance",
+      "Passport (new or renewal)",
+      "Document notarisation / attestation",
+      "Translations if needed",
+      "Air ticket to Lithuania",
+      "Personal travel preparation costs",
+      "Optional: Code 95 training (if done in Ghana)",
+    ],
+  },
+  {
+    title: "Drivers do NOT pay",
+    entries: [
+      "Recruitment fees",
+      "Visa fees",
+      "Work permit fees",
+      "Temporary residence permit (TRP) fees",
+      "Any fee to secure or reserve the job",
+    ],
+    accentTitle: "text-green-700",
+  },
+];
+
+const driverRequirementsList = {
+  title: "Requirements for Ghanaian drivers",
+  entries: [
+    "Valid Ghanaian driving licence - Category C/CE or equivalent",
+    "Minimum 2+ years heavy truck / articulated experience",
+    "Clean police clearance and medically fit for professional driving",
+    "Good verbal English communication skills",
+    "Passport valid for at least 18 months",
+    "Willingness to complete EU Code 95 and tachograph certification",
+  ],
+};
+
+const driverProcessList = {
+  title: "Step-by-step deployment process",
+  entries: [
+    "Registration - sign up via our Ghana partner",
+    "Document check - passport, licence, and experience verified",
+    "Employer match - driver matched to a Lithuanian transport company",
+    "Ghana procedures - medicals, police clearance, and travel prep",
+    "Visa & permits - Skillaxis manages the Lithuanian legal steps",
+    "Visa approval - immigration processing fee is paid and the flight is booked",
+    "Arrival & onboarding - training, testing, and integration in Lithuania",
+    "Employment start - driver begins full-time work after passing",
+  ],
+};
+
+const driverTimelineList = {
+  title: "Deployment timeline (6-10 weeks)",
+  entries: timelineEntries,
+  footnote: "*Fastest deployments happen when documents are completed early.",
+};
+
+const driverCostList = {
+  title: "Approximate driver costs (Ghana side)",
+  entries: costEntries,
+  footnote: "*These are third-party costs. Skillaxis never charges recruitment fees.",
+};
+
 const audienceSections: AudienceSection[] = [
   {
     key: "drivers",
@@ -47,89 +146,28 @@ const audienceSections: AudienceSection[] = [
     title: "For Ghanaian professional drivers",
     description:
       "We focus on Category C/CE truck drivers with real experience who want a legal, stable path to Europe. Everything is built around clarity: confirmed jobs, clean legal processes, and honest expectations.",
-    highlights: [
+    highlights: driverHighlights,
+    dualLists: driverDualLists,
+    lists: [driverRequirementsList, driverProcessList, driverTimelineList, driverCostList],
+    subSections: [
       {
-        title: "Guaranteed job in Lithuania",
-        detail: "Drivers receive a confirmed Lithuanian employer and position outline before any paperwork starts.",
+        key: "promises",
+        label: "Promises",
+        description: "What we guarantee before a single visa form is filed.",
+        highlights: driverHighlights,
       },
       {
-        title: "Work visa + TRP support",
-        detail: "Skillaxis manages Lithuanian work permit, TRP, and MIGRIS submissions in partnership with the employer.",
+        key: "expectations",
+        label: "Expectations",
+        description: "What every Ghanaian driver must prepare and cover.",
+        dualLists: driverDualLists,
+        lists: [driverRequirementsList],
       },
       {
-        title: "Code 95 & tachograph guidance",
-        detail: "We show you whether to secure your Code 95 and tachograph card in Ghana or after arrival.",
-      },
-      {
-        title: "Relocation & onboarding",
-        detail: "Airport pickup, registration, training, and integration are handled so you can focus on the road.",
-      },
-      {
-        title: "No recruitment fees",
-        detail: "Drivers only cover legitimate travel and document costs—never charges to secure a job.",
-        accent: "text-emerald-600",
-      },
-    ],
-    dualLists: [
-      {
-        title: "Drivers cover",
-        entries: [
-          "Medical examination in Ghana",
-          "Police clearance",
-          "Passport (new or renewal)",
-          "Document notarisation / attestation",
-          "Translations if needed",
-          "Air ticket to Lithuania",
-          "Personal travel preparation costs",
-          "Optional: Code 95 training (if done in Ghana)",
-        ],
-      },
-      {
-        title: "Drivers do NOT pay",
-        entries: [
-          "Recruitment fees",
-          "Visa fees",
-          "Work permit fees",
-          "Temporary residence permit (TRP) fees",
-          "Any fee to secure or reserve the job",
-        ],
-        accentTitle: "text-green-700",
-      },
-    ],
-    lists: [
-      {
-        title: "Requirements for Ghanaian drivers",
-        entries: [
-          "Valid Ghanaian driving licence - Category C/CE or equivalent",
-          "Minimum 2+ years heavy truck / articulated experience",
-          "Clean police clearance and medically fit for professional driving",
-          "Good verbal English communication skills",
-          "Passport valid for at least 18 months",
-          "Willingness to complete EU Code 95 and tachograph certification",
-        ],
-      },
-      {
-        title: "Step-by-step deployment process",
-        entries: [
-          "Registration - sign up via our Ghana partner",
-          "Document check - passport, licence, and experience verified",
-          "Employer match - driver matched to a Lithuanian transport company",
-          "Ghana procedures - medicals, police clearance, and travel prep",
-          "Visa & permits - Skillaxis manages the Lithuanian legal steps",
-          "Visa approval - immigration processing fee is paid and the flight is booked",
-          "Arrival & onboarding - training, testing, and integration in Lithuania",
-          "Employment start - driver begins full-time work after passing",
-        ],
-      },
-      {
-        title: "Deployment timeline (6-10 weeks)",
-        entries: timelineEntries,
-        footnote: "*Fastest deployments happen when documents are completed early.",
-      },
-      {
-        title: "Approximate driver costs (Ghana side)",
-        entries: costEntries,
-        footnote: "*These are third-party costs. Skillaxis never charges recruitment fees.",
+        key: "moving-parts",
+        label: "Moving parts",
+        description: "How we choreograph the process, from paperwork to flights.",
+        lists: [driverProcessList, driverTimelineList, driverCostList],
       },
     ],
   },
@@ -241,15 +279,6 @@ const audienceSections: AudienceSection[] = [
           "Relocation administration on the European side",
         ],
       },
-      {
-        title: "How Skillaxis is paid",
-        entries: [
-          "Small immigration processing fee after the driver visa is approved",
-          "The fee is not a recruitment charge—job access remains free for drivers",
-          "Payments fund our vetted Ghana partner and the legal team",
-        ],
-        footnote: "Service fee is charged after visa approval; typical range USD 250-450.",
-      },
     ],
   },
 ];
@@ -259,10 +288,14 @@ export default function Page() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<SectionKey>("drivers");
+  const [activeDriverSubSection, setActiveDriverSubSection] = useState("promises");
   const currentIndex = audienceSections.findIndex((section) => section.key === activeSection);
   const normalizedIndex = currentIndex === -1 ? 0 : currentIndex;
   const tabWidth = 100 / audienceSections.length;
   const slidePercent = tabWidth * normalizedIndex;
+  const driverSubSections = audienceSections.find((section) => section.key === "drivers")?.subSections ?? [];
+  const activeDriverTab =
+    driverSubSections.find((subSection) => subSection.key === activeDriverSubSection) ?? driverSubSections[0];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -456,10 +489,9 @@ export default function Page() {
       <section className="border-t border-slate-200 bg-slate-50 py-12 md:py-16">
         <div className="mx-auto max-w-5xl px-4 md:px-6 space-y-8">
           <div className="space-y-3">
-            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">Four lenses, one story</h2>
-            <p className="text-sm text-slate-700 md:text-base">
-              Tap each audience to see the promises, the expectations, and the smallest moving parts we keep under control.
-            </p>
+            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">
+              The promises, the expectations, and the smallest moving parts we keep under control.
+            </h2>
           </div>
           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-wrap gap-2">
@@ -504,65 +536,161 @@ export default function Page() {
                     <div className="p-6 md:p-8">
                       <h3 className="text-lg font-semibold text-slate-900">{section.title}</h3>
                       <p className="mt-2 text-sm text-slate-700">{section.description}</p>
-                      <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {section.highlights.map((highlight) => (
-                          <div
-                            key={highlight.title}
-                            className="rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700 shadow-sm"
-                          >
-                            <p className="font-semibold text-slate-900">{highlight.title}</p>
-                            <p
-                              className={`mt-1 leading-relaxed ${
-                                highlight.accent ?? "text-slate-700"
-                              }`}
-                            >
-                              {highlight.detail}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                      {section.dualLists && (
-                        <div className="mt-6 grid gap-4 md:grid-cols-2">
-                          {section.dualLists.map((list) => (
-                            <div
-                              key={list.title}
-                              className="rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700 shadow-sm"
-                            >
-                              <p className={`font-semibold ${list.accentTitle ?? "text-slate-900"}`}>{list.title}</p>
-                              <ul className="mt-2 space-y-1 list-disc pl-4">
-                                {list.entries.map((entry) => (
-                                  <li key={entry}>{entry}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                      {section.lists?.map((list) => (
-                        <div key={list.title} className="mt-6 space-y-2">
-                          <p className="text-sm font-semibold text-slate-900">{list.title}</p>
-                          <ul className="space-y-1 text-xs text-slate-700">
-                            {list.entries.map((entry, index) => (
-                              <li
-                                key={`${list.title}-${index}`}
-                                className="flex justify-between gap-3"
+                      {section.subSections ? (
+                        <div className="mt-5 space-y-5">
+                          <div className="flex flex-wrap gap-2">
+                            {section.subSections.map((subSection) => (
+                              <button
+                                key={subSection.key}
+                                type="button"
+                                onClick={() => setActiveDriverSubSection(subSection.key)}
+                                aria-pressed={activeDriverSubSection === subSection.key}
+                                className={`rounded-full px-4 py-1 text-xs font-semibold transition ${
+                                  activeDriverSubSection === subSection.key
+                                    ? "bg-emerald-600 text-white shadow-sm"
+                                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                }`}
                               >
-                                {typeof entry === "string" ? (
-                                  <span className="block flex-1">{entry}</span>
-                                ) : (
-                                  <>
-                                    <span className="text-slate-700">{entry.label}</span>
-                                    <span className="font-semibold text-slate-900">{entry.value}</span>
-                                  </>
-                                )}
-                              </li>
+                                {subSection.label}
+                              </button>
                             ))}
-                          </ul>
-                          {list.footnote && (
-                            <p className="text-[11px] text-slate-500">{list.footnote}</p>
+                          </div>
+                          {activeDriverTab && (
+                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                              {activeDriverTab.description && (
+                                <p className="text-xs text-slate-600">{activeDriverTab.description}</p>
+                              )}
+                              {activeDriverTab.highlights && (
+                                <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                                  {activeDriverTab.highlights.map((highlight) => (
+                                    <div
+                                      key={highlight.title}
+                                      className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-700"
+                                    >
+                                      <p className="font-semibold text-slate-900">{highlight.title}</p>
+                                      <p
+                                        className={`mt-1 leading-relaxed ${
+                                          highlight.accent ?? "text-slate-700"
+                                        }`}
+                                      >
+                                        {highlight.detail}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              {activeDriverTab.dualLists && (
+                                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                                  {activeDriverTab.dualLists.map((list) => (
+                                    <div
+                                      key={list.title}
+                                      className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-700"
+                                    >
+                                      <p className={`font-semibold ${list.accentTitle ?? "text-slate-900"}`}>
+                                        {list.title}
+                                      </p>
+                                      <ul className="mt-2 space-y-1 list-disc pl-4">
+                                        {list.entries.map((entry) => (
+                                          <li key={entry}>{entry}</li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              {activeDriverTab.lists?.map((list) => (
+                                <div key={list.title} className="mt-6 space-y-2">
+                                  <p className="text-sm font-semibold text-slate-900">{list.title}</p>
+                                  <ul className="space-y-1 text-xs text-slate-700">
+                                    {list.entries.map((entry, index) => (
+                                      <li
+                                        key={`${list.title}-${index}`}
+                                        className="flex justify-between gap-3"
+                                      >
+                                        {typeof entry === "string" ? (
+                                          <span className="block flex-1">{entry}</span>
+                                        ) : (
+                                          <>
+                                            <span className="text-slate-700">{entry.label}</span>
+                                            <span className="font-semibold text-slate-900">{entry.value}</span>
+                                          </>
+                                        )}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                  {list.footnote && (
+                                    <p className="text-[11px] text-slate-500">{list.footnote}</p>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
                           )}
                         </div>
-                      ))}
+                      ) : (
+                        <>
+                          <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {section.highlights.map((highlight) => (
+                              <div
+                                key={highlight.title}
+                                className="rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700 shadow-sm"
+                              >
+                                <p className="font-semibold text-slate-900">{highlight.title}</p>
+                                <p
+                                  className={`mt-1 leading-relaxed ${
+                                    highlight.accent ?? "text-slate-700"
+                                  }`}
+                                >
+                                  {highlight.detail}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                          {section.dualLists && (
+                            <div className="mt-6 grid gap-4 md:grid-cols-2">
+                              {section.dualLists.map((list) => (
+                                <div
+                                  key={list.title}
+                                  className="rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700 shadow-sm"
+                                >
+                                  <p className={`font-semibold ${list.accentTitle ?? "text-slate-900"}`}>
+                                    {list.title}
+                                  </p>
+                                  <ul className="mt-2 space-y-1 list-disc pl-4">
+                                    {list.entries.map((entry) => (
+                                      <li key={entry}>{entry}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {section.lists?.map((list) => (
+                            <div key={list.title} className="mt-6 space-y-2">
+                              <p className="text-sm font-semibold text-slate-900">{list.title}</p>
+                              <ul className="space-y-1 text-xs text-slate-700">
+                                {list.entries.map((entry, index) => (
+                                  <li
+                                    key={`${list.title}-${index}`}
+                                    className="flex justify-between gap-3"
+                                  >
+                                    {typeof entry === "string" ? (
+                                      <span className="block flex-1">{entry}</span>
+                                    ) : (
+                                      <>
+                                        <span className="text-slate-700">{entry.label}</span>
+                                        <span className="font-semibold text-slate-900">{entry.value}</span>
+                                      </>
+                                    )}
+                                  </li>
+                                ))}
+                              </ul>
+                              {list.footnote && (
+                                <p className="text-[11px] text-slate-500">{list.footnote}</p>
+                              )}
+                            </div>
+                          ))}
+                        </>
+                      )}
                     </div>
                   </article>
                 ))}
