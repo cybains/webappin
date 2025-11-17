@@ -1,14 +1,23 @@
 "use client";
 
-// Sufoniq / Skillaxis – Ghana Truck Driver Mobility Page
+// Sufoniq – Ghana Truck Driver Mobility Page
 // Single light-mode page for Ghanaian drivers, Lithuanian employers, and Ghana recruitment agencies.
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-type SectionKey = "drivers" | "agencies" | "employers" | "skillaxis";
+type SectionKey = "drivers" | "agencies" | "employers" | "sufoniq";
 
 type ListEntry = string | { label: string; value: string };
+
+type DriverSubSection = {
+  key: string;
+  label: string;
+  description?: string;
+  highlights?: { title: string; detail: string; accent?: string }[];
+  dualLists?: { title: string; entries: string[]; accentTitle?: string }[];
+  lists?: { title: string; entries: ListEntry[]; footnote?: string }[];
+};
 
 type AudienceSection = {
   key: SectionKey;
@@ -18,27 +27,115 @@ type AudienceSection = {
   highlights: { title: string; detail: string; accent?: string }[];
   dualLists?: { title: string; entries: string[]; accentTitle?: string }[];
   lists?: { title: string; entries: ListEntry[]; footnote?: string }[];
+  subSections?: DriverSubSection[];
 };
 
 const timelineEntries: ListEntry[] = [
-  { label: "Registration & document check", value: "3-7 days" },
-  { label: "Employer match & confirmation", value: "1-2 weeks" },
-  { label: "Ghana procedures (medicals, police clearance)", value: "1-3 weeks" },
-  { label: "Work permit processing (Lithuania)", value: "2-4 weeks" },
-  { label: "Visa submission & approval", value: "1-2 weeks" },
-  { label: "Flight booking & arrival", value: "Immediately after visa approval" },
+  { label: "Registration & document check", value: "2-10 days" },
+  { label: "Employer match & confirmation", value: "1-3 weeks" },
+  { label: "Ghana procedures (medicals, police clearance)", value: "1-4 weeks" },
+  { label: "Work permit decision (Lithuania)", value: "2-6 weeks" },
+  { label: "Visa submission & approval", value: "1-4 weeks" },
+  { label: "Flight booking & arrival", value: "0-7 days" },
 ];
 
 const costEntries: ListEntry[] = [
-  { label: "Medical exam", value: "GHS 400-800" },
-  { label: "Police clearance", value: "GHS 100-200" },
-  { label: "Passport (new or renewal)", value: "GHS 600-1,000" },
-  { label: "Document notarisation / attestation", value: "GHS 300-700" },
-  { label: "Translations if needed", value: "GHS 200-500" },
-  { label: "Flight to Lithuania", value: "USD 600-900" },
-  { label: "Personal travel preparation", value: "GHS 200-600" },
-  { label: "Optional Code 95 training (Ghana)", value: "GHS 2,500-4,500" },
+  { label: "Ghana documentation & prep", value: "€175–€320" },
+  { label: "Flight (ACC → VNO)", value: "€390–€650 one-way" },
+  { label: "Code 95 in Lithuania", value: "€240–€300" },
+  { label: "Code 95 + C/CE package", value: "€700–€1,050" },
+  { label: "All-in range (docs + flight + Code 95)", value: "≈ €930–€2,150" },
 ];
+
+const driverHighlights = [
+  {
+    title: "Guaranteed job in Lithuania",
+    detail: "Drivers receive a confirmed Lithuanian employer and position outline before any paperwork starts.",
+  },
+  {
+    title: "Work visa + TRP support",
+    detail: "Sufoniq manages Lithuanian work permit, TRP, and MIGRIS submissions in partnership with the employer.",
+  },
+  {
+    title: "Code 95 & tachograph guidance",
+    detail: "We show you whether to secure your Code 95 and tachograph card in Ghana or after arrival.",
+  },
+  {
+    title: "Relocation & onboarding",
+    detail: "Airport pickup, registration, training, and integration are handled so you can focus on the road.",
+  },
+  {
+    title: "No recruitment fees",
+    detail: "Drivers only cover legitimate travel and document costs—never charges to secure a job.",
+    accent: "text-emerald-600",
+  },
+];
+
+const driverDualLists = [
+  {
+    title: "Drivers cover",
+    entries: [
+      "Medical examination in Ghana",
+      "Police clearance",
+      "Passport (new or renewal)",
+      "Document notarisation / attestation",
+      "Translations if needed",
+      "Air ticket to Lithuania",
+      "Personal travel preparation costs",
+      "Optional: Code 95 training (if done in Ghana)",
+    ],
+  },
+  {
+    title: "Drivers do NOT pay",
+    entries: [
+      "Recruitment fees",
+      "Visa fees",
+      "Work permit fees",
+      "Temporary residence permit (TRP) fees",
+      "Any fee to secure or reserve the job",
+    ],
+    accentTitle: "text-green-700",
+  },
+];
+
+const driverRequirementsList = {
+  title: "Requirements for Ghanaian drivers",
+  entries: [
+    "Valid Ghanaian driving licence - Category C/CE or equivalent",
+    "Minimum 2+ years heavy truck / articulated experience",
+    "Clean police clearance and medically fit for professional driving",
+    "Good verbal English communication skills",
+    "Passport valid for at least 18 months",
+    "Willingness to complete EU Code 95 and tachograph certification",
+  ],
+};
+
+const driverProcessList = {
+  title: "Step-by-step deployment process",
+  entries: [
+    "Registration - sign up via our Ghana partner",
+    "Document check - passport, licence, and experience verified",
+    "Employer match - driver matched to a Lithuanian transport company",
+    "Ghana procedures - medicals, police clearance, and travel prep",
+    "Visa & permits - Sufoniq manages the Lithuanian legal steps",
+    "Visa approval - immigration processing fee is paid and the flight is booked",
+    "Arrival & onboarding - training, testing, and integration in Lithuania",
+    "Employment start - driver begins full-time work after passing",
+  ],
+};
+
+const driverTimelineList = {
+  title: "Deployment timeline (6-10 weeks)",
+  entries: timelineEntries,
+  footnote: "*Fastest deployments happen when documents are completed early — allow up to 12 weeks as a safety buffer.",
+};
+
+const driverCostList = {
+  title: "Evidence-based cost planning",
+  entries: costEntries,
+  footnote:
+    "Code 95 training is handled in Lithuania, not Ghana. Sufoniq never charges recruitment fees; every figure above is a third-party cost.",
+};
 
 const audienceSections: AudienceSection[] = [
   {
@@ -47,89 +144,28 @@ const audienceSections: AudienceSection[] = [
     title: "For Ghanaian professional drivers",
     description:
       "We focus on Category C/CE truck drivers with real experience who want a legal, stable path to Europe. Everything is built around clarity: confirmed jobs, clean legal processes, and honest expectations.",
-    highlights: [
+    highlights: driverHighlights,
+    dualLists: driverDualLists,
+    lists: [driverRequirementsList, driverProcessList, driverTimelineList, driverCostList],
+    subSections: [
       {
-        title: "Guaranteed job in Lithuania",
-        detail: "Drivers receive a confirmed Lithuanian employer and position outline before any paperwork starts.",
+        key: "promises",
+        label: "Promises",
+        description: "What we guarantee before a single visa form is filed.",
+        highlights: driverHighlights,
       },
       {
-        title: "Work visa + TRP support",
-        detail: "Skillaxis manages Lithuanian work permit, TRP, and MIGRIS submissions in partnership with the employer.",
+        key: "expectations",
+        label: "Expectations",
+        description: "What every Ghanaian driver must prepare and cover.",
+        dualLists: driverDualLists,
+        lists: [driverRequirementsList],
       },
       {
-        title: "Code 95 & tachograph guidance",
-        detail: "We show you whether to secure your Code 95 and tachograph card in Ghana or after arrival.",
-      },
-      {
-        title: "Relocation & onboarding",
-        detail: "Airport pickup, registration, training, and integration are handled so you can focus on the road.",
-      },
-      {
-        title: "No recruitment fees",
-        detail: "Drivers only cover legitimate travel and document costs—never charges to secure a job.",
-        accent: "text-emerald-600",
-      },
-    ],
-    dualLists: [
-      {
-        title: "Drivers cover",
-        entries: [
-          "Medical examination in Ghana",
-          "Police clearance",
-          "Passport (new or renewal)",
-          "Document notarisation / attestation",
-          "Translations if needed",
-          "Air ticket to Lithuania",
-          "Personal travel preparation costs",
-          "Optional: Code 95 training (if done in Ghana)",
-        ],
-      },
-      {
-        title: "Drivers do NOT pay",
-        entries: [
-          "Recruitment fees",
-          "Visa fees",
-          "Work permit fees",
-          "Temporary residence permit (TRP) fees",
-          "Any fee to secure or reserve the job",
-        ],
-        accentTitle: "text-green-700",
-      },
-    ],
-    lists: [
-      {
-        title: "Requirements for Ghanaian drivers",
-        entries: [
-          "Valid Ghanaian driving licence - Category C/CE or equivalent",
-          "Minimum 2+ years heavy truck / articulated experience",
-          "Clean police clearance and medically fit for professional driving",
-          "Good verbal English communication skills",
-          "Passport valid for at least 18 months",
-          "Willingness to complete EU Code 95 and tachograph certification",
-        ],
-      },
-      {
-        title: "Step-by-step deployment process",
-        entries: [
-          "Registration - sign up via our Ghana partner",
-          "Document check - passport, licence, and experience verified",
-          "Employer match - driver matched to a Lithuanian transport company",
-          "Ghana procedures - medicals, police clearance, and travel prep",
-          "Visa & permits - Skillaxis manages the Lithuanian legal steps",
-          "Visa approval - immigration processing fee is paid and the flight is booked",
-          "Arrival & onboarding - training, testing, and integration in Lithuania",
-          "Employment start - driver begins full-time work after passing",
-        ],
-      },
-      {
-        title: "Deployment timeline (6-10 weeks)",
-        entries: timelineEntries,
-        footnote: "*Fastest deployments happen when documents are completed early.",
-      },
-      {
-        title: "Approximate driver costs (Ghana side)",
-        entries: costEntries,
-        footnote: "*These are third-party costs. Skillaxis never charges recruitment fees.",
+        key: "moving-parts",
+        label: "Moving parts",
+        description: "How we choreograph the process, from paperwork to flights.",
+        lists: [driverProcessList, driverTimelineList, driverCostList],
       },
     ],
   },
@@ -138,15 +174,15 @@ const audienceSections: AudienceSection[] = [
     label: "Agencies",
     title: "For Ghana recruitment agencies",
     description:
-      "Our model is built on trust and compliance. We work with one exclusive partner per sending country so that quality and ILO standards are maintained.",
+      "Our model is built on trust, EU law alignment, and ILO compliance. We work with highly diligent agencies who value long-term economic relationships.",
     highlights: [
       {
-        title: "Exclusive partnership",
-        detail: "We only collaborate with one Ghana partner at a time to protect standards and transparency.",
+        title: "Trusted collaborations",
+        detail: "We only collaborate with highly diligent, ILO-compliant Ghana partners who invest in long-term economic results.",
       },
       {
         title: "Fair recruitment",
-        detail: "Partner agencies must fully comply with ILO fair recruitment guidelines and ethical handling.",
+        detail: "Partner agencies must fully comply with ILO and EU fair recruitment and worker protection laws.",
       },
       {
         title: "Paid after success",
@@ -155,12 +191,12 @@ const audienceSections: AudienceSection[] = [
     ],
     lists: [
       {
-        title: "Why connect with Skillaxis?",
+        title: "Why connect with Sufoniq?",
         entries: [
-          "Skillaxis works with one exclusive recruitment partner per country.",
-          "Partners must fully comply with ILO fair recruitment guidelines.",
-          "We evaluate documentation integrity, ethics, and candidate handling.",
+          "Sufoniq co-builds programs only with highly diligent, ILO and EU law compliant agencies.",
+          "Partners must document integrity, ethics, and transparent candidate handling.",
           "Agencies are paid only after driver visa approval (no upfront driver charges).",
+          "We invest in long-lasting economic relationships instead of transactional recruitment.",
           "Introduce yourself via the contact form and mention \"Agency\" in the message.",
         ],
       },
@@ -198,22 +234,22 @@ const audienceSections: AudienceSection[] = [
         ],
       },
       {
-        title: "Why Skillaxis?",
+        title: "Why Sufoniq?",
         entries: [
           "European-managed company based in Lithuania and Austria",
           "End-to-end mobility partner, not just a CV forwarding agency",
           "Structured, transparent processes and documentation",
-          "ILO-compliant, zero recruitment fees for drivers",
+          "ILO- and EU-law compliant, zero recruitment fees for drivers",
           "Low risk for employers with a focus on performance and retention",
-          "Exclusive Ghana partnership keeps standards and integrity aligned",
+          "Selective Ghana partnerships keep standards and integrity aligned",
         ],
       },
     ],
   },
   {
-    key: "skillaxis",
-    label: "Skillaxis",
-    title: "About Skillaxis",
+    key: "sufoniq",
+    label: "Sufoniq",
+    title: "About Sufoniq",
     description:
       "For drivers and employers we keep the model simple: recruitment is free for drivers and legal mobility work is covered on the European side.",
     highlights: [
@@ -232,7 +268,7 @@ const audienceSections: AudienceSection[] = [
     ],
     lists: [
       {
-        title: "Skillaxis covers",
+        title: "Sufoniq covers",
         entries: [
           "Work permit fee in Lithuania",
           "Temporary residence permit (TRP) fee",
@@ -240,15 +276,6 @@ const audienceSections: AudienceSection[] = [
           "Employer coordination and documentation",
           "Relocation administration on the European side",
         ],
-      },
-      {
-        title: "How Skillaxis is paid",
-        entries: [
-          "Small immigration processing fee after the driver visa is approved",
-          "The fee is not a recruitment charge—job access remains free for drivers",
-          "Payments fund our vetted Ghana partner and the legal team",
-        ],
-        footnote: "Service fee is charged after visa approval; typical range USD 250-450.",
       },
     ],
   },
@@ -259,21 +286,39 @@ export default function Page() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<SectionKey>("drivers");
+  const [activeDriverSubSection, setActiveDriverSubSection] = useState("promises");
   const currentIndex = audienceSections.findIndex((section) => section.key === activeSection);
   const normalizedIndex = currentIndex === -1 ? 0 : currentIndex;
   const tabWidth = 100 / audienceSections.length;
   const slidePercent = tabWidth * normalizedIndex;
+  const driverSubSections = audienceSections.find((section) => section.key === "drivers")?.subSections ?? [];
+  const activeDriverTab =
+    driverSubSections.find((subSection) => subSection.key === activeDriverSubSection) ?? driverSubSections[0];
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
 
-    const name = String(data.get("name") || "");
-    const email = String(data.get("email") || "");
-    const role = String(data.get("role") || "");
-    const phone = String(data.get("phone") || "");
-    const message = String(data.get("message") || "");
+    const name = String(data.get("name") || "").trim();
+    const email = String(data.get("email") || "").trim();
+    const role = String(data.get("role") || "").trim();
+    const phone = String(data.get("phone") || "").trim();
+    const message = String(data.get("message") || "").trim();
+
+    if (!name || !email || !role || !phone || !message) {
+      setError("Please fill out every field before sending your request.");
+      setStatus("error");
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      setStatus("error");
+      return;
+    }
 
     const subject = `Ghana TDE inquiry — ${role || "General"}`;
     const composedMessage = [
@@ -297,6 +342,7 @@ export default function Page() {
           email,
           subject,
           message: composedMessage || "Ghana TDE inquiry",
+          to: "support@sufoniq.com",
         }),
       });
 
@@ -307,6 +353,7 @@ export default function Page() {
 
       form.reset();
       setStatus("success");
+      setError(null);
     } catch (err) {
       console.error(err);
       setStatus("error");
@@ -343,12 +390,12 @@ export default function Page() {
               For Ghanaian drivers · Lithuanian employers · Ghana recruitment partners
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
-              Legal, ILO‑compliant mobility for Ghanaian truck drivers to Europe.
+              Legal, ILO + EU law compliant mobility for Ghanaian truck drivers to Europe.
             </h1>
             <p className="text-sm leading-relaxed text-slate-700 md:text-base">
-              Skillaxis helps Ghanaian professional truck drivers relocate to Europe, starting with Lithuania. We work
-              with one vetted recruitment partner in Ghana and follow ILO guidelines: drivers are never charged
-              recruitment fees.
+              The people at Sufoniq help Ghanaian professional truck drivers relocate to Europe, starting with Lithuania.
+              We build programs with highly diligent, ILO- and EU-law-compliant Ghana agencies so drivers are never
+              charged recruitment fees.
             </p>
 
             {/* Key value props */}
@@ -430,7 +477,7 @@ export default function Page() {
                 </span>
                 <div>
                   <p className="font-medium">Visa & permit processing</p>
-                  <p className="text-xs text-slate-600">Skillaxis handles Lithuanian‑side work permit, TRP, and MIGRIS steps.</p>
+                  <p className="text-xs text-slate-600">Sufoniq handles Lithuanian‑side work permit, TRP, and MIGRIS steps.</p>
                 </div>
               </li>
               <li className="flex gap-3">
@@ -445,7 +492,7 @@ export default function Page() {
             </ol>
 
             <p className="mt-4 text-[11px] text-slate-500">
-              Our goal is fair, transparent, and safe mobility – aligned with ILO standards for responsible recruitment.
+              Our goal is fair, transparent, and safe mobility – aligned with ILO standards and EU labour law for responsible recruitment.
             </p>
           </div>
         </div>
@@ -456,10 +503,9 @@ export default function Page() {
       <section className="border-t border-slate-200 bg-slate-50 py-12 md:py-16">
         <div className="mx-auto max-w-5xl px-4 md:px-6 space-y-8">
           <div className="space-y-3">
-            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">Four lenses, one story</h2>
-            <p className="text-sm text-slate-700 md:text-base">
-              Tap each audience to see the promises, the expectations, and the smallest moving parts we keep under control.
-            </p>
+            <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">
+              The promises, the expectations, and the smallest moving parts we keep under control.
+            </h2>
           </div>
           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-wrap gap-2">
@@ -504,65 +550,161 @@ export default function Page() {
                     <div className="p-6 md:p-8">
                       <h3 className="text-lg font-semibold text-slate-900">{section.title}</h3>
                       <p className="mt-2 text-sm text-slate-700">{section.description}</p>
-                      <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {section.highlights.map((highlight) => (
-                          <div
-                            key={highlight.title}
-                            className="rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700 shadow-sm"
-                          >
-                            <p className="font-semibold text-slate-900">{highlight.title}</p>
-                            <p
-                              className={`mt-1 leading-relaxed ${
-                                highlight.accent ?? "text-slate-700"
-                              }`}
-                            >
-                              {highlight.detail}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                      {section.dualLists && (
-                        <div className="mt-6 grid gap-4 md:grid-cols-2">
-                          {section.dualLists.map((list) => (
-                            <div
-                              key={list.title}
-                              className="rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700 shadow-sm"
-                            >
-                              <p className={`font-semibold ${list.accentTitle ?? "text-slate-900"}`}>{list.title}</p>
-                              <ul className="mt-2 space-y-1 list-disc pl-4">
-                                {list.entries.map((entry) => (
-                                  <li key={entry}>{entry}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                      {section.lists?.map((list) => (
-                        <div key={list.title} className="mt-6 space-y-2">
-                          <p className="text-sm font-semibold text-slate-900">{list.title}</p>
-                          <ul className="space-y-1 text-xs text-slate-700">
-                            {list.entries.map((entry, index) => (
-                              <li
-                                key={`${list.title}-${index}`}
-                                className="flex justify-between gap-3"
+                      {section.subSections ? (
+                        <div className="mt-5 space-y-5">
+                          <div className="flex flex-wrap gap-2">
+                            {section.subSections.map((subSection) => (
+                              <button
+                                key={subSection.key}
+                                type="button"
+                                onClick={() => setActiveDriverSubSection(subSection.key)}
+                                aria-pressed={activeDriverSubSection === subSection.key}
+                                className={`rounded-full px-4 py-1 text-xs font-semibold transition ${
+                                  activeDriverSubSection === subSection.key
+                                    ? "bg-emerald-600 text-white shadow-sm"
+                                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                }`}
                               >
-                                {typeof entry === "string" ? (
-                                  <span className="block flex-1">{entry}</span>
-                                ) : (
-                                  <>
-                                    <span className="text-slate-700">{entry.label}</span>
-                                    <span className="font-semibold text-slate-900">{entry.value}</span>
-                                  </>
-                                )}
-                              </li>
+                                {subSection.label}
+                              </button>
                             ))}
-                          </ul>
-                          {list.footnote && (
-                            <p className="text-[11px] text-slate-500">{list.footnote}</p>
+                          </div>
+                          {activeDriverTab && (
+                            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                              {activeDriverTab.description && (
+                                <p className="text-xs text-slate-600">{activeDriverTab.description}</p>
+                              )}
+                              {activeDriverTab.highlights && (
+                                <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                                  {activeDriverTab.highlights.map((highlight) => (
+                                    <div
+                                      key={highlight.title}
+                                      className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-700"
+                                    >
+                                      <p className="font-semibold text-slate-900">{highlight.title}</p>
+                                      <p
+                                        className={`mt-1 leading-relaxed ${
+                                          highlight.accent ?? "text-slate-700"
+                                        }`}
+                                      >
+                                        {highlight.detail}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              {activeDriverTab.dualLists && (
+                                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                                  {activeDriverTab.dualLists.map((list) => (
+                                    <div
+                                      key={list.title}
+                                      className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-700"
+                                    >
+                                      <p className={`font-semibold ${list.accentTitle ?? "text-slate-900"}`}>
+                                        {list.title}
+                                      </p>
+                                      <ul className="mt-2 space-y-1 list-disc pl-4">
+                                        {list.entries.map((entry) => (
+                                          <li key={entry}>{entry}</li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              {activeDriverTab.lists?.map((list) => (
+                                <div key={list.title} className="mt-6 space-y-2">
+                                  <p className="text-sm font-semibold text-slate-900">{list.title}</p>
+                                  <ul className="space-y-1 text-xs text-slate-700">
+                                    {list.entries.map((entry, index) => (
+                                      <li
+                                        key={`${list.title}-${index}`}
+                                        className="flex justify-between gap-3"
+                                      >
+                                        {typeof entry === "string" ? (
+                                          <span className="block flex-1">{entry}</span>
+                                        ) : (
+                                          <>
+                                            <span className="text-slate-700">{entry.label}</span>
+                                            <span className="font-semibold text-slate-900">{entry.value}</span>
+                                          </>
+                                        )}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                  {list.footnote && (
+                                    <p className="text-[11px] text-slate-500">{list.footnote}</p>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
                           )}
                         </div>
-                      ))}
+                      ) : (
+                        <>
+                          <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {section.highlights.map((highlight) => (
+                              <div
+                                key={highlight.title}
+                                className="rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700 shadow-sm"
+                              >
+                                <p className="font-semibold text-slate-900">{highlight.title}</p>
+                                <p
+                                  className={`mt-1 leading-relaxed ${
+                                    highlight.accent ?? "text-slate-700"
+                                  }`}
+                                >
+                                  {highlight.detail}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                          {section.dualLists && (
+                            <div className="mt-6 grid gap-4 md:grid-cols-2">
+                              {section.dualLists.map((list) => (
+                                <div
+                                  key={list.title}
+                                  className="rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-700 shadow-sm"
+                                >
+                                  <p className={`font-semibold ${list.accentTitle ?? "text-slate-900"}`}>
+                                    {list.title}
+                                  </p>
+                                  <ul className="mt-2 space-y-1 list-disc pl-4">
+                                    {list.entries.map((entry) => (
+                                      <li key={entry}>{entry}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {section.lists?.map((list) => (
+                            <div key={list.title} className="mt-6 space-y-2">
+                              <p className="text-sm font-semibold text-slate-900">{list.title}</p>
+                              <ul className="space-y-1 text-xs text-slate-700">
+                                {list.entries.map((entry, index) => (
+                                  <li
+                                    key={`${list.title}-${index}`}
+                                    className="flex justify-between gap-3"
+                                  >
+                                    {typeof entry === "string" ? (
+                                      <span className="block flex-1">{entry}</span>
+                                    ) : (
+                                      <>
+                                        <span className="text-slate-700">{entry.label}</span>
+                                        <span className="font-semibold text-slate-900">{entry.value}</span>
+                                      </>
+                                    )}
+                                  </li>
+                                ))}
+                              </ul>
+                              {list.footnote && (
+                                <p className="text-[11px] text-slate-500">{list.footnote}</p>
+                              )}
+                            </div>
+                          ))}
+                        </>
+                      )}
                     </div>
                   </article>
                 ))}
@@ -589,6 +731,9 @@ export default function Page() {
                 Adults 18+ only. By submitting, you agree that we may contact you about mobility, recruitment, and
                 relocation services. No spam, ever.
               </p>
+              <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                All fields are required — include the best phone number for WhatsApp follow up.
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm shadow-sm">
@@ -598,7 +743,7 @@ export default function Page() {
                   aria-live="polite"
                   className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900"
                 >
-                  Your message has been sent! We&apos;ll respond within 24 hours.
+                  Your message has landed safely at Mission Control! Our team will review it and get back to you within 24 hours — usually sooner.
                 </div>
               )}
               {status === "error" && error && (
@@ -619,6 +764,7 @@ export default function Page() {
                     name="name"
                     type="text"
                     placeholder="Your full name"
+                    required
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                   />
                 </div>
@@ -631,6 +777,7 @@ export default function Page() {
                     name="email"
                     type="email"
                     placeholder="you@example.com"
+                    required
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                   />
                 </div>
@@ -645,6 +792,7 @@ export default function Page() {
                   name="role"
                   className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                   defaultValue=""
+                  required
                 >
                   <option value="" disabled>
                     Select one
@@ -660,14 +808,15 @@ export default function Page() {
                 <label className="text-xs font-medium text-slate-800" htmlFor="phone">
                   Phone / WhatsApp
                 </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="Include country code"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                />
-              </div>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="Include country code"
+                    required
+                    className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+                  />
+                </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-slate-800" htmlFor="message">
@@ -678,6 +827,7 @@ export default function Page() {
                   name="message"
                   rows={4}
                   placeholder="Example: I am a Ghanaian C/CE driver with 4 years experience and GCC background... / We are a Lithuanian transport company looking for 10 drivers..."
+                  required
                   className="w-full resize-none rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                 />
               </div>
