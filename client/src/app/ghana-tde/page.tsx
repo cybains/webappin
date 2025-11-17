@@ -1,12 +1,12 @@
 "use client";
 
-// Sufoniq / Skillaxis – Ghana Truck Driver Mobility Page
+// Sufoniq – Ghana Truck Driver Mobility Page
 // Single light-mode page for Ghanaian drivers, Lithuanian employers, and Ghana recruitment agencies.
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-type SectionKey = "drivers" | "agencies" | "employers" | "skillaxis";
+type SectionKey = "drivers" | "agencies" | "employers" | "sufoniq";
 
 type ListEntry = string | { label: string; value: string };
 
@@ -31,23 +31,20 @@ type AudienceSection = {
 };
 
 const timelineEntries: ListEntry[] = [
-  { label: "Registration & document check", value: "3-7 days" },
-  { label: "Employer match & confirmation", value: "1-2 weeks" },
-  { label: "Ghana procedures (medicals, police clearance)", value: "1-3 weeks" },
-  { label: "Work permit processing (Lithuania)", value: "2-4 weeks" },
-  { label: "Visa submission & approval", value: "1-2 weeks" },
-  { label: "Flight booking & arrival", value: "Immediately after visa approval" },
+  { label: "Registration & document check", value: "2-10 days" },
+  { label: "Employer match & confirmation", value: "1-3 weeks" },
+  { label: "Ghana procedures (medicals, police clearance)", value: "1-4 weeks" },
+  { label: "Work permit decision (Lithuania)", value: "2-6 weeks" },
+  { label: "Visa submission & approval", value: "1-4 weeks" },
+  { label: "Flight booking & arrival", value: "0-7 days" },
 ];
 
 const costEntries: ListEntry[] = [
-  { label: "Medical exam", value: "GHS 400-800" },
-  { label: "Police clearance", value: "GHS 100-200" },
-  { label: "Passport (new or renewal)", value: "GHS 600-1,000" },
-  { label: "Document notarisation / attestation", value: "GHS 300-700" },
-  { label: "Translations if needed", value: "GHS 200-500" },
-  { label: "Flight to Lithuania", value: "USD 600-900" },
-  { label: "Personal travel preparation", value: "GHS 200-600" },
-  { label: "Optional Code 95 training (Ghana)", value: "GHS 2,500-4,500" },
+  { label: "Ghana documentation & prep", value: "€175–€320" },
+  { label: "Flight (ACC → VNO)", value: "€390–€650 one-way" },
+  { label: "Code 95 in Lithuania", value: "€240–€300" },
+  { label: "Code 95 + C/CE package", value: "€700–€1,050" },
+  { label: "All-in range (docs + flight + Code 95)", value: "≈ €930–€2,150" },
 ];
 
 const driverHighlights = [
@@ -57,7 +54,7 @@ const driverHighlights = [
   },
   {
     title: "Work visa + TRP support",
-    detail: "Skillaxis manages Lithuanian work permit, TRP, and MIGRIS submissions in partnership with the employer.",
+    detail: "Sufoniq manages Lithuanian work permit, TRP, and MIGRIS submissions in partnership with the employer.",
   },
   {
     title: "Code 95 & tachograph guidance",
@@ -120,7 +117,7 @@ const driverProcessList = {
     "Document check - passport, licence, and experience verified",
     "Employer match - driver matched to a Lithuanian transport company",
     "Ghana procedures - medicals, police clearance, and travel prep",
-    "Visa & permits - Skillaxis manages the Lithuanian legal steps",
+    "Visa & permits - Sufoniq manages the Lithuanian legal steps",
     "Visa approval - immigration processing fee is paid and the flight is booked",
     "Arrival & onboarding - training, testing, and integration in Lithuania",
     "Employment start - driver begins full-time work after passing",
@@ -130,13 +127,14 @@ const driverProcessList = {
 const driverTimelineList = {
   title: "Deployment timeline (6-10 weeks)",
   entries: timelineEntries,
-  footnote: "*Fastest deployments happen when documents are completed early.",
+  footnote: "*Fastest deployments happen when documents are completed early — allow up to 12 weeks as a safety buffer.",
 };
 
 const driverCostList = {
-  title: "Approximate driver costs (Ghana side)",
+  title: "Evidence-based cost planning",
   entries: costEntries,
-  footnote: "*These are third-party costs. Skillaxis never charges recruitment fees.",
+  footnote:
+    "Code 95 training is handled in Lithuania, not Ghana. Sufoniq never charges recruitment fees; every figure above is a third-party cost.",
 };
 
 const audienceSections: AudienceSection[] = [
@@ -176,15 +174,15 @@ const audienceSections: AudienceSection[] = [
     label: "Agencies",
     title: "For Ghana recruitment agencies",
     description:
-      "Our model is built on trust and compliance. We work with one exclusive partner per sending country so that quality and ILO standards are maintained.",
+      "Our model is built on trust, EU law alignment, and ILO compliance. We work with highly diligent agencies who value long-term economic relationships.",
     highlights: [
       {
-        title: "Exclusive partnership",
-        detail: "We only collaborate with one Ghana partner at a time to protect standards and transparency.",
+        title: "Trusted collaborations",
+        detail: "We only collaborate with highly diligent, ILO-compliant Ghana partners who invest in long-term economic results.",
       },
       {
         title: "Fair recruitment",
-        detail: "Partner agencies must fully comply with ILO fair recruitment guidelines and ethical handling.",
+        detail: "Partner agencies must fully comply with ILO and EU fair recruitment and worker protection laws.",
       },
       {
         title: "Paid after success",
@@ -193,12 +191,12 @@ const audienceSections: AudienceSection[] = [
     ],
     lists: [
       {
-        title: "Why connect with Skillaxis?",
+        title: "Why connect with Sufoniq?",
         entries: [
-          "Skillaxis works with one exclusive recruitment partner per country.",
-          "Partners must fully comply with ILO fair recruitment guidelines.",
-          "We evaluate documentation integrity, ethics, and candidate handling.",
+          "Sufoniq co-builds programs only with highly diligent, ILO and EU law compliant agencies.",
+          "Partners must document integrity, ethics, and transparent candidate handling.",
           "Agencies are paid only after driver visa approval (no upfront driver charges).",
+          "We invest in long-lasting economic relationships instead of transactional recruitment.",
           "Introduce yourself via the contact form and mention \"Agency\" in the message.",
         ],
       },
@@ -236,22 +234,22 @@ const audienceSections: AudienceSection[] = [
         ],
       },
       {
-        title: "Why Skillaxis?",
+        title: "Why Sufoniq?",
         entries: [
           "European-managed company based in Lithuania and Austria",
           "End-to-end mobility partner, not just a CV forwarding agency",
           "Structured, transparent processes and documentation",
-          "ILO-compliant, zero recruitment fees for drivers",
+          "ILO- and EU-law compliant, zero recruitment fees for drivers",
           "Low risk for employers with a focus on performance and retention",
-          "Exclusive Ghana partnership keeps standards and integrity aligned",
+          "Selective Ghana partnerships keep standards and integrity aligned",
         ],
       },
     ],
   },
   {
-    key: "skillaxis",
-    label: "Skillaxis",
-    title: "About Skillaxis",
+    key: "sufoniq",
+    label: "Sufoniq",
+    title: "About Sufoniq",
     description:
       "For drivers and employers we keep the model simple: recruitment is free for drivers and legal mobility work is covered on the European side.",
     highlights: [
@@ -270,7 +268,7 @@ const audienceSections: AudienceSection[] = [
     ],
     lists: [
       {
-        title: "Skillaxis covers",
+        title: "Sufoniq covers",
         entries: [
           "Work permit fee in Lithuania",
           "Temporary residence permit (TRP) fee",
@@ -392,12 +390,12 @@ export default function Page() {
               For Ghanaian drivers · Lithuanian employers · Ghana recruitment partners
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
-              Legal, ILO‑compliant mobility for Ghanaian truck drivers to Europe.
+              Legal, ILO + EU law compliant mobility for Ghanaian truck drivers to Europe.
             </h1>
             <p className="text-sm leading-relaxed text-slate-700 md:text-base">
-              Skillaxis helps Ghanaian professional truck drivers relocate to Europe, starting with Lithuania. We work
-              with one vetted recruitment partner in Ghana and follow ILO guidelines: drivers are never charged
-              recruitment fees.
+              The people at Sufoniq help Ghanaian professional truck drivers relocate to Europe, starting with Lithuania.
+              We build programs with highly diligent, ILO- and EU-law-compliant Ghana agencies so drivers are never
+              charged recruitment fees.
             </p>
 
             {/* Key value props */}
@@ -479,7 +477,7 @@ export default function Page() {
                 </span>
                 <div>
                   <p className="font-medium">Visa & permit processing</p>
-                  <p className="text-xs text-slate-600">Skillaxis handles Lithuanian‑side work permit, TRP, and MIGRIS steps.</p>
+                  <p className="text-xs text-slate-600">Sufoniq handles Lithuanian‑side work permit, TRP, and MIGRIS steps.</p>
                 </div>
               </li>
               <li className="flex gap-3">
@@ -494,7 +492,7 @@ export default function Page() {
             </ol>
 
             <p className="mt-4 text-[11px] text-slate-500">
-              Our goal is fair, transparent, and safe mobility – aligned with ILO standards for responsible recruitment.
+              Our goal is fair, transparent, and safe mobility – aligned with ILO standards and EU labour law for responsible recruitment.
             </p>
           </div>
         </div>
