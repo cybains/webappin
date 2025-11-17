@@ -3,21 +3,14 @@
 import React, { useMemo } from "react";
 import { Brain, Factory, Leaf, LineChart, Map, Users } from "lucide-react";
 
+import PromiseOfGrowth from "@/components/growth-atlas/PromiseOfGrowth";
+
 // ------------------------------------------------------------
 // Better Growth — Homepage Dissertation (React)
 // Light theme (black on white), witty/dry tone
 // Uses mock data placeholders — swap with World Bank API later.
 // Includes simple runtime smoke tests for data shape.
 // ------------------------------------------------------------
-
-const gdpPerCapitaEU = [
-  { year: 2000, AT: 28000, DE: 25500, PL: 12500, RO: 8000 },
-  { year: 2005, AT: 34000, DE: 31000, PL: 16000, RO: 10500 },
-  { year: 2010, AT: 42000, DE: 39500, PL: 22000, RO: 14500 },
-  { year: 2015, AT: 47000, DE: 44000, PL: 27000, RO: 19500 },
-  { year: 2020, AT: 52000, DE: 50000, PL: 31500, RO: 24500 },
-  { year: 2024, AT: 56000, DE: 54000, PL: 35500, RO: 28500 },
-];
 
 const rndVsGrowth = [
   { country: "AT", rnd: 3.2, gdp: 1.7 },
@@ -63,14 +56,9 @@ const createLinearScale = (domain: [number, number], range: [number, number]) =>
   return (value: number) => r0 + ((value - d0) / (d1 - d0)) * (r1 - r0);
 };
 
-const formatEuroThousands = (value: number) => `€${(value / 1000).toFixed(0)}k`;
-
-
 // --- Runtime smoke tests ("test cases") ----------------------
 function runSmokeTests() {
   try {
-    console.assert(Array.isArray(gdpPerCapitaEU) && gdpPerCapitaEU.length > 0, "gdpPerCapitaEU missing");
-    console.assert(gdpPerCapitaEU[0] && typeof gdpPerCapitaEU[0].year === "number", "gdpPerCapitaEU.year missing");
     console.assert(Array.isArray(rndVsGrowth) && rndVsGrowth.every(d => "rnd" in d && "gdp" in d), "rndVsGrowth shape");
     console.assert(Array.isArray(gdpVsCO2) && gdpVsCO2.every(d => "year" in d && "gdp" in d && "co2" in d), "gdpVsCO2 shape");
     console.assert(Array.isArray(migrationBalance) && migrationBalance.every(d => "route" in d && "people" in d), "migrationBalance shape");
@@ -115,129 +103,6 @@ const Card = ({ children }: CardProps) => (
     {children}
   </div>
 );
-
-const GDPPerCapitaChart = () => {
-  const width = 620;
-  const height = 240;
-  const margin = { top: 20, right: 20, bottom: 28, left: 56 };
-  const innerWidth = width - margin.left - margin.right;
-  const innerHeight = height - margin.top - margin.bottom;
-
-  const years = gdpPerCapitaEU.map((d) => d.year);
-  const values = gdpPerCapitaEU.flatMap((d) => [d.AT, d.DE, d.PL, d.RO]);
-  const xScale = createLinearScale([Math.min(...years), Math.max(...years)], [0, innerWidth]);
-  const yScale = createLinearScale([Math.min(...values), Math.max(...values)], [innerHeight, 0]);
-
-  const colorByKey: Record<string, string> = {
-    AT: "#1d4ed8",
-    DE: "#16a34a",
-    PL: "#f97316",
-    RO: "#9333ea",
-  };
-
-  const yTicks = useMemo(() => {
-    const count = 4;
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const step = (max - min) / count;
-    return Array.from({ length: count + 1 }, (_, i) => Math.round(min + step * i));
-  }, [values]);
-
-  return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
-      <g transform={`translate(${margin.left},${margin.top})`}>
-        {/* Grid */}
-        {yTicks.map((tick) => (
-          <line
-            key={`grid-y-${tick}`}
-            x1={0}
-            y1={yScale(tick)}
-            x2={innerWidth}
-            y2={yScale(tick)}
-            stroke="#e2e8f0"
-            strokeDasharray="3 3"
-          />
-        ))}
-        {years.map((year) => (
-          <line
-            key={`grid-x-${year}`}
-            x1={xScale(year)}
-            y1={0}
-            x2={xScale(year)}
-            y2={innerHeight}
-            stroke="#f1f5f9"
-          />
-        ))}
-
-        {/* Axes */}
-        <line x1={0} y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="#94a3b8" />
-        <line x1={0} y1={0} x2={0} y2={innerHeight} stroke="#94a3b8" />
-
-        {yTicks.map((tick) => (
-          <text
-            key={`label-y-${tick}`}
-            x={-12}
-            y={yScale(tick)}
-            textAnchor="end"
-            dominantBaseline="middle"
-            className="fill-slate-500 text-[10px]"
-          >
-            {formatEuroThousands(tick)}
-          </text>
-        ))}
-
-        {years.map((year) => (
-          <text
-            key={`label-x-${year}`}
-            x={xScale(year)}
-            y={innerHeight + 18}
-            textAnchor="middle"
-            className="fill-slate-500 text-[10px]"
-          >
-            {year}
-          </text>
-        ))}
-
-        {Object.keys(colorByKey).map((key) => {
-          const path = gdpPerCapitaEU
-            .map((d, i) => {
-              const x = xScale(d.year);
-              const y = yScale((d as Record<string, number>)[key]);
-              return `${i === 0 ? "M" : "L"} ${x} ${y}`;
-            })
-            .join(" ");
-          return (
-            <path
-              key={key}
-              d={path}
-              fill="none"
-              stroke={colorByKey[key]}
-              strokeWidth={2.2}
-            />
-          );
-        })}
-      </g>
-
-      {/* Legend */}
-      <g transform={`translate(${margin.left},${height - 8})`}>
-        {Object.entries(colorByKey).map(([key, color], index) => (
-          <g key={key} transform={`translate(${index * 120},0)`}>
-            <rect width={12} height={4} y={-8} rx={2} fill={color} />
-            <text x={16} y={-5} className="fill-slate-600 text-[10px]">
-              {key === "AT"
-                ? "Austria"
-                : key === "DE"
-                ? "Germany"
-                : key === "PL"
-                ? "Poland"
-                : "Romania"}
-            </text>
-          </g>
-        ))}
-      </g>
-    </svg>
-  );
-};
 
 const ScatterRndVsGrowth = () => {
   const width = 620;
@@ -711,20 +576,8 @@ const UnevenGrowth = () => (
       Some regions sprint. Others tie their shoes for twenty years. We chart divergence so you can
       make convergence happen — profitably.
     </p>
-    <div className="grid md:grid-cols-2 gap-6 mt-8">
-      <Card>
-        <h3 className="text-lg font-medium mb-2">GDP per capita — selected EU economies</h3>
-        <div className="h-64">
-          <GDPPerCapitaChart />
-        </div>
-      </Card>
-      <Card>
-        <h3 className="text-lg font-medium mb-2">Takeaway</h3>
-        <p className="text-slate-700">
-          Convergence is real — and incomplete. Strategy tip: aim hiring pipelines where the slope is
-          steepest, not where the skyline is tallest.
-        </p>
-      </Card>
+    <div className="not-prose mt-10">
+      <PromiseOfGrowth />
     </div>
   </Section>
 );
