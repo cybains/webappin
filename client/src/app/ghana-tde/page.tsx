@@ -297,16 +297,30 @@ export default function Page() {
   const activeDriverTab =
     driverSubSections.find((subSection) => subSection.key === activeDriverSubSection) ?? driverSubSections[0];
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
 
-    const name = String(data.get("name") || "");
-    const email = String(data.get("email") || "");
-    const role = String(data.get("role") || "");
-    const phone = String(data.get("phone") || "");
-    const message = String(data.get("message") || "");
+    const name = String(data.get("name") || "").trim();
+    const email = String(data.get("email") || "").trim();
+    const role = String(data.get("role") || "").trim();
+    const phone = String(data.get("phone") || "").trim();
+    const message = String(data.get("message") || "").trim();
+
+    if (!name || !email || !role || !phone || !message) {
+      setError("Please fill out every field before sending your request.");
+      setStatus("error");
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      setStatus("error");
+      return;
+    }
 
     const subject = `Ghana TDE inquiry — ${role || "General"}`;
     const composedMessage = [
@@ -330,6 +344,7 @@ export default function Page() {
           email,
           subject,
           message: composedMessage || "Ghana TDE inquiry",
+          to: "support@sufoniq.com",
         }),
       });
 
@@ -340,6 +355,7 @@ export default function Page() {
 
       form.reset();
       setStatus("success");
+      setError(null);
     } catch (err) {
       console.error(err);
       setStatus("error");
@@ -717,6 +733,9 @@ export default function Page() {
                 Adults 18+ only. By submitting, you agree that we may contact you about mobility, recruitment, and
                 relocation services. No spam, ever.
               </p>
+              <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                All fields are required — include the best phone number for WhatsApp follow up.
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm shadow-sm">
@@ -726,7 +745,7 @@ export default function Page() {
                   aria-live="polite"
                   className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900"
                 >
-                  Your message has been sent! We&apos;ll respond within 24 hours.
+                  Your message has landed safely at Mission Control! Our team will review it and get back to you within 24 hours — usually sooner.
                 </div>
               )}
               {status === "error" && error && (
@@ -747,6 +766,7 @@ export default function Page() {
                     name="name"
                     type="text"
                     placeholder="Your full name"
+                    required
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                   />
                 </div>
@@ -759,6 +779,7 @@ export default function Page() {
                     name="email"
                     type="email"
                     placeholder="you@example.com"
+                    required
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                   />
                 </div>
@@ -773,6 +794,7 @@ export default function Page() {
                   name="role"
                   className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                   defaultValue=""
+                  required
                 >
                   <option value="" disabled>
                     Select one
@@ -788,14 +810,15 @@ export default function Page() {
                 <label className="text-xs font-medium text-slate-800" htmlFor="phone">
                   Phone / WhatsApp
                 </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="Include country code"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                />
-              </div>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="Include country code"
+                    required
+                    className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+                  />
+                </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-slate-800" htmlFor="message">
@@ -806,6 +829,7 @@ export default function Page() {
                   name="message"
                   rows={4}
                   placeholder="Example: I am a Ghanaian C/CE driver with 4 years experience and GCC background... / We are a Lithuanian transport company looking for 10 drivers..."
+                  required
                   className="w-full resize-none rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                 />
               </div>
