@@ -63,9 +63,9 @@ export default function PrivacyPolicyPage() {
             <li><strong>Trading/brand name:</strong> Sufoniq (sufoniq.com)</li>
             <li><strong>EU/EEA establishment:</strong> Lithuania</li>
             <li>
-              <strong>UK representative (UK GDPR Art. 27):</strong> We target users in the UK. Our UK representative details
-              will be published at <code>/legal/uk-representative</code> once appointed. Until then, UK users can contact our DPO below.
-            </li>
+            <strong>UK representative (UK GDPR Art. 27):</strong> We target users in the UK. If required under applicable law, a UK
+            representative will be appointed in due course; until then, UK users can contact our DPO below.
+          </li>
             <li>
               <strong>Data Protection Officer (DPO):</strong>{" "}
               <a className="text-[var(--accent)] hover:underline" href="mailto:privacy@sufoniq.com">

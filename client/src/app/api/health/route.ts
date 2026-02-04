@@ -8,10 +8,10 @@ export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DB_NAME || "refjobs");
-    const count = await db.collection("jobs").estimatedDocumentCount();
-    return NextResponse.json({ ok: true, db: db.databaseName, collection: "jobs", count });
+    await db.command({ ping: 1 });
+    return NextResponse.json({ ok: true, db: db.databaseName });
   } catch (e: unknown) {
-  const message = e instanceof Error ? e.message : String(e);
-  return NextResponse.json({ ok: false, error: message }, { status: 500 });
-}
+    const message = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+  }
 }

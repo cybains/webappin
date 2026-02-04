@@ -28,7 +28,7 @@ export default function AboutPage() {
         </p>
         <ul className="list-disc pl-6 space-y-3 mb-4">
           <li>
-            <strong>Remotives API:</strong> Bringing you access to a wide range of remote job opportunities across industries and geographies.
+            <strong>Remotive API:</strong> Bringing you access to a wide range of remote job opportunities across industries and geographies.
           </li>
           <li>
             <strong>MapLibre:</strong> Powering our interactive maps with accurate, open-source geographic data to support your relocation and remote work decisions.
