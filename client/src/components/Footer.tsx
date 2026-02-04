@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaFacebook, FaTiktok } from "react-icons/fa6";
-import ThemeToggle from "./ThemeToggle";
 
 export default function Footer() {
   return (
@@ -114,9 +113,6 @@ export default function Footer() {
         </motion.div>
       </div>
 
-      <div className="mt-10 flex justify-center">
-        <ThemeToggle />
-      </div>
     </footer>
   );
 }

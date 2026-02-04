@@ -14,7 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      data-theme="light"
+      style={{ transitionProperty: "none", marginRight: 0 }}
+    >
       <body className="antialiased flex min-h-screen flex-col">
         <Navbar />
         <div className="flex-1">{children}</div>

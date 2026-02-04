@@ -21,10 +21,7 @@ html {
   --font-sans: 'Geist Sans', sans-serif;
   --font-mono: 'Geist Mono', monospace;
 }
-/* global.css — add this just below :root and above [data-theme='dark'] */
-
-/* Explicit Light Theme (prevents stale dark when attribute isn't removed) */
-/* Explicit Light Theme (prevents stale dark when attribute remains) */
+/* Explicit Light Theme (kept in sync with :root) */
 [data-theme='light'] {
   --background: #fafafa;
   --foreground: #333333;
@@ -43,40 +40,6 @@ html {
 
 
 
-
-/* Dark Theme */
-[data-theme='dark'] {
-  --background: #0b0e17; /* midnight asphalt */
-  --foreground: #e2e8f0; /* misty gray */
-  --primary: #0ea5e9; /* neon cyan */
-  --secondary: #d946ef; /* vibrant magenta */
-  --accent: #64748b; /* urban smoke */
-
-  --card: #1f2937; /* gray-800 */
-  --card-border: #374151; /* gray-700 */
-  --muted: #d1d5db; /* gray-300 */
-  --chip-bg: #374151; /* gray-700 */
-
-  --font-sans: 'Geist Sans', sans-serif;
-  --font-mono: 'Geist Mono', monospace;
-}
-
-/* Custom Theme (optional, you can add more) */
-[data-theme='custom'] {
-  --background: #e0e7ff; /* soft blue */
-  --foreground: #1f2937; /* cool dark blue text */
-  --primary: #8b5cf6; /* purple */
-  --secondary: #fbbf24; /* orange */
-  --accent: #10b981; /* emerald */
-
-  --card: #ffffff;
-  --card-border: #cbd5e1; /* slate-300 */
-  --muted: #4b5563; /* gray-600 */
-  --chip-bg: #f3f4f6; /* gray-100 */
-
-  --font-sans: 'Geist Sans', sans-serif;
-  --font-mono: 'Geist Mono', monospace;
-}
 
 body {
   background: var(--background);
