@@ -4,7 +4,6 @@ const HOSTNAME = "www.sufoniq.com";
 const CANONICAL = "https://sufoniq.com";
 
 const nextConfig: NextConfig = {
-  distDir: "build",
   async redirects() {
     return [
       {
