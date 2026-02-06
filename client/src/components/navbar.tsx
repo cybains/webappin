@@ -1,98 +1,118 @@
 "use client";
 
-import { useState } from "react"; // ✅
+import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 import Link from "next/link";
-import Image from "next/image";
+
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Use Cases", href: "/use-cases" },
+  { label: "Insights", href: "/insights" },
+  { label: "Employers", href: "/employers" },
+  { label: "Method & Trust", href: "/method-trust" },
+  { label: "About Us", href: "/about" },
+  { label: "Contact", href: "/#contact" },
+];
+
+const scrollToContact = () => {
+  const contactSection = document.getElementById("contact");
+  if (contactSection) {
+    contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  window.location.href = "/#contact";
+};
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname() ?? "/";
 
-  const toggleMenu = () => {
-    setIsOpen((prev) => {
-      const newState = !prev;
-      if (typeof window !== "undefined") {
-        document.body.classList.toggle("hide-hero", newState);
-      }
-      return newState;
-    });
+  const toggleMenu = () => setIsOpen((prev) => !prev);
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    if (href.startsWith("/#")) return pathname === "/";
+    return pathname === href;
   };
-
-  const navItems = [
-    { label: "Countries", href: "/countries" },
-    { label: "Services", href: "/core-services" },
-    { label: "About Us", href: "/about" },
-    { label: "Contact", href: "/contact" },
-  ];
 
   return (
     <header
-      className="w-full sticky top-0 z-50 shadow-sm backdrop-blur-sm border-b border-gray-200"
-      style={{
-        backgroundColor: "var(--background)",
-        color: "var(--foreground)",
-        fontFamily: "var(--font-sans)",
-      }}
+      className="w-full sticky top-0 z-50 border-b border-[color:var(--card-border)] bg-[var(--background)]"
+      style={{ fontFamily: "var(--font-sans)" }}
     >
-      {/* Wrapper */}
-      <div className="w-full flex flex-row items-center justify-between px-5 py-3 md:py-2">
-        {/* Logo */}
-        <Link href="/" className="flex items-center space-x-4 md:justify-start">
-          <Image
-            src="/Asset 1.png"
-            alt="Sufoniq Logo"
-            width={32}
-            height={32}
-            className="h-8 w-auto"
-          />
-          <Image
-            src="/Asset 3.png"
-            alt="Sufoniq"
-            width={90}
-            height={10}
-            className="h-5 w-auto -ml-2 mt-1"
-          />
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        {/* Wordmark */}
+        <Link href="/" className="text-[var(--foreground)]">
+          <span className="text-base font-medium tracking-[0.05em]">SUFONIQ</span>
         </Link>
 
-        {/* Mobile Hamburger */}
-        <button
-          className="md:hidden text-3xl focus:outline-none z-50"
-          onClick={toggleMenu}
-          aria-label="Toggle Menu"
-        >
-          {isOpen ? "✕" : "☰"}
-        </button>
-
-        {/* Nav Links */}
-        <nav
-          className={`${
-            isOpen ? "block" : "hidden"
-          } fixed top-16 left-4 right-4 rounded-xl bg-white/70 backdrop-blur-lg shadow-lg shadow-black/10 transition-all duration-300 ease-in-out z-40
-            md:static md:block md:w-auto md:bg-transparent md:shadow-none md:rounded-none md:backdrop-blur-0`}
-        >
-          <ul className="flex flex-col md:flex-row items-start md:items-start gap-6 md:gap-8 text-sm md:text-base font-medium px-6 py-6 md:p-0">
+        {/* Centered nav */}
+        <nav className="hidden flex-1 justify-center md:flex">
+          <ul className="flex items-center justify-center gap-5 text-sm font-medium text-slate-600">
             {navItems.map(({ label, href }) => (
-              <li key={label} className="w-full md:w-auto">
-                {href.startsWith("/") ? (
-                  <Link
-                    href={href}
-                    className="block w-full text-gray-700 md:text-gray-500 px-4 py-2 md:px-0 md:py-0 transition duration-200 hover:bg-[var(--accent)] hover:text-white md:hover:bg-transparent md:hover:text-[var(--secondary)] md:hover:underline"
-                  >
-                    {label}
-                  </Link>
-                ) : (
-                  <a
-                    href={href}
-                    className="block w-full text-gray-700 md:text-gray-500 px-4 py-2 md:px-0 md:py-0 transition duration-200 hover:bg-[var(--accent)] hover:text-white md:hover:bg-transparent md:hover:text-[var(--secondary)] md:hover:underline"
-                  >
-                    {label}
-                  </a>
-                )}
+              <li key={label}>
+                <Link
+                  href={href}
+                  className={`px-2 py-1 text-sm font-medium border-b-2 transition duration-200 ${
+                    isActive(href)
+                      ? "border-[color:var(--foreground)] text-[var(--foreground)]"
+                      : "border-transparent hover:border-slate-300 hover:text-[var(--foreground)]"
+                  }`}
+                >
+                  {label}
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
+
+        {/* CTA + mobile toggle */}
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={scrollToContact}
+            className="hidden rounded-xl border border-[color:var(--card-border)] px-3 py-1 text-sm font-medium text-[var(--foreground)] transition hover:bg-[var(--card-border)]/60 md:inline-flex"
+          >
+            Request access
+          </button>
+          <button
+            className="md:hidden text-3xl focus:outline-none"
+            onClick={toggleMenu}
+            aria-label="Toggle Menu"
+          >
+            {isOpen ? "✕" : "☰"}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile menu */}
+      <nav
+        className={`${
+          isOpen ? "block" : "hidden"
+        } md:hidden border-t border-[color:var(--card-border)] bg-[var(--background)] px-6 py-4`}
+      >
+        <ul className="flex flex-col gap-3 text-sm font-medium">
+          {navItems.map(({ label, href }) => (
+            <li key={label}>
+              <Link
+                href={href}
+                className="block w-full rounded-lg px-3 py-2 transition hover:bg-[var(--accent)]/10 hover:text-[var(--secondary)]"
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+          <li>
+            <button
+              type="button"
+              onClick={scrollToContact}
+              className="w-full rounded-lg border border-[color:var(--border)] px-3 py-2 text-left font-semibold text-[var(--foreground)] transition hover:bg-[var(--accent)]/10 hover:text-[var(--secondary)]"
+            >
+              Request access
+            </button>
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 }

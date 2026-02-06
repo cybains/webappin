@@ -9,7 +9,6 @@ const URLS = [
   "/core-services",
   "/countries",
   "/methodology",
-  "/contact",
   "/privacy-policy",
   "/terms-conditions",
 ];

@@ -4,20 +4,21 @@ import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export const REASONS = [
-  "Find a job",
-  "Hire talent",
+  "Find work",
+  "Hire",
+  "Study",
   "Student support",
-  "Upskill / Reskill",
-  "Relocation help",
+  "Upskill",
+  "Relocate",
   "Housing",
-  "Partnership / Collaboration",
+  "Partner",
   "Other",
 ] as const;
 
 export const STAGES = [
   "Just exploring",
   "Ready to start",
-  "In progress & stuck",
+  "Stuck mid-process",
   "Need a second opinion",
 ] as const;
 
@@ -141,7 +142,7 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
           {error}
         </div>
       )}
-      <div className="grid gap-2 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="grid gap-2">
           <label htmlFor="name" className="text-sm font-medium">
             Name
@@ -156,14 +157,16 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
         </div>
         <div className="grid gap-2">
           <label htmlFor="phone" className="text-sm font-medium">
-            Phone / WhatsApp (optional)
+            Phone / WhatsApp
           </label>
+          <p className="text-[11px] text-muted-foreground">Optional</p>
           <input id="phone" name="phone" type="tel" className="h-10 rounded-md border bg-background px-3" />
         </div>
         <div className="grid gap-2">
           <label htmlFor="location" className="text-sm font-medium">
-            Preferred location (optional)
+            Preferred location
           </label>
+          <p className="text-[11px] text-muted-foreground">Optional</p>
           <input
             id="location"
             name="location"
@@ -175,7 +178,8 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
       </div>
 
       <div className="grid gap-2">
-        <span className="text-sm font-medium">What brings you here? (pick any)</span>
+        <span className="text-sm font-medium">What are you trying to do?</span>
+        <p className="text-[11px] text-muted-foreground">Select any that apply.</p>
         <div className="flex flex-wrap gap-2">
           {REASONS.map((r) => (
             <ToggleChip key={r} label={r} selected={reasons.includes(r)} onToggle={() => toggleReason(r)} />
@@ -194,15 +198,16 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
 
       <div className="grid gap-2">
         <label htmlFor="message" className="text-sm font-medium">
-          Anything we should know?
+          Anything else we should know?
         </label>
         <textarea
           id="message"
           name="message"
           rows={4}
-          placeholder="Give us the short version: goals, constraints, timelines, special requests."
+          placeholder="Short version: goal, constraints, timeline. Links welcome."
           className="rounded-md border bg-background px-3 py-2"
         />
+        <p className="text-[11px] text-muted-foreground">We use this only to respond. No spam.</p>
       </div>
 
       <div className="flex flex-wrap gap-3">

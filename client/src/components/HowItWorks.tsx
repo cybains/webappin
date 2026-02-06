@@ -144,14 +144,14 @@ export default function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="relative w-full overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/80 py-10 px-6 md:px-10"
+      className="relative w-full overflow-hidden rounded-3xl border border-slate-800/70 bg-slate-950/80 py-10 px-6 md:px-10"
     >
       <AnimatedNetworkCanvas activeStep={activeStep} />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/30" />
 
       <div className="relative space-y-8">
         <div className="space-y-2 max-w-3xl">
-          <p className="text-sm uppercase tracking-[0.2em] text-sky-300">How It Works</p>
+          <p className="sufoniq-meta-label text-sky-300">How It Works</p>
           <h2 className="text-2xl md:text-3xl font-semibold text-slate-50">
             You steer. We sharpen the map.
           </h2>
@@ -186,15 +186,15 @@ export default function HowItWorks() {
                 const isActive = activeStep === step.id;
 
                 const base =
-                  "group relative rounded-2xl border px-4 py-3 text-left transition-all duration-300 ease-out flex-1";
+                  "group relative rounded-3xl border border-slate-800/70 bg-slate-950/70 px-4 py-3 text-left transition-all duration-300 ease-out flex-1";
 
                 const inactiveDesktop = hasInteracted
-                  ? " md:flex-[0.9] md:opacity-40 md:scale-[0.98] hover:border-slate-500/80 hover:bg-slate-900/70 md:hover:opacity-70 border-slate-700/70 bg-slate-900/40"
-                  : " border-slate-700/70 bg-slate-900/40 hover:border-slate-500/80 hover:bg-slate-900/70";
+                  ? " md:flex-[0.9] md:opacity-60 md:scale-[0.985] hover:border-slate-500/80 hover:bg-slate-900/70 border-slate-700/60 bg-slate-900/50"
+                  : " border-slate-700/60 bg-slate-900/50 hover:border-slate-500/80 hover:bg-slate-900/70";
 
                 const activeDesktop = hasInteracted
-                  ? " md:flex-[1.25] md:translate-x-2 md:z-10 border-sky-400/70 bg-slate-900/80 shadow-[0_0_30px_rgba(56,189,248,0.25)]"
-                  : " border-sky-400/70 bg-slate-900/80 shadow-[0_0_30px_rgba(56,189,248,0.25)]";
+                  ? " md:flex-[1.25] md:translate-x-2 md:z-10 border-sky-400/70 bg-slate-900/80"
+                  : " border-sky-400/70 bg-slate-900/80";
 
                 return (
                   <button
@@ -216,7 +216,7 @@ export default function HowItWorks() {
             </div>
           </div>
 
-          <div className="mt-2 rounded-2xl border border-slate-700/80 bg-slate-950/80 p-4 md:p-5 text-sm md:text-base text-slate-200">
+          <div className="mt-2 rounded-3xl border border-slate-700/80 bg-slate-950/80 p-4 md:p-5 text-sm md:text-base text-slate-200 leading-relaxed">
             {activeStep === 1 && (
               <>
                 <p className="mb-2">

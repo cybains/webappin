@@ -7,7 +7,8 @@ import { FaFacebook, FaTiktok } from "react-icons/fa6";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-[var(--foreground)] py-16 px-8">
+    <footer className="w-full bg-[var(--card)] border-t border-[color:var(--card-border)] text-[var(--foreground)] py-16 px-8">
+      <div className="border-t border-[color:var(--card-border)]/60 mb-10" />
       <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* Quick Links */}
         <motion.div
@@ -23,7 +24,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:underline">
+            <Link href="/#contact" className="hover:underline">
                 Contact
               </Link>
             </li>
@@ -92,6 +93,14 @@ export default function Footer() {
             <li>
               <span className="font-semibold">WorldData API</span>: global country & economic insights.
             </li>
+            <li>
+              <Link
+                href="/countries"
+                className="no-underline text-inherit hover:text-inherit"
+              >
+                <span className="font-semibold">Data Coverage</span>
+              </Link>
+            </li>
           </ul>
         </motion.div>
 
@@ -106,8 +115,13 @@ export default function Footer() {
             <p className="mb-4">Helping you relocate without rage-quitting since 2025.</p>
           </div>
           <div className="mt-6 w-full">
-            <div className="py-4 text-center text-sm text-gray-100">
-              <p>© 2025 UAB Skillaxis. Built with optimism, maintained with paperwork.</p>
+            <div className="py-4 text-center text-sm">
+              <p
+                className="text-[var(--foreground)]"
+                style={{ textShadow: "0 1px 3px rgba(15, 23, 42, 0.6)" }}
+              >
+                © 2025 UAB Skillaxis. Built with optimism, maintained with paperwork.
+              </p>
             </div>
           </div>
         </motion.div>
