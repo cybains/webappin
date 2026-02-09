@@ -76,7 +76,7 @@ function ContextSnapshotCard({ snapshot }: ContextSnapshotCardProps) {
 
   return (
     <div className="space-y-2 sufoniq-card text-sm text-[var(--foreground)]">
-      <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.35em] text-[var(--secondary)]">
+      <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.35em] text-[var(--foreground)]">
         <span>{snapshot.title}</span>
         <span aria-label="Country count">
           {snapshot.count} {snapshot.count === 1 ? "country" : "countries"}
@@ -97,7 +97,7 @@ function ContextSnapshotCard({ snapshot }: ContextSnapshotCardProps) {
           {snapshot.indicators.map((indicator) => (
             <div key={indicator.code} className="flex items-center justify-between text-xs">
               <span className="text-[var(--muted)]">{indicator.label}</span>
-              <span className="font-medium text-[var(--secondary)]">
+              <span className="font-medium text-[var(--foreground)]">
                 {indicator.median != null ? formatIndicatorValue(indicator.code, indicator.median) : "—"}
               </span>
             </div>
@@ -121,7 +121,6 @@ export default async function UseCasesPage() {
       <StructuralGridBand>
         <section className="mx-auto max-w-5xl space-y-10 px-5 py-14">
           <header className="space-y-3">
-            <p className="text-sm uppercase tracking-[0.4em] text-[var(--secondary)]">Use Cases</p>
             <h1 className="text-3xl font-semibold md:text-4xl">Situations we observe</h1>
             <p className="text-base text-[var(--muted)]">
               This page collects recurring mobility situations noted without pitch. Each block stays tied to observable patterns and lays out what happens before channels, partners, or actions appear.
@@ -130,8 +129,13 @@ export default async function UseCasesPage() {
 
           <div className="space-y-12">
             {useCases.map((useCase, index) => (
-              <article key={useCase.title} className="space-y-4">
-                <h2 className="text-xl font-semibold">{useCase.title}</h2>
+              <article
+                key={useCase.title}
+                className="space-y-4 rounded-3xl border border-[var(--card-border)] bg-[var(--card)]/90 p-6 shadow-[0_15px_35px_rgba(15,23,42,0.08)]"
+              >
+                <h2 className="text-xl font-semibold text-[var(--foreground)]">
+                  {useCase.title}
+                </h2>
 
                 <div className="space-y-2 text-sm text-[var(--muted)]">
                   {index === 0 ? (
@@ -163,12 +167,12 @@ export default async function UseCasesPage() {
                     </>
                   )}
 
-                  <div className="space-y-2">
+                  <div className="space-y-3 rounded-2xl border border-dashed border-[var(--card-border)] bg-[var(--background)]/50 p-5">
                     <p className="font-semibold text-[var(--foreground)]">
                       How this tends to change depending on where you are
                     </p>
 
-                    <ul className="list-inside list-disc text-[var(--muted)]">
+                    <ul className="list-inside list-disc space-y-1 text-[var(--muted)]">
                       {useCase.archetypes.map((a) => (
                         <li key={a}>{a}</li>
                       ))}
@@ -189,16 +193,19 @@ export default async function UseCasesPage() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-4 text-sm text-[var(--secondary)]">
-                  <Link href="/insights" className="hover:underline">
+                <div className="flex flex-wrap gap-3 text-sm">
+                  <Link
+                    href="/insights"
+                    className="inline-flex items-center justify-center rounded-2xl border border-[var(--card-border)] px-5 py-2 font-semibold text-[var(--foreground)] transition hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
                     Explore related signals
                   </Link>
                   <Link
                     href={index === 0 || index === 2 ? "/#contact" : "/employers#access"}
-                    className="hover:underline"
+                    className="inline-flex items-center justify-center h-12 rounded-2xl bg-primary bg-[color:var(--primary)] px-8 text-base font-semibold text-primary-foreground text-[color:var(--primary-foreground)] transition hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
-                    Apply this to your situation{" "}
-                    <span className="text-[0.75rem] text-[var(--muted)]">(request access)</span>
+                    Apply this to your situation
+                    <span className="sr-only">request access</span>
                   </Link>
                 </div>
               </article>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -68,13 +69,14 @@ export default function Navbar() {
 
         {/* CTA + mobile toggle */}
         <div className="flex items-center gap-4">
-          <button
+          <Button
             type="button"
+            size="lg"
             onClick={scrollToContact}
-            className="hidden rounded-xl border border-[color:var(--card-border)] px-3 py-1 text-sm font-medium text-[var(--foreground)] transition hover:bg-[var(--card-border)]/60 md:inline-flex"
+            className="hidden items-center justify-center rounded-2xl text-base md:inline-flex"
           >
             Request access
-          </button>
+          </Button>
           <button
             className="md:hidden text-3xl focus:outline-none"
             onClick={toggleMenu}
@@ -103,13 +105,14 @@ export default function Navbar() {
             </li>
           ))}
           <li>
-            <button
+            <Button
               type="button"
+              size="lg"
               onClick={scrollToContact}
-              className="w-full rounded-lg border border-[color:var(--border)] px-3 py-2 text-left font-semibold text-[var(--foreground)] transition hover:bg-[var(--accent)]/10 hover:text-[var(--secondary)]"
+              className="w-full rounded-2xl text-base"
             >
               Request access
-            </button>
+            </Button>
           </li>
         </ul>
       </nav>

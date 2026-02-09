@@ -182,7 +182,7 @@ function ApplySection() {
               <div className="flex flex-wrap gap-3">
                 <a
                   href="#contact"
-                  className="inline-flex items-center justify-center rounded-2xl bg-primary px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] transition hover:brightness-95"
+                  className="inline-flex items-center justify-center h-12 rounded-2xl bg-primary bg-[color:var(--primary)] px-8 text-base font-semibold text-primary-foreground text-[color:var(--primary-foreground)] transition hover:bg-primary/90 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   Request access to platform
                 </a>
@@ -241,7 +241,7 @@ function EmployersLane() {
           </div>
           <Link
             href="/employers#access"
-            className="inline-flex items-center justify-center rounded-2xl bg-primary px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] transition hover:brightness-95"
+            className="inline-flex items-center justify-center h-12 rounded-2xl bg-primary bg-[color:var(--primary)] px-8 text-base font-semibold text-primary-foreground text-[color:var(--primary-foreground)] transition hover:bg-primary/90 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             Request platform access
           </Link>

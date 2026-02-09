@@ -214,7 +214,7 @@ function GeneralAccessForm({ highlight = false }: GeneralAccessFormProps) {
         <button
           type="submit"
           disabled={!canSubmit || !emailValid || status === "sending"}
-          className="inline-flex items-center gap-2 rounded-xl bg-foreground px-3 py-2 text-sm font-semibold text-background transition hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-2 h-12 rounded-2xl bg-primary bg-[color:var(--primary)] px-8 text-base font-semibold text-primary-foreground text-[color:var(--primary-foreground)] transition hover:bg-primary/90 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-60"
         >
           Request access
           <ArrowRight className="h-4 w-4" />
