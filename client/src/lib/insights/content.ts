@@ -437,6 +437,159 @@ const insightPages: InsightContent[] = [
       "Not a shortcut around analysis",
     ],
   },
+  {
+    slug: "signals/churn-is-signal",
+    slugParts: ["signals", "churn-is-signal"],
+    type: "Signals & Patterns",
+    title: "When churn is the signal, not the problem",
+    framing:
+      "In cross-border and remote contexts, churn rarely appears out of nowhere. More often, it shows up after structural friction becomes lived reality — not because intent or performance suddenly changed.",
+    readTime: "6 min",
+    date: "Feb 2026",
+    tags: ["churn"],
+    featured: false,
+    content: [
+      { type: "heading", text: "The pattern people notice too late" },
+      { type: "quote", text: "“They were fine — and then they left.”" },
+      { type: "paragraph", text: "Churn is usually described as a moment: a resignation, a departure, an exit date." },
+      {
+        type: "paragraph",
+        text: "In reality, it’s the last visible step in a much longer process.",
+      },
+      {
+        type: "paragraph",
+        text: "Across cross-border hiring, relocation, and long-term remote work, exits tend to cluster early — often within the first year — and around the same structural moments.",
+      },
+      { type: "paragraph", text: "That clustering is the signal." },
+      { type: "heading", text: "Where churn consistently appears" },
+      {
+        type: "paragraph",
+        text: "Across countries, industries, and employment models, early churn tends to surface after a familiar sequence:",
+      },
+      {
+        type: "list",
+        items: [
+          "onboarding friction accumulates",
+          "payroll, tax, or benefits become unstable or delayed",
+          "legal or residency uncertainty stops being theoretical",
+          "family or personal adaptation strains daily routines",
+          "probation, time-limited remote arrangements, or repatriation decisions arrive",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "None of these events are unusual on their own.",
+      },
+      {
+        type: "paragraph",
+        text: "What matters is when several of them converge — quietly, and early.",
+      },
+      { type: "heading", text: "Why churn feels sudden when it isn’t" },
+      {
+        type: "paragraph",
+        text: "From the outside, departures often look abrupt.",
+      },
+      {
+        type: "paragraph",
+        text: "From the inside, they usually follow a period where constraints stop being abstract and start affecting day-to-day life:",
+      },
+      {
+        type: "list",
+        items: [
+          "pay arriving late instead of “eventually”",
+          "compliance limits becoming personal exposure",
+          "residency timelines colliding with family needs",
+          "career uncertainty replacing initial momentum",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "By the time churn is visible, the cost of staying has already been calculated.",
+      },
+      { type: "paragraph", text: "Exit isn’t a reaction. It’s a resolution." },
+      { type: "heading", text: "What churn is often mistaken for" },
+      {
+        type: "paragraph",
+        text: "Because exits are personal decisions, churn is often framed as one:",
+      },
+      {
+        type: "list",
+        items: [
+          "lack of commitment",
+          "performance mismatch",
+          "generational restlessness",
+          "compensation dissatisfaction",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "These explanations appear frequently — and fail to explain clustering.",
+      },
+      {
+        type: "paragraph",
+        text: "Across contexts, churn rises and falls with system friction far more consistently than with individual traits.",
+      },
+      { type: "heading", text: "Why early churn clusters instead of spreading out" },
+      {
+        type: "paragraph",
+        text: "Structural thresholds concentrate exits.",
+      },
+      {
+        type: "list",
+        items: [
+          "Probation periods, capped remote arrangements, relocation checkpoints, and repatriation moments act as decision gates.",
+          "They force unresolved friction to surface at the same time.",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "The system doesn’t spread pressure evenly. It releases it in bursts.",
+      },
+      { type: "paragraph", text: "That’s why churn often spikes — not gradually, but suddenly." },
+      { type: "heading", text: "The overlooked role of invisibility" },
+      {
+        type: "paragraph",
+        text: "Many of the constraints that precede churn are hard to see early on:",
+      },
+      {
+        type: "list",
+        items: [
+          "legal limits that only activate after time passes",
+          "payroll and tax complexity that emerges after the first cycles",
+          "family stress that builds once novelty fades",
+          "career ambiguity that becomes clear after initial roles settle",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Because these frictions aren’t fully legible at entry, they’re often discovered too late to absorb.",
+      },
+      { type: "paragraph", text: "Churn becomes the first visible outcome of that discovery." },
+      { type: "heading", text: "What this reframes" },
+      {
+        type: "paragraph",
+        text: "Seen this way, churn is less a verdict and more a trace.",
+      },
+      {
+        type: "paragraph",
+        text: "It records where systems failed to stabilise quickly enough — not where people failed to adapt.",
+      },
+      {
+        type: "paragraph",
+        text: "That doesn’t make churn predictable. And it doesn’t make it avoidable. It makes it legible.",
+      },
+    ],
+    interpretation:
+      "In cross-border and remote contexts, churn usually appears as a lagging indicator of unresolved structural friction — once constraints become lived reality rather than abstract conditions.",
+    boundary:
+      "This does not predict churn, assign blame, or imply that all exits are structural. It explains why churn clusters early and unevenly without reducing it to individual intent or performance.",
+    whatThisIsNot: [
+      "Not a retention strategy",
+      "Not a diagnostic tool",
+      "Not a judgement of employers or workers",
+      "Not guidance on how to reduce churn",
+    ],
+  },
 ];
 
 const slugMap = buildIndex(insightPages);
