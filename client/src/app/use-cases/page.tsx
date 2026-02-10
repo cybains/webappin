@@ -5,50 +5,66 @@ import { StructuralGridBand } from "@/components/StructuralGridBand";
 const useCases = [
   {
     title: "Working in Europe",
-    problem:
-      "Companies and individuals want to align employment, residence, and payroll in a single country while keeping options open for intra-European changes.",
-    misunderstood:
-      "A common assumption is that one permit or one service solves the entire move, when permit type and employer relationship change timelines and constraints.",
+    observationLines: [
+      "Companies and individuals often try to keep employment, residence, and payroll neatly contained in one country — while still hoping to stay flexible for future moves within Europe.",
+      "That expectation is understandable.",
+      "It just doesn’t survive contact with the system very well.",
+    ],
+    whyHardLines: [
+      "A common assumption is that one permit, one employer, or one service will “solve” the entire move.",
+      "In reality, permit type and employer relationship quietly reshape timelines and constraints. What looks like a single decision on paper quickly becomes several interdependent ones.",
+      "Nothing is broken. The system is just doing more than it appears to be doing.",
+    ],
     archetypes: [
-      "Permit renewal windows tend to mirror capital-city workloads more than project calendars, so overlap can be uneven.",
-      "Payroll cut-offs vary by tax authority, which often means a single payrun spans multiple systems.",
-      "Social benefits activate once local residency paperwork clears, and that timing varies by municipality.",
-      "Cross-border allowances line up with bilateral agreements rather than platform-level promises.",
+      "Permit renewal windows usually follow capital-city workloads, not project calendars — which makes overlaps uneven by default.",
+      "Payroll cut-offs vary by tax authority, so a single pay run can span multiple systems.",
+      "Social benefits typically activate only after local residency paperwork clears, and that timing differs by municipality.",
+      "Cross-border allowances follow bilateral agreements, not platform-level promises.",
     ],
     boundary:
-      "This block observes formal employment contexts and does not cover informal labour arrangements or purely experimental stays.",
+      "This block looks at formal employment contexts. Informal labour arrangements and experimental stays are out of scope.",
     contextGroupIds: ["EU27", "EFTA", "UK"],
   },
   {
     title: "Hiring Across Borders",
-    problem:
-      "Hiring teams cite visibility gaps for compliance, benefits, and currency handling when they expand beyond their home market.",
-    misunderstood:
-      "It can look like cross-border hiring is just 'posting the same role elsewhere', but legal entities, payroll, and expectations differ by system.",
+    observationLines: [
+      "Hiring outside the home market stretches timelines because employment, residence, and payroll stop living in the same system.",
+      "That friction often appears later than expected — after offers are signed and start dates are discussed.",
+    ],
+    whyHardLines: [
+      "There’s often an assumption that cross-border hiring can be “translated” from a domestic setup with a few local adjustments.",
+      "In practice, permit types and employer relationships shift constraints entirely. What works in one jurisdiction can become a blocker in another without warning.",
+      "Hiring doesn’t fail here. It slows — until the systems catch up.",
+    ],
     archetypes: [
-      "Budget owners often refer to EU-wide offers even though contracts tie to specific national regulations.",
-      "Recruiters lean on local partners to translate liabilities rather than rewiring global policy in a single move.",
-      "Time-to-pay shifts with each country's payroll cadence and tax-reporting rhythm.",
-      "Benefits packages map to labour codes that shift between EU, neighbourhood, and microstate partners.",
+      "Budget owners refer to EU-wide offers, even though contracts bind to national labour law.",
+      "Recruiters rely on local partners to translate liabilities rather than redesign policy all at once.",
+      "Time-to-pay changes country by country, because payroll and tax reporting follow different rhythms.",
+      "Benefits packages map to labour codes that vary sharply across regions.",
     ],
     boundary:
-      "This block focuses on compliant hiring operations and does not delve into temporary staffing or contractor-only models.",
+      "This block focuses on compliant hiring operations. Temporary staffing and contractor-only models are out of scope.",
     contextGroupIds: ["EU27", "WBALK", "E_NEI"],
   },
   {
     title: "Living and Working Remotely",
-    problem:
-      "Remote professionals want a stable base with reliable infrastructure, paperwork that does not spiral, and routines that hold over time.",
-    misunderstood:
-      "Remote life is often treated as pure lifestyle choice, yet taxes, healthcare, and residency rules can bind the location decision.",
+    observationLines: [
+      "Remote work looks flexible. The infrastructure underneath it usually isn’t.",
+      "Most long-term remote setups still rely on a stable legal and administrative base.",
+    ],
+    whyHardLines: [
+      "Taxes, healthcare, and residency rules tend to fix the location decision earlier than people expect.",
+      "Flexibility exists — just not at every layer at once.",
+      "Remote doesn’t remove structure. It just redistributes it.",
+    ],
     archetypes: [
-      "Digital nomads tend to stack short stays with at least one formal residency base.",
-      "Hybrid teams split weeks between a hometown and a city where they keep a secondary address.",
-      "Individuals scope broadband and co-working availability together with declaration requirements.",
-      "Housing leases frequently include clauses tied to municipal registration and community integration.",
+      "Many digital nomads combine short stays with one formal residency base, even if that wasn’t the original plan.",
+      "Hybrid workers split time between a home location and a city where they maintain a secondary address.",
+      "Connectivity, co-working access, and declaration requirements tend to move together.",
+      "Housing leases often include clauses tied to municipal registration and local participation.",
     ],
     boundary:
-      "This block addresses longer stays rather than weekend tourism or informal hospitality hosting.",
+      "This block addresses longer stays. Weekend tourism and informal hosting arrangements are out of scope.",
     contextGroupIds: ["EU27", "EFTA", "MICRO"],
   },
 ] as const;
@@ -123,8 +139,12 @@ export default async function UseCasesPage() {
           <header className="space-y-3">
             <h1 className="text-3xl font-semibold md:text-4xl">Situations we observe</h1>
             <p className="text-base text-[var(--muted)]">
-              This page collects recurring mobility situations noted without pitch. Each block stays tied to observable patterns and lays out what happens before channels, partners, or actions appear.
+              This page collects recurring mobility situations we see again and again.
             </p>
+            <p className="text-base text-[var(--muted)]">
+              Each block describes what tends to happen before tools, partners, or actions are even relevant.
+            </p>
+            <p className="text-base text-[var(--muted)]">No pitch. No shortcuts. Just patterns.</p>
           </header>
 
           <div className="space-y-12">
@@ -137,35 +157,19 @@ export default async function UseCasesPage() {
                   {useCase.title}
                 </h2>
 
-                <div className="space-y-2 text-sm text-[var(--muted)]">
-                  {index === 0 ? (
-                    <>
-                      <p className="text-[var(--foreground)]">
-                        <span className="font-semibold">What usually goes wrong</span>: {useCase.problem}
-                      </p>
-                      <p className="text-[var(--foreground)]">
-                        <span className="font-semibold">Why this feels harder than expected</span>: {useCase.misunderstood}
-                      </p>
-                    </>
-                  ) : index === 1 ? (
-                    <>
-                      <p className="text-[var(--foreground)]">
-                        Aligning employment, residence, and payroll outside the home market stretches timelines and invites multiple systems.
-                      </p>
-                      <p className="text-[var(--foreground)]">
-                        That expectation feels harder when permit types and employer relationships shift constraints.
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <p className="text-[var(--foreground)]">
-                        Remote professionals still need stable infrastructure even when routines look flexible.
-                      </p>
-                      <p className="text-[var(--foreground)]">
-                        The move feels harder because taxes, healthcare, and residency rules often fix the location decision.
-                      </p>
-                    </>
-                  )}
+                <div className="space-y-3 text-sm text-[var(--muted)]">
+                  <p className="text-[var(--foreground)] font-semibold">What we tend to observe</p>
+                  {useCase.observationLines.map((line) => (
+                    <p key={`${useCase.title}-obs-${line}`} className="text-[var(--foreground)]">
+                      {line}
+                    </p>
+                  ))}
+                  <p className="text-[var(--foreground)] font-semibold">Why this usually feels harder than expected</p>
+                  {useCase.whyHardLines.map((line) => (
+                    <p key={`${useCase.title}-hard-${line}`} className="text-[var(--foreground)]">
+                      {line}
+                    </p>
+                  ))}
 
                   <div className="space-y-3 rounded-2xl border border-dashed border-[var(--card-border)] bg-[var(--background)]/50 p-5">
                     <p className="font-semibold text-[var(--foreground)]">
@@ -179,7 +183,7 @@ export default async function UseCasesPage() {
                     </ul>
 
                     <p className="text-[0.65rem] text-[var(--muted)]">
-                      A small context snapshot shows how these differences surface at a system level.
+                      Context snapshot (system-level only)
                     </p>
                     <div className="grid gap-3 sm:grid-cols-2">
                       {useCase.contextGroupIds.map((groupId) => (
@@ -214,12 +218,9 @@ export default async function UseCasesPage() {
 
           <section className="space-y-2 border-t border-[var(--card-border)] pt-8">
             <h2 className="text-lg font-semibold">What this page is not</h2>
-            <p className="text-sm text-[var(--muted)]">
-              Not directive guidance, not eligibility confirmation, and not a replacement for professional advice.
-            </p>
-            <p className="text-sm text-[var(--muted)]">
-              It is a catalog of recurring themes observed across situations, without urgency or invitation.
-            </p>
+            <p className="text-sm text-[var(--muted)]">Not directive guidance.</p>
+            <p className="text-sm text-[var(--muted)]">Not eligibility confirmation.</p>
+            <p className="text-sm text-[var(--muted)]">Not a replacement for professional advice.</p>
           </section>
         </section>
       </StructuralGridBand>

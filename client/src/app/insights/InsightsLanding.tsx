@@ -209,7 +209,7 @@ export default function InsightsLanding() {
                   </CardHeader>
                   <CardContent className="border-t border-slate-100 pt-4">
                     <div className="flex items-center justify-between text-xs text-slate-500">
-                      <span>{item.readTime ?? "\u00A0"}</span>
+                      <span>{item.date ?? "\u00A0"}</span>
                       {item.tags?.[0] ? (
                         <span className="tracking-[0.4em] uppercase text-slate-400/70">
                           {item.tags[0]}
