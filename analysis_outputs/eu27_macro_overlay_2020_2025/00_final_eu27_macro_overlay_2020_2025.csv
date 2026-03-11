@@ -1,0 +1,28 @@
+country,unemployment_2020,unemployment_2024,unemployment_2025_optional,unemployment_trend,youth_unemployment_2020,youth_unemployment_2024,youth_unemployment_2025_optional,youth_unemployment_trend,construction_activity_direction,vacancy_tightness_direction,wage_labour_cost_pressure,data_quality_note
+Austria,6.00,5.20,5.69,down,11.70,10.30,11.43,down,volatile,down,Moderate,No major continuity issues under selected filters.
+Belgium,5.80,5.70,6.21,flat,15.90,17.40,17.43,up,volatile,up,Weak,Vacancy direction uses 2020->2024 (2025 unavailable). Wage pressure uses nearest consistent years (2025 partial quarterly coverage).
+Bulgaria,6.10,4.20,3.52,down,17.50,12.30,13.03,down,expansion,flat,Strong,Vacancy direction uses 2020->2024 (2025 unavailable).
+Croatia,7.40,5.00,4.78,down,20.60,16.80,17.82,down,expansion,flat,Weak,Vacancy direction uses 2020->2024 (2025 unavailable).
+Cyprus,7.60,4.90,4.38,down,17.60,13.00,13.27,down,unclear,up,Weak,Construction direction unclear: insufficient 2020-2025 continuity under selected series. Vacancy direction uses 2020->2024 (2025 unavailable).
+Czechia,2.60,2.60,2.90,flat,8.00,9.10,10.46,up,volatile,down,Strong,Vacancy direction uses 2020->2024 (2025 unavailable).
+Denmark,5.60,6.20,6.37,up,11.70,14.60,13.77,up,expansion,up,Unclear,Vacancy direction uses 2020->2024 (2025 unavailable). Labour-cost differential insufficient continuity.
+Estonia,6.90,7.60,7.44,up,18.30,19.10,20.47,up,unclear,down,Weak,Construction direction unclear: insufficient 2020-2025 continuity under selected series. Vacancy direction uses 2020->2024 (2025 unavailable).
+Finland,7.70,8.40,9.73,up,21.00,18.80,21.93,down,volatile,flat,Weak,Vacancy direction uses 2020->2024 (2025 unavailable).
+France,8.00,7.40,7.67,down,21.50,18.70,19.74,down,volatile,unclear,Weak,Vacancy endpoints unavailable.
+Germany,3.60,3.40,3.76,flat,7.90,6.50,6.95,down,contraction,down,Moderate,No major continuity issues under selected filters.
+Greece,17.60,10.10,8.88,down,38.00,22.50,19.27,down,unclear,up,Strong,Construction direction unclear: insufficient 2020-2025 continuity under selected series. Vacancy direction uses 2020->2024 (2025 unavailable).
+Hungary,4.10,4.50,4.36,up,12.70,15.20,13.93,up,volatile,down,Moderate,Vacancy direction uses 2020->2024 (2025 unavailable).
+Ireland,5.90,4.30,4.67,down,15.80,10.60,11.69,down,unclear,up,Unclear,Construction direction unclear: insufficient 2020-2025 continuity under selected series. Vacancy direction uses 2020->2024 (2025 unavailable). Labour-cost differential insufficient continuity.
+Italy,9.30,6.50,6.05,down,29.80,20.30,20.46,down,expansion,up,Strong,Vacancy direction uses 2020->2024 (2025 unavailable).
+Latvia,8.10,6.90,6.94,down,14.90,13.60,14.71,down,unclear,down,Weak,Construction direction unclear: insufficient 2020-2025 continuity under selected series. Vacancy direction uses 2020->2024 (2025 unavailable).
+Lithuania,8.50,7.10,6.79,down,19.60,16.20,14.12,down,unclear,up,Moderate,Construction direction unclear: insufficient 2020-2025 continuity under selected series. Vacancy direction uses 2020->2024 (2025 unavailable).
+Luxembourg,6.80,6.40,6.53,down,23.20,21.60,18.42,down,volatile,flat,Weak,Vacancy direction uses 2020->2024 (2025 unavailable).
+Malta,4.90,3.20,2.99,down,11.50,9.20,9.63,down,unclear,up,Weak,Construction direction unclear: insufficient 2020-2025 continuity under selected series. Vacancy direction uses 2020->2024 (2025 unavailable).
+Netherlands,4.90,3.70,3.88,down,10.60,8.70,8.83,down,expansion,up,Weak,Vacancy direction uses 2020->2024 (2025 unavailable). Wage pressure uses nearest consistent years (2025 partial quarterly coverage).
+Poland,3.20,2.90,3.14,down,10.80,10.80,12.16,flat,expansion,up,Weak,Vacancy direction uses 2020->2024 (2025 unavailable).
+Portugal,7.10,6.50,6.03,down,22.40,21.60,19.39,down,expansion,up,Strong,Vacancy direction uses 2020->2024 (2025 unavailable).
+Romania,6.10,5.40,6.11,down,21.60,23.90,26.10,up,volatile,flat,Strong,No major continuity issues under selected filters.
+Slovakia,6.70,5.30,5.41,down,20.40,19.20,15.38,down,contraction,up,Strong,Vacancy direction uses 2020->2024 (2025 unavailable).
+Slovenia,5.00,3.70,3.84,down,14.30,10.90,11.93,down,volatile,flat,Strong,Vacancy direction uses 2020->2024 (2025 unavailable).
+Spain,15.50,11.40,10.52,down,38.30,26.50,24.89,down,volatile,up,Weak,Vacancy direction uses 2020->2024 (2025 unavailable).
+Sweden,8.50,8.40,8.87,flat,23.60,24.30,24.25,up,volatile,up,Unclear,Vacancy direction uses 2020->2024 (2025 unavailable). Labour-cost differential insufficient continuity.
