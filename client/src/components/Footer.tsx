@@ -56,7 +56,7 @@ export default function Footer() {
           <h3 className="text-xl font-semibold mb-2">Follow Us</h3>
           <div className="flex gap-6">
             <a
-              href="https://www.facebook.com/TransEuroCareers"
+              href="https://www.facebook.com/profile.php?id=61588526631352"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
