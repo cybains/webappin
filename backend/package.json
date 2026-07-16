@@ -5,7 +5,8 @@
   "main": "fetchAndSaveJobs.mjs",
   "type": "module",
   "scripts": {
-    "start": "node fetchAndSaveJobs.mjs"
+    "start": "node fetchAndSaveJobs.mjs",
+    "test": "node --test ownership.test.mjs"
   },
   "dependencies": {
     "mongoose": "^7.3.4",
