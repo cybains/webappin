@@ -127,6 +127,29 @@ export default function Footer() {
         </motion.div>
       </div>
 
+      <div className="max-w-screen-xl mx-auto mt-10 border-t border-[color:var(--card-border)] pt-6 flex justify-center md:justify-end">
+        <a
+          href="https://amuidesign.org"
+          aria-label="Developed by AMUI Design"
+          className="inline-flex min-h-11 items-center gap-4 rounded-sm text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--primary)]"
+        >
+          <span>Developed by:</span>
+          <span
+            aria-hidden="true"
+            className="block h-[42px] w-[101px] shrink-0 bg-current"
+            style={{
+              maskImage: "url('/amui-logo.png')",
+              WebkitMaskImage: "url('/amui-logo.png')",
+              maskSize: "contain",
+              WebkitMaskSize: "contain",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+              maskPosition: "center",
+              WebkitMaskPosition: "center",
+            }}
+          />
+        </a>
+      </div>
     </footer>
   );
 }
