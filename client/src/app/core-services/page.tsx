@@ -239,7 +239,8 @@ export default function CoreServicesPage() {
           {services.map((s, i) => (
             <div
               key={s.slug}
-              className="transform-gpu transition duration-200 ease-out hover:-translate-y-0.5"
+              id={s.slug}
+              className="scroll-mt-24 transform-gpu transition duration-200 ease-out hover:-translate-y-0.5"
               style={{ transitionDelay: `${i * 20}ms` }}
             >
               <Card className="h-full rounded-2xl shadow-sm transition-shadow hover:shadow-md">
@@ -324,9 +325,10 @@ export default function CoreServicesPage() {
           </CardHeader>
           <CardContent className="space-y-4 text-sm leading-relaxed">
             <p>
-              Sufoniq operates from Lithuania and follows national Employment Law
-              requirements for labour intermediation. Translation: we recruit the
-              clean way.
+              Sufoniq connects workforce and recruitment support with labour-market
+              intelligence and mobility coordination. Sourcing, screening and
+              practical support are defined for each project, with clear
+              responsibilities for employers, candidates and relevant partners.
             </p>
             <ul className="grid gap-2 md:grid-cols-2">
               <li className="flex items-start gap-2">
@@ -351,9 +353,10 @@ export default function CoreServicesPage() {
             </ul>
             <div className="pt-2 text-muted-foreground">
               <p className="text-xs">
-                Note: Country‑specific licensing (e.g., temporary
-                agency/worker‑leasing permits) are handled directly by Sufoniq or
-                through licensed local partners, depending on the project scope.
+                The service scope, delivery responsibilities and any country-specific
+                licensing or local partner requirements are clarified before an
+                engagement. Mobility support does not replace legal counsel or
+                decisions by the relevant authorities.
               </p>
             </div>
           </CardContent>

@@ -542,16 +542,16 @@ export default function EmployersPage() {
               </div>
             </Section>
 
-            <Section id="boundaries" kicker="Boundaries" title="What this platform is - and is not">
+            <Section id="boundaries" kicker="Boundaries" title="Our role in your hiring process">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl border border-black/10 bg-white p-4">
                   <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                     <CheckCircle2 className="h-4 w-4" /> Sufoniq is
                   </div>
                   <ul className="mt-2 list-disc space-y-1 pl-5">
-                    <li>a labour-market intelligence platform for employers</li>
-                    <li>a way to assess viable supply under constraints</li>
-                    <li>a tool for making pipelines more predictable</li>
+                    <li>workforce and recruitment support informed by labour-market intelligence</li>
+                    <li>sourcing and screening shaped by role requirements and eligibility questions</li>
+                    <li>mobility and hiring coordination within an agreed project scope</li>
                   </ul>
                 </div>
                 <div className="rounded-2xl border border-black/10 bg-white p-4">
@@ -559,24 +559,24 @@ export default function EmployersPage() {
                     <XCircle className="h-4 w-4" /> Sufoniq is not
                   </div>
                   <ul className="mt-2 list-disc space-y-1 pl-5">
-                    <li>a recruiting agency</li>
-                    <li>a job board</li>
-                    <li>a visa consultancy</li>
-                    <li>a payroll or EOR provider</li>
+                    <li>a substitute for your hiring decision</li>
+                    <li>a guarantee of placement or a start date</li>
+                    <li>a substitute for legal counsel or an immigration authority</li>
+                    <li>a replacement for your payroll or EOR provider</li>
                   </ul>
                 </div>
               </div>
               <div className="rounded-2xl border border-black/10 bg-white p-4">
                 <div className="text-sm font-semibold text-foreground">Responsibility</div>
                 <p className="mt-2">
-                  We do not make hiring decisions on your behalf. We reduce uncertainty before decisions are made by making constraint points explicit, visible, and verifiable.
+                  You retain the hiring decision. We support sourcing, assessment and coordination within the agreed scope, with responsibilities defined across your team, Sufoniq and relevant partners. Eligibility questions and decisions by authorities remain explicit throughout the process.
                 </p>
               </div>
             </Section>
 
             <Section id="engagement" kicker="Engagement" title="How employers engage">
               <p>
-                Engagement is structured and context-aware. This is not a self-serve consumer flow.
+                Start with your workforce requirement. We assess fit, agree the service scope and define responsibilities before moving into delivery.
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
                 <FlowStep

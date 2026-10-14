@@ -42,10 +42,10 @@ export default function ContactReproPage() {
               <p className="sufoniq-meta-label">CONTACT</p>
               <h2 className="text-3xl font-semibold">Start with context. We&rsquo;ll take it from there.</h2>
               <p className="text-base sufoniq-body-text">
-                Most people start in the platform to understand what&rsquo;s realistically possible.
+                Share the workforce requirement you&rsquo;re working on.
               </p>
               <p className="text-sm sufoniq-body-text">
-                If your situation is complex, uncertain, or needs confirmation, you can talk to a human - without starting from zero.
+                We&rsquo;ll review the context and contact you to discuss fit, scope and next steps.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
@@ -55,7 +55,7 @@ export default function ContactReproPage() {
                 className="rounded-2xl px-6 py-3"
                 onClick={handlePrimaryClick}
               >
-                Request access
+                Discuss your workforce needs
               </Button>
               <Button
                 variant="outline"
@@ -129,10 +129,10 @@ function GeneralAccessForm({ highlight = false }: GeneralAccessFormProps) {
         body: JSON.stringify({
           name: formData.name.trim() || "Anonymous",
           email: emailValue,
-          subject: "Platform access request",
+          subject: "Workforce enquiry",
           message: [
             `Context: ${contextValue}`,
-            "Source: Home / Contact (Access Card)",
+            "Source: Home / Contact (Workforce Enquiry)",
           ].join("\n"),
         }),
       });
@@ -156,7 +156,7 @@ function GeneralAccessForm({ highlight = false }: GeneralAccessFormProps) {
       onSubmit={handleSubmit}
       className={`mt-4 rounded-3xl border border-[color:var(--card-border)] bg-black/0.015 p-4 transition ${highlightClass}`}
     >
-      <div className="text-sm font-semibold text-foreground">Request access</div>
+      <div className="text-sm font-semibold text-foreground">Your workforce enquiry</div>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <label className="grid gap-1">
           <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">EMAIL</span>
@@ -191,7 +191,7 @@ function GeneralAccessForm({ highlight = false }: GeneralAccessFormProps) {
               setFormData((prev) => ({ ...prev, context: event.target.value }))
             }
             className="min-h-[88px] rounded-xl border border-black/10 bg-white px-3 py-2 text-sm text-foreground outline-none transition focus:border-black/20 focus:ring-2 focus:ring-black/10"
-            placeholder="What are you trying to do? Countries, timing, constraints."
+            placeholder="Roles, headcount, work location, timing and known requirements."
           />
         </label>
       </div>
@@ -207,7 +207,7 @@ function GeneralAccessForm({ highlight = false }: GeneralAccessFormProps) {
           )}
           {status === "success" && (
               <p className="text-xs text-emerald-600" aria-live="polite">
-              Request received. We&rsquo;ll respond with the right entry point.
+              Enquiry received. We&rsquo;ll contact you to discuss fit and next steps.
             </p>
           )}
         </div>
@@ -216,7 +216,7 @@ function GeneralAccessForm({ highlight = false }: GeneralAccessFormProps) {
           disabled={!canSubmit || !emailValid || status === "sending"}
           className="inline-flex items-center gap-2 h-12 rounded-2xl bg-primary bg-[color:var(--primary)] px-8 text-base font-semibold text-primary-foreground text-[color:var(--primary-foreground)] transition hover:bg-primary/90 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-60"
         >
-          Request access
+          Send enquiry
           <ArrowRight className="h-4 w-4" />
         </button>
       </div>

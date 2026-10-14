@@ -1,15 +1,9 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useId } from "react";
+import gdpData from "@/data/homepage-gdp.json";
 
-const gdpPerCapitaEU = [
-  { year: 2000, AT: 28000, DE: 25500, PL: 12500, RO: 8000 },
-  { year: 2005, AT: 34000, DE: 31000, PL: 16000, RO: 10500 },
-  { year: 2010, AT: 42000, DE: 39500, PL: 22000, RO: 14500 },
-  { year: 2015, AT: 47000, DE: 44000, PL: 27000, RO: 19500 },
-  { year: 2020, AT: 52000, DE: 50000, PL: 31500, RO: 24500 },
-  { year: 2024, AT: 56000, DE: 54000, PL: 35500, RO: 28500 },
-];
+const gdpPerCapitaEU = gdpData.rows;
 
 const createLinearScale = (domain: [number, number], range: [number, number]) => {
   const [d0, d1] = domain;
@@ -20,19 +14,23 @@ const createLinearScale = (domain: [number, number], range: [number, number]) =>
   return (value: number) => r0 + ((value - d0) / (d1 - d0)) * (r1 - r0);
 };
 
-const formatEuroThousands = (value: number) => `€${(value / 1000).toFixed(0)}k`;
+const formatDollarThousands = (value: number) => `US$${(value / 1000).toFixed(0)}k`;
 
 export const GDPPerCapitaChart = () => {
+  const titleId = useId();
+  const descriptionId = useId();
   const width = 620;
   const height = 240;
-  const margin = { top: 20, right: 20, bottom: 28, left: 56 };
+  const margin = { top: 20, right: 20, bottom: 44, left: 64 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
   const years = gdpPerCapitaEU.map((d) => d.year);
+  const yearTicks = years.filter((year) => year % 5 === 0 || year === gdpData.endYear);
   const values = gdpPerCapitaEU.flatMap((d) => [d.AT, d.DE, d.PL, d.RO]);
   const xScale = createLinearScale([Math.min(...years), Math.max(...years)], [0, innerWidth]);
-  const yScale = createLinearScale([Math.min(...values), Math.max(...values)], [innerHeight, 0]);
+  const yMax = Math.ceil(Math.max(...values) / 10000) * 10000;
+  const yScale = createLinearScale([0, yMax], [innerHeight, 0]);
 
   const colorByKey: Record<string, string> = {
     AT: "#1d4ed8",
@@ -41,16 +39,16 @@ export const GDPPerCapitaChart = () => {
     RO: "#9333ea",
   };
 
-  const yTicks = useMemo(() => {
-    const count = 4;
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const step = (max - min) / count;
-    return Array.from({ length: count + 1 }, (_, i) => Math.round(min + step * i));
-  }, [values]);
+  const yTicks = Array.from({ length: yMax / 10000 + 1 }, (_, i) => i * 10000);
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
+    <figure className="flex h-full w-full flex-col">
+      <figcaption className="mb-1 text-xs text-slate-600">
+        GDP per capita · {gdpData.unit} · {gdpData.startYear}–{gdpData.endYear}
+      </figcaption>
+    <svg viewBox={`0 0 ${width} ${height}`} className="min-h-0 w-full flex-1" role="img" aria-labelledby={`${titleId} ${descriptionId}`}>
+      <title id={titleId}>{`GDP per capita in Austria, Germany, Poland and Romania, ${gdpData.startYear}–${gdpData.endYear}`}</title>
+      <desc id={descriptionId}>Annual World Bank data in constant 2015 US dollars, adjusted for inflation. The vertical axis starts at zero. Economic context, not wages or a measure of hiring availability. Exact figures follow in a table.</desc>
       <g transform={`translate(${margin.left},${margin.top})`}>
         {yTicks.map((tick) => (
           <line
@@ -63,7 +61,7 @@ export const GDPPerCapitaChart = () => {
             strokeDasharray="3 3"
           />
         ))}
-        {years.map((year) => (
+        {yearTicks.map((year) => (
           <line
             key={`grid-x-${year}`}
             x1={xScale(year)}
@@ -86,11 +84,11 @@ export const GDPPerCapitaChart = () => {
             dominantBaseline="middle"
             className="fill-slate-500 text-[10px]"
           >
-            {formatEuroThousands(tick)}
+            {formatDollarThousands(tick)}
           </text>
         ))}
 
-        {years.map((year) => (
+        {yearTicks.map((year) => (
           <text
             key={`label-x-${year}`}
             x={xScale(year)}
@@ -139,5 +137,15 @@ export const GDPPerCapitaChart = () => {
         ))}
       </g>
     </svg>
+      <p className="mt-1 text-[11px] leading-relaxed text-slate-500">
+        Source: <a href={gdpData.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">World Bank WDI</a> · CC BY 4.0 · Retrieved {gdpData.retrievedAt.slice(0, 10)}.
+        {" "}Inflation-adjusted US dollars; not wages or purchasing-power-adjusted figures.
+      </p>
+      <table className="sr-only">
+        <caption>GDP per capita, {gdpData.unit}. Source: World Bank World Development Indicators.</caption>
+        <thead><tr><th scope="col">Year</th>{gdpData.countries.map(country => <th key={country.code} scope="col">{country.name}</th>)}</tr></thead>
+        <tbody>{gdpPerCapitaEU.map(row => <tr key={row.year}><th scope="row">{row.year}</th>{gdpData.countries.map(country => <td key={country.code}>{(row as Record<string, number>)[country.code].toLocaleString("en-US", { maximumFractionDigits: 2 })}</td>)}</tr>)}</tbody>
+      </table>
+    </figure>
   );
 };

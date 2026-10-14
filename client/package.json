@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "data:refresh-homepage-gdp": "node scripts/refresh-homepage-gdp.mjs",
     "lint": "next lint"
   },
   "dependencies": {

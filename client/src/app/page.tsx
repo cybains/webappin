@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import Contact from "@/components/Contact";
@@ -14,25 +15,20 @@ const sectionSpacing = "relative z-10 px-6 py-16 scroll-mt-24";
 
   const tracks = [
   {
-    title: "Work in Europe",
-    description:
-      "Understand where you’re eligible, where demand is real, and which routes are worth the paperwork — before you commit months to the wrong path.",
-    outcome: "TOURISM-LEVEL HYPE IS EASY.\nMARKET REALITY ISN’T.",
-    href: "#apply",
-  },
-  {
-    title: "Live & Work Remotely",
-    description:
-      "Choose a base that holds up legally and financially. Compare countries on residency, tax exposure, and long-term stability — not aesthetics.",
-    outcome: "REMOTE IS FLEXIBLE.\nCOMPLIANCE IS NOT.",
-    href: "#apply",
-  },
-  {
     title: "Hire Across Borders",
     description:
-      "Build cross-border teams with clear constraints: payroll, compliance, and timelines aligned from day one.",
-    outcome: "SCALE WITHOUT DISCOVERING RULES THE HARD WAY.",
-    href: "#employers",
+      "Need people for your team? Explore sourcing, screening and the practical requirements of hiring across borders.",
+    action: "Explore employer support",
+    href: "/employers",
+    primary: true,
+  },
+  {
+    title: "Work in Europe",
+    description:
+      "Planning your next move? Explore support for your job search and the requirements of working in Europe.",
+    action: "Explore job-search support",
+    href: "/core-services#job-search-support",
+    primary: false,
   },
   ];
 
@@ -42,27 +38,28 @@ function IntentRouter() {
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="space-y-2">
           <h2 className="text-3xl md:text-4xl font-semibold">
-            Choose the track that fits the move you are making.
+            Different moves. The same need for clarity.
           </h2>
           <p className="text-sm md:text-base sufoniq-body-text">
-            Different decisions come with different constraints. Start with the one you’re actually facing.
+            Choose your starting point. We’ll show you the support relevant to your situation.
           </p>
         </div>
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2">
           {tracks.map((track) => (
-          <a
+          <Link
             key={track.title}
             href={track.href}
-            className="group block sufoniq-card transition hover:border-primary/60 hover:bg-primary/5"
+            className={`group flex h-full flex-col sufoniq-card transition hover:border-primary/60 hover:bg-primary/5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-700 ${track.primary ? "ring-1 ring-sky-200" : ""}`}
           >
               <h3 className="text-xl font-semibold text-foreground transition group-hover:text-primary">
                 {track.title}
               </h3>
               <p className="mt-3 text-sm sufoniq-body-text">{track.description}</p>
-              <p className="mt-4 text-xs uppercase tracking-[0.3em] text-muted-foreground whitespace-pre-line">
-                {track.outcome}
-              </p>
-            </a>
+              <span className={`mt-auto flex items-center gap-2 pt-5 text-xs font-semibold tracking-wide ${track.primary ? "text-sky-800" : "text-slate-600"}`}>
+                {track.action}
+                <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+              </span>
+            </Link>
           ))}
         </div>
       </div>
@@ -76,23 +73,23 @@ function ProofBlock() {
       <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-[1.25fr_1fr]">
         <div className="space-y-4">
           <div className="space-y-2">
-            <p className="sufoniq-meta-label">Proof</p>
-            <h2 className="text-3xl font-semibold">Growth trends beat reputation.</h2>
+            <p className="sufoniq-meta-label">Market context</p>
+            <h2 className="text-3xl font-semibold">Read the market beyond its reputation.</h2>
           </div>
           <p className="text-base sufoniq-body-text">
-            We use data to avoid wishful thinking.
+            A country’s reputation is a starting point.
           </p>
           <p className="text-base sufoniq-body-text">
-            This chart shows how economies actually move over time — not just where they ended up.
+            Hiring decisions also need a view of how its economy, labour market and mobility conditions are changing.
           </p>
           <p className="text-base sufoniq-body-text">
-            What matters isn’t who’s richest today.
+            Economic trends provide context.
           </p>
           <p className="text-base sufoniq-body-text">
-            It’s where growth is still happening — and where opportunities are still compounding.
+            Role-level demand, candidate availability and eligibility determine what that context means for your workforce plan.
           </p>
           <p className="text-sm sufoniq-body-text">
-            Takeaway: look for momentum, not prestige. Hire, move, or invest where the slope is rising — not where it already flattened out.
+            Takeaway: test the reputation against the requirements of the role. Growth alone does not tell you whether a hiring route is workable.
           </p>
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
             This is why we talk about trajectories, not trophies.
@@ -118,14 +115,14 @@ function Services() {
             We turn signals into decisions that hold up.
           </h2>
           <p className="text-sm md:text-base sufoniq-body-text">
-            We take economic data, mobility rules, and hiring constraints — and turn them into clear paths you can actually act on.
+            We connect market context with your workforce requirement — so sourcing, eligibility and the next steps can be considered together.
           </p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="sufoniq-card">
             <h3 className="text-lg font-semibold mb-2">Decision intelligence</h3>
             <p className="text-sm sufoniq-body-text">
-              We narrow options before we optimise them — removing paths that don’t work so the remaining ones are worth pursuing.
+              Compare sourcing options against your roles, location and timing. See which assumptions support the plan and which still need evidence.
             </p>
             <p className="mt-4 text-xs uppercase tracking-[0.3em] text-muted-foreground">
               Shortlists built on reality, not optimism.
@@ -134,7 +131,7 @@ function Services() {
           <div className="sufoniq-card">
             <h3 className="text-lg font-semibold mb-2">Mobility logic</h3>
             <p className="text-sm sufoniq-body-text">
-              We map legal routes, timelines, and trade-offs upfront, so cross-border moves stay predictable and compliant.
+              Identify eligibility questions, documentation requirements and dependencies before they put pressure on the hiring timeline.
             </p>
             <p className="mt-4 text-xs uppercase tracking-[0.3em] text-muted-foreground">
               Lawful paths that don’t unravel later.
@@ -143,10 +140,10 @@ function Services() {
           <div className="sufoniq-card">
             <h3 className="text-lg font-semibold mb-2">Hiring pipelines</h3>
             <p className="text-sm sufoniq-body-text">
-              We design repeatable, compliance-aware hiring flows that scale across borders without paperwork chaos.
+              Connect sourcing, screening and handoffs through clear criteria and responsibilities across your team and relevant partners.
             </p>
             <p className="mt-4 text-xs uppercase tracking-[0.3em] text-muted-foreground">
-              Teams built faster, with fewer surprises.
+              Clear criteria. Clear ownership. Fewer assumptions.
             </p>
           </div>
         </div>
@@ -167,16 +164,16 @@ function ApplySection() {
                   Apply it to your situation.
                 </p>
                 <h2 className="text-3xl md:text-4xl font-semibold text-foreground">
-                  From principles to a path you can defend.
+                  Your workforce need. A clearer next move.
                 </h2>
               </div>
               <p className="text-sm md:text-base sufoniq-body-text space-y-1">
-                <span>What you’ve seen so far is how decisions hold up in the abstract.</span>
+                <span>Tell us the roles, work location and hiring timeline. </span>
                 <span>
-                  Here, those rules meet your constraints — and only the viable paths remain.
+                  We’ll use that context to assess fit, clarify the scope
                 </span>
                 <span>
-                  You don’t get advice. You get eligibility, trade-offs, and next steps that survive contact with reality.
+                  {" "}and identify the next step.
                 </span>
               </p>
               <div className="flex flex-wrap gap-3">
@@ -184,13 +181,13 @@ function ApplySection() {
                   href="#contact"
                   className="inline-flex items-center justify-center h-12 rounded-2xl bg-primary bg-[color:var(--primary)] px-8 text-base font-semibold text-primary-foreground text-[color:var(--primary-foreground)] transition hover:bg-primary/90 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  Request access to platform
+                  Discuss your workforce needs
                 </a>
                 <a
                   href="/method-trust"
                   className="inline-flex items-center justify-center rounded-2xl border border-border/90 px-6 py-3 text-sm font-semibold text-foreground transition hover:bg-slate-100"
                 >
-                  Read boundaries
+                  See how we work
                 </a>
               </div>
             </div>
@@ -198,19 +195,19 @@ function ApplySection() {
               <div className="sufoniq-card space-y-1">
                 <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">WHAT YOU BRING</p>
                 <p className="text-sm sufoniq-body-text mt-1">
-                  Citizenship, role or hiring need, work model, and the limits you’re operating under.
+                  Roles, headcount, location, timing and known requirements.
                 </p>
               </div>
               <div className="sufoniq-card space-y-1">
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">WHAT EMERGES</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">WHAT WE CLARIFY</p>
                 <p className="text-sm sufoniq-body-text mt-1">
-                  A realistic shortlist, clear trade-offs, and a timeline you can act on.
+                  Sourcing options, verification points, dependencies and responsibilities.
                 </p>
               </div>
               <div className="sufoniq-card space-y-1">
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">WHAT’S OFF THE TABLE</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">WHAT STAYS EXPLICIT</p>
                 <p className="text-sm sufoniq-body-text mt-1">
-                  Guarantees. Loopholes. Anything that doesn’t hold up legally or economically.
+                  Scope, assumptions and decisions that require your team or the relevant authorities.
                 </p>
               </div>
             </div>
@@ -230,12 +227,10 @@ function EmployersLane() {
             <Link href="/employers" className="space-y-3 block">
               <h3 className="text-3xl font-semibold text-foreground">Cross-border hiring, without improvisation.</h3>
               <p className="text-sm sufoniq-body-text">
-                Hiring across borders breaks down when decisions are made ad hoc.
-                This lane is built for teams that need speed and compliance — without guessing where the edges are.
+                More applicants do not automatically mean a workable hiring pipeline. Role fit, eligibility, documentation and timing need to be considered together.
               </p>
               <p className="text-sm sufoniq-body-text">
-                Roles, timelines, jurisdictions, and constraints are treated as inputs.
-                What comes out is a hiring path that holds up operationally and legally.
+                We help your team identify the pressure points and define responsibilities before moving forward.
               </p>
             </Link>
           </div>
@@ -243,11 +238,11 @@ function EmployersLane() {
             href="/employers#access"
             className="inline-flex items-center justify-center h-12 rounded-2xl bg-primary bg-[color:var(--primary)] px-8 text-base font-semibold text-primary-foreground text-[color:var(--primary-foreground)] transition hover:bg-primary/90 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            Request platform access
+            Discuss your hiring requirement
           </Link>
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground pt-3">
             <Link href="/employers" className="text-muted-foreground hover:underline">
-              For teams hiring across Europe — not marketplaces, not shortcuts.
+              For teams hiring across Europe. Built around the realities of the role.
             </Link>
           </p>
         </div>
@@ -259,15 +254,15 @@ function MethodTrustSection() {
   const pillars = [
     {
       title: "Constraint-first",
-      body: "Decisions start with legal, economic, and practical limits — not preferences.",
+      body: "Requirements and eligibility questions inform the plan from the start.",
     },
     {
       title: "Explainability",
-      body: "Outputs come with reasons and trade-offs. No black boxes. No vibes.",
+      body: "Assumptions, trade-offs and verification points are documented.",
     },
     {
       title: "Human-in-the-loop",
-      body: "Edge cases escalate. Automation stops where judgment matters.",
+      body: "Ambiguous cases receive human review. Automation stops where judgment matters.",
     },
   ];
 
@@ -282,7 +277,7 @@ function MethodTrustSection() {
             </h2>
           </Link>
           <p className="text-sm md:text-base sufoniq-body-text">
-            Sufoniq is opinionated about what does not work. Being explicit about limits keeps decisions grounded and serious.
+            You should be able to see what supports a recommendation, what still needs checking and who is responsible for the next decision.
           </p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">

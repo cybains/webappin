@@ -1,37 +1,52 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 
 const STEPS = [
   {
     id: 1,
-    title: "You Start by Seeing the Landscape Clearly",
+    title: "Define the Workforce Need",
     short:
-      "Step back from the noise and see Europe as a set of systems, not just borders.",
+      "Start with the roles, headcount, location and timing your business needs.",
+    bring: "The roles, headcount, work location and target timing.",
+    clarify: "The skills, working conditions and requirements that sourcing needs to reflect.",
+    result: "A hiring brief that gives the next steps a clear starting point.",
   },
   {
     id: 2,
-    title: "You Explore Where Your Capabilities Fit Best",
+    title: "Read the Talent Landscape",
     short:
-      "Match your skills and direction with places and sectors that can actually use them.",
+      "Assess sourcing options against the requirements of the role.",
+    bring: "Your role requirements and any sourcing options you already have in mind.",
+    clarify: "Relevant labour-market signals, candidate availability and assumptions that need testing.",
+    result: "Sourcing options your team can evaluate against the actual requirement.",
   },
   {
     id: 3,
-    title: "You Identify the Frictions Before They Surprise You",
+    title: "Check the Pressure Points",
     short:
-      "Surface constraints early so your expectations match the real terrain.",
+      "Surface eligibility, documentation and timing questions early.",
+    bring: "Known requirements, deadlines and any questions already holding up the plan.",
+    clarify: "Eligibility questions, documentation needs and dependencies requiring verification.",
+    result: "A clear view of what needs checking before you commit to the route.",
   },
   {
     id: 4,
-    title: "You Navigate Mobility With Confidence",
+    title: "Map the Hiring Route",
     short:
-      "Turn borders into logistics, not barriers, across jobs, cities, and projects.",
+      "Connect sourcing, screening and mobility through clear responsibilities.",
+    bring: "Your hiring process and the people responsible for each handoff.",
+    clarify: "How sourcing, screening and mobility steps connect across your team and relevant partners.",
+    result: "A route with responsibilities and dependencies made explicit.",
   },
   {
     id: 5,
-    title: "You Shape a Path That Actually Holds Up",
+    title: "Agree the Next Steps",
     short:
-      "Co-create a strategy that makes economic sense and personal sense.",
+      "Define the scope, verification points and actions your team can take.",
+    bring: "Your priorities, open questions and the decisions your team needs to make.",
+    clarify: "The service scope, documented assumptions and next concrete actions.",
+    result: "An agreed scope, clear responsibilities and actions to move the hiring plan forward. You retain the hiring decision.",
   },
 ];
 
@@ -45,7 +60,8 @@ function AnimatedNetworkCanvas({ activeStep }: { activeStep: number }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animationFrameId: number;
+    let animationFrameId: number | undefined;
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     let width = canvas.offsetWidth;
     let height = canvas.offsetHeight;
 
@@ -59,7 +75,6 @@ function AnimatedNetworkCanvas({ activeStep }: { activeStep: number }) {
     };
 
     resize();
-    window.addEventListener("resize", resize);
 
     const POINT_COUNT = 40;
     const points = Array.from({ length: POINT_COUNT }).map(() => ({
@@ -96,8 +111,10 @@ function AnimatedNetworkCanvas({ activeStep }: { activeStep: number }) {
       }
 
       points.forEach((p, index) => {
-        p.x += p.vx;
-        p.y += p.vy;
+        if (!motionPreference.matches) {
+          p.x += p.vx;
+          p.y += p.vy;
+        }
 
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
@@ -114,23 +131,38 @@ function AnimatedNetworkCanvas({ activeStep }: { activeStep: number }) {
         ctx.fill();
       });
 
-      animationFrameId = window.requestAnimationFrame(draw);
+      if (!motionPreference.matches) animationFrameId = window.requestAnimationFrame(draw);
     };
 
+    const handleMotionChange = () => {
+      if (animationFrameId !== undefined) window.cancelAnimationFrame(animationFrameId);
+      animationFrameId = undefined;
+      draw();
+    };
+    const handleResize = () => {
+      resize();
+      if (motionPreference.matches) draw();
+    };
+    window.addEventListener("resize", handleResize);
+    motionPreference.addEventListener("change", handleMotionChange);
     draw();
 
     return () => {
-      window.cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", resize);
+      if (animationFrameId !== undefined) window.cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", handleResize);
+      motionPreference.removeEventListener("change", handleMotionChange);
     };
   }, [activeStep]);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />;
+  return <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />;
 }
 
 export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState<number>(1);
   const [hasInteracted, setHasInteracted] = useState<boolean>(false);
+  const [mobileOpenStep, setMobileOpenStep] = useState<number | null>(1);
+  const instanceId = useId();
+  const tabs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const handleStepChange = (next: number) => {
     const clamped = ((next - 1 + STEPS.length) % STEPS.length) + 1;
@@ -140,6 +172,17 @@ export default function HowItWorks() {
 
   const goPrev = () => handleStepChange(activeStep - 1);
   const goNext = () => handleStepChange(activeStep + 1);
+  const handleTabKey = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let next = index;
+    if (event.key === "ArrowRight") next = (index + 1) % STEPS.length;
+    else if (event.key === "ArrowLeft") next = (index - 1 + STEPS.length) % STEPS.length;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = STEPS.length - 1;
+    else return;
+    event.preventDefault();
+    handleStepChange(STEPS[next].id);
+    tabs.current[next]?.focus();
+  };
 
   return (
     <section
@@ -151,22 +194,56 @@ export default function HowItWorks() {
 
       <div className="relative space-y-8">
         <div className="space-y-2 max-w-3xl">
-          <p className="sufoniq-meta-label text-sky-300">How It Works</p>
+          <p className="sufoniq-meta-label !text-sky-300">Planning your hiring route</p>
           <h2 className="text-2xl md:text-3xl font-semibold text-slate-50">
             You steer. We sharpen the map.
           </h2>
           <p className="text-sm md:text-base text-slate-300">
-            A clearer strategy starts with how you see Europe — and how we help you read it.
+            You bring the workforce requirement. These five planning steps help us assess the market, test assumptions and agree a hiring route before delivery begins.
           </p>
+          <p className="text-xs md:text-sm text-sky-200/80">
+            Explore each step to see what we clarify together.
+          </p>
+          <p className="hidden md:block text-xs text-slate-400">Use the left and right arrow keys when a step is focused.</p>
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="relative">
+          <div className="space-y-3 md:hidden">
+            {STEPS.map((step) => {
+              const isOpen = mobileOpenStep === step.id;
+              return (
+                <div key={step.id} className={`overflow-hidden rounded-3xl border ${isOpen ? "border-sky-400/80 bg-slate-900/80 ring-1 ring-sky-400/20" : "border-slate-700/60 bg-slate-900/50"}`}>
+                  <h3>
+                    <button
+                      type="button"
+                      id={`${instanceId}-mobile-step-${step.id}`}
+                      aria-expanded={isOpen}
+                      aria-controls={`${instanceId}-mobile-panel-${step.id}`}
+                      onClick={() => {
+                        setMobileOpenStep(isOpen ? null : step.id);
+                        if (!isOpen) handleStepChange(step.id);
+                      }}
+                      className="flex min-h-12 w-full items-start gap-3 px-4 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sky-300"
+                    >
+                      <span className={`shrink-0 text-sm font-semibold tabular-nums ${isOpen ? "text-sky-300" : "text-slate-400"}`} aria-hidden="true">{String(step.id).padStart(2, "0")}</span>
+                      <span className="flex-1"><span className="block text-sm font-medium text-slate-50">{step.title}</span><span className="mt-1 block text-xs font-normal leading-relaxed text-slate-300">{step.short}</span></span>
+                      <span className="shrink-0 text-lg leading-5 text-sky-300" aria-hidden="true">{isOpen ? "−" : "+"}</span>
+                    </button>
+                  </h3>
+                  <div id={`${instanceId}-mobile-panel-${step.id}`} role="region" aria-labelledby={`${instanceId}-mobile-step-${step.id}`} hidden={!isOpen} className="border-t border-slate-700/60 px-4 py-4 text-sm leading-relaxed text-slate-200">
+                    <StepDetails step={step} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="relative hidden md:block">
             {hasInteracted && (
               <>
                 <button
                   type="button"
                   onClick={goPrev}
+                  aria-label="Previous step"
                   className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 h-8 w-8 items-center justify-center rounded-full border border-slate-600/80 bg-slate-950/90 text-slate-200 text-xs hover:border-sky-400/70 hover:text-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/60 focus:ring-offset-0 transition-colors z-20"
                 >
                   ←
@@ -174,6 +251,7 @@ export default function HowItWorks() {
                 <button
                   type="button"
                   onClick={goNext}
+                  aria-label="Next step"
                   className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 h-8 w-8 items-center justify-center rounded-full border border-slate-600/80 bg-slate-950/90 text-slate-200 text-xs hover:border-sky-400/70 hover:text-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500/60 focus:ring-offset-0 transition-colors z-20"
                 >
                   →
@@ -181,30 +259,33 @@ export default function HowItWorks() {
               </>
             )}
 
-            <div className="flex flex-col md:flex-row gap-3 md:gap-4">
-              {STEPS.map((step) => {
+            <div className="flex flex-col md:flex-row gap-3 md:gap-4" role="tablist" aria-label="Explore the hiring process">
+              {STEPS.map((step, index) => {
                 const isActive = activeStep === step.id;
 
                 const base =
-                  "group relative rounded-3xl border border-slate-800/70 bg-slate-950/70 px-4 py-3 text-left transition-all duration-300 ease-out flex-1";
+                  "group relative rounded-3xl border px-4 py-3 text-left transition-colors duration-300 ease-out flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 motion-reduce:transition-none";
 
-                const inactiveDesktop = hasInteracted
-                  ? " md:flex-[0.9] md:opacity-60 md:scale-[0.985] hover:border-slate-500/80 hover:bg-slate-900/70 border-slate-700/60 bg-slate-900/50"
-                  : " border-slate-700/60 bg-slate-900/50 hover:border-slate-500/80 hover:bg-slate-900/70";
+                const inactiveDesktop = " border-slate-700/60 bg-slate-900/50 hover:border-slate-500/80 hover:bg-slate-900/70";
 
-                const activeDesktop = hasInteracted
-                  ? " md:flex-[1.25] md:translate-x-2 md:z-10 border-sky-400/70 bg-slate-900/80"
-                  : " border-sky-400/70 bg-slate-900/80";
+                const activeDesktop = " border-sky-400/80 bg-slate-900/80 ring-1 ring-sky-400/20";
 
                 return (
                   <button
                     key={step.id}
                     type="button"
+                    ref={(element) => { tabs.current[index] = element; }}
+                    id={`${instanceId}-step-${step.id}`}
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls={`${instanceId}-panel-${step.id}`}
+                    tabIndex={isActive ? 0 : -1}
+                    onKeyDown={(event) => handleTabKey(event, index)}
                     onClick={() => handleStepChange(step.id)}
                     className={base + (isActive ? activeDesktop : inactiveDesktop)}
                   >
                     <div className="flex items-start gap-2 mb-1">
-                      <span className="mt-[1px] h-1.5 w-6 rounded-full bg-sky-400/80" />
+                      <span className={`shrink-0 text-xs font-semibold tabular-nums ${isActive ? "text-sky-300" : "text-slate-400"}`} aria-hidden="true">{String(step.id).padStart(2, "0")}</span>
                       <span className="text-xs md:text-sm font-medium text-slate-50">
                         {step.title}
                       </span>
@@ -216,80 +297,38 @@ export default function HowItWorks() {
             </div>
           </div>
 
-          <div className="mt-2 rounded-3xl border border-slate-700/80 bg-slate-950/80 p-4 md:p-5 text-sm md:text-base text-slate-200 leading-relaxed">
-            {activeStep === 1 && (
-              <>
-                <p className="mb-2">
-                  You step back from the noise and look at Europe the way an economist would: not as a map of
-                  countries, but as a set of shifting systems.
-                </p>
-                <p className="mb-2">
-                  We help you interpret what actually matters — where momentum is building, where it’s cooling, and
-                  where your ambitions intersect with reality.
-                </p>
-                <p className="text-slate-300">This is where your direction begins: with clarity, not guesswork.</p>
-              </>
-            )}
-            {activeStep === 2 && (
-              <>
-                <p className="mb-2">
-                  You’re not choosing random destinations or sectors. You’re matching your skills, interests, and
-                  trajectory with places and industries that are genuinely receptive to them.
-                </p>
-                <p className="mb-2">
-                  We help you read the subtle signals: the pull of talent, the rise of certain clusters, the places
-                  where people like you tend to thrive.
-                </p>
-                <p className="text-slate-300">You bring the capability. We help you place it where it compounds.</p>
-              </>
-            )}
-            {activeStep === 3 && (
-              <>
-                <p className="mb-2">
-                  Every plan has pressure points — economic, regulatory, or practical. You get ahead of them.
-                </p>
-                <p className="mb-2">
-                  We help you understand what might slow you down, redirect you, or demand trade-offs — so your
-                  expectations match the real terrain.
-                </p>
-                <p className="text-slate-300">Good strategy isn’t about avoiding friction. It’s about anticipating it.</p>
-              </>
-            )}
-            {activeStep === 4 && (
-              <>
-                <p className="mb-2">
-                  Whether you’re changing jobs, crossing borders, considering a new city, or building something of
-                  your own — mobility is the engine behind your next step.
-                </p>
-                <p className="mb-2">
-                  We bring the frameworks, pathways, and practical understanding. You decide how far you want to go.
-                </p>
-                <p className="text-slate-300">Borders become logistics, not barriers.</p>
-              </>
-            )}
-            {activeStep === 5 && (
-              <>
-                <p className="mb-2">
-                  With the landscape, your strengths, the constraints, and the mobility routes in view, your path
-                  becomes visible — usually clearer than you expected.
-                </p>
-                <p className="mb-2">
-                  We work with you to refine it: the direction, the rationale, the timeline, and the next concrete
-                  actions.
-                </p>
-                <p className="text-slate-300">
-                  The result isn’t a plan we hand you. It’s a strategy we build together — one that makes economic
-                  sense and personal sense.
-                </p>
-              </>
-            )}
+          <div className="hidden md:block">
+          {STEPS.map((step) => (
+            <div
+              key={step.id}
+              id={`${instanceId}-panel-${step.id}`}
+              role="tabpanel"
+              aria-labelledby={`${instanceId}-step-${step.id}`}
+              hidden={activeStep !== step.id}
+              tabIndex={0}
+              className="mt-2 rounded-3xl border border-slate-700/80 bg-slate-950/80 p-4 md:p-5 text-sm md:text-base text-slate-200 leading-relaxed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+            >
+              <h3 className="mb-4 text-sm font-semibold text-sky-200">{String(step.id).padStart(2, "0")} / {step.title}</h3>
+              <StepDetails step={step} />
+            </div>
+          ))}
           </div>
 
           <p className="text-xs md:text-sm text-slate-400 pt-1">
-            It’s still your journey. We just make sure the logic is on your side.
+            It’s still your decision. We help make the logic clear.
           </p>
         </div>
       </div>
     </section>
+  );
+}
+
+function StepDetails({ step }: { step: (typeof STEPS)[number] }) {
+  return (
+    <>
+      <p className="mb-2"><strong className="font-medium text-slate-50">You bring:</strong> {step.bring}</p>
+      <p className="mb-2"><strong className="font-medium text-slate-50">We clarify:</strong> {step.clarify}</p>
+      <p className="text-slate-300"><strong className="font-medium text-slate-50">Together:</strong> {step.result}</p>
+    </>
   );
 }
