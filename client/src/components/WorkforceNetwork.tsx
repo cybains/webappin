@@ -13,8 +13,8 @@ export default function WorkforceNetwork() {
   return (
     <section className={`${styles.section} mx-auto max-w-6xl px-6 py-10`} aria-labelledby="network-title">
       <div className={styles.intro}>
-        <div><p className={styles.eyebrow}>The connected workforce system</p><h2 id="network-title">One hire. A whole web of dependencies.</h2><p>A change in one part can affect the route elsewhere. Explore how people, requirements and delivery connect.</p></div>
-        <button type="button" onMouseEnter={() => { void loadGraph(); }} onFocus={() => { void loadGraph(); }} onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="workforce-network-explorer">{open ? "Close the network" : "Explore the network"}<span aria-hidden="true">{open ? "−" : "↗"}</span></button>
+        <div><p className={styles.eyebrow}>The chain behind a hire</p><h2 id="network-title">A cross-border hire is a chain, not a search.</h2><p>Role, market, eligibility, permit, documents, start date. A change in one can affect the others. Explore the dependencies that need to stay connected.</p></div>
+        <button type="button" onMouseEnter={() => { void loadGraph(); }} onFocus={() => { void loadGraph(); }} onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="workforce-network-explorer">{open ? "Close the chain" : "Open the chain"}<span aria-hidden="true">{open ? "−" : "↗"}</span></button>
       </div>
       <div id="workforce-network-explorer" hidden={!open}>{open && <Graph selected={selected} onSelect={setSelected} />}</div>
     </section>

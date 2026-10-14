@@ -104,7 +104,7 @@ export default function Footer() {
                 className="text-[var(--foreground)]"
                 style={{ textShadow: "0 1px 3px rgba(15, 23, 42, 0.6)" }}
               >
-                © 2025 UAB Skillaxis. Built with optimism, maintained with paperwork.
+                © {new Date().getFullYear()} UAB Skillaxis, trading as Sufoniq · Vilnius, Lithuania · Vienna, Austria · <a href="mailto:support@sufoniq.com" className="underline underline-offset-4">support@sufoniq.com</a>
               </p>
             </div>
           </div>

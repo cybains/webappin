@@ -5,6 +5,8 @@ const countries: Record<string, { name: string }> = migration.countries;
 
 export default function HeroMapLegend() {
   return (
+    <div className="relative z-10">
+    <p className="mx-auto max-w-6xl px-6 text-xs leading-relaxed text-slate-600">People move, and jobs stay open. This map uses Eurostat migration flows and EU job-vacancy rates: context for where to look, rather than evidence of availability for your role.</p>
     <details className="relative z-10 mx-auto max-w-6xl px-6 py-3 text-[11px] leading-relaxed text-slate-600">
       <summary className="cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-700">Map: blue → into the EU · teal → out of the EU ({migration.year}) · amber → EU vacancy pressure ({demand.period}) · Data and sources</summary>
       <div className="mt-3 max-w-3xl space-y-3 rounded-xl border border-slate-200 bg-white p-4">
@@ -14,5 +16,6 @@ export default function HeroMapLegend() {
         <p>Amber outlines show the highest job vacancy rates among EU members with comparable data in {demand.period}: {demand.countries.map(country => `${country.name} ${country.rate}%`).join(" · ")}. Vacancy rates indicate unfilled demand, not a direct shortage ranking. <a href={demand.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Eurostat source and coverage notes</a>.</p>
       </div>
     </details>
+    </div>
   );
 }

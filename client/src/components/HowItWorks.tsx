@@ -4,50 +4,45 @@ import React, { useEffect, useId, useRef, useState } from "react";
 
 const STEPS = [
   {
-    id: 1,
-    title: "Define the Workforce Need",
-    short:
-      "Start with the roles, headcount, location and timing your business needs.",
-    bring: "The roles, headcount, work location and target timing.",
-    clarify: "The skills, working conditions and requirements that sourcing needs to reflect.",
-    result: "A hiring brief that gives the next steps a clear starting point.",
+    "id": 1,
+    "title": "Define the requirement",
+    "short": "Roles, numbers, location and the date you need people working.",
+    "bring": "The roles, headcount, work location and target start date.",
+    "clarify": "The initial requirement, known constraints and whether our support could fit.",
+    "result": "A starting brief for the scope discussion."
   },
   {
-    id: 2,
-    title: "Read the Talent Landscape",
-    short:
-      "Assess sourcing options against the requirements of the role.",
-    bring: "Your role requirements and any sourcing options you already have in mind.",
-    clarify: "Relevant labour-market signals, candidate availability and assumptions that need testing.",
-    result: "Sourcing options your team can evaluate against the actual requirement.",
+    "id": 2,
+    "title": "Agree the scope",
+    "short": "What we deliver, who owns what and how planning begins.",
+    "bring": "Your priorities, existing partners and the decisions your team needs to make.",
+    "clarify": "The planning and delivery scope, responsibilities and assumptions to verify.",
+    "result": "A written scope and agreed first action before substantive planning or delivery begins."
   },
   {
-    id: 3,
-    title: "Check the Pressure Points",
-    short:
-      "Surface eligibility, documentation and timing questions early.",
-    bring: "Known requirements, deadlines and any questions already holding up the plan.",
-    clarify: "Eligibility questions, documentation needs and dependencies requiring verification.",
-    result: "A clear view of what needs checking before you commit to the route.",
+    "id": 3,
+    "title": "Test the market",
+    "short": "Which sourcing options fit the role and its requirements.",
+    "bring": "Your role criteria and any candidates, agencies or channels already in play.",
+    "clarify": "Relevant availability signals, competing demand and assumptions behind the sourcing options.",
+    "result": "Sourcing options to compare, with the evidence and unresolved questions made explicit."
   },
   {
-    id: 4,
-    title: "Map the Hiring Route",
-    short:
-      "Connect sourcing, screening and mobility through clear responsibilities.",
-    bring: "Your hiring process and the people responsible for each handoff.",
-    clarify: "How sourcing, screening and mobility steps connect across your team and relevant partners.",
-    result: "A route with responsibilities and dependencies made explicit.",
+    "id": 4,
+    "title": "Check eligibility early",
+    "short": "The requirements that determine whether a hire can start.",
+    "bring": "Known requirements, candidate circumstances and deadlines relevant to the route.",
+    "clarify": "Right-to-work requirements, permit pathways, qualification recognition and documents needing verification.",
+    "result": "A list of checks, responsibilities and timing dependencies to resolve before commitment."
   },
   {
-    id: 5,
-    title: "Agree the Next Steps",
-    short:
-      "Define the scope, verification points and actions your team can take.",
-    bring: "Your priorities, open questions and the decisions your team needs to make.",
-    clarify: "The service scope, documented assumptions and next concrete actions.",
-    result: "An agreed scope, clear responsibilities and actions to move the hiring plan forward. You retain the hiring decision.",
-  },
+    "id": 5,
+    "title": "Build the route",
+    "short": "Responsibilities and handoffs from sourcing to the planned start.",
+    "bring": "Your hiring process and the people who sign off at each stage.",
+    "clarify": "How sourcing, screening, offers and mobility steps connect across your team, candidates and relevant partners.",
+    "result": "A documented route with owners, timing dependencies and next actions. You retain the hiring decision."
+  }
 ];
 
 function AnimatedNetworkCanvas({ activeStep }: { activeStep: number }) {
@@ -211,15 +206,15 @@ export default function HowItWorks() {
 
       <div className="relative space-y-8">
         <div className="space-y-2 max-w-3xl">
-          <p className="sufoniq-meta-label !text-sky-300">Planning your hiring route</p>
+          <p className="sufoniq-meta-label !text-sky-300">Planning the route</p>
           <h2 className="text-2xl md:text-3xl font-semibold text-slate-50">
-            You steer. We sharpen the map.
+            From requirement to a workable hiring route.
           </h2>
           <p className="text-sm md:text-base text-slate-300">
-            You bring the workforce requirement. These five planning steps help us assess the market, test assumptions and agree a hiring route before delivery begins.
+            We start with your requirement and agree the scope before substantive work begins. The agreed planning work then tests the market, checks eligibility and connects the steps to a planned start.
           </p>
           <p className="text-xs md:text-sm text-sky-200/80">
-            Explore each step to see what we clarify together.
+            Open a step to see what you bring, what we clarify and the output we work towards.
           </p>
           <p className="hidden md:block text-xs text-slate-400">Use the left and right arrow keys when a step is focused.</p>
         </div>
@@ -332,7 +327,7 @@ export default function HowItWorks() {
           </div>
 
           <p className="text-xs md:text-sm text-slate-400 pt-1">
-            It’s still your decision. We help make the logic clear.
+            If the route does not hold up, we explain the issues before you commit.
           </p>
         </div>
       </div>
