@@ -43,3 +43,20 @@ Country briefs, API routes, `/maptest`, and `/growth-atlas` are excluded. No `no
 `lastmod` uses Git commit dates for page sources and local imports. Insights article dates follow changes to their individual content blocks and shared rendering dependencies. Uncommitted sources or unavailable Git history cause dates to be omitted. Deploying unchanged content does not reset dates. Live API/data updates without source changes are not tracked.
 
 After deploying, submit `https://sufoniq.com/sitemap.xml` in Google Search Console.
+# Local performance verification
+
+The homepage uses a static WebP map derived from the existing MapLibre demo country tiles and palette. `public/homepage-world-map.svg` retains the vector source; the interactive `WorldMap` component is unchanged for other pages. Map source: https://github.com/maplibre/demotiles (Natural Earth country boundaries).
+
+Geist is self-hosted from `src/app/fonts`, with its SIL Open Font License included. The source font is from https://github.com/google/fonts/tree/main/ofl/geist. There is no external font request at runtime or build time.
+
+The planning-section canvas renders only while visible, pauses in hidden tabs, respects reduced motion, and limits animation to 30 frames per second.
+
+To verify a production build without touching an active development cache, use PowerShell:
+
+```powershell
+$env:SUFONIQ_BUILD_DIR = '.next-performance-check'
+npm run build
+Remove-Item Env:SUFONIQ_BUILD_DIR
+```
+
+The usual `npm run dev`, `npm run build`, and `npm start` still use `.next`. Retest the published site with mobile Lighthouse after deployment; bundle and compilation checks do not establish a new performance score.

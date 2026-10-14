@@ -62,13 +62,16 @@ function AnimatedNetworkCanvas({ activeStep }: { activeStep: number }) {
 
     let animationFrameId: number | undefined;
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let isInViewport = false;
+    let lastFrame = 0;
+    const shouldAnimate = () => isInViewport && !document.hidden && !motionPreference.matches;
     let width = canvas.offsetWidth;
     let height = canvas.offsetHeight;
 
     const resize = () => {
       width = canvas.offsetWidth;
       height = canvas.offsetHeight;
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -84,7 +87,12 @@ function AnimatedNetworkCanvas({ activeStep }: { activeStep: number }) {
       vy: (Math.random() - 0.5) * 0.15,
     }));
 
-    const draw = () => {
+    const draw = (timestamp = 0) => {
+      if (timestamp && timestamp - lastFrame < 1000 / 30 && shouldAnimate()) {
+        animationFrameId = window.requestAnimationFrame(draw);
+        return;
+      }
+      lastFrame = timestamp;
       ctx.clearRect(0, 0, width, height);
 
       ctx.fillStyle = "rgba(4, 7, 15, 0.9)";
@@ -111,9 +119,9 @@ function AnimatedNetworkCanvas({ activeStep }: { activeStep: number }) {
       }
 
       points.forEach((p, index) => {
-        if (!motionPreference.matches) {
-          p.x += p.vx;
-          p.y += p.vy;
+        if (shouldAnimate()) {
+          p.x += p.vx * 2;
+          p.y += p.vy * 2;
         }
 
         if (p.x < 0) p.x = width;
@@ -131,25 +139,34 @@ function AnimatedNetworkCanvas({ activeStep }: { activeStep: number }) {
         ctx.fill();
       });
 
-      if (!motionPreference.matches) animationFrameId = window.requestAnimationFrame(draw);
+      if (shouldAnimate()) animationFrameId = window.requestAnimationFrame(draw);
     };
 
     const handleMotionChange = () => {
       if (animationFrameId !== undefined) window.cancelAnimationFrame(animationFrameId);
       animationFrameId = undefined;
+      lastFrame = 0;
       draw();
     };
     const handleResize = () => {
       resize();
-      if (motionPreference.matches) draw();
+      if (!shouldAnimate()) draw();
     };
+    const observer = new IntersectionObserver(([entry]) => {
+      isInViewport = entry.isIntersecting;
+      handleMotionChange();
+    });
+    observer.observe(canvas);
     window.addEventListener("resize", handleResize);
+    document.addEventListener("visibilitychange", handleMotionChange);
     motionPreference.addEventListener("change", handleMotionChange);
     draw();
 
     return () => {
       if (animationFrameId !== undefined) window.cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleMotionChange);
+      observer.disconnect();
       motionPreference.removeEventListener("change", handleMotionChange);
     };
   }, [activeStep]);

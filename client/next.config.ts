@@ -12,6 +12,8 @@ const HOSTNAME = "www.sufoniq.com";
 const CANONICAL = "https://sufoniq.com";
 
 const nextConfig: NextConfig = {
+  // Isolate verification builds from an active local development server.
+  distDir: process.env.SUFONIQ_BUILD_DIR || ".next",
   async redirects() {
     return [
       {

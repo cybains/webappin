@@ -49,7 +49,7 @@ export default function Navbar() {
         </Link>
 
         {/* Centered nav */}
-        <nav className="hidden flex-1 justify-center md:flex">
+        <nav className="hidden flex-1 justify-center xl:flex" aria-label="Main navigation">
           <ul className="flex items-center justify-center gap-5 text-sm font-medium text-slate-600">
             {navItems.map(({ label, href }) => (
               <li key={label}>
@@ -74,14 +74,16 @@ export default function Navbar() {
             type="button"
             size="lg"
             onClick={scrollToContact}
-            className="hidden items-center justify-center rounded-2xl text-base md:inline-flex"
+            className="hidden items-center justify-center rounded-2xl text-base xl:inline-flex"
           >
             Request access
           </Button>
           <button
-            className="md:hidden text-3xl focus:outline-none"
+            className="xl:hidden text-3xl focus:outline-none"
             onClick={toggleMenu}
-            aria-label="Toggle Menu"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-navigation"
           >
             {isOpen ? "✕" : "☰"}
           </button>
@@ -90,9 +92,11 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <nav
+        id="mobile-navigation"
+        aria-label="Mobile navigation"
         className={`${
           isOpen ? "block" : "hidden"
-        } md:hidden border-t border-[color:var(--card-border)] bg-[var(--background)] px-6 py-4`}
+        } xl:hidden border-t border-[color:var(--card-border)] bg-[var(--background)] px-6 py-4`}
       >
         <ul className="flex flex-col gap-3 text-sm font-medium">
           {navItems.map(({ label, href }) => (

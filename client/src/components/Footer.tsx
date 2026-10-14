@@ -1,8 +1,6 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+
 import { FaFacebook, FaTiktok } from "react-icons/fa6";
 
 export default function Footer() {
@@ -11,11 +9,7 @@ export default function Footer() {
       <div className="border-t border-[color:var(--card-border)]/60 mb-10" />
       <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* Quick Links */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div>
           <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
           <ul className="space-y-2 text-sm">
             <li>
@@ -44,14 +38,11 @@ export default function Footer() {
               </Link>
             </li>
           </ul>
-        </motion.div>
+        </div>
 
         {/* Social Media */}
-        <motion.div
+        <div
           className="flex flex-col gap-4"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
         >
           <h3 className="text-xl font-semibold mb-2">Follow Us</h3>
           <div className="flex gap-6">
@@ -74,14 +65,10 @@ export default function Footer() {
               <FaTiktok size={24} />
             </a>
           </div>
-        </motion.div>
+        </div>
 
         {/* Powered By */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
+        <div>
           <h3 className="text-xl font-semibold mb-4">Powered By</h3>
           <ul className="text-sm space-y-2">
             <li>
@@ -102,14 +89,11 @@ export default function Footer() {
               </Link>
             </li>
           </ul>
-        </motion.div>
+        </div>
 
         {/* Brand Ethos */}
-        <motion.div
+        <div
           className="text-sm flex flex-col justify-between"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2 }}
         >
           <div>
             <p className="mb-4">Helping you relocate without rage-quitting since 2025.</p>
@@ -124,7 +108,7 @@ export default function Footer() {
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <div className="max-w-screen-xl mx-auto mt-10 border-t border-[color:var(--card-border)] pt-6 flex justify-center md:justify-end">

@@ -61,6 +61,7 @@ export default function ContactReproPage() {
                 variant="outline"
                 size="lg"
                 title="Chat on WhatsApp"
+                aria-label="Chat on WhatsApp"
                 className="rounded-full px-4 py-3 text-[#25D366] hover:text-[#1aa957] hover:bg-[#25D366]/10"
                 onClick={() => window.open(whatsappHref, "_blank", "noopener,noreferrer")}
               >

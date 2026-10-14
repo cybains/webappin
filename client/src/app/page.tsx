@@ -1,6 +1,3 @@
-"use client";
-
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import Hero from "@/components/Hero";
@@ -8,8 +5,7 @@ import HowItWorks from "@/components/HowItWorks";
 import Contact from "@/components/Contact";
 import { GDPPerCapitaChart } from "@/components/charts/GDPPerCapitaChart";
 import { StructuralGridBand } from "@/components/StructuralGridBand";
-
-const WorldMap = dynamic(() => import("@/components/WorldMap"), { ssr: false });
+import HomepageMap from "@/components/HomepageMap";
 
 const sectionSpacing = "relative z-10 px-6 py-16 scroll-mt-24";
 
@@ -300,7 +296,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-backgroundLight text-textLight dark:bg-backgroundDark dark:text-textDark relative">
       <div className="absolute top-0 left-0 w-full h-screen -z-10 opacity-40 pointer-events-none">
-        <WorldMap />
+        <HomepageMap />
       </div>
 
       <section id="hero" className="h-[70vh] relative z-10 bg-transparent">
