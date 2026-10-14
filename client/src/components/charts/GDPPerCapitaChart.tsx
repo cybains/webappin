@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useId } from "react";
+import React from "react";
 import gdpData from "@/data/homepage-gdp.json";
 
 const gdpPerCapitaEU = gdpData.rows;
@@ -17,8 +15,8 @@ const createLinearScale = (domain: [number, number], range: [number, number]) =>
 const formatDollarThousands = (value: number) => `US$${(value / 1000).toFixed(0)}k`;
 
 export const GDPPerCapitaChart = () => {
-  const titleId = useId();
-  const descriptionId = useId();
+  const titleId = "homepage-gdp-title";
+  const descriptionId = "homepage-gdp-description";
   const width = 620;
   const height = 240;
   const margin = { top: 20, right: 20, bottom: 44, left: 64 };

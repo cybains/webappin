@@ -23,8 +23,7 @@
     "lastModified": "2025-11-17T08:02:53.000Z"
   },
   {
-    "path": "/insights",
-    "lastModified": "2026-10-14T15:06:03.000Z"
+    "path": "/insights"
   },
   {
     "path": "/insights/frameworks/constraint-stacking",
@@ -35,8 +34,7 @@
     "lastModified": "2026-02-10T03:09:56.000Z"
   },
   {
-    "path": "/insights/growth",
-    "lastModified": "2026-10-14T15:06:03.000Z"
+    "path": "/insights/growth"
   },
   {
     "path": "/insights/signals/churn-is-signal",

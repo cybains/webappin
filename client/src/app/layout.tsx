@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/Footer";
-const geist = localFont({ src: "./fonts/Geist-Variable.woff", weight: "100 900", display: "swap", variable: "--font-geist", fallback: ["Arial"] });
+const geist = localFont({ src: "./fonts/Geist-Variable.woff2", weight: "100 900", display: "swap", variable: "--font-geist", fallback: ["Arial"] });
 
 export const metadata: Metadata = {
   title: "SUFONIQ",

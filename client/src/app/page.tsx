@@ -6,6 +6,8 @@ import Contact from "@/components/Contact";
 import { GDPPerCapitaChart } from "@/components/charts/GDPPerCapitaChart";
 import { StructuralGridBand } from "@/components/StructuralGridBand";
 import HomepageMap from "@/components/HomepageMap";
+import WorkforceNetwork from "@/components/WorkforceNetwork";
+import HeroMapLegend from "@/components/HeroMapLegend";
 
 const sectionSpacing = "relative z-10 px-6 py-16 scroll-mt-24";
 
@@ -295,16 +297,18 @@ function MethodTrustSection() {
 export default function Home() {
   return (
     <main className="min-h-screen bg-backgroundLight text-textLight dark:bg-backgroundDark dark:text-textDark relative">
-      <div className="absolute top-0 left-0 w-full h-screen -z-10 opacity-40 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-screen -z-10 pointer-events-none">
         <HomepageMap />
       </div>
 
       <section id="hero" className="h-[70vh] relative z-10 bg-transparent">
         <Hero />
       </section>
+      <HeroMapLegend />
 
       <StructuralGridBand>
         <IntentRouter />
+        <WorkforceNetwork />
 
         <div className="how-it-works-divider" aria-hidden />
 

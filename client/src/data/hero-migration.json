@@ -1,0 +1,449 @@
+{
+  "year": 2024,
+  "source": "Eurostat",
+  "retrievedAt": "2026-10-14T16:36:29.662Z",
+  "countries": {
+    "DE": {
+      "name": "Germany",
+      "lon": 10.5,
+      "lat": 51
+    },
+    "ES": {
+      "name": "Spain",
+      "lon": -3.7,
+      "lat": 40
+    },
+    "AT": {
+      "name": "Austria",
+      "lon": 14,
+      "lat": 47.5
+    },
+    "NL": {
+      "name": "Netherlands",
+      "lon": 5.3,
+      "lat": 52.2
+    },
+    "IN": {
+      "name": "India",
+      "lon": 78,
+      "lat": 22
+    },
+    "PH": {
+      "name": "Philippines",
+      "lon": 122,
+      "lat": 12
+    },
+    "US": {
+      "name": "United States",
+      "lon": -98,
+      "lat": 39
+    },
+    "AU": {
+      "name": "Australia",
+      "lon": 134,
+      "lat": -25
+    },
+    "MA": {
+      "name": "Morocco",
+      "lon": -7,
+      "lat": 32
+    },
+    "CO": {
+      "name": "Colombia",
+      "lon": -74,
+      "lat": 4
+    },
+    "TR": {
+      "name": "Türkiye",
+      "lon": 35,
+      "lat": 39
+    },
+    "RS": {
+      "name": "Serbia",
+      "lon": 21,
+      "lat": 44
+    },
+    "GH": {
+      "name": "Ghana",
+      "lon": -1.2,
+      "lat": 7.9
+    },
+    "NG": {
+      "name": "Nigeria",
+      "lon": 8,
+      "lat": 9
+    },
+    "EG": {
+      "name": "Egypt",
+      "lon": 30,
+      "lat": 27
+    },
+    "ZA": {
+      "name": "South Africa",
+      "lon": 25,
+      "lat": -29
+    },
+    "BR": {
+      "name": "Brazil",
+      "lon": -52,
+      "lat": -12
+    },
+    "AR": {
+      "name": "Argentina",
+      "lon": -64,
+      "lat": -34
+    },
+    "CA": {
+      "name": "Canada",
+      "lon": -106,
+      "lat": 56
+    },
+    "CN": {
+      "name": "China",
+      "lon": 104,
+      "lat": 35
+    },
+    "PK": {
+      "name": "Pakistan",
+      "lon": 69,
+      "lat": 30
+    },
+    "VN": {
+      "name": "Viet Nam",
+      "lon": 106,
+      "lat": 16
+    }
+  },
+  "routes": [
+    {
+      "from": "IN",
+      "to": "DE",
+      "direction": "inbound",
+      "persons": 47904,
+      "status": "e",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "DE",
+      "to": "IN",
+      "direction": "outbound",
+      "persons": 8379,
+      "status": "e",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "PH",
+      "to": "DE",
+      "direction": "inbound",
+      "persons": 5591,
+      "status": "e",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "DE",
+      "to": "PH",
+      "direction": "outbound",
+      "persons": 1050,
+      "status": "e",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "US",
+      "to": "DE",
+      "direction": "inbound",
+      "persons": 15564,
+      "status": "e",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "DE",
+      "to": "US",
+      "direction": "outbound",
+      "persons": 16026,
+      "status": "e",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "TR",
+      "to": "DE",
+      "direction": "inbound",
+      "persons": 64294,
+      "status": "e",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "DE",
+      "to": "TR",
+      "direction": "outbound",
+      "persons": 20381,
+      "status": "e",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "MA",
+      "to": "ES",
+      "direction": "inbound",
+      "persons": 132998,
+      "status": "",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=ES&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "ES",
+      "to": "MA",
+      "direction": "outbound",
+      "persons": 51008,
+      "status": "",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=ES&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "CO",
+      "to": "ES",
+      "direction": "inbound",
+      "persons": 172599,
+      "status": "",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=ES&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "ES",
+      "to": "CO",
+      "direction": "outbound",
+      "persons": 48670,
+      "status": "",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=ES&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "RS",
+      "to": "AT",
+      "direction": "inbound",
+      "persons": 3463,
+      "status": "",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=AT&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "AT",
+      "to": "RS",
+      "direction": "outbound",
+      "persons": 2842,
+      "status": "",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=AT&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "AU",
+      "to": "NL",
+      "direction": "inbound",
+      "persons": 1835,
+      "status": "",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=NL&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "NL",
+      "to": "AU",
+      "direction": "outbound",
+      "persons": 1714,
+      "status": "",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=NL&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "GH",
+      "to": "DE",
+      "direction": "inbound",
+      "persons": 3293,
+      "status": "e",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "DE",
+      "to": "GH",
+      "direction": "outbound",
+      "persons": 867,
+      "status": "e",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "NG",
+      "to": "DE",
+      "direction": "inbound",
+      "persons": 2541,
+      "status": "e",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "DE",
+      "to": "NG",
+      "direction": "outbound",
+      "persons": 374,
+      "status": "e",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "EG",
+      "to": "DE",
+      "direction": "inbound",
+      "persons": 7626,
+      "status": "e",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "DE",
+      "to": "EG",
+      "direction": "outbound",
+      "persons": 2134,
+      "status": "e",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "ZA",
+      "to": "NL",
+      "direction": "inbound",
+      "persons": 3602,
+      "status": "",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=NL&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "NL",
+      "to": "ZA",
+      "direction": "outbound",
+      "persons": 812,
+      "status": "",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=NL&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "BR",
+      "to": "ES",
+      "direction": "inbound",
+      "persons": 21481,
+      "status": "",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=ES&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "ES",
+      "to": "BR",
+      "direction": "outbound",
+      "persons": 12225,
+      "status": "",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=ES&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "AR",
+      "to": "ES",
+      "direction": "inbound",
+      "persons": 53660,
+      "status": "",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=ES&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "ES",
+      "to": "AR",
+      "direction": "outbound",
+      "persons": 18846,
+      "status": "",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=ES&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "CA",
+      "to": "NL",
+      "direction": "inbound",
+      "persons": 1470,
+      "status": "",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=NL&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "NL",
+      "to": "CA",
+      "direction": "outbound",
+      "persons": 1313,
+      "status": "",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=NL&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "CN",
+      "to": "DE",
+      "direction": "inbound",
+      "persons": 16992,
+      "status": "e",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "DE",
+      "to": "CN",
+      "direction": "outbound",
+      "persons": 7422,
+      "status": "e",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "PK",
+      "to": "DE",
+      "direction": "inbound",
+      "persons": 10318,
+      "status": "e",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "DE",
+      "to": "PK",
+      "direction": "outbound",
+      "persons": 664,
+      "status": "e",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "VN",
+      "to": "DE",
+      "direction": "inbound",
+      "persons": 13391,
+      "status": "e",
+      "dataset": "migr_imm5prv",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm5prv?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    },
+    {
+      "from": "DE",
+      "to": "VN",
+      "direction": "outbound",
+      "persons": 1562,
+      "status": "e",
+      "dataset": "migr_emi3nxt",
+      "apiUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi3nxt?lang=en&freq=A&time=2024&geo=DE&sex=T&age=TOTAL&agedef=COMPLET&unit=NR"
+    }
+  ],
+  "missing": [],
+  "sourceUrls": {
+    "inbound": "https://ec.europa.eu/eurostat/databrowser/view/migr_imm5prv/default/table?lang=en",
+    "outbound": "https://ec.europa.eu/eurostat/databrowser/view/migr_emi3nxt/default/table?lang=en"
+  },
+  "definition": "Annual changes of usual residence. All ages and sexes; not employment-only movement. Locations and arcs are schematic country connections, not actual travel paths. Selected reported corridors, not all migration or a ranking. e = estimated; p = provisional; b = break in series."
+}
