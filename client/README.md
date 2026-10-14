@@ -34,3 +34,12 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Automatic sitemap
+
+Next.js configuration runs `scripts/generate-sitemap.mjs` before development and production builds. It discovers static App Router pages and articles in `src/lib/insights/content.ts`, then generates `src/generated/sitemap.json` for `/sitemap.xml`.
+
+Country briefs, API routes, `/maptest`, and `/growth-atlas` are excluded. No `noindex` tags are added. New dynamic route families need a content registry in the generator; route groups are supported, while private and parallel route folders are skipped.
+
+`lastmod` uses Git commit dates for page sources and local imports. Insights article dates follow changes to their individual content blocks and shared rendering dependencies. Uncommitted sources or unavailable Git history cause dates to be omitted. Deploying unchanged content does not reset dates. Live API/data updates without source changes are not tracked.
+
+After deploying, submit `https://sufoniq.com/sitemap.xml` in Google Search Console.

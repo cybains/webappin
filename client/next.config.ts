@@ -1,4 +1,12 @@
 import type { NextConfig } from "next";
+import { execFileSync } from "node:child_process";
+import path from "node:path";
+
+// Generate before Next loads routes, including builds that bypass npm scripts.
+execFileSync(process.execPath, [path.join(process.cwd(), "scripts/generate-sitemap.mjs")], {
+  cwd: process.cwd(),
+  stdio: "inherit",
+});
 
 const HOSTNAME = "www.sufoniq.com";
 const CANONICAL = "https://sufoniq.com";

@@ -1,25 +1,18 @@
 import { NextResponse } from "next/server";
+import pages from "@/generated/sitemap.json";
 
 export const runtime = "nodejs";
 
 const BASE_URL = "https://sufoniq.com";
-const URLS = [
-  "/",
-  "/about",
-  "/core-services",
-  "/countries",
-  "/methodology",
-  "/privacy-policy",
-  "/terms-conditions",
-];
+const escapeXml = (value: string) => value.replace(/[<>&"']/g, (character) => ({
+  "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&apos;",
+}[character]!));
 
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${URLS.map(
-  (path) => `  <url>
-    <loc>${BASE_URL}${path}</loc>
-    <changefreq>monthly</changefreq>
-    <priority>${path === "/" ? "1.0" : "0.7"}</priority>
+${pages.map(
+  (page: { path: string; lastModified?: string }) => `  <url>
+    <loc>${escapeXml(`${BASE_URL}${page.path}`)}</loc>${page.lastModified ? `\n    <lastmod>${escapeXml(page.lastModified)}</lastmod>` : ""}
   </url>`,
 ).join("\n")}
 </urlset>`;

@@ -4,6 +4,8 @@ export const runtime = "nodejs";
 
 const CONTENT = `User-agent: *
 Allow: /
+Disallow: /api/
+
 Sitemap: https://sufoniq.com/sitemap.xml
 `;
 
