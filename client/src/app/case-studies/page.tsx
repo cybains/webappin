@@ -1,6 +1,9 @@
+import { createPageMetadata } from "@/lib/seo";
 ﻿import Link from "next/link";
 import { formatIndicatorValue, loadContextSnapshots, type ContextSnapshot } from "@/lib/contextSnapshots";
 import { StructuralGridBand } from "@/components/StructuralGridBand";
+
+export const metadata = createPageMetadata("/case-studies", "Cross-border Hiring Case Studies | Sufoniq", "Explore Sufoniq’s analysis of work and hiring in Europe: the decisions, requirements and dependencies behind cross-border recruitment and mobility.");
 
 const useCases = [
   {
@@ -137,14 +140,13 @@ export default async function UseCasesPage() {
       <StructuralGridBand>
         <section className="mx-auto max-w-5xl space-y-10 px-5 py-14">
           <header className="space-y-3">
-            <h1 className="text-3xl font-semibold md:text-4xl">Situations we observe</h1>
+            <h1 className="text-3xl font-semibold md:text-4xl">Case studies: work and hiring in Europe</h1>
             <p className="text-base text-[var(--muted)]">
-              This page collects recurring mobility situations we see again and again.
+              Explore the decisions, constraints and dependencies behind cross-border work and hiring.
             </p>
             <p className="text-base text-[var(--muted)]">
-              Each block describes what tends to happen before tools, partners, or actions are even relevant.
+              These analyses show how we examine a situation, question assumptions and identify what needs checking before moving forward.
             </p>
-            <p className="text-base text-[var(--muted)]">No pitch. No shortcuts. Just patterns.</p>
           </header>
 
           <div className="space-y-12">

@@ -1,12 +1,9 @@
+import { createPageMetadata } from "@/lib/seo";
 ﻿import Link from "next/link";
 import { StructuralGridBand } from "@/components/StructuralGridBand";
 import { BetterGrowthChapters } from "@/components/BetterGrowthHomepage";
 
-export const metadata = {
-  title: "Growth dissertation | Sufoniq Insights",
-  description:
-    "A chaptered review of how growth works, mixing charts and takeaways. Use it for interpretation, not advice.",
-};
+export const metadata = createPageMetadata("/insights/growth", "Economic Growth & Regional Divergence | Sufoniq Insights", "Explore a chaptered analysis of economic growth, momentum and regional divergence, with charts and interpretations of what national indicators can show.");
 
 export default function GrowthInsightsPage() {
   return (

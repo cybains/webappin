@@ -1,12 +1,8 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 
 const LAST_UPDATED = "October 2, 2025";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | Sufoniq",
-  description:
-    "Learn how Sufoniq (UAB Skillaxis) collects, uses, and protects personal data across our global talent platform.",
-};
+export const metadata = createPageMetadata("/privacy-policy", "Privacy Policy | Sufoniq", "Read how Sufoniq, operated by UAB Skillaxis, collects and uses personal data, including contact enquiries, sharing, retention and privacy rights.");
 
 export default function PrivacyPolicyPage() {
   return (

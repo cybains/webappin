@@ -1,14 +1,11 @@
-import type { Metadata } from "next";
+import { siteMetadata } from "@/lib/seo";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/Footer";
 const geist = localFont({ src: "./fonts/Geist-Variable.woff2", weight: "100 900", display: "swap", variable: "--font-geist", fallback: ["Arial"] });
 
-export const metadata: Metadata = {
-  title: "SUFONIQ",
-  description: "Relocate without the panic — jobs, advice, and a plan that actually makes sense.",
-};
+export const metadata = siteMetadata;
 
 export default function RootLayout({
   children,

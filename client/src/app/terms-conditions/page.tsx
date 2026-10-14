@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 
 /**
  * Terms & Conditions page for Sufoniq by UAB Skillaxis
@@ -17,14 +17,9 @@ const WEBSITE = "sufoniq.com"; // used for copy only; no external calls
 const LAST_UPDATED_ISO = "2025-10-02"; // YYYY-MM-DD
 
 // ---------- UI TEXT ----------
-const PAGE_TITLE = `Terms & Conditions | ${BRAND}`;
 const TAGLINE = "Ground Rules for a Future‑Proof Mobility & Employment Experience";
 
-export const metadata: Metadata = {
-  title: PAGE_TITLE,
-  description:
-    `Read the Terms & Conditions for ${BRAND} by ${COMPANY_LEGAL}. This page covers both consumers (B2C) and business customers (B2B), including EU‑specific rights, privacy/GDPR hooks, subscription terms, acceptable use, and liability.`,
-};
+export const metadata = createPageMetadata("/terms-conditions", "Terms & Conditions | Sufoniq", "Read the terms for Sufoniq services by UAB Skillaxis, including service scope, payments, responsibilities and terms for consumers and business customers.");
 
 const sections = [
   { id: "who-we-are", label: "Who we are" },

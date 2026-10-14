@@ -1,3 +1,6 @@
+import { createPageMetadata } from "@/lib/seo";
+export const metadata = createPageMetadata("/", "Cross-border Recruitment & Mobility | Sufoniq", "Find workforce support for European employers: sourcing, screening and coordination of eligibility, documents and hiring timelines. Discuss a role with Sufoniq.");
+
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import Hero from "@/components/Hero";

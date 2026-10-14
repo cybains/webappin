@@ -6,7 +6,7 @@ import ts from "typescript";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const app = path.join(root, "src/app");
-const excluded = new Set(["/country", "/maptest", "/growth-atlas", "/api"]);
+const excluded = new Set(["/country", "/maptest", "/growth-atlas", "/api", "/jobs"]);
 const entries = new Map();
 const dateCache = new Map();
 
@@ -66,7 +66,18 @@ function walk(directory, segments = []) {
     walk(path.join(directory, item.name), next);
   }
   const page = ["page.tsx", "page.ts", "page.jsx", "page.js"].map(name => path.join(directory, name)).find(existsSync);
-  if (page) entries.set("/" + segments.join("/"), { path: "/" + segments.join("/"), lastModified: lastModified(dependencies(page)) });
+  if (page) {
+    const sources = dependencies(page);
+    // Include ancestor metadata layouts when computing content modification dates.
+    let parent = directory;
+    while (parent.startsWith(app)) {
+      const layout = path.join(parent, "layout.tsx");
+      if (existsSync(layout)) for (const file of dependencies(layout)) sources.add(file);
+      if (parent === app) break;
+      parent = path.dirname(parent);
+    }
+    entries.set("/" + segments.join("/"), { path: "/" + segments.join("/"), lastModified: lastModified(sources) });
+  }
 }
 
 walk(app);

@@ -1,3 +1,4 @@
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -15,10 +16,12 @@ export async function generateMetadata({
   const insight = getInsightBySlug(slugParts);
   if (!insight) return {};
 
-  return {
-    title: `${insight.title} | Sufoniq Insights`,
-    description: insight.framing,
-  };
+  return createPageMetadata(
+    "/insights/" + insight.slugParts.join("/"),
+    insight.title + " | Sufoniq Insights",
+    insight.framing,
+    "article",
+  );
 }
 
 function renderBlock(block: BodyBlock, index: number) {
