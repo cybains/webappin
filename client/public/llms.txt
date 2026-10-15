@@ -7,7 +7,7 @@ The canonical website is https://sufoniq.com. Insights explain data and systems;
 ## Services and company
 
 - [Home](https://sufoniq.com/): Overview of work, remote living, and cross-border hiring.
-- [Case studies](https://sufoniq.com/case-studies): Analyses of cross-border work and hiring situations.
+- [Hiring in Practice](https://sufoniq.com/hiring-in-practice): Analyses of cross-border work and hiring situations.
 - [Core services](https://sufoniq.com/core-services): Service scope and practical support.
 - [Employers](https://sufoniq.com/employers): Cross-border hiring information.
 - [About](https://sufoniq.com/about): Company background.

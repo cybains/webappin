@@ -6,9 +6,6 @@
     "path": "/about"
   },
   {
-    "path": "/case-studies"
-  },
-  {
     "path": "/core-services"
   },
   {
@@ -21,10 +18,16 @@
     "path": "/ghana-tde"
   },
   {
+    "path": "/hiring-in-practice"
+  },
+  {
     "path": "/insights"
   },
   {
     "path": "/insights/frameworks/constraint-stacking"
+  },
+  {
+    "path": "/insights/frameworks/cross-border-hiring-decisions"
   },
   {
     "path": "/insights/frameworks/lawful-not-random"

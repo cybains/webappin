@@ -1,292 +1,16 @@
 "use client";
 
-// Sufoniq – Ghana Truck Driver Mobility Page
-// Single light-mode page for Ghanaian drivers, Lithuanian employers, and Ghana recruitment agencies.
-
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-
-type SectionKey = "drivers" | "agencies" | "employers" | "sufoniq";
-
-type ListEntry = string | { label: string; value: string };
-
-type DriverSubSection = {
-  key: string;
-  label: string;
-  description?: string;
-  highlights?: { title: string; detail: string; accent?: string }[];
-  dualLists?: { title: string; entries: string[]; accentTitle?: string }[];
-  lists?: { title: string; entries: ListEntry[]; footnote?: string }[];
-};
-
-type AudienceSection = {
-  key: SectionKey;
-  label: string;
-  title: string;
-  description: string;
-  highlights: { title: string; detail: string; accent?: string }[];
-  dualLists?: { title: string; entries: string[]; accentTitle?: string }[];
-  lists?: { title: string; entries: ListEntry[]; footnote?: string }[];
-  subSections?: DriverSubSection[];
-};
-
-const timelineEntries: ListEntry[] = [
-  { label: "Registration & document check", value: "2-10 days" },
-  { label: "Employer match & confirmation", value: "1-3 weeks" },
-  { label: "Ghana procedures (medicals, police clearance)", value: "1-4 weeks" },
-  { label: "Work permit decision (Lithuania)", value: "2-6 weeks" },
-  { label: "Visa submission & approval", value: "1-4 weeks" },
-  { label: "Flight booking & arrival", value: "0-7 days" },
-];
-
-const costEntries: ListEntry[] = [
-  { label: "Ghana documentation & prep", value: "€175–€320" },
-  { label: "Flight (ACC → VNO)", value: "€390–€650 one-way" },
-  { label: "Code 95 in Lithuania", value: "€240–€300" },
-  { label: "Code 95 + C/CE package", value: "€700–€1,050" },
-  { label: "All-in range (docs + flight + Code 95)", value: "≈ €930–€2,150" },
-];
-
-const driverHighlights = [
-  {
-    title: "Guaranteed job in Lithuania",
-    detail: "Drivers receive a confirmed Lithuanian employer and position outline before any paperwork starts.",
-  },
-  {
-    title: "Work visa + TRP support",
-    detail: "Sufoniq manages Lithuanian work permit, TRP, and MIGRIS submissions in partnership with the employer.",
-  },
-  {
-    title: "Code 95 & tachograph guidance",
-    detail: "We show you whether to secure your Code 95 and tachograph card in Ghana or after arrival.",
-  },
-  {
-    title: "Relocation & onboarding",
-    detail: "Airport pickup, registration, training, and integration are handled so you can focus on the road.",
-  },
-  {
-    title: "No recruitment fees",
-    detail: "Drivers only cover legitimate travel and document costs—never charges to secure a job.",
-    accent: "text-emerald-600",
-  },
-];
-
-const driverDualLists = [
-  {
-    title: "Drivers cover",
-    entries: [
-      "Medical examination in Ghana",
-      "Police clearance",
-      "Passport (new or renewal)",
-      "Document notarisation / attestation",
-      "Translations if needed",
-      "Air ticket to Lithuania",
-      "Personal travel preparation costs",
-      "Optional: Code 95 training (if done in Ghana)",
-    ],
-  },
-  {
-    title: "Drivers do NOT pay",
-    entries: [
-      "Recruitment fees",
-      "Visa fees",
-      "Work permit fees",
-      "Temporary residence permit (TRP) fees",
-      "Any fee to secure or reserve the job",
-    ],
-    accentTitle: "text-green-700",
-  },
-];
-
-const driverRequirementsList = {
-  title: "Requirements for Ghanaian drivers",
-  entries: [
-    "Valid Ghanaian driving licence - Category C/CE or equivalent",
-    "Minimum 2+ years heavy truck / articulated experience",
-    "Clean police clearance and medically fit for professional driving",
-    "Good verbal English communication skills",
-    "Passport valid for at least 18 months",
-    "Willingness to complete EU Code 95 and tachograph certification",
-  ],
-};
-
-const driverProcessList = {
-  title: "Step-by-step deployment process",
-  entries: [
-    "Registration - sign up via our Ghana partner",
-    "Document check - passport, licence, and experience verified",
-    "Employer match - driver matched to a Lithuanian transport company",
-    "Ghana procedures - medicals, police clearance, and travel prep",
-    "Visa & permits - Sufoniq manages the Lithuanian legal steps",
-    "Visa approval - immigration processing fee is paid and the flight is booked",
-    "Arrival & onboarding - training, testing, and integration in Lithuania",
-    "Employment start - driver begins full-time work after passing",
-  ],
-};
-
-const driverTimelineList = {
-  title: "Deployment timeline (6-10 weeks)",
-  entries: timelineEntries,
-  footnote: "*Fastest deployments happen when documents are completed early — allow up to 12 weeks as a safety buffer.",
-};
-
-const driverCostList = {
-  title: "Evidence-based cost planning",
-  entries: costEntries,
-  footnote:
-    "Code 95 training is handled in Lithuania, not Ghana. Sufoniq never charges recruitment fees; every figure above is a third-party cost.",
-};
-
-const audienceSections: AudienceSection[] = [
-  {
-    key: "drivers",
-    label: "Drivers",
-    title: "For Ghanaian professional drivers",
-    description:
-      "We focus on Category C/CE truck drivers with real experience who want a legal, stable path to Europe. Everything is built around clarity: confirmed jobs, clean legal processes, and honest expectations.",
-    highlights: driverHighlights,
-    dualLists: driverDualLists,
-    lists: [driverRequirementsList, driverProcessList, driverTimelineList, driverCostList],
-    subSections: [
-      {
-        key: "promises",
-        label: "Promises",
-        description: "What we guarantee before a single visa form is filed.",
-        highlights: driverHighlights,
-      },
-      {
-        key: "expectations",
-        label: "Expectations",
-        description: "What every Ghanaian driver must prepare and cover.",
-        dualLists: driverDualLists,
-        lists: [driverRequirementsList],
-      },
-      {
-        key: "moving-parts",
-        label: "Moving parts",
-        description: "How we choreograph the process, from paperwork to flights.",
-        lists: [driverProcessList, driverTimelineList, driverCostList],
-      },
-    ],
-  },
-  {
-    key: "agencies",
-    label: "Agencies",
-    title: "For Ghana recruitment agencies",
-    description:
-      "Our model is built on trust, EU law alignment, and ILO compliance. We work with highly diligent agencies who value long-term economic relationships.",
-    highlights: [
-      {
-        title: "Trusted collaborations",
-        detail: "We only collaborate with highly diligent, ILO-compliant Ghana partners who invest in long-term economic results.",
-      },
-      {
-        title: "Fair recruitment",
-        detail: "Partner agencies must fully comply with ILO and EU fair recruitment and worker protection laws.",
-      },
-      {
-        title: "Paid after success",
-        detail: "Payments are released only after the driver visa is approved—no upfront driver charges.",
-      },
-    ],
-    lists: [
-      {
-        title: "Why connect with Sufoniq?",
-        entries: [
-          "Sufoniq co-builds programs only with highly diligent, ILO and EU law compliant agencies.",
-          "Partners must document integrity, ethics, and transparent candidate handling.",
-          "Agencies are paid only after driver visa approval (no upfront driver charges).",
-          "We invest in long-lasting economic relationships instead of transactional recruitment.",
-          "Introduce yourself via the contact form and mention \"Agency\" in the message.",
-        ],
-      },
-    ],
-  },
-  {
-    key: "employers",
-    label: "Employers",
-    title: "For Lithuanian transport employers",
-    description:
-      "We build stable, compliant driver pipelines from Ghana, managed from Europe. Our model is designed to reduce risk and increase retention.",
-    highlights: [
-      {
-        title: "Large pool of drivers",
-        detail: "Experienced LT/TTD and heavy truck drivers with regional road discipline are available.",
-      },
-      {
-        title: "Fast documentation",
-        detail: "Ghanaian timelines compare favorably with many other sending regions.",
-      },
-      {
-        title: "Retention & ethics",
-        detail: "We focus on performance, transparency, and a mutual code of conduct.",
-      },
-    ],
-    lists: [
-      {
-        title: "Why Ghana?",
-        entries: [
-          "Large pool of experienced LT/TTD and heavy truck drivers",
-          "Strong road discipline, often from GCC experience (KSA, UAE, Qatar)",
-          "Fast documentation timelines compared with many other regions",
-          "High English proficiency and a compatible work ethic",
-          "Higher retention rates compared with some Asian recruitment channels",
-        ],
-      },
-      {
-        title: "Why Sufoniq?",
-        entries: [
-          "European-managed company based in Lithuania and Austria",
-          "End-to-end mobility partner, not just a CV forwarding agency",
-          "Structured, transparent processes and documentation",
-          "ILO- and EU-law compliant, zero recruitment fees for drivers",
-          "Low risk for employers with a focus on performance and retention",
-          "Selective Ghana partnerships keep standards and integrity aligned",
-        ],
-      },
-    ],
-  },
-  {
-    key: "sufoniq",
-    label: "Sufoniq",
-    title: "About Sufoniq",
-    description:
-      "For drivers and employers we keep the model simple: recruitment is free for drivers and legal mobility work is covered on the European side.",
-    highlights: [
-      {
-        title: "Permit support",
-        detail: "Work permit, TRP, and MIGRIS handling is managed directly from Lithuania.",
-      },
-      {
-        title: "Clear communication",
-        detail: "Structured documentation and timeline updates keep everyone aligned.",
-      },
-      {
-        title: "Fair service fee",
-        detail: "A small immigration processing fee is invoiced only after visa approval.",
-      },
-    ],
-    lists: [
-      {
-        title: "Sufoniq covers",
-        entries: [
-          "Work permit fee in Lithuania",
-          "Temporary residence permit (TRP) fee",
-          "MIGRIS and other Lithuanian processing fees",
-          "Employer coordination and documentation",
-          "Relocation administration on the European side",
-        ],
-      },
-    ],
-  },
-];
+import { motion, useReducedMotion } from "framer-motion";
+import { audienceSections, paymentResponsibilities, type SectionKey } from "./content";
 
 export default function Page() {
+  const reduceMotion = useReducedMotion();
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<SectionKey>("drivers");
-  const [activeDriverSubSection, setActiveDriverSubSection] = useState("promises");
+  const [activeDriverSubSection, setActiveDriverSubSection] = useState("support");
   const currentIndex = audienceSections.findIndex((section) => section.key === activeSection);
   const normalizedIndex = currentIndex === -1 ? 0 : currentIndex;
   const tabWidth = 100 / audienceSections.length;
@@ -299,6 +23,7 @@ export default function Page() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (submitting) return;
     const form = e.currentTarget;
     const data = new FormData(form);
 
@@ -378,7 +103,7 @@ export default function Page() {
       <div className="w-full h-1 flex">
         <div className="flex-1 bg-red-600" />
         <div className="flex-1 bg-yellow-400" />
-        <div className="flex-1 bg-green-600" />
+        <div className="flex-1 bg-green-700" />
       </div>
 
       {/* Hero – shared positioning */}
@@ -390,32 +115,30 @@ export default function Page() {
               For Ghanaian drivers · Lithuanian employers · Ghana recruitment partners
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
-              Legal, ILO + EU law compliant mobility for Ghanaian truck drivers to Europe.
+              Professional driving opportunities in Lithuania. A clear route from Ghana.
             </h1>
             <p className="text-sm leading-relaxed text-slate-700 md:text-base">
-              The people at Sufoniq help Ghanaian professional truck drivers relocate to Europe, starting with Lithuania.
-              We build programs with highly diligent, ILO- and EU-law-compliant Ghana agencies so drivers are never
-              charged recruitment fees.
+              Sufoniq coordinates recruitment and mobility support for experienced Ghanaian truck drivers. The employer decides the hire; authorities decide applications. Drivers pay Sufoniq no fees, and payment responsibilities are set out before you commit.
             </p>
 
             {/* Key value props */}
             <div className="grid gap-3 text-xs text-slate-800 sm:grid-cols-3 md:text-sm">
               <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
-                <p className="font-medium">Guaranteed employer</p>
+                <p className="font-medium">Employer confirmation</p>
                 <p className="mt-1 text-[11px] text-slate-600 md:text-xs">
-                  Drivers are matched with a Lithuanian employer before any visa or permit process begins.
+                  The employer confirms the role and terms before the application route proceeds.
                 </p>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
                 <p className="font-medium">No recruitment fees</p>
                 <p className="mt-1 text-[11px] text-slate-600 md:text-xs">
-                  Fully aligned with ILO guidelines – drivers never pay to access a job.
+                  The employer pays Sufoniq, and Sufoniq pays the Ghana agency. Drivers pay neither for recruitment.
                 </p>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
-                <p className="font-medium">End‑to‑end support</p>
+                <p className="font-medium">Employer-funded flight and Code 95</p>
                 <p className="mt-1 text-[11px] text-slate-600 md:text-xs">
-                  From document checks and permits to arrival, onboarding, and integration in Lithuania.
+                  Your employer pays for the flight and Code 95 training. Preparation costs are listed below.
                 </p>
               </div>
             </div>
@@ -424,7 +147,7 @@ export default function Page() {
             <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:gap-4">
               <a
                 href="#callback"
-                className="inline-flex items-center justify-center rounded-full border border-green-600 bg-green-600 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-green-600/30 transition hover:bg-yellow-400 hover:border-yellow-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50"
+                className="inline-flex items-center justify-center rounded-full border border-green-600 bg-green-700 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-green-600/30 transition hover:bg-green-800 hover:border-green-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50"
               >
                 Talk to us
               </a>
@@ -441,7 +164,7 @@ export default function Page() {
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
               At a glance
             </p>
-            <h2 className="mt-1 text-lg font-semibold text-slate-900">From Ghana to Lithuania in clear steps</h2>
+            <h2 className="mt-1 text-lg font-semibold text-slate-900">The route and who decides each step</h2>
 
             <ol className="mt-4 space-y-3 text-sm text-slate-800">
               <li className="flex gap-3">
@@ -450,7 +173,7 @@ export default function Page() {
                 </span>
                 <div>
                   <p className="font-medium">Registration</p>
-                  <p className="text-xs text-slate-600">Driver signs up through our exclusive Ghana recruitment partner.</p>
+                  <p className="text-xs text-slate-600">You provide your information; Sufoniq and the Ghana partner review the initial requirement.</p>
                 </div>
               </li>
               <li className="flex gap-3">
@@ -459,7 +182,7 @@ export default function Page() {
                 </span>
                 <div>
                   <p className="font-medium">Document & experience check</p>
-                  <p className="text-xs text-slate-600">We review licence, passport, truck experience, and basic eligibility.</p>
+                  <p className="text-xs text-slate-600">Sufoniq reviews documents and experience; licensing and eligibility questions still need verification.</p>
                 </div>
               </li>
               <li className="flex gap-3">
@@ -468,7 +191,7 @@ export default function Page() {
                 </span>
                 <div>
                   <p className="font-medium">Employer match</p>
-                  <p className="text-xs text-slate-600">Driver is matched with a Lithuanian employer before permits start.</p>
+                  <p className="text-xs text-slate-600">The employer makes the hiring decision and confirms the role and terms in writing.</p>
                 </div>
               </li>
               <li className="flex gap-3">
@@ -476,8 +199,8 @@ export default function Page() {
                   4
                 </span>
                 <div>
-                  <p className="font-medium">Visa & permit processing</p>
-                  <p className="text-xs text-slate-600">Sufoniq handles Lithuanian‑side work permit, TRP, and MIGRIS steps.</p>
+                  <p className="font-medium">Applications and decisions</p>
+                  <p className="text-xs text-slate-600">Sufoniq coordinates preparation; the employer and driver complete their required actions. Authorities decide applications.</p>
                 </div>
               </li>
               <li className="flex gap-3">
@@ -486,15 +209,33 @@ export default function Page() {
                 </span>
                 <div>
                   <p className="font-medium">Arrival & onboarding</p>
-                  <p className="text-xs text-slate-600">Airport pickup, registration, training, and integration into the company.</p>
+                  <p className="text-xs text-slate-600">Employer-funded flight and Code 95 training, with any licensing and work-readiness checks completed before driving.</p>
                 </div>
               </li>
             </ol>
 
             <p className="mt-4 text-[11px] text-slate-500">
-              Our goal is fair, transparent, and safe mobility – aligned with ILO standards and EU labour law for responsible recruitment.
+              Sufoniq cannot guarantee a hire, permit or start date. The written route identifies the relevant decisions, appointments, responsibilities and costs.
             </p>
           </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="payment-policy-title" className="border-t border-slate-200 bg-white py-10 md:py-12">
+        <div className="mx-auto max-w-5xl space-y-5 px-4 md:px-6">
+          <div className="max-w-3xl space-y-3">
+            <h2 id="payment-policy-title" className="text-2xl font-semibold text-slate-900 md:text-3xl">Who pays what</h2>
+            <p className="text-sm leading-relaxed text-slate-700">Drivers pay no fees to Sufoniq, before or after approval. The employer pays Sufoniq, and Sufoniq pays the Ghana recruitment agency. Your flight and Code 95 training are employer-funded.</p>
+            <p className="text-sm leading-relaxed text-slate-700">PCC, medicals and translations are paid by the driver unless the employer explicitly agrees to cover them. Any such agreement is recorded in the written cost allocation.</p>
+          </div>
+          <div className="overflow-x-auto rounded-2xl border border-slate-200">
+            <table className="w-full table-fixed text-left text-sm">
+              <caption className="sr-only">Payment responsibilities for the Ghana–Lithuania driver route</caption>
+              <thead className="bg-slate-100 text-slate-900"><tr><th scope="col" className="w-2/5 px-4 py-3 font-semibold">Item</th><th scope="col" className="px-4 py-3 font-semibold">Who pays</th></tr></thead>
+              <tbody>{paymentResponsibilities.map(row => <tr key={row.item} className="border-t border-slate-200 align-top"><th scope="row" className="break-words px-4 py-3 font-medium text-slate-900">{row.item}</th><td className="break-words px-4 py-3 text-slate-700">{row.payer}</td></tr>)}</tbody>
+            </table>
+          </div>
+          <p className="max-w-3xl text-xs leading-relaxed text-slate-600">The written route budget also identifies any passport, attestation, official application, appointment, card or other required charges and who pays them. Supplier prices and official charges are confirmed for the individual route before spending is agreed.</p>
         </div>
       </section>
 
@@ -504,7 +245,7 @@ export default function Page() {
         <div className="mx-auto max-w-5xl px-4 md:px-6 space-y-8">
           <div className="space-y-3">
             <h2 className="text-2xl font-semibold text-slate-900 md:text-3xl">
-              The promises, the expectations, and the smallest moving parts we keep under control.
+              What we do, what you pay, and who owns each step.
             </h2>
           </div>
           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -512,12 +253,14 @@ export default function Page() {
               {audienceSections.map((section) => (
                 <button
                   key={section.key}
+                  id={"audience-" + section.key}
+                  aria-controls={"panel-" + section.key}
                   type="button"
                   onClick={() => setActiveSection(section.key)}
                   aria-pressed={activeSection === section.key}
                   className={`rounded-full px-4 py-1 text-xs font-semibold transition ${
                     activeSection === section.key
-                      ? "bg-green-600 text-white shadow-sm"
+                      ? "bg-green-700 text-white shadow-sm"
                       : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                   }`}
                 >
@@ -530,7 +273,7 @@ export default function Page() {
                 className="absolute top-0 h-full rounded-full bg-gradient-to-r from-emerald-400 to-lime-500"
                 style={{ width: `${tabWidth}%` }}
                 animate={{ left: `${slidePercent}%` }}
-                transition={{ type: "spring", stiffness: 140, damping: 25 }}
+                transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 140, damping: 25 }}
               />
             </div>
             <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
@@ -538,11 +281,14 @@ export default function Page() {
                 className="flex"
                 style={{ width: `${audienceSections.length * 100}%` }}
                 animate={{ x: `-${slidePercent}%` }}
-                transition={{ type: "spring", stiffness: 120, damping: 25 }}
+                transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 120, damping: 25 }}
               >
                 {audienceSections.map((section) => (
                   <article
                     key={section.key}
+                    id={"panel-" + section.key}
+                    aria-labelledby={"audience-" + section.key}
+                    inert={activeSection !== section.key}
                     aria-hidden={activeSection !== section.key}
                     className="w-full shrink-0"
                     style={{ width: `${100 / audienceSections.length}%` }}
@@ -561,7 +307,7 @@ export default function Page() {
                                 aria-pressed={activeDriverSubSection === subSection.key}
                                 className={`rounded-full px-4 py-1 text-xs font-semibold transition ${
                                   activeDriverSubSection === subSection.key
-                                    ? "bg-emerald-600 text-white shadow-sm"
+                                    ? "bg-emerald-700 text-white shadow-sm"
                                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                                 }`}
                               >
@@ -619,14 +365,14 @@ export default function Page() {
                                     {list.entries.map((entry, index) => (
                                       <li
                                         key={`${list.title}-${index}`}
-                                        className="flex justify-between gap-3"
+                                        className="grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-4"
                                       >
                                         {typeof entry === "string" ? (
-                                          <span className="block flex-1">{entry}</span>
+                                          <span className="block sm:col-span-2">{entry}</span>
                                         ) : (
                                           <>
                                             <span className="text-slate-700">{entry.label}</span>
-                                            <span className="font-semibold text-slate-900">{entry.value}</span>
+                                            <span className="font-semibold text-slate-900 sm:text-right">{entry.value}</span>
                                           </>
                                         )}
                                       </li>
@@ -685,14 +431,14 @@ export default function Page() {
                                 {list.entries.map((entry, index) => (
                                   <li
                                     key={`${list.title}-${index}`}
-                                    className="flex justify-between gap-3"
+                                    className="grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-4"
                                   >
                                     {typeof entry === "string" ? (
-                                      <span className="block flex-1">{entry}</span>
+                                      <span className="block sm:col-span-2">{entry}</span>
                                     ) : (
                                       <>
                                         <span className="text-slate-700">{entry.label}</span>
-                                        <span className="font-semibold text-slate-900">{entry.value}</span>
+                                        <span className="font-semibold text-slate-900 sm:text-right">{entry.value}</span>
                                       </>
                                     )}
                                   </li>
@@ -705,6 +451,22 @@ export default function Page() {
                           ))}
                         </>
                       )}
+                      {section.action && (
+                        <div className="mt-6 space-y-3 border-t border-slate-200 pt-5">
+                          <p className="text-sm leading-relaxed text-slate-700">{section.action.description}</p>
+                          <a
+                            href={section.action.href}
+                            onClick={() => {
+                              if (section.key !== "employers") return;
+                              const role = document.querySelector<HTMLSelectElement>("#callback select[name='role']");
+                              if (role) role.value = "employer";
+                            }}
+                            className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-green-700 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-green-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green-700 sm:w-auto"
+                          >
+                            {section.action.label}<span aria-hidden="true" className="ml-2">→</span>
+                          </a>
+                        </div>
+                      )}
                     </div>
                   </article>
                 ))}
@@ -713,6 +475,23 @@ export default function Page() {
           </div>
         </div>
       </section>
+      <section aria-labelledby="route-checks-title" className="border-t border-slate-200 bg-slate-50 py-10 md:py-12">
+        <div className="mx-auto max-w-5xl space-y-5 px-4 md:px-6">
+          <h2 id="route-checks-title" className="text-2xl font-semibold text-slate-900">A process you can check before you commit</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-2xl border border-slate-200 bg-white p-5"><h3 className="text-sm font-semibold">Check who is asking for payment</h3><p className="mt-2 text-sm leading-relaxed text-slate-700">Drivers do not pay Sufoniq or the Ghana agency to be selected, matched or hired. Ask for the written cost allocation and a receipt for any genuine preparation expense.</p></div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-5"><h3 className="text-sm font-semibold">Get the role and terms in writing</h3><p className="mt-2 text-sm leading-relaxed text-slate-700">Confirm the employer, role, employment terms and responsibilities. Check any agreement to cover your PCC, medicals or translations before paying those costs.</p></div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-5"><h3 className="text-sm font-semibold">Know who decides</h3><p className="mt-2 text-sm leading-relaxed text-slate-700">The employer decides the hire. Authorities and competent bodies decide applications and licensing requirements. No agent can guarantee those decisions or a start date.</p></div>
+          </div>
+          <p className="max-w-3xl text-sm leading-relaxed text-slate-700">Sufoniq is operated by UAB Skillaxis, registered in Lithuania and operated from Vienna. Ask for our company details and verify them before committing to the route.</p>
+          <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm">
+            <a href="https://www.migracija.lt/" target="_blank" rel="noopener noreferrer" className="font-semibold text-green-800 underline underline-offset-4">Official Lithuanian migration services ↗</a>
+            <a href="https://www.regitra.lt/en/services/driving-licences/driver-qualification-cards/" target="_blank" rel="noopener noreferrer" className="font-semibold text-green-800 underline underline-offset-4">Regitra driver qualification guidance ↗</a>
+            <a href="/method-trust" className="font-semibold text-green-800 underline underline-offset-4">Our method and boundaries</a>
+          </div>
+        </div>
+      </section>
+
       <section
         id="callback"
         className="border-t border-slate-200 bg-white py-10 md:py-12"
@@ -720,12 +499,12 @@ export default function Page() {
         <div className="mx-auto max-w-5xl px-4 md:px-6">
           <div className="grid gap-8 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] md:items-start">
             <div>
-              <h2 className="text-xl font-semibold text-slate-900 md:text-2xl">
-                Request a calm, honest conversation.
+              <h2 id="callback-title" className="text-xl font-semibold text-slate-900 md:text-2xl">
+                Talk to us, and get a clear next step.
               </h2>
               <p className="mt-2 text-sm text-slate-700">
                 Ghanaian driver, Lithuanian employer, or Ghana agency – tell us who you are and what you&apos;re looking
-                for. We&apos;ll respond with realistic options and next steps.
+                for. We&apos;ll discuss fit, the steps to check and the costs that apply to you.
               </p>
               <p className="mt-3 text-xs text-slate-500">
                 Adults 18+ only. By submitting, you agree that we may contact you about mobility, recruitment, and
@@ -734,16 +513,17 @@ export default function Page() {
               <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
                 All fields are required — include the best phone number for WhatsApp follow up.
               </p>
+              <p id="callback-help" className="mt-3 text-xs leading-relaxed text-slate-600">A short outline is enough. Do not send passport copies, medical records or police documents with this initial enquiry.</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm shadow-sm">
+            <form onSubmit={handleSubmit} aria-labelledby="callback-title" aria-describedby="callback-help" className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm shadow-sm">
               {status === "success" && (
                 <div
                   role="status"
                   aria-live="polite"
                   className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900"
                 >
-                  Your message has landed safely at Mission Control! Our team will review it and get back to you within 24 hours — usually sooner.
+                  Thank you. Your message is with us. We will review your situation and reply with next steps and any questions that still need checking.
                 </div>
               )}
               {status === "error" && error && (
@@ -763,6 +543,7 @@ export default function Page() {
                     id="name"
                     name="name"
                     type="text"
+                    autoComplete="name"
                     placeholder="Your full name"
                     required
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
@@ -776,6 +557,7 @@ export default function Page() {
                     id="email"
                     name="email"
                     type="email"
+                    autoComplete="email"
                     placeholder="you@example.com"
                     required
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
@@ -812,6 +594,7 @@ export default function Page() {
                     id="phone"
                     name="phone"
                     type="tel"
+                    autoComplete="tel"
                     placeholder="Include country code"
                     required
                     className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
@@ -835,7 +618,7 @@ export default function Page() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="mt-1 inline-flex w-full items-center justify-center rounded-full border border-green-600 bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-green-600/30 transition hover:bg-yellow-400 hover:border-yellow-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="mt-1 inline-flex w-full items-center justify-center rounded-full border border-green-600 bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-green-600/30 transition hover:bg-green-800 hover:border-green-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? "Sending..." : "Send my request"}
               </button>

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/core-services" },
-  { label: "Case Studies", href: "/case-studies" },
+  { label: "Hiring in Practice", href: "/hiring-in-practice" },
   { label: "Insights", href: "/insights" },
   { label: "Employers", href: "/employers" },
   { label: "Method & Trust", href: "/method-trust" },
