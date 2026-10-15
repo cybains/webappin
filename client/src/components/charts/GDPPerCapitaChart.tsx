@@ -139,11 +139,11 @@ export const GDPPerCapitaChart = () => {
         Source: <a href={gdpData.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">World Bank WDI</a> · CC BY 4.0 · Retrieved {gdpData.retrievedAt.slice(0, 10)}.
         {" "}Inflation-adjusted US dollars; not wages or purchasing-power-adjusted figures.
       </p>
-      <table className="sr-only">
+      <div className="sr-only"><table>
         <caption>GDP per capita, {gdpData.unit}. Source: World Bank World Development Indicators.</caption>
         <thead><tr><th scope="col">Year</th>{gdpData.countries.map(country => <th key={country.code} scope="col">{country.name}</th>)}</tr></thead>
         <tbody>{gdpPerCapitaEU.map(row => <tr key={row.year}><th scope="row">{row.year}</th>{gdpData.countries.map(country => <td key={country.code}>{(row as Record<string, number>)[country.code].toLocaleString("en-US", { maximumFractionDigits: 2 })}</td>)}</tr>)}</tbody>
-      </table>
+      </table></div>
     </figure>
   );
 };

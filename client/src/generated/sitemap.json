@@ -3,57 +3,73 @@
     "path": "/"
   },
   {
-    "path": "/about"
+    "path": "/about",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   },
   {
-    "path": "/core-services"
+    "path": "/core-services",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   },
   {
-    "path": "/countries"
+    "path": "/countries",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   },
   {
-    "path": "/employers"
+    "path": "/employers",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   },
   {
-    "path": "/ghana-tde"
+    "path": "/ghana-tde",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   },
   {
-    "path": "/hiring-in-practice"
+    "path": "/hiring-in-practice",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   },
   {
     "path": "/insights"
   },
   {
-    "path": "/insights/frameworks/constraint-stacking"
+    "path": "/insights/frameworks/constraint-stacking",
+    "lastModified": "2026-10-14T18:45:53.000Z"
   },
   {
-    "path": "/insights/frameworks/cross-border-hiring-decisions"
+    "path": "/insights/frameworks/cross-border-hiring-decisions",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   },
   {
-    "path": "/insights/frameworks/lawful-not-random"
+    "path": "/insights/frameworks/lawful-not-random",
+    "lastModified": "2026-10-14T18:45:53.000Z"
   },
   {
     "path": "/insights/growth"
   },
   {
-    "path": "/insights/signals/churn-is-signal"
+    "path": "/insights/signals/churn-is-signal",
+    "lastModified": "2026-10-14T18:45:53.000Z"
   },
   {
-    "path": "/insights/signals/correct-but-stuck"
+    "path": "/insights/signals/correct-but-stuck",
+    "lastModified": "2026-10-14T18:45:53.000Z"
   },
   {
-    "path": "/insights/signals/country-comparisons"
+    "path": "/insights/signals/country-comparisons",
+    "lastModified": "2026-10-14T18:45:53.000Z"
   },
   {
-    "path": "/method-trust"
+    "path": "/method-trust",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   },
   {
-    "path": "/methodology"
+    "path": "/methodology",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   },
   {
-    "path": "/privacy-policy"
+    "path": "/privacy-policy",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   },
   {
-    "path": "/terms-conditions"
+    "path": "/terms-conditions",
+    "lastModified": "2026-10-15T10:30:15.000Z"
   }
 ]

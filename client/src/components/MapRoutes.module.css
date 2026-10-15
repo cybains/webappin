@@ -3,12 +3,11 @@
 .inbound { --route-color: #1767b4; }
 .outbound { --route-color: #087b78; }
 .route { fill: none; stroke: var(--route-color); stroke-width: .8; opacity: .26; }
-.linePulse { fill: none; stroke: var(--route-color); stroke-linecap: round; stroke-dasharray: 28 172; stroke-dashoffset: 200; opacity: .75; animation: flow 16s linear infinite both; animation-delay: var(--delay); animation-play-state: paused; }
+.pulseCanvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .country { fill: #f5a623; fill-opacity: .5; stroke: #bb7518; stroke-width: 1; stroke-opacity: .8; }
 .countryPulse { fill: #2478c8; opacity: .12; transform-box: fill-box; transform-origin: center; animation: breathe 9s ease-in-out infinite; animation-play-state: paused; }
 .countryLabel { fill: #375774; font-size: 8px; font-weight: 500; paint-order: stroke; stroke: #f8fbff; stroke-width: 2.5; stroke-linejoin: round; }
-.gate[data-running="true"] .linePulse, .gate[data-running="true"] .countryPulse { animation-play-state: running; }
-@keyframes flow { from { stroke-dashoffset: 200; } to { stroke-dashoffset: 0; } }
+.gate[data-running="true"] .countryPulse { animation-play-state: running; }
 @keyframes breathe { 0%, 100% { opacity: .08; transform: scale(.8); } 50% { opacity: .22; transform: scale(1.2); } }
 @media (max-width: 767px) { .desktopRoute, .countryLabel { display: none; } }
-@media (prefers-reduced-motion: reduce) { .linePulse { animation: none; stroke-dasharray: none; stroke-width: .8; opacity: .2; }.countryPulse { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .pulseCanvas { display: none; }.countryPulse { animation: none; } }

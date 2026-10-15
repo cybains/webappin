@@ -1,8 +1,11 @@
 // Decorative snapshot of the existing MapLibre countries and palette.
 // The interactive map remains available to pages that need map controls.
 import MapRoutes from "./MapRoutes";
+import { preload } from "react-dom";
 
 export default function HomepageMap() {
+  // The static map is already compressed; discover it before the CSS arrives.
+  preload("/homepage-world-map-optimized.webp", { as: "image", fetchPriority: "high" });
   return (
     <div className="relative h-screen w-full" aria-hidden="true">
       <div className="absolute inset-0 opacity-40">
