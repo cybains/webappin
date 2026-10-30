@@ -17,8 +17,6 @@ The canonical website is https://sufoniq.com. Insights explain data and systems;
 
 - [Insights](https://sufoniq.com/insights): Editorial articles about growth, signals, and frameworks.
 - [Growth](https://sufoniq.com/insights/growth): Visual exploration of growth and regional divergence.
-- [Countries](https://sufoniq.com/countries): Country coverage and links to country briefs.
-- [Methodology](https://sufoniq.com/methodology): Data methodology and interpretation.
 
 ## Optional
 

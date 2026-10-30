@@ -27,6 +27,36 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/methodology",
+        destination: "/method-trust",
+        permanent: true,
+      },
+      {
+        source: "/countries",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/country/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/growth-atlas",
+        destination: "/insights",
+        permanent: true,
+      },
+      {
+        source: "/maptest",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/jobs",
+        destination: "/employers",
+        permanent: true,
+      },
+      {
         source: "/:path*",
         has: [
           {

@@ -3,28 +3,19 @@
     "path": "/"
   },
   {
-    "path": "/about",
-    "lastModified": "2026-10-15T10:30:15.000Z"
+    "path": "/about"
   },
   {
-    "path": "/core-services",
-    "lastModified": "2026-10-15T10:30:15.000Z"
+    "path": "/core-services"
   },
   {
-    "path": "/countries",
-    "lastModified": "2026-10-15T10:30:15.000Z"
+    "path": "/employers"
   },
   {
-    "path": "/employers",
-    "lastModified": "2026-10-15T10:30:15.000Z"
+    "path": "/ghana-tde"
   },
   {
-    "path": "/ghana-tde",
-    "lastModified": "2026-10-15T10:30:15.000Z"
-  },
-  {
-    "path": "/hiring-in-practice",
-    "lastModified": "2026-10-15T10:30:15.000Z"
+    "path": "/hiring-in-practice"
   },
   {
     "path": "/insights"
@@ -57,19 +48,12 @@
     "lastModified": "2026-10-14T18:45:53.000Z"
   },
   {
-    "path": "/method-trust",
-    "lastModified": "2026-10-15T10:30:15.000Z"
+    "path": "/method-trust"
   },
   {
-    "path": "/methodology",
-    "lastModified": "2026-10-15T10:30:15.000Z"
+    "path": "/privacy-policy"
   },
   {
-    "path": "/privacy-policy",
-    "lastModified": "2026-10-15T10:30:15.000Z"
-  },
-  {
-    "path": "/terms-conditions",
-    "lastModified": "2026-10-15T10:30:15.000Z"
+    "path": "/terms-conditions"
   }
 ]

@@ -23,8 +23,8 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/methodology" className="hover:underline">
-                Methodology
+              <Link href="/method-trust" className="hover:underline">
+                Method &amp; Trust
               </Link>
             </li>
             <li>
@@ -67,25 +67,25 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Powered By */}
+        {/* Data & Sources */}
         <div>
-          <h3 className="text-xl font-semibold mb-4">Powered By</h3>
+          <h3 className="text-xl font-semibold mb-4">Data & Sources</h3>
           <ul className="text-sm space-y-2">
             <li>
-              <span className="font-semibold">Remotive API</span>: remote jobs, zero fluff.
+              <span className="font-semibold">Eurostat</span>: migration flows and
+              job-vacancy rates.
             </li>
             <li>
-              <span className="font-semibold">MapLibre</span>: maps with open-source manners.
-            </li>
-            <li>
-              <span className="font-semibold">WorldData API</span>: global country & economic insights.
+              <span className="font-semibold">World Bank</span>: economic context
+              indicators.
             </li>
             <li>
               <Link
-                href="/countries"
+                href="/method-trust"
                 className="no-underline text-inherit hover:text-inherit"
               >
-                <span className="font-semibold">Data Coverage</span>
+                <span className="font-semibold">Method & Trust</span>: sources,
+                limits and service boundaries.
               </Link>
             </li>
           </ul>

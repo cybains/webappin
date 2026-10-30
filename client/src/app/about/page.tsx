@@ -70,7 +70,7 @@ export default function AboutUsCanvas() {
             Read the essentials
           </a>
           <a
-            href="/method-and-trust#overview"
+            href="/method-trust#overview"
             className="text-sm font-semibold text-muted-foreground/70 hover:text-foreground/90"
           >
             Method &amp; Trust

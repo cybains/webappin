@@ -199,8 +199,8 @@ export default function TermsAndConditionsPage() {
         <section id="privacy" className="space-y-4">
           <h2 className="text-2xl font-semibold">10) Data Protection & Privacy (GDPR)</h2>
           <ul className="list-disc pl-6 space-y-2">
-            <li>Our processing of personal data is described in our <a className="text-[var(--accent)] hover:underline" href="/legal/privacy">Privacy Policy</a>, which forms part of these terms.</li>
-            <li>Where we act as a processor for business customers, our <a className="text-[var(--accent)] hover:underline" href="/legal/dpa">Data Processing Addendum (DPA)</a> applies and incorporates Standard Contractual Clauses where relevant.</li>
+            <li>Our processing of personal data is described in our <a className="text-[var(--accent)] hover:underline" href="/privacy-policy">Privacy Policy</a>, which forms part of these terms.</li>
+            <li>Where we act as a processor for business customers, our Data Processing Addendum (DPA) applies and incorporates Standard Contractual Clauses where relevant.</li>
             <li>We maintain appropriate technical and organizational measures. In case of a personal‑data breach, we will notify affected customers/authorities as required by law.</li>
             <li>Upon account closure or request, we will delete or anonymize personal data within a reasonable period, subject to backups and legal retention. You may export Your Content prior to termination.</li>
           </ul>
