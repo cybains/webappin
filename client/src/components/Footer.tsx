@@ -96,7 +96,7 @@ export default function Footer() {
           className="text-sm flex flex-col justify-between"
         >
           <div>
-            <p className="mb-4">Helping you relocate without rage-quitting since 2025.</p>
+            <p className="mb-4">Cross-border recruitment and mobility, scoped before work begins.</p>
           </div>
           <div className="mt-6 w-full">
             <div className="py-4 text-center text-sm">
