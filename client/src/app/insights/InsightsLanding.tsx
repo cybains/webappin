@@ -102,23 +102,31 @@ export default function InsightsLanding() {
         </section>
 
           <section className="space-y-4 bg-transparent">
-          <Link
-            href={normalizeSlug(featuredInsight.slug)}
-            className="block group"
-            aria-label={`${featuredInsight.title} – Featured visual dissertation`}
-          >
-            <Card className="transition-shadow border border-slate-200 hover:border-slate-400 hover:shadow-lg cursor-pointer">
+            <Card className="transition-shadow border border-slate-200 hover:border-slate-400 hover:shadow-lg">
               <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
                 <CardHeader className="space-y-4">
                   <div className="text-xs uppercase tracking-[0.4em] text-slate-500">
                     Featured visual dissertation
                   </div>
-                  <CardTitle className="text-3xl leading-tight text-slate-900">{featuredInsight.title}</CardTitle>
+                  <Link
+                    href={normalizeSlug(featuredInsight.slug)}
+                    className="block group"
+                    aria-label={`${featuredInsight.title} – Featured visual dissertation`}
+                  >
+                    <CardTitle className="text-3xl leading-tight text-slate-900 group-hover:underline">{featuredInsight.title}</CardTitle>
+                  </Link>
                   <p className="text-sm text-slate-600">{featuredInsight.framing}</p>
                   <div className="flex gap-6 text-xs uppercase tracking-[0.3em] text-slate-400">
                     {featuredInsight.date && <span>{featuredInsight.date}</span>}
                     {featuredInsight.readTime && <span>{featuredInsight.readTime}</span>}
                   </div>
+                  <Link
+                    href={normalizeSlug(featuredInsight.slug)}
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-sky-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4"
+                  >
+                    Read the dissertation
+                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
                 </CardHeader>
                 <div className="space-y-6 p-6">
                   <ChartCarousel slides={chartSlides} />
@@ -148,7 +156,6 @@ export default function InsightsLanding() {
                 </div>
               </div>
             </Card>
-          </Link>
         </section>
 
           <section className="space-y-6 bg-transparent">

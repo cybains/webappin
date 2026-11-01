@@ -6,7 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import Contact from "@/components/Contact";
-import { GDPPerCapitaChart } from "@/components/charts/GDPPerCapitaChart";
+import migration from "@/data/hero-migration.json";
 import { StructuralGridBand } from "@/components/StructuralGridBand";
 import HomepageMap from "@/components/HomepageMap";
 import WorkforceNetwork from "@/components/WorkforceNetwork";
@@ -19,14 +19,14 @@ const sectionSpacing = "relative z-10 px-6 py-16 scroll-mt-24";
     title: "Hire Across Borders",
     description:
       "Fill a role that is hard to fill locally, with sourcing and screening connected to the permit and document requirements.",
-    action: "Talk about a role",
+    action: "Discuss a role",
     href: "#contact",
     primary: true,
   },
   {
     title: "Work in Europe",
     description:
-      "Explore realistic routes, requirements and timelines for your sector, with no recruitment or placement fees charged by Sufoniq.",
+      "Explore realistic routes, requirements and timelines for your sector.",
     action: "See job-seeker support",
     href: "/core-services#job-search-support",
     primary: false,
@@ -69,38 +69,37 @@ function IntentRouter() {
   );
 }
 
+const exampleCorridor = migration.routes.find(
+  (route) => route.from === "IN" && route.to === "DE",
+);
+
 function ProofBlock() {
   return (
     <section id="decide" className={`${sectionSpacing}`}>
-      <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-[1.25fr_1fr]">
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <p className="sufoniq-meta-label">Evidence</p>
-            <h2 className="text-3xl font-semibold">Data tells you where to look. Not whether you can hire there.</h2>
-          </div>
-          <p className="text-base sufoniq-body-text">
-            We use public data — Eurostat on migration and vacancies, the World Bank on economies — to inform where to look. Role-level availability and eligibility remain questions until they are checked.
-          </p>
-          <div className="sufoniq-card space-y-3">
-            <h3 className="text-base font-semibold">What a market figure does and does not tell you</h3>
-            <ul className="list-disc pl-5 space-y-2 text-sm sufoniq-body-text">
-              <li>What it measures, for which year, and which countries.</li>
-              <li>Whether it applies to your role, location and start date.</li>
-              <li>What still has to be verified before sourcing.</li>
-            </ul>
-          </div>
-          <p className="text-sm sufoniq-body-text">
-            This World Bank chart provides economic context. It does not establish worker availability or permission to hire.
-          </p>
-          <div className="flex flex-wrap gap-5 text-sm font-semibold">
-            <Link href="/insights" className="text-sky-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See how we read the data →</Link>
-            <Link href="/method-trust" className="text-slate-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">Check our sources and limits</Link>
-          </div>
+      <div className="max-w-6xl space-y-6">
+        <div className="space-y-2">
+          <p className="sufoniq-meta-label">Evidence</p>
+          <h2 className="text-3xl font-semibold">Data tells you where to look. Not whether you can hire there.</h2>
         </div>
-        <div className="w-full rounded-3xl border border-border bg-[var(--background)] p-6 shadow-[0_15px_35px_rgba(15,23,42,0.12)]">
-          <div className="h-[320px] w-full">
-            <GDPPerCapitaChart />
-          </div>
+        <p className="max-w-3xl text-base sufoniq-body-text">
+          We use public data — Eurostat on migration and vacancies, the World Bank on economies — to inform where to look. Role-level availability and eligibility remain questions until they are checked.
+        </p>
+        {exampleCorridor && (
+          <p className="max-w-3xl text-sm sufoniq-body-text">
+            India → Germany: {exampleCorridor.persons.toLocaleString("en-US")} people in {migration.year}{exampleCorridor.status === "e" ? " (estimated)" : ""}. A corridor like this is where we start looking — not evidence that we can fill your role.
+          </p>
+        )}
+        <div className="sufoniq-card max-w-3xl space-y-3">
+          <h3 className="text-base font-semibold">What a market figure does and does not tell you</h3>
+          <ul className="list-disc pl-5 space-y-2 text-sm sufoniq-body-text">
+            <li>What it measures, for which year, and which countries.</li>
+            <li>Whether it applies to your role, location and start date.</li>
+            <li>What still has to be verified before sourcing.</li>
+          </ul>
+        </div>
+        <div className="flex flex-wrap gap-5 text-sm font-semibold">
+          <Link href="/insights" className="text-sky-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See how we read the data →</Link>
+          <Link href="/method-trust" className="text-slate-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">Check our sources and limits</Link>
         </div>
       </div>
     </section>
@@ -149,7 +148,7 @@ function Services() {
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap gap-5 text-sm font-semibold"><a href="#contact" className="text-sky-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">Discuss a role →</a><Link href="/core-services" className="text-slate-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See the full service scope</Link></div>
+        <div className="flex flex-wrap gap-5 text-sm font-semibold"><a href="#contact" className="text-sky-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">Discuss a role →</a><Link href="/hiring-in-practice" className="text-slate-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See how we work in practice</Link><Link href="/core-services" className="text-slate-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See the full service scope</Link></div>
       </div>
     </section>
   );
@@ -176,7 +175,7 @@ function ApplySection() {
                   href="#contact"
                   className="inline-flex w-full sm:w-auto items-center justify-center min-h-12 rounded-2xl bg-primary bg-[color:var(--primary)] px-4 sm:px-8 py-3 text-sm sm:text-base font-semibold text-primary-foreground text-[color:var(--primary-foreground)] transition hover:bg-primary/90 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  Describe a role
+                  Discuss a role
                 </a>
                 <a
                   href="/method-trust"
@@ -298,9 +297,9 @@ export default function Home() {
 
         <div className="how-it-works-divider" aria-hidden />
 
-        <ProofBlock />
-
         <MethodTrustSection />
+
+        <ProofBlock />
 
         <CompanySection />
 

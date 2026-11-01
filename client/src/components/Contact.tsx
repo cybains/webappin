@@ -16,11 +16,8 @@ export default function Contact() {
               <li>Within that scope, we assess eligibility, documents, timing and the handoffs the route depends on.</li>
             </ol>
           </div>
-          <p className="text-sm sufoniq-body-text">Prefer a direct conversation? <a href="mailto:support@sufoniq.com" className="font-semibold text-foreground underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">Email us</a> or <a href="https://wa.me/420778604430" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">contact us on WhatsApp</a>.</p>
-          <div className="border-t border-border pt-5">
-            <h3 className="text-sm font-semibold">Looking for work in Europe?</h3>
-            <p className="mt-2 text-sm sufoniq-body-text">We support job seekers too. Start with <a href="/core-services#job-search-support" className="font-semibold text-foreground underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">job-search support</a> to explore realistic routes and requirements. Sufoniq does not charge recruitment or placement fees to candidates, and support does not guarantee a job or a permit.</p>
-          </div>
+          <p className="text-sm sufoniq-body-text">Prefer a direct conversation? Email <a href="mailto:support@sufoniq.com" className="font-semibold text-foreground underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">support@sufoniq.com</a> or <a href="https://wa.me/420778604430" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">contact us on WhatsApp</a>.</p>
+          <p className="text-xs text-muted-foreground">UAB Skillaxis · Architektų g. 56-101, LT-04111 Vilnius, Lithuania</p>
         </div>
         <WorkforceEnquiryForm />
       </div>

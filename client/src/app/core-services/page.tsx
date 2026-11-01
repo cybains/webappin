@@ -131,7 +131,7 @@ const TOP_CTA = [
 
 const BOTTOM_CTAS = [
   { label: "Book a consultation" },
-  { label: "Talk to a human", href: "https://wa.me/37064112439?text=Hi%20Sufoniq%2C%20I%27d%20like%20to%20talk." },
+  { label: "Talk to a human", href: "https://wa.me/420778604430?text=Hi%20Sufoniq%2C%20I%27d%20like%20to%20talk." },
 ] as const;
 
 function devSelfTests() {
@@ -141,7 +141,7 @@ function devSelfTests() {
     console.assert(typeof SafeLink === "function", "SafeLink component should exist");
     console.assert(TOP_CTA.length === 1, "Top CTA must contain exactly one action");
     console.assert(BOTTOM_CTAS.length === 2, "Bottom CTAs must contain exactly two actions");
-    console.assert(BOTTOM_CTAS[1].href?.startsWith("https://wa.me/37064112439"), "WhatsApp CTA must use wa.me with the provided number");
+    console.assert(BOTTOM_CTAS[1].href?.startsWith("https://wa.me/420778604430"), "WhatsApp CTA must use wa.me with the provided number");
     console.assert(REASONS.includes("Student support"), "Form reasons must include Student support");
     console.assert(STAGES.length >= 3, "Form stages should provide multiple choices");
   }
@@ -160,7 +160,7 @@ export default function CoreServicesPage() {
   };
 
   const whatsappHref = useMemo(
-    () => "https://wa.me/37064112439?text=Hi%20Sufoniq%2C%20I%27d%20like%20to%20talk.",
+    () => "https://wa.me/420778604430?text=Hi%20Sufoniq%2C%20I%27d%20like%20to%20talk.",
     []
   );
 

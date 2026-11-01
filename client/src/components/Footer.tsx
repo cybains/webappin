@@ -104,7 +104,7 @@ export default function Footer() {
                 className="text-[var(--foreground)]"
                 style={{ textShadow: "0 1px 3px rgba(15, 23, 42, 0.6)" }}
               >
-                © {new Date().getFullYear()} UAB Skillaxis, trading as Sufoniq · Vilnius, Lithuania · Vienna, Austria · <a href="mailto:support@sufoniq.com" className="underline underline-offset-4">support@sufoniq.com</a>
+                © {new Date().getFullYear()} UAB Skillaxis, operating Sufoniq · Vilnius, Lithuania · Vienna, Austria · <a href="mailto:support@sufoniq.com" className="underline underline-offset-4">support@sufoniq.com</a>
               </p>
             </div>
           </div>
@@ -114,10 +114,10 @@ export default function Footer() {
       <div className="max-w-screen-xl mx-auto mt-10 border-t border-[color:var(--card-border)] pt-6 flex justify-center md:justify-end">
         <a
           href="https://amuidesign.org"
-          aria-label="Developed by AMUI Design"
           className="inline-flex min-h-11 items-center gap-4 rounded-sm text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--primary)]"
         >
           <span>Developed by:</span>
+          <span className="sr-only">AMUI Design</span>
           <span
             aria-hidden="true"
             className="block h-[42px] w-[101px] shrink-0 bg-current"

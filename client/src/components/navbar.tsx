@@ -76,7 +76,7 @@ export default function Navbar() {
             onClick={scrollToContact}
             className="hidden items-center justify-center rounded-2xl text-base xl:inline-flex"
           >
-            Request access
+            Discuss a role
           </Button>
           <button
             className="xl:hidden text-3xl focus:outline-none"
@@ -116,7 +116,7 @@ export default function Navbar() {
               onClick={scrollToContact}
               className="w-full rounded-2xl text-base"
             >
-              Request access
+              Discuss a role
             </Button>
           </li>
         </ul>
