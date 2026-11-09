@@ -97,6 +97,11 @@ export default function Footer() {
         >
           <div>
             <p className="mb-4">Cross-border recruitment and mobility, scoped before work begins.</p>
+            <p className="mb-4">
+              Sufoniq is operated by UAB Skillaxis — headquarters in Vilnius,
+              management in Vienna, recruitment and operations in the Czech
+              Republic. One team, growing across Europe.
+            </p>
           </div>
           <div className="mt-6 w-full">
             <div className="py-4 text-center text-sm">
@@ -104,7 +109,7 @@ export default function Footer() {
                 className="text-[var(--foreground)]"
                 style={{ textShadow: "0 1px 3px rgba(15, 23, 42, 0.6)" }}
               >
-                © {new Date().getFullYear()} UAB Skillaxis, operating Sufoniq · Vilnius, Lithuania · Vienna, Austria · <a href="mailto:support@sufoniq.com" className="underline underline-offset-4">support@sufoniq.com</a>
+                © {new Date().getFullYear()} UAB Skillaxis, operating Sufoniq · <a href="mailto:support@sufoniq.com" className="underline underline-offset-4">support@sufoniq.com</a>
               </p>
             </div>
           </div>

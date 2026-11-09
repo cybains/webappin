@@ -27,7 +27,7 @@ export default function Hero() {
         <p className="mt-3 text-xs uppercase tracking-[0.3em] text-muted-foreground">
           Operated by UAB Skillaxis · registered in Lithuania · Vienna, Austria
         </p>
-        <p className="text-sm text-slate-700">Looking for work? <a href="/core-services#job-search-support" className="font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See job-seeker support</a></p>
+        <p className="text-sm text-slate-700">Looking for work? <a href="/work-in-europe#job-search-support" className="font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See job-seeker support</a></p>
       </div>
     </section>
   );

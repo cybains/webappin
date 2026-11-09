@@ -6,9 +6,6 @@
     "path": "/about"
   },
   {
-    "path": "/core-services"
-  },
-  {
     "path": "/employers"
   },
   {
@@ -55,5 +52,8 @@
   },
   {
     "path": "/terms-conditions"
+  },
+  {
+    "path": "/work-in-europe"
   }
 ]

@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+/* Tailwind v4 theme tokens. Without this block the semantic utilities
+   (text-primary, text-muted-foreground, bg-muted, border-border, ...)
+   compile to nothing, because v4 does not read tailwind.config.js. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: #10253a;
+  --color-muted: #e5e7eb;
+  --color-muted-foreground: #4b5563;
+  --color-border: #e5e7eb;
+  --color-card: var(--card);
+  --color-ring: var(--primary);
+  --color-destructive: #b91c1c;
+  --color-success: #15803d;
+}
+
 html {
   scroll-behavior: smooth;
 }

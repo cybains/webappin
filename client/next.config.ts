@@ -47,6 +47,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/core-services",
+        destination: "/work-in-europe",
+        permanent: true,
+      },
+      {
         source: "/maptest",
         destination: "/",
         permanent: true,

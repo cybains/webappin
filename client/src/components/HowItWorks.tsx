@@ -325,10 +325,6 @@ export default function HowItWorks() {
             </div>
           ))}
           </div>
-
-          <p className="text-xs md:text-sm text-slate-400 pt-1">
-            If the route does not hold up, we explain the issues before you commit.
-          </p>
         </div>
       </div>
     </section>

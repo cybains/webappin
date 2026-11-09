@@ -1,17 +1,14 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export const REASONS = [
   "Find work",
-  "Hire",
-  "Study",
-  "Student support",
   "Upskill",
   "Relocate",
   "Housing",
-  "Partner",
   "Other",
 ] as const;
 
@@ -29,6 +26,7 @@ type IntakeFormValues = {
   reasons: string[];
   stage?: string;
   location?: string;
+  trade?: string;
   message?: string;
 };
 
@@ -73,15 +71,17 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
       reasons,
       stage,
       location: String(data.get("location") || ""),
+      trade: String(data.get("trade") || ""),
       message: String(data.get("message") || ""),
     };
 
-    const subject = `Core services inquiry${values.reasons.length ? ` — ${values.reasons[0]}` : ""}`;
+    const subject = `Website inquiry${values.reasons.length ? ` — ${values.reasons[0]}` : ""}`;
     const composedMessage = [
       values.phone ? `Phone / WhatsApp: ${values.phone}` : undefined,
       values.reasons.length ? `Reason(s): ${values.reasons.join(", ")}` : undefined,
       values.stage ? `Current stage: ${values.stage}` : undefined,
       values.location ? `Preferred location: ${values.location}` : undefined,
+      values.trade ? `Trade / occupation: ${values.trade}` : undefined,
       values.message ? `Notes:\n${values.message}` : undefined,
     ]
       .filter(Boolean)
@@ -91,6 +91,8 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
     setError(null);
     setStatus("idle");
 
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -99,8 +101,9 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
           name: values.name,
           email: values.email,
           subject,
-          message: composedMessage || "Core services inquiry",
+          message: composedMessage || "Website inquiry",
         }),
+        signal: controller.signal,
       });
 
       if (!response.ok) {
@@ -116,8 +119,13 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
     } catch (err) {
       console.error(err);
       setStatus("error");
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      if (err instanceof Error && err.name === "AbortError") {
+        setError("Request timed out. Please try again.");
+      } else {
+        setError(err instanceof Error ? err.message : "Something went wrong");
+      }
     } finally {
+      clearTimeout(timer);
       setSubmitting(false);
     }
   };
@@ -130,8 +138,7 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
           aria-live="polite"
           className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900"
         >
-          Your message has landed safely at Mission Control! Our team will review it and get back to you within 24 hours —
-          usually sooner.
+          Thanks — we’ve got it. Our recruitment team reads every message and replies within two business days.
         </div>
       )}
       {status === "error" && error && (
@@ -175,6 +182,19 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
             className="h-10 rounded-md border bg-background px-3"
           />
         </div>
+        <div className="grid gap-2">
+          <label htmlFor="trade" className="text-sm font-medium">
+            Trade or occupation
+          </label>
+          <p className="text-[11px] text-muted-foreground">Optional</p>
+          <input
+            id="trade"
+            name="trade"
+            type="text"
+            placeholder="e.g. welder, truck driver, cook"
+            className="h-10 rounded-md border bg-background px-3"
+          />
+        </div>
       </div>
 
       <div className="grid gap-2">
@@ -207,13 +227,26 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
           placeholder="Short version: goal, constraints, timeline. Links welcome."
           className="rounded-md border bg-background px-3 py-2"
         />
-        <p className="text-[11px] text-muted-foreground">We use this only to respond. No spam.</p>
       </div>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <Button type="submit" className="rounded-2xl" disabled={submitting}>
-          {submitting ? "Sending..." : "Submit"}
+          {submitting ? "Sending..." : "Send message"}
         </Button>
+        <a
+          href="https://wa.me/420778604430?text=Hi%20Sufoniq%2C%20I%27d%20like%20to%20talk."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm font-medium text-primary underline underline-offset-4"
+        >
+          Prefer WhatsApp? Message us instead.
+        </a>
+        <Link
+          href="/privacy-policy"
+          className="text-sm text-muted-foreground underline underline-offset-4"
+        >
+          Privacy Policy
+        </Link>
       </div>
     </form>
   );

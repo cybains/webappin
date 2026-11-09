@@ -140,7 +140,7 @@ export default function WorkforceEnquiryForm() {
           disabled={!canSubmit || !emailValid || status === "sending"}
           className="inline-flex w-full sm:w-auto items-center justify-center gap-2 min-h-12 rounded-2xl bg-primary bg-[color:var(--primary)] px-4 sm:px-8 py-3 text-sm sm:text-base font-semibold text-primary-foreground text-[color:var(--primary-foreground)] transition hover:bg-primary/90 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-60"
         >
-          {status === "sending" ? "Sending…" : "Send enquiry"}
+          {status === "sending" ? "Sending…" : "Discuss a role"}
           <ArrowRight className="h-4 w-4" />
         </button>
       </div>

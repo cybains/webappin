@@ -28,7 +28,7 @@ const sectionSpacing = "relative z-10 px-6 py-16 scroll-mt-24";
     description:
       "Explore realistic routes, requirements and timelines for your sector.",
     action: "See job-seeker support",
-    href: "/core-services#job-search-support",
+    href: "/work-in-europe#job-search-support",
     primary: false,
   },
   ];
@@ -148,7 +148,7 @@ function Services() {
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap gap-5 text-sm font-semibold"><a href="#contact" className="text-sky-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">Discuss a role →</a><Link href="/hiring-in-practice" className="text-slate-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See how we work in practice</Link><Link href="/core-services" className="text-slate-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See the full service scope</Link></div>
+        <div className="flex flex-wrap gap-5 text-sm font-semibold"><a href="#contact" className="text-sky-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">Discuss a role →</a><Link href="/hiring-in-practice" className="text-slate-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See how we work in practice</Link><Link href="/work-in-europe" className="text-slate-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">See the full service scope</Link></div>
       </div>
     </section>
   );
@@ -201,7 +201,7 @@ function ApplySection() {
               <div className="sufoniq-card space-y-1">
                 <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">BEFORE WE BEGIN</p>
                 <p className="text-sm sufoniq-body-text mt-1">
-                  We agree scope and responsibilities before delivery. If it is not a fit, we will say so.
+                  Scope, responsibilities and costs are agreed in writing before substantive work begins. If it is not a fit, we will say so.
                 </p>
               </div>
             </div>
@@ -264,7 +264,12 @@ function CompanySection() {
       <div className="mx-auto max-w-6xl sufoniq-card space-y-4">
         <p className="sufoniq-meta-label">Who you are dealing with</p>
         <h2 id="company-title" className="text-3xl md:text-4xl font-semibold">Sufoniq. The company behind the work.</h2>
-        <p className="max-w-3xl text-base sufoniq-body-text">Sufoniq is a brand operated by UAB Skillaxis, registered in Lithuania and operated from Vienna, Austria. We work on cross-border recruitment and mobility in Europe, with responsibilities defined for each project.</p>
+        <p className="max-w-3xl text-base sufoniq-body-text">Sufoniq is a brand operated by UAB Skillaxis. We work on cross-border recruitment and mobility in Europe, with responsibilities defined for each project.</p>
+        <ul className="flex flex-wrap gap-2" aria-label="Company facts">
+          <li className="inline-flex w-fit items-center rounded-full border border-black/10 bg-background/50 px-3 py-1 text-xs text-muted-foreground">Registered in Lithuania (UAB Skillaxis) · company code 307395574</li>
+          <li className="inline-flex w-fit items-center rounded-full border border-black/10 bg-background/50 px-3 py-1 text-xs text-muted-foreground">Operated from Vienna, Austria</li>
+          <li className="inline-flex w-fit items-center rounded-full border border-black/10 bg-background/50 px-3 py-1 text-xs text-muted-foreground">Scope and costs agreed in writing</li>
+        </ul>
         <p className="max-w-3xl text-sm sufoniq-body-text">We publish our method, sources and service boundaries so you can see how we work and decide whether we fit your requirement.</p>
         <Link href="/about" className="inline-flex text-sm font-semibold text-sky-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">About Sufoniq →</Link>
       </div>
