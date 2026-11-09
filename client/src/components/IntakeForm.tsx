@@ -127,7 +127,7 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
           id="message"
           name="message"
           rows={4}
-          placeholder="Where you live now, your experience and your main question. Please leave out passport numbers and document scans."
+          placeholder="Where you are now, and your main question — hiring a role or looking for work. Please leave out passport numbers and document scans."
           className="rounded-md border bg-background px-3 py-2"
         />
       </div>

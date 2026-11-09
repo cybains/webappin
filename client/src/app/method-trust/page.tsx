@@ -16,6 +16,7 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 import { StructuralGridBand } from "@/components/StructuralGridBand";
+import styles from "./page.module.css";
 
 type SectionId =
   | "overview"
@@ -181,7 +182,7 @@ export default function MethodTrustPage() {
             </a>
             <a
               href="#constraints"
-              className="rounded-xl bg-foreground px-3 py-2 text-sm font-semibold text-background hover:opacity-90"
+              className={styles.constraintsLink}
             >
               Non‑negotiables
             </a>

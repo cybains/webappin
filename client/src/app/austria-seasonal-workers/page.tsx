@@ -1,0 +1,98 @@
+import Link from "next/link";
+import { ArrowRight, CheckCircle2, Sprout, CalendarDays, ClipboardCheck } from "lucide-react";
+import { createPageMetadata, SITE_URL } from "@/lib/seo";
+import WorkforceEnquiryForm from "@/components/WorkforceEnquiryForm";
+
+const title = "Seasonal Agricultural Recruitment in Austria | Sufoniq";
+const description = "Need seasonal workers for your Austrian farm, orchard or greenhouse? Sufoniq sources and screens international candidates and coordinates employment preparation.";
+const pageUrl = `${SITE_URL}/austria-seasonal-workers`;
+export const metadata = createPageMetadata("/austria-seasonal-workers", title, description);
+
+const primary = "inline-flex min-h-12 items-center justify-center gap-3 rounded-2xl bg-[color:var(--primary)] px-6 py-3 text-sm font-semibold text-[color:var(--primary-foreground)] hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary";
+const link = "inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-sky-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary";
+const officialRoute = "https://www.migration.gv.at/en/types-of-immigration/fixed-term-employment/seasonal-workers/";
+const ams = "https://www.ams.at/unternehmen/service-zur-personalsuche/beschaeftigung-auslaendischer-arbeitskraefte/beschaeftigung-auslaendischer-saison-arbeitskraefte";
+
+const faqs = [
+  ["Can we enquire at short notice?", "Yes. Tell us the work, headcount and date you need people. We can begin sourcing at short notice and will confirm candidate availability against your requirement. The earliest lawful start also depends on employment permission, visa arrangements and the readiness of the employer and worker documents."],
+  ["What work can we discuss?", "Seasonal agricultural work such as fruit harvesting, vineyard tasks, greenhouse work and field work. Explain the tasks, equipment, working conditions and experience you need so screening reflects the actual job. Activities such as packing need to be checked against the employer’s business and applicable route."],
+  ["Are these workers coming from abroad?", "Yes. This service sources international candidates for Austrian agricultural employers. We discuss the source market and relevant experience against your requirement. Employment permission and the appropriate visa are part of the preparation before work starts."],
+  ["What does the employer need to provide?", "The work location, jobs, headcount, employment dates, pay and conditions, plus accommodation arrangements. The Austrian employer applies to AMS for the employment permit. We agree the recruitment and preparation work and who handles each action before delivery."],
+  ["What does it cost?", "We quote for the agreed sourcing, screening and coordination work. The proposal identifies service fees, responsibilities and how official or third-party costs are allocated. Sufoniq does not charge workers recruitment fees."],
+  ["Does seasonal work require a visa?", "The route can require both AMS employment permission and a visa. Austria’s guidance distinguishes visa C for short seasonal stays from visa D where employment or the stay exceeds 90 days. The worker applies personally through the competent Austrian representation. We establish the applicable steps for the specific assignment."],
+] as const;
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Sufoniq",
+      legalName: "UAB Skillaxis",
+      url: SITE_URL,
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: "Sufoniq",
+      url: SITE_URL,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: title,
+      description,
+      inLanguage: "en",
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      mainEntity: { "@id": `${pageUrl}#service` },
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
+      "@type": "Service",
+      "@id": `${pageUrl}#service`,
+      name: "Seasonal agricultural recruitment for Austrian employers",
+      serviceType: "Seasonal agricultural recruitment and preparation coordination",
+      description: "International candidate sourcing, screening and agreed preparation coordination for seasonal agricultural employment in Austria.",
+      url: pageUrl,
+      mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
+      provider: { "@id": `${SITE_URL}/#organization` },
+      areaServed: { "@type": "Country", name: "Austria" },
+      audience: { "@type": "BusinessAudience", audienceType: "Austrian agricultural employers" },
+    },
+  ],
+};
+
+export default function AustriaSeasonalWorkersPage() {
+  return (
+    <main className="bg-background text-foreground">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
+      <header className="mx-auto grid max-w-6xl items-start gap-10 px-6 py-12 md:px-8 md:py-20 lg:grid-cols-[1.3fr_0.8fr] lg:gap-14">
+        <div><p className="sufoniq-meta-label">For Austrian agricultural employers</p><h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight md:text-5xl">Need seasonal workers for your farm in Austria?</h1><p className="mt-6 max-w-2xl text-lg sufoniq-body-text">When harvest dates are set, an unfilled shift becomes your problem. Sufoniq sources workers from abroad for farms, orchards, vineyards and greenhouses, screens them against your requirements, and coordinates the preparation for employment in Austria.</p><div className="mt-8 flex flex-wrap items-center gap-5"><a href="#seasonal-enquiry" className={primary}>Tell us your staffing needs <ArrowRight size={18} aria-hidden="true" /></a><a href="#how-it-works" className={link}>How it works ↓</a></div><p className="mt-5 text-sm sufoniq-body-text">Need people soon? Short-notice requests are welcome. We’ll check candidate availability and the permissions needed against your dates.</p></div>
+        <aside className="rounded-3xl border border-[color:var(--card-border)] bg-[color:var(--card)] p-6 sm:p-7" aria-labelledby="brief-title"><Sprout className="h-7 w-7 text-sky-700" aria-hidden="true" /><h2 id="brief-title" className="mt-5 text-xl font-semibold">Tell us what your season needs.</h2><ul className="mt-5 space-y-4 text-sm sufoniq-body-text">{["How many people do you need?", "What work will they do, and where?", "When does the assignment start and end?", "What accommodation can you provide?"].map(item => <li key={item} className="flex gap-3"><CheckCircle2 size={17} className="mt-1 shrink-0 text-sky-700" aria-hidden="true" /><span>{item}</span></li>)}</ul><p className="mt-6 border-t border-[color:var(--card-border)] pt-4 text-sm sufoniq-body-text">Your first conversation covers candidate availability, what needs preparing and the next practical step. You can decide whether to take it further.</p></aside>
+      </header>
+
+      <section aria-labelledby="delivery-title" className="mx-auto max-w-6xl border-t border-[color:var(--card-border)] px-6 py-12 md:px-8 md:py-16">
+        <p className="sufoniq-meta-label">Recruitment built around the actual work</p><h2 id="delivery-title" className="mt-4 max-w-3xl text-3xl font-semibold leading-tight tracking-tight">A candidate’s availability is only part of a seasonal hire.</h2>
+        <div className="mt-8 grid gap-5 lg:grid-cols-3">
+          {[[Sprout, "Screened for your work", "Harvesting, greenhouse tasks or vineyard work: tell us what the job involves. We screen for the experience and language you need, explain the conditions, and confirm candidate interest and availability."], [ClipboardCheck, "Know what is ready", "You need to know which documents are ready, which checks are outstanding and who handles each application step. We coordinate the agreed preparation with you and the candidates."], [CalendarDays, "Plan around your start date", "An interested candidate still needs permission to work. We track availability and preparation against your dates, with outstanding approvals made clear before you plan the start."]].map(([Icon, heading, body]) => {
+            const DisplayIcon = Icon as typeof Sprout;
+            return <article key={heading as string} className="sufoniq-card"><DisplayIcon size={23} className="text-sky-700" aria-hidden="true" /><h3 className="mt-5 text-lg font-semibold">{heading as string}</h3><p className="mt-3 text-sm sufoniq-body-text">{body as string}</p></article>;
+          })}
+        </div>
+      </section>
+
+      <section id="how-it-works" aria-labelledby="process-title" className="scroll-mt-24 border-y border-[color:var(--card-border)] bg-[color:var(--card)]">
+        <div className="mx-auto max-w-6xl px-6 py-12 md:px-8 md:py-16"><p className="sufoniq-meta-label">How we work together</p><h2 id="process-title" className="mt-4 text-3xl font-semibold tracking-tight">From your staffing brief to screened candidates.</h2><ol className="mt-8 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">{[["Define the assignment", "Work, pay, hours, location, dates and accommodation form the brief."], ["Agree delivery", "Before paid work begins, agree the sourcing and screening work, responsibilities and fees in writing."], ["Meet screened candidates", "Review candidates against your requirements, with interest, availability and outstanding checks recorded."], ["Coordinate preparation", "Coordinate the agreed documents and application steps with you and the workers. Required permissions must be in place before travel and employment." ]].map(([heading, body], index) => <li key={heading} className="border-t border-[color:var(--card-border)] pt-5"><span className="text-sm font-semibold text-sky-700">0{index + 1}</span><h3 className="mt-3 text-base font-semibold">{heading}</h3><p className="mt-2 text-sm sufoniq-body-text">{body}</p></li>)}</ol><p className="mt-8 max-w-3xl text-sm sufoniq-body-text">Your business employs the workers directly and makes the hiring decision. Sufoniq provides the recruitment and coordination work agreed for the assignment.</p></div>
+      </section>
+
+      <section aria-labelledby="questions-title" className="mx-auto grid max-w-6xl gap-8 px-6 py-12 md:px-8 md:py-16 lg:grid-cols-[0.75fr_1.25fr] lg:gap-14"><div><p className="sufoniq-meta-label">Before you enquire</p><h2 id="questions-title" className="mt-4 text-3xl font-semibold tracking-tight">Practical answers for your season.</h2><p className="mt-5 text-sm sufoniq-body-text">Sufoniq is operated by UAB Skillaxis, with management in Vienna and recruitment and operations in the Czech Republic.</p><Link href="/about" className={`${link} mt-3`}>About Sufoniq →</Link></div><div className="divide-y divide-[color:var(--card-border)] border-y border-[color:var(--card-border)]">{faqs.map(([question, answer]) => <details key={question} className="group py-4"><summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-1 font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">{question}<span aria-hidden="true" className="text-xl font-normal text-sky-700 group-open:rotate-45">+</span></summary><p className="mt-3 pb-2 text-sm sufoniq-body-text">{answer}</p></details>)}</div></section>
+
+      <section id="seasonal-enquiry" aria-labelledby="enquiry-title" className="scroll-mt-24 border-y border-[color:var(--card-border)] bg-[color:var(--card)]"><div className="mx-auto grid max-w-6xl items-start gap-8 px-6 py-12 md:px-8 md:py-16 lg:grid-cols-2 lg:gap-14"><div><p className="sufoniq-meta-label">Start with a short conversation</p><h2 id="enquiry-title" className="mt-4 max-w-xl text-3xl font-semibold leading-tight tracking-tight md:text-4xl">Tell us your tasks, headcount and dates.</h2><p className="mt-5 max-w-xl sufoniq-body-text">Send a short outline of your staffing needs. We’ll discuss candidate availability, the preparation needed for your dates and what Sufoniq would handle. If there’s a fit, we’ll set out the proposed work and costs for you to consider.</p><p className="mt-4 text-sm sufoniq-body-text">You don’t need a finished recruitment brief or worker documents to get in touch.</p><div className="mt-6 flex flex-wrap gap-x-6 gap-y-2"><a href="mailto:support@sufoniq.com?subject=Austria%20seasonal%20agricultural%20workers" className={link}>Email your requirement</a><a href="https://wa.me/420778604430?text=Hello%20Sufoniq%2C%20we%20need%20seasonal%20agricultural%20workers%20in%20Austria.%20I%27d%20like%20to%20discuss%20our%20headcount%20and%20dates." target="_blank" rel="noopener noreferrer" className={link}>Message on WhatsApp ↗</a></div></div><WorkforceEnquiryForm source="Austria / Seasonal agricultural workforce" title="Tell us about your season" introduction="A few lines are enough. We’ll follow up about your staffing needs and next steps." contextLabel="What seasonal workforce do you need?" placeholder="For example: 8 people for fruit harvesting in Styria, from June to September. Accommodation is available. We’d like to discuss sourcing and preparation." help="Include the tasks, headcount, location and employment dates. Please leave out worker names, passport numbers and document scans." submitLabel="Send our staffing enquiry" /></div></section>
+
+      <section className="mx-auto max-w-6xl px-6 py-10 md:px-8"><details className="border-b border-[color:var(--card-border)] pb-5"><summary className="cursor-pointer font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">Seasonal permissions, responsibilities and official sources</summary><p className="mt-4 max-w-3xl text-sm sufoniq-body-text">For the ordinary seasonal quota route, the employer applies to AMS. Quota availability, the labour-market check, employment conditions and accommodation matter. The worker then follows the applicable visa process. Authorities decide applications; recruitment availability does not establish a lawful start date.</p><div className="mt-4 flex flex-wrap gap-x-6 gap-y-2"><a href={officialRoute} target="_blank" rel="noopener noreferrer" className={link}>Austria’s seasonal-worker guidance ↗</a><a href={ams} target="_blank" rel="noopener noreferrer" className={link}>AMS employer guidance ↗</a><Link href="/employers" className={link}>Other recruitment requirements →</Link></div><p className="mt-3 text-xs text-muted-foreground">Official guidance checked 9 November 2026. Requirements are established for the particular employer, worker and assignment.</p></details></section>
+    </main>
+  );
+}

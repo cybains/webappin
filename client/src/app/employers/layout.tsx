@@ -18,6 +18,13 @@ const structuredData = {
       url: SITE_URL,
     },
     {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: "Sufoniq",
+      url: SITE_URL,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
       "@type": "WebPage",
       "@id": `${pageUrl}#webpage`,
       url: pageUrl,
@@ -35,6 +42,7 @@ const structuredData = {
       serviceType: "Candidate sourcing, screening and mobility coordination",
       description: "Candidate sourcing and shortlisting against agreed role criteria, with interest and availability confirmed and completed and outstanding checks recorded. Document, permit and qualification coordination is agreed for each engagement.",
       url: pageUrl,
+      mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
       provider: { "@id": `${SITE_URL}/#organization` },
       areaServed: { "@type": "Place", name: "Europe" },
       audience: { "@type": "BusinessAudience", audienceType: "European employers" },

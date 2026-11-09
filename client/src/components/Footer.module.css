@@ -1,0 +1,31 @@
+.footer { background: var(--card); color: var(--foreground); border-top: 1px solid var(--card-border); padding: 3.5rem 1.5rem 1.5rem; }
+.container { max-width: 75rem; margin: 0 auto; }
+.top { display: grid; grid-template-columns: 1.25fr 1.1fr .8fr 1fr; gap: 2.5rem; }
+.footer h2 { font-size: .95rem; line-height: 1.5; font-weight: 650; margin: 0 0 1rem; }
+.footer h3 { font-size: .8rem; line-height: 1.5; font-weight: 600; margin: 1.5rem 0 .5rem; }
+.footer p, .footer li { font-size: .875rem; line-height: 1.7; }
+.footer ul { list-style: none; margin: 0; padding: 0; }
+.footer li + li { margin-top: .5rem; }
+.footer a { color: inherit; text-underline-offset: .22em; }
+.footer a:hover { text-decoration: underline; }
+.footer a:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 2px; }
+.wordmark { display: inline-block; font-size: 1rem; font-weight: 600; letter-spacing: .08em; }
+.tagline { margin: .85rem 0 1.25rem; max-width: 18rem; }
+.email { display: block; width: fit-content; font-size: .875rem; overflow-wrap: anywhere; text-decoration: underline; }
+.contact { display: inline-block; font-size: .875rem; font-weight: 600; padding: .75rem 0; margin-top: .3rem; }
+.primaryLink { font-weight: 600; }
+.sources p { margin: 0 0 .6rem; }
+.sources > a { display: inline-block; font-size: .875rem; margin-top: .25rem; text-decoration: underline; }
+.details { border-top: 1px solid var(--card-border); margin-top: 2.5rem; padding-top: 1.5rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 1.5rem 2.5rem; }
+.details > p { margin: 0; max-width: 43rem; }
+.socials { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; align-items: center; }
+.socials a { display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; font-size: .8rem; }
+.socials svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+.bottom { border-top: 1px solid var(--card-border); margin-top: 1.5rem; padding-top: 1.25rem; display: flex; align-items: center; flex-wrap: wrap; gap: 1rem 2rem; }
+.bottom > p { font-size: .75rem; margin: 0; }
+.bottom nav { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; font-size: .75rem; }
+.bottom nav a { display: inline-flex; align-items: center; min-height: 44px; }
+.credit { display: inline-flex; min-height: 44px; gap: .75rem; align-items: center; margin-left: auto; font-size: .75rem; }
+.creditLogo { display: block; width: 77px; height: 32px; background: currentColor; mask: url('/amui-logo.png') center / contain no-repeat; -webkit-mask: url('/amui-logo.png') center / contain no-repeat; }
+@media (max-width: 1000px) { .top { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; } .details { grid-template-columns: 1fr; gap: .75rem; } }
+@media (max-width: 560px) { .footer { padding-top: 2.5rem; } .top { grid-template-columns: 1fr; gap: 2rem; } .tagline { max-width: 25rem; } .footer li a { display: inline-flex; align-items: center; min-height: 36px; } .footer li + li { margin-top: .15rem; } .bottom { align-items: flex-start; flex-direction: column; gap: .5rem; } .credit { margin-left: 0; } }

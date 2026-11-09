@@ -1,4 +1,4 @@
-export type InsightType = "Visual Dissertation" | "Signals & Patterns" | "Framework Note";
+export type InsightType = "Visual Dissertation" | "Signals & Patterns" | "Framework Note" | "Country Rules";
 
 export interface Insight {
   slug: string;

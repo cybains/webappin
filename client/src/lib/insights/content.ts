@@ -4,7 +4,10 @@ export type BodyBlock =
   | { type: "heading"; text: string }
   | { type: "quote"; text: string }
   | { type: "paragraph"; text: string }
-  | { type: "list"; items: string[] };
+  | { type: "list"; items: string[] }
+  | { type: "table"; columns: string[]; rows: string[][] }
+  | { type: "faq"; items: { q: string; a: string }[] }
+  | { type: "link"; href: string; text: string };
 
 export interface InsightContent extends Insight {
   slugParts: string[];
@@ -26,35 +29,41 @@ const insightPages: InsightContent[] = [
     slug: "frameworks/cross-border-hiring-decisions",
     slugParts: ["frameworks", "cross-border-hiring-decisions"],
     type: "Framework Note",
-    title: "A candidate pool is not a hiring pipeline",
-    framing: "Why sourcing, eligibility and qualification requirements need to be assessed together before a cross-border hire.",
-    readTime: "4 min read",
+    title: "Hiring from abroad: a candidate pool is not a hiring pipeline",
+    framing: "Hiring from abroad? Sourcing, eligibility and qualification requirements have to hold together before a cross-border hire — three questions decide whether a candidate pool becomes a route.",
+    readTime: "4 min",
     date: "Oct 2026",
     tags: ["hiring", "sourcing", "mobility", "qualifications"],
     featured: false,
     content: [
-      { type: "paragraph", text: "A role remains open, the local search is not producing suitable applicants, and someone suggests looking abroad. The first visible question is about supply: where are the people? That is a useful starting point. It does not establish whether those people could take this particular job, in this destination, within the proposed window." },
-      { type: "paragraph", text: "Three questions help explain the gap between a reachable candidate pool and a workable hiring route: whether the market fits the role, whether the individual meets the applicable eligibility requirements, and whether their qualifications meet the requirements of the work. These questions inform each other. They are not three boxes that can always be closed in sequence." },
+      { type: "paragraph", text: "A role remains open, the local search produces no suitable applicants, and someone suggests looking abroad. The first visible question is about supply: where are the people? Even a good answer does not establish whether those people could take this particular job, in this destination, within the proposed window." },
+      { type: "paragraph", text: "Three questions help explain the gap between a reachable candidate pool and a workable hiring route: whether the market fits the role, whether the individual meets the applicable eligibility requirements, and whether their qualifications meet the requirements of the work. These questions inform each other; they rarely close in sequence." },
       { type: "heading", text: "1. Sourcing: reachable is not the same as hireable" },
-      { type: "paragraph", text: "A large pool can contain people who are experienced, interested and available to speak, while important questions about their route to work remain unanswered. The size of that pool describes potential contact. It does not establish candidate fit, willingness to accept the employment terms or readiness to begin." },
+      { type: "paragraph", text: "A large pool can contain people who are experienced, interested and available to speak, while important questions about their route to work remain unanswered. Pool size measures contact. Candidate fit, acceptance of the employment terms, and readiness to start are separate questions." },
       { type: "paragraph", text: "The role matters as much as the market. Skills, experience, language, pay, shifts and location affect who may be suitable and interested. Wider sourcing may expose a supply gap, but it can also expose a mismatch between the employment offer and the people the employer hopes to attract." },
       { type: "paragraph", text: "A sourcing option becomes more useful when its evidence and open questions travel with it: what is known about relevant skills, which requirements could limit the route, what the offer needs to support, and which assumptions still need testing. A shortlist of countries without that context can create confidence before it creates a plan." },
       { type: "heading", text: "2. Eligibility: the role and the person belong in the same assessment" },
       { type: "paragraph", text: "A sourcing market alone does not determine a candidate’s route. The person’s circumstances and the destination’s requirements also matter. Two candidates considered for the same role may have different documents, outstanding checks or timing dependencies." },
-      { type: "paragraph", text: "The distinction between an identified route, a prepared application, a submitted application and a decision is consequential. These are different states of readiness. Describing all of them as ‘the paperwork is underway’ hides information that the hiring plan needs." },
+      { type: "paragraph", text: "Illustrative example — the specifics vary case to case." },
+      { type: "paragraph", text: "Two drivers apply for the same role in the same destination. One holds a Code 95 licence that matches the job, the language level the employer asks for, and every document in order. The other has the same experience — but one document is still being verified, one check is outstanding, and their start date waits on a decision neither of them controls." },
+      { type: "paragraph", text: "Same role. Same market. One route is ready to file; the other is three dependencies deep." },
+      { type: "paragraph", text: "An identified route, a prepared application, a submitted application and a decision are four different states of readiness. Describing all of them as ‘the paperwork is underway’ hides information that the hiring plan needs." },
       { type: "paragraph", text: "A useful assessment separates what has been checked, what is being assumed and what remains for a decision-maker to determine. Giving an unresolved question an owner makes it actionable, but it does not turn it into a confirmed answer." },
       { type: "heading", text: "3. Qualifications: experience and readiness answer different questions" },
       { type: "paragraph", text: "A candidate may be experienced and hold documentary evidence of that experience, while the destination’s requirements for the role still need to be established. The relevant questions can involve recognition, registration, licensing or additional training. Which of these applies depends on the particular role, destination and qualification." },
+      { type: "paragraph", text: "Healthcare shows the order best: language requirements, credential recognition and permits are confirmed first. A complete experience record answers none of those three." },
       { type: "paragraph", text: "This assessment belongs early enough to influence the sourcing decision. If a qualification-related step changes the time, cost or feasibility of the route, leaving it until after candidate selection can turn an avoidable assumption into a difficult handoff." },
-      { type: "paragraph", text: "That does not mean every qualification needs the same procedure, or that every gap prevents a hire. It means that an experience record, a qualification document and readiness for a particular job should not be treated as interchangeable evidence." },
+      { type: "paragraph", text: "Different qualifications follow different procedures, and not every gap blocks a hire. An experience record, a qualification document and readiness for a particular job stay three different forms of evidence." },
       { type: "heading", text: "The checks connect in both directions" },
       { type: "paragraph", text: "Sourcing, eligibility and qualifications provide a useful reading order. The work itself may move between them. A qualification requirement can narrow the sourcing options. A candidate-specific eligibility issue can change the route. A revised start window can change which options are practical." },
       { type: "list", items: ["A market assessment raises candidate and destination requirements to investigate.", "Candidate screening adds evidence that may support or change the original market assumptions.", "Qualification and licensing checks can send the assessment back to the role criteria, sourcing options or planning window."] },
-      { type: "paragraph", text: "The purpose of the framework is to expose those dependencies before commitments become difficult to change. The value is not a perfectly linear process. It is an explanation of why the plan currently looks workable, and what could still change that view." },
+      { type: "paragraph", text: "The framework exposes those dependencies before commitments become difficult to change. Its value is an explanation of why the plan currently looks workable — and what could still change that view." },
       { type: "heading", text: "A planned start date needs visible dependencies" },
       { type: "paragraph", text: "An employer and candidate can agree a target date. That agreement does not settle the outstanding requirements behind it. Authorities decide the applications within their remit; employers and candidates plan the employment start around the required decisions and readiness checks." },
       { type: "paragraph", text: "A date is easier to assess when the plan distinguishes completed steps from unresolved ones, identifies who can act next, and records which steps depend on another decision. Where an external decision remains open, the date remains a planning assumption rather than a confirmed milestone." },
       { type: "paragraph", text: "The practical distinction is between a date attached to a candidate and a date supported by a route. A credible route makes its uncertainties visible. It does not need to pretend they have disappeared." },
+      { type: "paragraph", text: "Put the role you need to fill, the destination and your main question into the intake form — and start with whichever of the three questions is still open for you." },
+      { type: "link", href: "/work-in-europe", text: "Tell us the role →" },
     ],
     interpretation: "A candidate pool becomes relevant to a hiring plan when role fit, eligibility and qualification requirements are assessed together. Each new piece of evidence can change the route and the proposed timing.",
     boundary: "This is a framework for understanding dependencies. It does not establish the requirements for a particular country, confirm a candidate’s eligibility or replace checks with the relevant authorities and competent bodies.",
@@ -65,8 +74,8 @@ const insightPages: InsightContent[] = [
     slugParts: ["growth"],
     type: "Visual Dissertation",
     title: "Growth is uneven. Your strategy shouldn't be.",
-    framing: "A six-chapter visual dissertation on growth, momentum, and regional divergence.",
-    readTime: undefined,
+    framing: "A five-chapter visual dissertation on GDP growth across Europe: where momentum is real, where prestige doesn't mean growth, and why uneven growth needs a strategy that follows it.",
+    readTime: "4 min",
     date: "Jan 2026",
     tags: ["EU", "GDP"],
     featured: true,
@@ -79,10 +88,10 @@ const insightPages: InsightContent[] = [
     slug: "signals/correct-but-stuck",
     slugParts: ["signals", "correct-but-stuck"],
     type: "Signals & Patterns",
-    title: "Everything can be correct - and still not move",
+    title: "Everything correct, still stuck: why mobility queues don't move",
     framing:
-      "This is one of the most common and most frustrating realities in cross-border mobility: everything checks out, and nothing happens. That isn't a contradiction. It's how the system works.",
-    readTime: undefined,
+      "Everything checks out and nothing happens: why a correct application can still get stuck — throughput, not eligibility, decides movement. That's how the system works.",
+    readTime: "4 min",
     date: "Feb 2026",
     tags: ["throughput"],
     featured: false,
@@ -90,15 +99,11 @@ const insightPages: InsightContent[] = [
       { type: "heading", text: "The sentence we hear most often" },
       { type: "quote", text: "\"Everything was correct, so why is it stuck?\"" },
       { type: "paragraph", text: "On the surface, that sounds reasonable. If all requirements are met, progress should follow." },
-      { type: "paragraph", text: "In practice, that assumption breaks down very quickly." },
-      {
-        type: "paragraph",
-        text: "Not because something went wrong - but because correctness and movement are not the same thing.",
-      },
+      { type: "paragraph", text: "In practice, it breaks down quickly. Correctness and movement are simply two different things." },
       { type: "heading", text: "Correctness answers one question. Movement answers another." },
       {
         type: "paragraph",
-        text: "Most people treat mobility systems as linear: Submit -> Check -> Move. That model only works when capacity is abundant and demand is low. That is not the environment we're in anymore.",
+        text: "Most people treat mobility systems as linear: Submit → Check → Move. A linear model assumes abundant capacity and low demand — the environment we're in has neither.",
       },
       {
         type: "paragraph",
@@ -108,29 +113,34 @@ const insightPages: InsightContent[] = [
         type: "list",
         items: [
           "Eligibility: Are the rules met? Are the documents valid? Is this allowed?",
-          "Throughput: Given current workload, staffing, priorities, and checks - does this move now?",
+          "Throughput: Given current workload, staffing, priorities, and checks — does this move now?",
         ],
       },
       { type: "paragraph", text: "Correctness clears the first layer. It says nothing about the second." },
+      { type: "paragraph", text: "Illustrative example — the specifics vary case to case." },
+      {
+        type: "paragraph",
+        text: "Two applications reach the same office in the same week. Both are correct on paper. One is checked in sequence and moves. The other waits while an identity check talks to a registry in another system. Nothing either applicant did differently — no checklist shows an error.",
+      },
       { type: "heading", text: "Why paperwork feels like a lever (and isn't)" },
-      { type: "paragraph", text: "Paperwork is tangible. You can complete it. You can double-check it. You can feel 'done'." },
+      { type: "paragraph", text: "Paperwork is tangible. You can complete it, double-check it, feel 'done' with it." },
       { type: "paragraph", text: "Throughput is invisible." },
       {
         type: "paragraph",
-        text: "Queues, staffing levels, internal priorities, and verification depth don't show up in a checklist. So people default to the part they can control - and assume it should be enough.",
+        text: "Queues, staffing levels, internal priorities, and verification depth don't show up in a checklist. So people default to the part they can control — and assume it should be enough.",
       },
-      { type: "paragraph", text: "It used to be closer to enough. It isn't anymore." },
+      { type: "paragraph", text: "It used to be closer to enough. Not anymore." },
       { type: "heading", text: "Queues don't behave like timelines" },
       {
         type: "paragraph",
-        text: "When systems run close to capacity, waiting stops being proportional. A small increase in demand can create a large increase in delay. Cases don't flow evenly. Some move. Some pause. Some sit quietly.",
+        text: "When systems run close to capacity, waiting stops being proportional. A small increase in demand can create a large increase in delay. Cases don't flow evenly: some move, some pause, and others sit idle.",
       },
       { type: "paragraph", text: "From the outside, that looks broken. From the inside, it's a stable queue under load." },
-      { type: "paragraph", text: "'Stuck' is often not a failure state. It's an equilibrium." },
+      { type: "paragraph", text: "'Stuck' usually means the queue has found an equilibrium." },
       { type: "heading", text: "Prioritisation happens even when laws don't change" },
       {
         type: "paragraph",
-        text: "A common reaction to delays is: 'But the rules didn't change.' That's usually true - and also beside the point.",
+        text: "A common reaction to delays is: 'But the rules didn't change.' That's usually true — and also beside the point.",
       },
       {
         type: "paragraph",
@@ -138,12 +148,12 @@ const insightPages: InsightContent[] = [
       },
       {
         type: "paragraph",
-        text: "When priorities shift silently, outcomes start to look random. They aren't - but they are no longer predictable from the rules alone.",
+        text: "When priorities shift silently, outcomes stop being predictable from the rules alone — without becoming random.",
       },
       { type: "heading", text: "Cross-system checks create pauses you can't see" },
       {
         type: "paragraph",
-        text: "Modern mobility decisions rarely live in one system. Identity checks, security screening, employer validation, tax or registry verification - these systems talk to each other. Sometimes slowly. Sometimes sequentially.",
+        text: "Modern mobility decisions rarely live in one system. Identity checks, security screening, employer validation, tax or registry verification — these systems talk to each other. Sometimes slowly. Sometimes sequentially.",
       },
       {
         type: "paragraph",
@@ -157,16 +167,21 @@ const insightPages: InsightContent[] = [
           "When there's no feedback, we assume: something was missed, someone else is being favoured, a mistake was made.",
         ],
       },
-      { type: "paragraph", text: "That's a natural response to opacity - not a diagnosis." },
-      { type: "paragraph", text: "Most delays aren't personal. They're structural." },
-      { type: "paragraph", text: "The system isn't responding to intent or effort. It's responding to load." },
+      { type: "paragraph", text: "That's a natural response to opacity, not a diagnosis." },
+      { type: "paragraph", text: "Most delays are structural, not personal." },
+      { type: "paragraph", text: "The system responds to load, not to intent or effort." },
       { type: "heading", text: "What becomes true in this environment" },
       {
         type: "paragraph",
         text: "Once throughput becomes the limiting factor, the system stops behaving like a schedule and starts behaving like a probability distribution.",
       },
       { type: "paragraph", text: "Things that are fully correct can still pause. Things that look identical can move at different speeds." },
-      { type: "paragraph", text: "That isn't intuitive - but it is consistent." },
+      { type: "paragraph", text: "It feels counterintuitive, yet it holds." },
+      {
+        type: "paragraph",
+        text: "Tell us your trade and country, and we'll tell you approximately what you can apply for right now — even if everything already looks correct on paper.",
+      },
+      { type: "link", href: "/work-in-europe", text: "Tell us your trade →" },
     ],
     interpretation:
       "Correct submissions can still stall because movement depends on queue load, prioritisation, and cross-system checks - not only on meeting requirements.",
@@ -183,10 +198,10 @@ const insightPages: InsightContent[] = [
     slug: "frameworks/constraint-stacking",
     slugParts: ["frameworks", "constraint-stacking"],
     type: "Framework Note",
-    title: "Constraint stacking: why outcomes diverge even under the same rules",
+    title: "Same profile, different decision: why outcomes diverge under the same rules",
     framing:
-      "When two cases look identical but end differently, it's tempting to assume inconsistency. More often, the difference lies in how constraints stack - not in the rules themselves.",
-    readTime: undefined,
+      "When two cases end differently, the difference usually lies in how constraints stack — not in the rules themselves.",
+    readTime: "5 min",
     date: "Feb 2026",
     tags: ["constraints"],
     featured: false,
@@ -194,7 +209,7 @@ const insightPages: InsightContent[] = [
       { type: "heading", text: "The question behind the frustration" },
       {
         type: "quote",
-        text: "\"But we have the same profile - why did they get through and I didn't?\" \"Two hires, same role, same country. Why is one straightforward and the other impossible?\"",
+        text: "\"But we have the same profile — why did they get through and I didn't?\" \"Two hires, same role, same country. Why is one straightforward and the other impossible?\"",
       },
       { type: "paragraph", text: "These questions come up constantly. And they're reasonable." },
       {
@@ -204,11 +219,11 @@ const insightPages: InsightContent[] = [
       { type: "heading", text: "Decisions aren't gates. They're feasibility problems." },
       {
         type: "paragraph",
-        text: "Most people imagine decisions as a single checkpoint: Eligible -> Approved, Not eligible -> Rejected. That's not how mobility systems work in practice.",
+        text: "Most people imagine decisions as a single checkpoint: Eligible → Approved, Not eligible → Rejected. That's not how mobility systems work in practice.",
       },
       {
         type: "paragraph",
-        text: "They behave more like feasibility problems with multiple constraints applied at once. A decision isn't made at one gate - it emerges from how many constraints are satisfied at the same time.",
+        text: "They behave more like feasibility problems with multiple constraints applied at once: the decision emerges from how many constraints are satisfied together, not from a single gate.",
       },
       { type: "paragraph", text: "Change one constraint, and the outcome can flip." },
       { type: "heading", text: "The constraint stack" },
@@ -229,27 +244,32 @@ const insightPages: InsightContent[] = [
         type: "paragraph",
         text: "Each constraint narrows the feasible space. Stack enough of them, and the window closes.",
       },
+      { type: "paragraph", text: "Illustrative example — the specifics vary case to case." },
+      {
+        type: "paragraph",
+        text: "Two candidates, same role, same country, same written requirements met. One starts on schedule. The other's start window hits a seasonal capacity peak, the newly registered employer triggers deeper verification, and one document is still under review. Eligibility never differed — the stack did.",
+      },
       { type: "heading", text: "Why small differences create large divergence" },
       {
         type: "paragraph",
-        text: "This is where expectations usually break. People assume outcomes change gradually - that being 'slightly different' produces a 'slightly different' result.",
+        text: "Expectations usually break here. People assume outcomes change gradually — that being 'slightly different' produces a 'slightly different' result.",
       },
       {
         type: "paragraph",
-        text: "Constraint stacks don't behave that way. They behave more like thresholds. Everything works... until it doesn't.",
+        text: "Constraint stacks behave like thresholds: everything works… until it doesn't.",
       },
       {
         type: "paragraph",
-        text: "A minor timing difference. A slightly different contract structure. A change in employer status. A different office handling verification.",
+        text: "The differences look small on paper — a timing difference, a slightly different contract structure, a change in employer status, a different office handling verification.",
       },
       {
         type: "paragraph",
-        text: "Individually, these don't feel decisive. Together, they are.",
+        text: "Individually they seem minor; together they decide.",
       },
       { type: "heading", text: "'Same rules' doesn't mean 'same decision'" },
       {
         type: "paragraph",
-        text: "When people say 'the rules are the same,' they're usually right. What changes is how many constraints are active at once - and how tightly they're applied.",
+        text: "When people say 'the rules are the same,' they're usually right. What changes is how many constraints are active at once — and how tightly they're applied.",
       },
       {
         type: "paragraph",
@@ -262,9 +282,9 @@ const insightPages: InsightContent[] = [
       { type: "heading", text: "Why this feels unfair" },
       {
         type: "paragraph",
-        text: "Constraint stacking is invisible. People only see the inputs they provided - not the constraints that activated downstream. When outcomes diverge, the system feels arbitrary.",
+        text: "Constraint stacking is invisible. People only see the inputs they provided — not the constraints that activated downstream. When outcomes diverge, the system feels arbitrary.",
       },
-      { type: "paragraph", text: "It isn't random. It's just not narrating itself." },
+      { type: "paragraph", text: "The system isn't random; it just doesn't narrate itself." },
       { type: "heading", text: "What becomes clear once you see the stack" },
       {
         type: "list",
@@ -276,8 +296,13 @@ const insightPages: InsightContent[] = [
       },
       {
         type: "paragraph",
-        text: "None of this makes the system friendly. But it does make it legible.",
+        text: "It makes the system legible, if not friendly.",
       },
+      {
+        type: "paragraph",
+        text: "Put your role or trade, the destination and your main question into the intake form — whichever constraint is binding, it belongs in the message field.",
+      },
+      { type: "link", href: "/work-in-europe", text: "Tell us your situation →" },
     ],
     interpretation:
       "Decisions diverge because feasibility is produced by stacked constraints - not by a single rule. Small differences can flip outcomes entirely.",
@@ -293,10 +318,10 @@ const insightPages: InsightContent[] = [
     slug: "frameworks/lawful-not-random",
     slugParts: ["frameworks", "lawful-not-random"],
     type: "Framework Note",
-    title: "Lawful systems can feel arbitrary without being random",
+    title: "Why it feels random: lawful systems can feel arbitrary without being random",
     framing:
-      "When outcomes are hard to explain and timelines don't behave, people assume randomness. What's usually missing isn't logic - it's visibility.",
-    readTime: undefined,
+      "Why does it feel random? When outcomes are hard to explain and timelines don't behave, people assume randomness — what's usually missing isn't logic, it's visibility.",
+    readTime: "4 min",
     date: "Feb 2026",
     tags: ["opacity"],
     featured: false,
@@ -304,9 +329,9 @@ const insightPages: InsightContent[] = [
       { type: "heading", text: "The reaction we hear most often" },
       {
         type: "quote",
-        text: "\"This feels random.\" \"They just decide however they want.\" \"No one can tell me what's happening.\"",
+        text: "\"It feels random.\" \"They just decide however they want.\" \"No one can tell me what's happening.\"",
       },
-      { type: "paragraph", text: "Those reactions are understandable. They're also a response to opacity, not proof of chaos." },
+      { type: "paragraph", text: "The reactions are understandable. They're also a response to opacity, not proof of chaos." },
       { type: "heading", text: "Random and opaque are not the same thing" },
       {
         type: "paragraph",
@@ -319,17 +344,24 @@ const insightPages: InsightContent[] = [
       { type: "heading", text: "Why discretion exists at all" },
       {
         type: "paragraph",
-        text: "Rules can't encode every situation. They define boundaries, not judgment. Discretion fills the gaps where context matters - evidence quality, credibility, risk signals, edge cases.",
+        text: "Rules can't encode every situation. They define boundaries, not judgment. Discretion fills the gaps where context matters — evidence quality, credibility, risk signals, edge cases.",
       },
       { type: "paragraph", text: "That discretion introduces variation. Variation looks arbitrary when you're on the outside." },
       { type: "paragraph", text: "Inside the system, it's how complexity is handled." },
       { type: "heading", text: "Risk heuristics quietly shape outcomes" },
       {
         type: "paragraph",
-        text: "Modern mobility systems don't treat all cases equally - by design. They allocate attention where perceived risk is higher: background verification, identity consistency, employer credibility, cross-border exposure.",
+        text: "Modern mobility systems don't treat all cases equally — by design. They allocate attention where perceived risk is higher: background verification, identity consistency, employer credibility, cross-border exposure.",
       },
-      { type: "paragraph", text: "This doesn't mean something is wrong. It means scrutiny is uneven." },
-      { type: "paragraph", text: "Uneven scrutiny creates uneven timelines - and very little explanation." },
+      {
+        type: "paragraph",
+        text: "Uneven scrutiny follows where the system perceives risk, and it creates uneven timelines with very little explanation to show for it.",
+      },
+      { type: "paragraph", text: "Illustrative example — the specifics vary case to case." },
+      {
+        type: "paragraph",
+        text: "Two candidates submit equally complete applications. One's employer is long-established and has been verified before; the other's employer is newly registered. The second application is read more carefully: scrutiny follows perceived risk, and the applicant's own file played no part in that difference.",
+      },
       { type: "heading", text: "Why feedback is limited" },
       {
         type: "paragraph",
@@ -346,15 +378,19 @@ const insightPages: InsightContent[] = [
       },
       {
         type: "paragraph",
-        text: "So feedback is minimal by design. From the outside, that silence feels dismissive. From the inside, it's defensive architecture.",
+        text: "Feedback stays minimal by design: from the outside the silence feels dismissive, while from the inside it serves as defensive architecture.",
       },
       { type: "heading", text: "How opacity turns into frustration" },
+      {
+        type: "paragraph",
+        text: "When a case moves without explanation, people tell themselves stories: the file was skipped, someone else was favoured, a mistake was made somewhere.",
+      },
       {
         type: "paragraph",
         text: "Sometimes those stories are true. Often, they're just the mind reacting to uncertainty.",
       },
       { type: "paragraph", text: "Opacity doesn't calm people. But it doesn't imply randomness either." },
-      { type: "heading", text: "What can be concluded - and what can't" },
+      { type: "heading", text: "What can be concluded — and what can't" },
       {
         type: "paragraph",
         text: "What can be said with confidence: decisions follow internal logic, discretion and risk filtering are structural features, timelines vary because scrutiny varies.",
@@ -364,6 +400,11 @@ const insightPages: InsightContent[] = [
         text: "What can't be concluded: that outcomes are predictable, that silence means rejection, that every difference implies unfairness.",
       },
       { type: "paragraph", text: "The system is lawful. It is not legible in real time." },
+      {
+        type: "paragraph",
+        text: "If you want to know where your case actually stands, tell us your trade and country — the first reply tells you approximately what you can apply for right now.",
+      },
+      { type: "link", href: "/work-in-europe", text: "Tell us your trade →" },
     ],
     interpretation:
       "Perceived arbitrariness usually comes from opaque discretion and risk-based verification - not from randomness.",
@@ -379,12 +420,12 @@ const insightPages: InsightContent[] = [
     slug: "signals/country-comparisons",
     slugParts: ["signals", "country-comparisons"],
     type: "Signals & Patterns",
-    title: "Why country comparisons mislead more than they inform",
+    title: "Easiest country to work in Europe? Why country comparisons mislead more than they inform",
     framing:
-      "If cross-border decisions were about picking a destination, rankings would help. They aren’t. Outcomes depend on pathways, timing, and constraints — not on country reputations.",
-    readTime: undefined,
+      "Looking for the easiest European country to work in? Lists mislead: outcomes are decided by pathway, timing and constraints — not country reputations. Here’s what to ask instead.",
+    readTime: "4 min",
     date: "Feb 2026",
-    tags: ["comparisons"],
+    tags: ["comparisons", "pathways", "visas"],
     featured: false,
     content: [
       { type: "heading", text: "The question that starts it" },
@@ -394,7 +435,7 @@ const insightPages: InsightContent[] = [
       },
       {
         type: "paragraph",
-        text: "These questions show up everywhere. Blogs love them. Lists love them. Algorithms love them. Systems don’t.",
+        text: "These questions show up everywhere. Blogs love them. Lists love them. Algorithms love them. Systems don’t. Lists feel useful because they reduce a messy decision to one axis — but that feeling doesn’t survive contact with real constraints.",
       },
       { type: "heading", text: "Countries are not products" },
       {
@@ -413,6 +454,19 @@ const insightPages: InsightContent[] = [
       {
         type: "paragraph",
         text: "Two people “choosing the same country” may not be choosing the same thing at all. One pathway fits. Another collapses under constraints.",
+      },
+      { type: "heading", text: "Two people, one country" },
+      {
+        type: "paragraph",
+        text: "Illustrative example — the specifics vary case to case.",
+      },
+      {
+        type: "paragraph",
+        text: "Take two welders. One has an EN ISO 9606-1 certificate that matches the job, the A2 language level the employer asks for, and every document in order. The other wants the same job — but their certificate has to be recognised first, nobody mentioned that A2 requirement, and the flights were already booked.",
+      },
+      {
+        type: "paragraph",
+        text: "Same country. Same trade. One pathway opens; the other stalls on a piece of paper.",
       },
       { type: "paragraph", text: "The destination didn’t decide that. The pathway did." },
       { type: "heading", text: "Policy surface vs policy texture" },
@@ -435,16 +489,7 @@ const insightPages: InsightContent[] = [
       },
       {
         type: "paragraph",
-        text: "A list written six months ago already describes a different system. That’s not volatility. That’s normal system behaviour.",
-      },
-      { type: "heading", text: "Why these lists feel useful anyway" },
-      {
-        type: "paragraph",
-        text: "Country rankings reduce complexity into a single axis. They let people feel oriented quickly.",
-      },
-      {
-        type: "paragraph",
-        text: "That feeling doesn’t survive contact with constraints. Once pathway fit, timing, and verification depth enter the picture, the clarity evaporates — often after months of effort.",
+        text: "A list written six months ago already describes a different system.",
       },
       { type: "heading", text: "Why Sufoniq doesn’t publish country rankings" },
       {
@@ -453,7 +498,7 @@ const insightPages: InsightContent[] = [
       },
       {
         type: "paragraph",
-        text: "Country-first framing produces false certainty. It hides the variables that actually determine feasibility. We’d rather describe the terrain accurately than rank it poorly.",
+        text: "Country-first framing produces false certainty. It hides the variables that determine feasibility. We’d rather describe the terrain accurately than rank it poorly.",
       },
       { type: "heading", text: "A more accurate mental model" },
       {
@@ -464,11 +509,21 @@ const insightPages: InsightContent[] = [
         type: "paragraph",
         text: "Not the other way around. Country is the last variable that stabilises — not the first one to optimise.",
       },
+      { type: "heading", text: "What to do instead" },
+      {
+        type: "paragraph",
+        text: "Don’t start with countries. Start with your constraints: trade, certificates, language, documents, timing. Ask which pathways those allow — the destination falls out of that.",
+      },
+      {
+        type: "paragraph",
+        text: "That’s exactly what the first reply does on our job-seeker page. Tell us your trade and country, and we’ll tell you approximately what you can apply for right now.",
+      },
+      { type: "link", href: "/work-in-europe", text: "Tell us your trade →" },
     ],
     interpretation:
       "Country comparisons flatten pathway fit, enforcement texture, and timing — so they over-promise clarity while under-describing constraints.",
     boundary:
-      "This does not argue that any country is “better” or “worse,” or that outcomes can be generalised. It explains why rankings misrepresent how mobility systems actually behave.",
+      "This does not argue that any country is “better” or “worse,” or that outcomes can be generalised. It explains why rankings misrepresent how mobility systems behave.",
     whatThisIsNot: [
       "Not a destination guide",
       "Not a list of “easy” countries",
@@ -479,9 +534,9 @@ const insightPages: InsightContent[] = [
     slug: "signals/churn-is-signal",
     slugParts: ["signals", "churn-is-signal"],
     type: "Signals & Patterns",
-    title: "When churn is the signal, not the problem",
+    title: "Employee turnover after relocation: when churn is the signal, not the problem",
     framing:
-      "In cross-border and remote contexts, churn rarely appears out of nowhere. More often, it shows up after structural friction becomes lived reality — not because intent or performance suddenly changed.",
+      "Churn after cross-border hires rarely comes out of nowhere — it shows up after structural friction becomes lived reality, not because intent or performance suddenly changed.",
     readTime: "6 min",
     date: "Feb 2026",
     tags: ["churn"],
@@ -498,7 +553,7 @@ const insightPages: InsightContent[] = [
         type: "paragraph",
         text: "Across cross-border hiring, relocation, and long-term remote work, exits tend to cluster early — often within the first year — and around the same structural moments.",
       },
-      { type: "paragraph", text: "That clustering is the signal." },
+      { type: "paragraph", text: "The clustering is the signal." },
       { type: "heading", text: "Where churn consistently appears" },
       {
         type: "paragraph",
@@ -544,7 +599,12 @@ const insightPages: InsightContent[] = [
         type: "paragraph",
         text: "By the time churn is visible, the cost of staying has already been calculated.",
       },
-      { type: "paragraph", text: "Exit isn’t a reaction. It’s a resolution." },
+      { type: "paragraph", text: "Exit is a resolution, not a reaction." },
+      { type: "paragraph", text: "Illustrative example — the specifics vary case to case." },
+      {
+        type: "paragraph",
+        text: "An employer hires across borders. The role is filled, the person relocates, the documents are handled. Then payroll slips once, a residency question stays open, and family routines strain. Nothing dramatic happens — and the resignation arrives with no warning anyone can point to.",
+      },
       { type: "heading", text: "What churn is often mistaken for" },
       {
         type: "paragraph",
@@ -581,9 +641,9 @@ const insightPages: InsightContent[] = [
       },
       {
         type: "paragraph",
-        text: "The system doesn’t spread pressure evenly. It releases it in bursts.",
+        text: "The system concentrates pressure and releases it in bursts.",
       },
-      { type: "paragraph", text: "That’s why churn often spikes — not gradually, but suddenly." },
+      { type: "paragraph", text: "That’s why churn arrives in spikes, not gradual drift." },
       { type: "heading", text: "The overlooked role of invisibility" },
       {
         type: "paragraph",
@@ -614,8 +674,13 @@ const insightPages: InsightContent[] = [
       },
       {
         type: "paragraph",
-        text: "That doesn’t make churn predictable. And it doesn’t make it avoidable. It makes it legible.",
+        text: "It buys legibility, not prediction or avoidance.",
       },
+      {
+        type: "paragraph",
+        text: "The friction on these lists often starts before day one — with the mobility requirements a hire needs to start. Read how those requirements shape a cross-border hire:",
+      },
+      { type: "link", href: "/insights/frameworks/cross-border-hiring-decisions", text: "Hiring from abroad →" },
     ],
     interpretation:
       "In cross-border and remote contexts, churn usually appears as a lagging indicator of unresolved structural friction — once constraints become lived reality rather than abstract conditions.",
@@ -626,6 +691,182 @@ const insightPages: InsightContent[] = [
       "Not a diagnostic tool",
       "Not a judgement of employers or workers",
       "Not guidance on how to reduce churn",
+    ],
+  },
+  {
+    slug: "rules/lithuania-foreign-worker-quota-2026",
+    slugParts: ["rules", "lithuania-foreign-worker-quota-2026"],
+    type: "Country Rules",
+    title: "Lithuania foreign worker quota 2026 is full — but hiring isn't closed",
+    framing:
+      "Lithuania's 2026 quota of 24,706 permits is full — non-EU hiring continues under salary rules. Permits, thresholds and the November 2026 VFS change, explained.",
+    readTime: "7 min",
+    date: "Nov 2026",
+    tags: ["hiring", "mobility", "permits", "lithuania", "visas"],
+    featured: false,
+    content: [
+      { type: "quote", text: "\"The quota is full. Can we still hire from outside the EU?\"" },
+      {
+        type: "paragraph",
+        text: "Yes. Lithuania's 2026 quota for work-related residence permits — 24,706 places — was confirmed fully used by the Migration Department in early September 2026. Permits continue to be issued after that point, under salary conditions or through routes that sit outside the quota.",
+      },
+      { type: "heading", text: "The answers in short" },
+      {
+        type: "list",
+        items: [
+          "Can employers still hire non-EU workers? Yes — if the salary meets 1.2× Lithuania's average gross wage (about €2,893 per month), or 1.0× (about €2,411) for a shortage occupation.",
+          "Is the general quota closed? Yes. All 24,706 places for 2026 were taken by early September.",
+          "Which routes sit outside the quota? Seasonal work permits, intra-company transfers and the EU Blue Card.",
+          "Did the filing process change? From November 1, 2026, applicants without a valid Lithuanian visa or residence permit must file through VFS centers abroad.",
+          "Is a labour market test required? No — the market test was abolished on January 1, 2025.",
+        ],
+      },
+      { type: "heading", text: "What the full quota actually changes" },
+      {
+        type: "paragraph",
+        text: "The quota caps ordinary work-based residence permits. Once it is full, a general application has no place to occupy, and the salary test decides whether a permit can still be issued. Hiring shifts from first-come timing to pay level and occupation.",
+      },
+      {
+        type: "paragraph",
+        text: "In practice that favours roles where the offer can clear the threshold: IT, healthcare, engineering and transport. The shortage list also covers professional truck and bus drivers, which lowers the requirement to 1.0× the average wage.",
+      },
+      { type: "heading", text: "Salary thresholds after the quota" },
+      {
+        type: "list",
+        items: [
+          "Standard work permit: at least 1.2× the average gross monthly wage — about €2,893 at the latest quarterly figures.",
+          "Shortage occupations: at least 1.0× — about €2,411 — for roles on Lithuania's high-value shortage list (IT, healthcare, engineering, transport).",
+          "EU Blue Card: 1.5× (about €3,166–3,334), reduced to 1.2× (about €2,532) for shortage occupations.",
+          "The State Data Agency updates these figures quarterly — confirm the current values before an offer is signed.",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "An offer below the applicable threshold ends the application before any document is examined. The salary figure is the first screening test, and it applies to the contract on the table.",
+      },
+      { type: "heading", text: "Five permit routes, and what each is for" },
+      {
+        type: "table",
+        columns: ["Permit", "Best for", "Salary requirement", "Where it is filed"],
+        rows: [
+          [
+            "Work permit (temporary residence for work)",
+            "Standard long-term non-EU hires",
+            "1.2× average wage — or 1.0× on the shortage list",
+            "Migration Department via MIGRIS; VFS abroad if the applicant is not yet in Lithuania",
+          ],
+          [
+            "Single Permit",
+            "Residence and work in one application (jobs of a year or more)",
+            "Same as the work permit",
+            "MIGRIS, under the Single Permit scheme",
+          ],
+          [
+            "Seasonal Work Permit",
+            "Short seasonal roles in agriculture, forestry or tourism — up to 9 months in any 12",
+            "Quota-exempt; standard wage rules apply",
+            "Employment Service, then a short-term permit",
+          ],
+          [
+            "Intra-Company Transfer (ICT)",
+            "Managers and specialists sent from a branch outside Lithuania",
+            "Quota-exempt; EU-standard salary, usually at least the average wage",
+            "Employment Service, then a residence permit in MIGRIS",
+          ],
+          [
+            "EU Blue Card",
+            "Highly skilled roles with a recognised tertiary degree",
+            "1.5× average wage — 1.2× on the shortage list",
+            "MIGRIS; often decided in about 15 days",
+          ],
+        ],
+      },
+      { type: "heading", text: "Where to apply: the November 2026 change" },
+      {
+        type: "paragraph",
+        text: "The standard route runs through MIGRIS, the Migration Department's online system, and it stays open for applicants who are already in Lithuania legally.",
+      },
+      {
+        type: "paragraph",
+        text: "From November 1, 2026, applicants who do not already hold a valid Lithuanian residence permit or a Lithuanian/EU visa must submit through VFS visa centers abroad. A Belarusian applicant, for example, files through VFS in Armenia or Georgia instead of directly at the Migration Department. Seasonal and intra-company cases continue to go through the Employment Service.",
+      },
+      {
+        type: "paragraph",
+        text: "For employers, one check comes before any filing plan: confirm what visa status the candidate currently holds. The same application follows two different paths depending on where the person is and what they hold.",
+      },
+      { type: "heading", text: "What the employer has to get right" },
+      {
+        type: "list",
+        items: [
+          "A signed employment contract — full-time, 40 hours a week, for at least six months.",
+          "No outstanding tax liabilities, and the required permits in licensed sectors.",
+          "An employment notification letter when the permit starts.",
+          "For drivers: an EU driving licence with Category 95.",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "None of these is difficult in isolation, and each one is checkable before filing. Authorities and competent bodies decide the permit applications; what the employer controls is a complete, correct file up front.",
+      },
+      { type: "heading", text: "How long it takes" },
+      {
+        type: "paragraph",
+        text: "The law provides for a decision within 90 days of a complete application. Employers commonly report three to six months in practice, and urgent processing is available for a higher fee. Seasonal permits through the Employment Service are usually faster, and the EU Blue Card can be decided in about 15 days.",
+      },
+      {
+        type: "paragraph",
+        text: "Plan hiring three to four months ahead of the start date. Any date that depends on an external decision stays an assumption until that decision arrives.",
+      },
+      { type: "heading", text: "If a permit is refused" },
+      {
+        type: "paragraph",
+        text: "A refusal can be appealed to the administrative courts, and courts have overturned slow or mishandled decisions before. The cheaper options come first: a quota-free route (Blue Card, intra-company, seasonal), a corrected application, or a salary that meets the threshold. Once a decision is issued, the room to act narrows quickly — the requirements worth checking twice are salary, occupation and documents.",
+      },
+      { type: "heading", text: "Questions employers ask" },
+      {
+        type: "faq",
+        items: [
+          {
+            q: "Can I still hire a non-EU worker in Lithuania in 2026?",
+            a: "Yes. The general quota is full, but permits are still issued when the salary meets 1.2× the average gross wage (about €2,893), or 1.0× (about €2,411) for a shortage occupation.",
+          },
+          {
+            q: "What happens now that the 24,706-permit quota is used up?",
+            a: "New general applications have no quota place left. The salary test and the quota-exempt routes — seasonal, intra-company transfer and EU Blue Card — decide what can still be filed.",
+          },
+          {
+            q: "Which occupations get the lower salary threshold?",
+            a: "Lithuania's high-value shortage list, which includes IT, healthcare, engineering and transport — including professional truck and bus drivers — qualifies for the 1.0× threshold.",
+          },
+          {
+            q: "Do I need a labour market test before hiring?",
+            a: "No. The market test requirement was abolished on January 1, 2025.",
+          },
+          {
+            q: "Where do I apply from November 2026?",
+            a: "Applicants already in Lithuania legally file through MIGRIS. Those without a valid Lithuanian visa or residence permit must apply through VFS centers abroad.",
+          },
+          {
+            q: "How long does a work permit take?",
+            a: "The law provides 90 days from a complete application; employers commonly report three to six months in practice. Seasonal permits are usually faster, and the EU Blue Card can be decided in about 15 days.",
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "If you are weighing whether a role clears the threshold — or which of the five routes fits your hire — put the role, the work location and the salary band into the employer enquiry form.",
+      },
+      { type: "link", href: "/employers", text: "Tell us the role →" },
+    ],
+    interpretation:
+      "The 2026 quota moves Lithuanian hiring from timing to thresholds: salary level, occupation and permit route now decide whether a non-EU hire can be filed at all.",
+    boundary:
+      "Wage thresholds are updated quarterly, and the 2026 quota position was verified in November 2026. Rules and figures change: this article covers general conditions only, and authorities decide each application.",
+    whatThisIsNot: [
+      "Not legal advice",
+      "Not a guarantee any permit will be issued",
+      "Not a promise about processing times",
+      "Not a substitute for current Migration Department figures",
     ],
   },
 ];

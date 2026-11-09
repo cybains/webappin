@@ -1,0 +1,25 @@
+/* Override the page's inherited anchor colour for this filled control. */
+.constraintsLink.constraintsLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: .5rem .875rem;
+  border-radius: .75rem;
+  background: #243447;
+  color: #ffffff;
+  font-size: .875rem;
+  line-height: 1.5;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.constraintsLink.constraintsLink:hover {
+  background: #344b65;
+}
+
+.constraintsLink.constraintsLink:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}

@@ -6,49 +6,43 @@
     "path": "/about"
   },
   {
-    "path": "/employers"
+    "path": "/austria-seasonal-workers"
   },
   {
-    "path": "/ghana-tde"
+    "path": "/employers"
   },
   {
     "path": "/insights"
   },
   {
-    "path": "/insights/frameworks/constraint-stacking",
-    "lastModified": "2026-10-14T18:45:53.000Z"
+    "path": "/insights/frameworks/constraint-stacking"
   },
   {
-    "path": "/insights/frameworks/cross-border-hiring-decisions",
-    "lastModified": "2026-10-15T10:30:15.000Z"
+    "path": "/insights/frameworks/cross-border-hiring-decisions"
   },
   {
-    "path": "/insights/frameworks/lawful-not-random",
-    "lastModified": "2026-10-14T18:45:53.000Z"
+    "path": "/insights/frameworks/lawful-not-random"
   },
   {
     "path": "/insights/growth"
   },
   {
-    "path": "/insights/signals/churn-is-signal",
-    "lastModified": "2026-10-14T18:45:53.000Z"
+    "path": "/insights/rules/lithuania-foreign-worker-quota-2026"
   },
   {
-    "path": "/insights/signals/correct-but-stuck",
-    "lastModified": "2026-10-14T18:45:53.000Z"
+    "path": "/insights/signals/churn-is-signal"
   },
   {
-    "path": "/insights/signals/country-comparisons",
-    "lastModified": "2026-10-14T18:45:53.000Z"
+    "path": "/insights/signals/correct-but-stuck"
+  },
+  {
+    "path": "/insights/signals/country-comparisons"
   },
   {
     "path": "/method-trust"
   },
   {
-    "path": "/privacy-policy"
-  },
-  {
-    "path": "/terms-conditions"
+    "path": "/truck-driver-recruitment"
   },
   {
     "path": "/work-in-europe"

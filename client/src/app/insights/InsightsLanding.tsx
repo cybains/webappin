@@ -22,6 +22,7 @@ const typeFilters: ("All" | InsightType)[] = [
   "Visual Dissertation",
   "Signals & Patterns",
   "Framework Note",
+  "Country Rules",
 ];
 
 const normalizeSlug = (slug: string) => (slug.startsWith("/") ? slug : `/insights/${slug}`);

@@ -558,11 +558,11 @@ const UnevenGrowth = () => (
     icon={Factory}
     kicker="Chapter 1"
     title="Growth is uneven. Your strategy shouldn’t be."
-    lede="Economy, without the drama. We measure what matters, ignore what doesn’t, and nudge growth toward something clever, clean, and actually useful."
+    lede="Economy, without the drama: what matters, measured — and a direction worth growing toward."
   >
     <p>
-      Some regions sprint. Others tie their shoes for twenty years. We chart divergence so you can
-      make convergence happen — profitably.
+      Some regions sprint. Others tie their shoes for twenty years. The chart maps the divergence;
+      turning it into convergence is where the work starts.
     </p>
     <div className="grid md:grid-cols-2 gap-6 mt-8">
       <Card>
@@ -595,7 +595,7 @@ const UnevenGrowth = () => (
 const BrainsNotBrawn = () => (
   <Section id="brains" icon={Brain} kicker="Chapter 2" title="Growth needs brains. (And decent Wi‑Fi)">
     <p>
-      Ideas scale. Smokestacks don’t. We map R&D to growth to find places where cleverness
+      Ideas scale. Smokestacks plateau. The chart plots R&D against growth to show where cleverness
       compounds.
     </p>
     <div className="grid md:grid-cols-2 gap-6 mt-8">
@@ -662,7 +662,8 @@ const Limits = () => (
 const PeopleFlows = () => (
   <Section id="people" icon={Users} kicker="Chapter 4" title="Growth is people. Borders are paperwork.">
     <p>
-      Europe runs on human movement. We make it ethical, legal, and pleasantly uneventful.
+      Europe runs on human movement. The work is keeping it legal, ethical, and pleasantly
+      uneventful.
     </p>
     <div className="grid md:grid-cols-2 gap-6 mt-8">
       <Card>
@@ -694,8 +695,8 @@ const PeopleFlows = () => (
 const Balanced = () => (
   <Section id="balanced" icon={LineChart} kicker="Chapter 5" title="Better growth is balanced. (Yes, like a budget)">
     <p>
-      More GDP with less inequality is a thing. Rare, but a thing. We aim hiring where the balance is
-      feasible — and help make it feasible where it isn’t.
+      GDP growth with less inequality happens rarely, and this chart shows where. We aim hiring at
+      that balance — and help build it where it’s missing.
     </p>
     <div className="grid md:grid-cols-2 gap-6 mt-8">
       <Card>

@@ -1,441 +1,122 @@
 import { createPageMetadata } from "@/lib/seo";
+import styles from "./page.module.css";
 
-const LAST_UPDATED = "October 2, 2025";
-
-export const metadata = createPageMetadata("/privacy-policy", "Privacy Policy | Sufoniq", "Read how Sufoniq, operated by UAB Skillaxis, collects and uses personal data, including contact enquiries, sharing, retention and privacy rights.");
+export const metadata = {
+  ...createPageMetadata("/privacy-policy", "Privacy Policy | Sufoniq", "How Sufoniq, operated by UAB Skillaxis, handles recruitment and business enquiries, sharing, retention and your privacy rights."),
+  robots: { index: false, follow: true },
+};
+const privacyEmail = <a href="mailto:privacy@sufoniq.com">privacy@sufoniq.com</a>;
+const sections = [["controller", "Who handles your data"], ["collection", "Information we receive"], ["purposes", "How we use it"], ["sharing", "Who receives it"], ["transfers", "International processing"], ["retention", "Retention"], ["cookies", "Website and external services"], ["security", "Security"], ["rights", "Your rights"], ["contact", "Contact and updates"]];
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="min-h-screen bg-backgroundLight text-textLight dark:bg-backgroundDark dark:text-textDark py-16 px-6">
-      <div className="max-w-4xl mx-auto space-y-12">
-        {/* Header */}
-        <header className="space-y-4">
-          <p className="text-sm uppercase tracking-wide text-[var(--accent)]">Privacy Policy</p>
-          <h1 className="text-4xl font-bold">Modern Data Practices for Global Talent</h1>
-          <p className="text-sm text-muted-foreground">Last updated: {LAST_UPDATED}</p>
-          <p className="text-lg leading-relaxed text-muted-foreground">
-            Sufoniq empowers professionals to navigate global opportunities through a tech-forward
-            platform. This privacy policy explains how we collect, safeguard, and leverage data to
-            deliver personalized experiences across AI-powered workflows, analytics, and
-            cross-border services.
-          </p>
-        </header>
+    <main className={styles.page}><div className={styles.container}>
+      <header className={styles.header}>
+        <p className={styles.eyebrow}>UAB Skillaxis · Sufoniq</p>
+        <h1>Privacy policy</h1>
+        <p className={styles.updated}>Last updated: November 9, 2026</p>
+        <p className={styles.intro}>When you contact Sufoniq about hiring, finding work or our services, you share information with us. This policy explains what we use it for, who may receive it and how to exercise your privacy rights.</p>
+      </header>
+      <nav aria-label="Privacy policy sections" className={styles.navigation}><h2>In this policy</h2><ol>{sections.map(([id, title]) => <li key={id}><a href={`#${id}`}>{title}</a></li>)}</ol></nav>
 
-        {/* Jump Navigation */}
-        <nav aria-label="Privacy policy sections" className="bg-background/60 border border-border rounded-xl p-6 shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Jump to a section</h2>
-          <ul className="grid gap-2 sm:grid-cols-2 text-sm">
-            <li><a className="hover:underline" href="#controller">Who We Are (Controller)</a></li>
-            <li><a className="hover:underline" href="#scope">Scope</a></li>
-            <li><a className="hover:underline" href="#summary">At-a-glance Summary</a></li>
-            <li><a className="hover:underline" href="#collection">Data We Collect</a></li>
-            <li><a className="hover:underline" href="#sources">Sources of Data</a></li>
-            <li><a className="hover:underline" href="#notice">Notice at Collection (CPRA)</a></li>
-            <li><a className="hover:underline" href="#purposes">Purposes & Legal Bases (GDPR)</a></li>
-            <li><a className="hover:underline" href="#ai">AI, Profiling & Human Oversight</a></li>
-            <li><a className="hover:underline" href="#cookies">Cookies & Tracking</a></li>
-            <li><a className="hover:underline" href="#sharing">Sharing & Disclosures</a></li>
-            <li><a className="hover:underline" href="#transfers">International Transfers</a></li>
-            <li><a className="hover:underline" href="#retention">Retention</a></li>
-            <li><a className="hover:underline" href="#rights">Your Rights & Privacy Choices</a></li>
-            <li><a className="hover:underline" href="#cookie-list">Cookie List</a></li>
-            <li><a className="hover:underline" href="#security">Security</a></li>
-            <li><a className="hover:underline" href="#changes">Changes</a></li>
-            <li><a className="hover:underline" href="#contact">Contact Us</a></li>
-          </ul>
-        </nav>
+      <section id="controller"><h2>1. Who handles your data</h2>
+        <p>UAB Skillaxis operates Sufoniq and is the data controller for the enquiries and business communications described here. This means we decide why and how that information is used.</p>
+        <dl className={styles.facts}>
+          <div><dt>Company</dt><dd>UAB Skillaxis · company code 307395574</dd></div>
+          <div><dt>Registered address</dt><dd>Architektų g. 56-101, LT-04111, Vilnius, Lithuania</dd></div>
+          <div><dt>Privacy contact</dt><dd>{privacyEmail}</dd></div>
+        </dl>
+        <p id="scope">This policy covers this website and related recruitment and business correspondence, including email and messages you choose to send through WhatsApp. If an agreed service involves additional uses of your information, we explain those uses before that processing begins.</p>
+        <p>Employers are responsible for their own hiring decisions and use of candidate information. Where we process information solely on a client’s documented instructions, the relevant service agreement defines that arrangement and the client’s privacy notice also applies.</p>
+      </section>
 
-        {/* Controller */}
-        <section id="controller" className="space-y-4">
-          <h2 className="text-2xl font-semibold">1) Who We Are (Controller)</h2>
-          <p>
-            UAB Skillaxis, operating as <strong>Sufoniq</strong> (the “Company,” “we,” “us,” or “our”), is the
-            <strong> data controller</strong> for the processing activities described in this policy, unless otherwise stated.
-          </p>
-          <ul className="list-disc pl-6 space-y-1">
-            <li><strong>Legal entity:</strong> UAB Skillaxis</li>
-            <li><strong>Company code:</strong> 307395574</li>
-            <li><strong>Registered address:</strong> Architektų g. 56-101, LT-04111, Vilnius, Lithuania</li>
-            <li><strong>Trading/brand name:</strong> Sufoniq (sufoniq.com)</li>
-            <li><strong>EU/EEA establishment:</strong> Lithuania</li>
-            <li>
-            <strong>UK representative (UK GDPR Art. 27):</strong> We target users in the UK. If required under applicable law, a UK
-            representative will be appointed in due course; until then, UK users can contact our DPO below.
-          </li>
-            <li>
-              <strong>Data Protection Officer (DPO):</strong>{" "}
-              <a className="text-[var(--accent)] hover:underline" href="mailto:privacy@sufoniq.com">
-                privacy@sufoniq.com
-              </a>
-            </li>
-          </ul>
-          <p className="text-sm text-muted-foreground">
-            Where we provide services to employers or other clients who instruct us (e.g., background screening
-            facilitated by a partner), we may act as a <strong>processor</strong> and the client is the controller; their privacy
-            policy applies to their own use of personal data.
-          </p>
-        </section>
+      <section id="collection"><h2>2. Information we receive</h2>
+        <ul>
+          <li><strong>Contact details:</strong> your name, email address and any telephone number or other contact details you provide.</li>
+          <li><strong>Recruitment enquiries:</strong> your trade, experience, preferred country and information you include about finding work.</li>
+          <li><strong>Employer enquiries:</strong> your company, hiring country, role requirements, staffing numbers, timing and any training or qualification support you describe.</li>
+          <li><strong>Correspondence and service records:</strong> messages, agreed requirements and information needed to respond or carry out agreed work. This may include a CV, employment history or qualification documents if you later provide them for that purpose.</li>
+          <li><strong>Technical information:</strong> hosting and email providers may process IP addresses, browser information, delivery records and error or security logs to operate and protect their services.</li>
+        </ul>
+        <p id="sources">Most information comes directly from you. If an employer or another person provides your details for a recruitment enquiry, we explain the source and intended use when contacting you, unless a lawful exception applies. Only share another person’s information where you are entitled to do so.</p>
+        <p id="notice">Required fields are marked on each form. Without the required contact and enquiry details, we may be unable to respond or assess your request. Other fields are optional. Initial enquiries do not require a passport, identity document, medical information or bank details; please do not include these in a general enquiry.</p>
+        <p>Our recruitment services are not intended for children under 16. Contact our privacy email if you believe a child has supplied personal information.</p>
+      </section>
 
-        {/* Scope */}
-        <section id="scope" className="space-y-4">
-          <h2 className="text-2xl font-semibold">2) Scope</h2>
-          <p>
-            This policy applies to our websites, web and mobile apps, and services that link to it (collectively, the
-            “Services”). It covers users such as job seekers, talent, employer contacts, and visitors.
-          </p>
-        </section>
+      <section id="purposes"><h2>3. How and why we use it</h2>
+        <p>We use information for the enquiry or work it relates to. The legal basis depends on the purpose and your relationship with us:</p>
+        <ul>
+          <li><strong>Responding to your individual service request:</strong> taking steps at your request before entering a contract, where necessary for that request (GDPR Article 6(1)(b)).</li>
+          <li><strong>Handling employer and other business enquiries:</strong> our legitimate interest in responding to relevant enquiries, assessing requirements and maintaining business relationships (Article 6(1)(f)).</li>
+          <li><strong>Providing agreed services:</strong> performing a contract with you where necessary (Article 6(1)(b)); for a client company’s representatives, our legitimate interest in administering that relationship (Article 6(1)(f)).</li>
+          <li><strong>Introducing candidates:</strong> your consent before sharing candidate details with a prospective employer or recruitment partner (Article 6(1)(a)). We explain the proposed recipient and purpose first.</li>
+          <li><strong>Protecting communications and handling disputes:</strong> our legitimate interest in preventing misuse, resolving complaints and establishing or defending legal claims (Article 6(1)(f)).</li>
+          <li><strong>Keeping legally required records:</strong> compliance with applicable legal obligations, such as accounting obligations where a paid service is agreed (Article 6(1)(c)).</li>
+        </ul>
+        <p>Where we rely on legitimate interests, your interests and privacy rights must also be considered. You can object to that processing. Where we rely on consent, you can withdraw it at any time; this does not affect processing already carried out lawfully.</p>
+        <p>Sending an enquiry does not subscribe you to marketing. We do not sell personal information or share it for targeted advertising.</p>
+        <p id="ai"><strong>Human review:</strong> our website enquiry forms do not automatically score candidates, reject applications or make hiring decisions. A member of the team handles the enquiry; employers make their own hiring decisions.</p>
+      </section>
 
-        {/* Summary */}
-        <section id="summary" className="space-y-4">
-          <h2 className="text-2xl font-semibold">3) At-a-glance Summary</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>We collect account, profile/CV, usage, device, and approximate location data.</li>
-            <li>We use AI models to extract skills, match opportunities, and personalize guidance. Outputs are <strong>decision support</strong>; humans make final hiring decisions.</li>
-            <li>We <strong>do not sell or share</strong> personal information for cross-context behavioral advertising.</li>
-            <li>You have rights to <strong>access, correct, delete, port, and object</strong>, and to <strong>appeal</strong> where applicable.</li>
-            <li>International transfers are protected by <strong>Standard Contractual Clauses</strong> (and UK IDTA where applicable).</li>
-            <li>Retention is limited and purpose-based (see Retention).</li>
-          </ul>
-        </section>
+      <section id="sharing"><h2>4. Who receives it</h2>
+        <p>Information is used by team members who need it for your enquiry or agreed work, and by providers needed to run the website and communications.</p>
+        <ul>
+          <li><strong>Website and email providers:</strong> hosting services handle website requests, and Resend delivers form enquiries to our business mailbox. Our email service provider processes received messages and replies.</li>
+          <li><strong>Prospective employers or recruitment partners:</strong> candidate information is shared only after you agree to the proposed introduction. Their own privacy information governs their subsequent independent use.</li>
+          <li><strong>Professional advisers and authorities:</strong> relevant information may be disclosed where needed for an agreed service, a legal obligation or establishing or defending legal claims. Disclosure is limited to what is necessary for that purpose.</li>
+        </ul>
+        <p>Permission for a candidate introduction is separate from using service providers to deliver and store your enquiry.</p>
+      </section>
 
-        {/* Data We Collect */}
-        <section id="collection" className="space-y-4">
-          <h2 className="text-2xl font-semibold">4) Data We Collect</h2>
-          <p>We collect the following categories (examples are illustrative):</p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li><strong>Identifiers & contact</strong> — name, email, phone, country, account IDs.</li>
-            <li><strong>Professional & CV data</strong> — employment history, skills, education, certificates, portfolio links.</li>
-            <li><strong>Inferences & profile signals</strong> — derived skills, seniority, job match scores.</li>
-            <li><strong>Device & internet activity</strong> — IP address, device type, OS, browser, pages viewed, events (crash logs).</li>
-            <li><strong>Approximate location</strong> — city/country based on IP or user preference.</li>
-            <li><strong>Support & communications</strong> — messages, tickets, survey responses.</li>
-            <li><strong>Partner data</strong> — (if you choose) information from background-check and mobility partners, or publicly available professional sources.</li>
-          </ul>
-          <p className="text-sm text-muted-foreground">
-            <strong>Children:</strong> Our Services are <strong>not intended for children under 16</strong>. We do not knowingly collect data from children.
-            If you believe a child has provided data, contact us to delete it.
-          </p>
-        </section>
+      <section id="transfers"><h2>5. International processing</h2>
+        <p>Some service providers process information outside the European Economic Area. Resend states that it stores data in the United States, including when an EU email-sending region is selected. Its standard data processing agreement includes EU Standard Contractual Clauses for international transfers.</p>
+        <p>Read <a href="https://resend.com/security">Resend’s processing and security information</a> and <a href="https://resend.com/legal/dpa">data processing agreement</a>. Contact our privacy email for information about the recipients and transfer safeguards relevant to your enquiry or agreed service.</p>
+        <p>If a proposed candidate introduction involves a recipient outside the EEA, we explain that recipient and the relevant transfer arrangements before sharing information. Agreeing to an introduction does not remove the requirement for lawful international transfers.</p>
+      </section>
 
-        {/* Sources */}
-        <section id="sources" className="space-y-4">
-          <h2 className="text-2xl font-semibold">5) Sources of Data</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>Directly from you (account creation, profile uploads, forms, communications).</li>
-            <li>Automatically from your device and interactions (cookies, SDKs, logs).</li>
-            <li>From partners and publicly available professional sources, under contract or where permitted by law.</li>
-          </ul>
-        </section>
+      <section id="retention"><h2>6. How long we keep it</h2>
+        <p>We retain personal information only while it is needed for the purpose for which it was collected. The relevant criteria are:</p>
+        <ul>
+          <li>Whether an enquiry remains active and whether you have asked us to continue helping with hiring or finding work.</li>
+          <li>Whether agreed work is ongoing and which records are needed to complete and account for it.</li>
+          <li>Whether a record must be kept under an applicable legal obligation.</li>
+          <li>Whether specific records are needed for an unresolved complaint, dispute or legal claim, and for how long that need continues.</li>
+        </ul>
+        <p>Once these purposes no longer apply, information is deleted or anonymised. A need to retain an invoice or agreement does not justify keeping every candidate document or message indefinitely. You can ask about retention of your records or request deletion; legal obligations and other applicable exceptions may affect what can be deleted.</p>
+      </section>
 
-        {/* Notice at Collection */}
-        <section id="notice" className="space-y-4">
-          <h2 className="text-2xl font-semibold">6) Notice at Collection (California/CPRA)</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border border-border rounded-lg">
-              <thead className="bg-muted/40">
-                <tr>
-                  <th className="text-left p-3 border-b">Category</th>
-                  <th className="text-left p-3 border-b">Examples</th>
-                  <th className="text-left p-3 border-b">Sold?</th>
-                  <th className="text-left p-3 border-b">Shared for cross-context ads?</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Identifiers</td>
-                  <td className="p-3 border-b">name, email, IP</td>
-                  <td className="p-3 border-b">No</td>
-                  <td className="p-3 border-b">No</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Professional info</td>
-                  <td className="p-3 border-b">CV, skills, work history</td>
-                  <td className="p-3 border-b">No</td>
-                  <td className="p-3 border-b">No</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Internet/Device activity</td>
-                  <td className="p-3 border-b">logs, analytics events</td>
-                  <td className="p-3 border-b">No</td>
-                  <td className="p-3 border-b">No</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Approx. geolocation</td>
-                  <td className="p-3 border-b">city/country</td>
-                  <td className="p-3 border-b">No</td>
-                  <td className="p-3 border-b">No</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Inferences</td>
-                  <td className="p-3 border-b">match scores, interests</td>
-                  <td className="p-3 border-b">No</td>
-                  <td className="p-3 border-b">No</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3">Sensitive PI</td>
-                  <td className="p-3">
-                    Collected only when necessary (e.g., national ID/passport for compliance, background screening).
-                    Used solely for the requested or legally required purpose; not used for additional purposes without your consent.
-                  </td>
-                  <td className="p-3">No</td>
-                  <td className="p-3">No</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p><strong>Right to opt-out:</strong> We do not sell/share PI. You can still reach us for any request at <a className="text-[var(--accent)] hover:underline" href="mailto:privacy@sufoniq.com">privacy@sufoniq.com</a>.</p>
-          <p><strong>Limit SPI:</strong> If SPI is collected for a limited purpose, we use it only for that purpose and permit you to limit additional uses.</p>
-        </section>
+      <section id="cookies"><h2>7. Website and external services</h2>
+        <p id="cookie-list">Our public enquiry forms do not require an account or login. We do not use these forms to set advertising cookies or build advertising profiles. Hosting and security services may process technical request information to deliver and protect the website.</p>
+        <p>You can manage cookies and other website storage through your browser settings. If we introduce optional cookie-based analytics or advertising, we will explain the relevant providers, purposes and durations and obtain consent where required before enabling them.</p>
+        <p>WhatsApp buttons open an external service when you choose to use them. WhatsApp processes information under its own privacy terms, and we receive the contact details and messages you send us there. You can use our form or email instead. Other external links are subject to the destination’s privacy information.</p>
+      </section>
 
-        {/* Purposes & Legal Bases */}
-        <section id="purposes" className="space-y-4">
-          <h2 className="text-2xl font-semibold">7) Purposes & Legal Bases (GDPR/EEA)</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border border-border rounded-lg">
-              <thead className="bg-muted/40">
-                <tr>
-                  <th className="text-left p-3 border-b">Purpose</th>
-                  <th className="text-left p-3 border-b">Typical data</th>
-                  <th className="text-left p-3 border-b">Legal basis</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Account creation & authentication</td>
-                  <td className="p-3 border-b">Identifiers, contact</td>
-                  <td className="p-3 border-b"><strong>Contract</strong> (Art. 6(1)(b))</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Deliver core Services (job matching, relocation guidance)</td>
-                  <td className="p-3 border-b">Profile/CV, inferences</td>
-                  <td className="p-3 border-b"><strong>Contract</strong>; <strong>Legitimate interests</strong> in relevance</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Personalization & recommendations</td>
-                  <td className="p-3 border-b">Usage, inferences</td>
-                  <td className="p-3 border-b"><strong>Legitimate interests</strong>; <strong>Consent</strong> where required</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Communications & support</td>
-                  <td className="p-3 border-b">Contact, messages</td>
-                  <td className="p-3 border-b"><strong>Contract</strong>; <strong>Legitimate interests</strong></td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Analytics, service improvement, security</td>
-                  <td className="p-3 border-b">Device, logs</td>
-                  <td className="p-3 border-b"><strong>Legitimate interests</strong>; <strong>Legal obligation</strong> for security in some cases</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Marketing (non-essential)</td>
-                  <td className="p-3 border-b">Contact, preferences</td>
-                  <td className="p-3 border-b"><strong>Consent</strong> (EEA/UK). Outside the EEA/UK, you can opt out anytime via unsubscribe links or in-app settings.</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3">Compliance/fraud & legal requests</td>
-                  <td className="p-3">Identifiers, logs, SPI where strictly necessary</td>
-                  <td className="p-3"><strong>Legal obligation</strong>; <strong>Legitimate interests</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p>
-            <strong>Legitimate interests:</strong> providing relevant opportunities, protecting platform integrity, and improving the Services.
-            You may <strong>object</strong> at any time; see Rights below. For Sensitive Personal Information collected for compliance/background checks,
-            we <strong>limit use</strong> to those purposes and provide controls on request at{" "}
-            <a className="text-[var(--accent)] hover:underline" href="mailto:privacy@sufoniq.com">privacy@sufoniq.com</a>.
-          </p>
-        </section>
+      <section id="security"><h2>8. Protecting your information</h2>
+        <p>We use personal information for the business purposes described here and limit access to people who need it for those purposes. We use service providers to deliver and store communications. Send only what is needed for your enquiry; if further documents are necessary, we explain what is needed and how to provide them.</p>
+        <p>No online service can guarantee absolute security. If you believe information has been sent to the wrong person or otherwise exposed, contact our privacy email so we can investigate.</p>
+      </section>
 
-        {/* AI & Profiling */}
-        <section id="ai" className="space-y-4">
-          <h2 className="text-2xl font-semibold">8) AI, Profiling & Human Oversight</h2>
-          <p>
-            We use machine learning to: (i) parse CVs and extract skills; (ii) align experience to role requirements;
-            (iii) compute match scores; (iv) suggest destinations and relocation pathways.
-          </p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>Models are routinely evaluated for <strong>fairness, drift, and relevance</strong>; we monitor for disparate impact indicators.</li>
-            <li>Outputs are <strong>assistive</strong>. Employers and Sufoniq staff make final decisions.</li>
-            <li>Your rights: request <strong>human review</strong>, <strong>express your view</strong>, and <strong>contest</strong> a recommendation; you may <strong>object to profiling</strong> used for personalization.</li>
-          </ul>
-        </section>
+      <section id="rights"><h2>9. Your rights</h2>
+        <p>Under the GDPR, subject to its conditions and exceptions, you can:</p>
+        <ul>
+          <li>Ask whether we hold your personal information and request access to it.</li>
+          <li>Ask us to correct inaccurate or incomplete information.</li>
+          <li>Request deletion or restriction of processing.</li>
+          <li>Object to processing based on legitimate interests, including direct marketing.</li>
+          <li>Request a portable copy where processing is automated and based on consent or a contract.</li>
+          <li>Withdraw consent and exercise applicable rights concerning solely automated decisions.</li>
+        </ul>
+        <p>Email {privacyEmail} to make a request. We may ask for proportionate information to verify your identity, so we do not disclose information to the wrong person. Do not send identity documents unless we explain why they are necessary.</p>
+        <p>We respond without undue delay and normally within one month. Where the GDPR permits an extension of up to two further months because of the complexity or number of requests, we explain the reason within the first month. If we cannot fulfil a request, we explain why and the available complaint options.</p>
+        <p>You can complain to a competent data protection authority, including the <a href="https://vdai.lrv.lt/en/">Lithuanian State Data Protection Inspectorate</a>, or the authority where you live or work. You do not have to contact us first.</p>
+        <p>Where other privacy laws apply, including UK or US state privacy laws, you may have additional rights to access, correct, delete or obtain your information, limit certain uses, opt out or appeal a decision. Contact us to exercise any applicable right. We do not discriminate against you for exercising privacy rights.</p>
+      </section>
 
-        {/* Cookies */}
-        <section id="cookies" className="space-y-4">
-          <h2 className="text-2xl font-semibold">9) Cookies & Tracking</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>By default, we use <strong>essential</strong> cookies for authentication, security, and load-balancing.</li>
-            <li><strong>Non-essential</strong> analytics/personalization cookies will operate only if we enable them and obtain your consent in the EEA/UK.</li>
-            <li>You can manage preferences via our banner (when present) or your browser settings.</li>
-          </ul>
-          <p className="text-sm text-muted-foreground">
-            Unsure whether your current build sets any cookies? Open DevTools → Application/Storage → Cookies.
-            If none appear beyond session/auth, you’re using essential-only at this time.
-          </p>
-        </section>
-
-        {/* Sharing */}
-        <section id="sharing" className="space-y-4">
-          <h2 className="text-2xl font-semibold">10) Sharing & Disclosures</h2>
-          <p>We do <strong>not</strong> sell or share PI for cross-context behavioral advertising. We disclose data as follows:</p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li><strong>Service providers (processors):</strong> cloud hosting, analytics (if enabled), support tooling, document parsing, background screening facilitators, and mobility partners—each under a Data Processing Agreement.</li>
-            <li><strong>Employers & independent controllers:</strong> when you apply to a role or request introduction, the employer (or partner) becomes an independent controller; their notices govern their use.</li>
-            <li><strong>Legal & safety:</strong> to comply with law, enforce terms, or protect rights, safety, or security.</li>
-            <li><strong>Corporate events:</strong> in a merger, acquisition, or reorganization, we may transfer data subject to this policy and law.</li>
-          </ul>
-        </section>
-
-        {/* International Transfers */}
-        <section id="transfers" className="space-y-4">
-          <h2 className="text-2xl font-semibold">11) International Transfers</h2>
-          <p>
-            If data is transferred outside the EEA/UK, we use <strong>Standard Contractual Clauses</strong> (and the <strong>UK IDTA</strong> where applicable),
-            implement supplementary measures where required, and rely on adequacy decisions where available. You may request a copy of relevant safeguards.
-          </p>
-        </section>
-
-        {/* Retention */}
-        <section id="retention" className="space-y-4">
-          <h2 className="text-2xl font-semibold">12) Retention</h2>
-          <p>We keep personal data only as long as necessary for the purposes described or as required by law. Examples:</p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border border-border rounded-lg">
-              <thead className="bg-muted/40">
-                <tr>
-                  <th className="text-left p-3 border-b">Data</th>
-                  <th className="text-left p-3 border-b">Typical retention</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Account & profile</td>
-                  <td className="p-3 border-b">Life of account + <strong>24 months</strong> of inactivity</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">CV/resumes & uploads</td>
-                  <td className="p-3 border-b">Until deleted by you or after <strong>24 months</strong> inactivity</td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Match & analytics events</td>
-                  <td className="p-3 border-b"><strong>12–24 months</strong></td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">Support tickets</td>
-                  <td className="p-3 border-b"><strong>36 months</strong></td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3 border-b">System logs & security records</td>
-                  <td className="p-3 border-b"><strong>12–24 months</strong></td>
-                </tr>
-                <tr className="align-top">
-                  <td className="p-3">Compliance (e.g., KYC/AML docs, if applicable)</td>
-                  <td className="p-3">As required by law</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p className="text-sm text-muted-foreground">We periodically de-identify and aggregate data for metrics and product improvement.</p>
-        </section>
-
-        {/* Rights + Privacy Choices */}
-        <section id="rights" className="space-y-4">
-          <h2 className="text-2xl font-semibold">13) Your Rights & Privacy Choices</h2>
-          <p><strong>EEA/UK:</strong> access, rectification, erasure, restriction, portability, objection, and rights related to automated decision-making.</p>
-          <p><strong>US (CA, CO, CT, VA, UT):</strong> know/access, delete, correct, portability, opt-out of sale/share/targeted advertising, limit SPI, and <strong>appeal</strong> a rights decision (where applicable).</p>
-          <p>
-            <strong>Marketing choices:</strong> We send product/service emails necessary to operate the Services.
-            Marketing emails are sent <strong>only with your consent</strong> in the EEA/UK. You can withdraw consent or opt out at any time via the unsubscribe link or by emailing{" "}
-            <a className="text-[var(--accent)] hover:underline" href="mailto:privacy@sufoniq.com">privacy@sufoniq.com</a>.
-          </p>
-          <p>
-            <strong>SPI limits:</strong> Where we collect <strong>Sensitive Personal Information</strong> (e.g., national IDs for compliance or background checks),
-            we limit its use to the specific purpose. For limits or questions, contact{" "}
-            <a className="text-[var(--accent)] hover:underline" href="mailto:privacy@sufoniq.com">privacy@sufoniq.com</a>.
-          </p>
-          <p>
-            <strong>How to exercise rights:</strong> Email{" "}
-            <a className="text-[var(--accent)] hover:underline" href="mailto:privacy@sufoniq.com">privacy@sufoniq.com</a>.
-            Expected timelines: <strong>1 month</strong> (GDPR; extendable by 2 months if complex) and <strong>45 days</strong> (CCPA/CPRA; extendable by 45 days where reasonable).
-          </p>
-        </section>
-
-        {/* Inline Cookie List */}
-        <section id="cookie-list" className="space-y-4">
-          <h2 className="text-2xl font-semibold">14) Cookie List (current)</h2>
-          <p className="text-sm text-muted-foreground">
-            Below is our current cookie overview. If non-essential analytics are not enabled in your region, only essential cookies will appear.
-          </p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border border-border rounded-lg">
-              <thead className="bg-muted/40">
-                <tr>
-                  <th className="text-left p-3 border-b">Provider</th>
-                  <th className="text-left p-3 border-b">Purpose</th>
-                  <th className="text-left p-3 border-b">Category</th>
-                  <th className="text-left p-3 border-b">Retention</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="align-top">
-                  <td className="p-3 border-b">First-party (session)</td>
-                  <td className="p-3 border-b">Authentication/session continuity</td>
-                  <td className="p-3 border-b">Essential</td>
-                  <td className="p-3 border-b">Session</td>
-                </tr>
-                {/* Add vendors here if/when enabled (e.g., Google Analytics) */}
-                {/* <tr>
-                  <td className="p-3 border-b">Google Analytics</td>
-                  <td className="p-3 border-b">Usage analytics (consent-based in EEA/UK)</td>
-                  <td className="p-3 border-b">Analytics</td>
-                  <td className="p-3 border-b">14 months</td>
-                </tr> */}
-              </tbody>
-            </table>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            To check your current build: DevTools → Application/Storage → Cookies.
-          </p>
-        </section>
-
-        {/* Security */}
-        <section id="security" className="space-y-4">
-          <h2 className="text-2xl font-semibold">15) Security</h2>
-          <p>
-            We implement defense-in-depth controls: encryption in transit and at rest; role-based, least-privilege access;
-            zero-trust network posture; vulnerability management and logging/monitoring; vendor due diligence; and incident response procedures.
-            No system is perfectly secure; we cannot guarantee absolute security.
-          </p>
-        </section>
-
-        {/* Changes */}
-        <section id="changes" className="space-y-4">
-          <h2 className="text-2xl font-semibold">16) Changes to this policy</h2>
-          <p>
-            We may update this policy from time to time. We will post the updated version with a new <strong>effective date</strong> and,
-            if changes are material, provide a more prominent notice or obtain consent where required.
-          </p>
-        </section>
-
-        {/* Contact */}
-        <section id="contact" className="space-y-4">
-          <h2 className="text-2xl font-semibold">17) Contact Us</h2>
-          <p>
-            <strong>Data Protection Officer:</strong>{" "}
-            <a className="text-[var(--accent)] hover:underline" href="mailto:privacy@sufoniq.com">
-              privacy@sufoniq.com
-            </a>
-          </p>
-          <p><strong>Postal address:</strong> UAB Skillaxis (Sufoniq), Architektų g. 56-101, LT-04111, Vilnius, Lithuania</p>
-          <p>
-            <strong>Supervisory authority (EU):</strong> You have the right to lodge a complaint with your local authority.
-            In Lithuania: State Data Protection Inspectorate (vdai.lrv.lt).
-          </p>
-          <p><strong>United States:</strong> For CPRA purposes, you may contact us at{" "}
-            <a className="text-[var(--accent)] hover:underline" href="mailto:privacy@sufoniq.com">privacy@sufoniq.com</a>.
-          </p>
-        </section>
-      </div>
-    </main>
+      <section id="contact"><h2>10. Contact and updates</h2>
+        <p><strong>Privacy contact:</strong> {privacyEmail}</p>
+        <p>You can also write to UAB Skillaxis, Architektų g. 56-101, LT-04111, Vilnius, Lithuania, with “Privacy request” in the correspondence.</p>
+        <p id="changes">We update this policy when our processing changes. The date at the top identifies the latest revision. Where required, we provide a separate notice or seek consent before a new use of your information.</p>
+      </section>
+    </div></main>
   );
 }

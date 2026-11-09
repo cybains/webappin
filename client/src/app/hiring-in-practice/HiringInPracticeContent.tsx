@@ -111,13 +111,7 @@ export default function HiringInPracticeContent() {
             ))}
           </div>
 
-          <section aria-labelledby="published-route-title" className="sufoniq-card space-y-4">
-            <p className="sufoniq-meta-label">A route in detail</p>
-            <h2 id="published-route-title" className="text-2xl font-semibold">Ghana to Lithuania: truck driver mobility</h2>
-            <p className="text-sm sufoniq-body-text">Our published route guide brings employer matching, work and residence permit steps, documentation and driver qualification requirements into one view. It shows why the sequence matters and which responsibilities need to be clear.</p>
-            <p className="text-sm sufoniq-body-text">Requirements and timing need to be checked for the specific candidate and current route. This guide does not establish a start date for another hire.</p>
-            <Link prefetch={false} href="/ghana-tde" className={textLink}>See the Ghana → Lithuania route</Link>
-          </section>
+
 
           <section aria-labelledby="market-context-title" className="space-y-4">
             <h2 id="market-context-title" className="text-2xl font-semibold">A market figure tells you where to look.</h2>

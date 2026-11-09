@@ -1,10 +1,11 @@
-import { createPageMetadata } from "@/lib/seo";
+import { createPageMetadata, SITE_URL } from "@/lib/seo";
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { StructuralGridBand } from "@/components/StructuralGridBand";
 import { getInsightBySlug, BodyBlock } from "@/lib/insights/content";
+import { INSIGHTS } from "@/lib/insights";
 
 export async function generateMetadata({
   params,
@@ -52,6 +53,58 @@ function renderBlock(block: BodyBlock, index: number) {
           ))}
         </ul>
       );
+    case "table":
+      return (
+        <div key={index} className="overflow-x-auto">
+          <table className="w-full min-w-[640px] border-collapse text-sm text-slate-700">
+            <thead>
+              <tr>
+                {block.columns.map((column) => (
+                  <th
+                    key={column}
+                    className="border-b border-slate-300 bg-slate-50 px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-600"
+                  >
+                    {column}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {block.rows.map((row, rowIndex) => (
+                <tr key={rowIndex} className="align-top">
+                  {row.map((cell, cellIndex) => (
+                    <td key={cellIndex} className="border-b border-slate-200 px-3 py-3">
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    case "faq":
+      return (
+        <div key={index} className="space-y-4">
+          {block.items.map((item) => (
+            <div key={item.q}>
+              <h3 className="font-semibold text-slate-900">{item.q}</h3>
+              <p className="mt-1 text-base leading-relaxed text-slate-700">{item.a}</p>
+            </div>
+          ))}
+        </div>
+      );
+    case "link":
+      return (
+        <div key={index} className="pt-2">
+          <Link
+            href={block.href}
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            {block.text}
+          </Link>
+        </div>
+      );
     default:
       return null;
   }
@@ -68,6 +121,39 @@ export default async function InsightArticlePage({
   if (!insight) {
     notFound();
   }
+
+  const canonical = new URL("/insights/" + insight.slugParts.join("/"), SITE_URL).href;
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: insight.title,
+    description: insight.framing,
+    mainEntityOfPage: canonical,
+    author: { "@type": "Organization", name: "Sufoniq", url: SITE_URL },
+    publisher: { "@type": "Organization", name: "Sufoniq", url: SITE_URL },
+    inLanguage: "en",
+    ...(insight.tags && insight.tags.length > 0 ? { keywords: insight.tags.join(", ") } : {}),
+  };
+  const related = INSIGHTS.filter((item) => item.slug !== insight.slug)
+    .sort((a, b) => {
+      const scoreA = (a.tags ?? []).filter((tag) => insight.tags?.includes(tag)).length;
+      const scoreB = (b.tags ?? []).filter((tag) => insight.tags?.includes(tag)).length;
+      return scoreB - scoreA;
+    })
+    .slice(0, 3);
+  const faqItems = insight.content.flatMap((block) => (block.type === "faq" ? block.items : []));
+  const faqSchema =
+    faqItems.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqItems.map((item) => ({
+            "@type": "Question",
+            name: item.q,
+            acceptedAnswer: { "@type": "Answer", text: item.a },
+          })),
+        }
+      : null;
 
   return (
     <StructuralGridBand className="bg-[var(--background)] text-slate-900 min-h-screen">
@@ -110,6 +196,37 @@ export default async function InsightArticlePage({
                 ))}
               </ul>
             </div>
+            {related.length > 0 && (
+              <div>
+                <h2 className="text-xl font-semibold text-slate-900">Related insights</h2>
+                <ul className="mt-3 space-y-2">
+                  {related.map((item) => (
+                    <li key={item.slug}>
+                      <Link
+                        prefetch={false}
+                        href={`/insights/${item.slug}`}
+                        className="font-medium text-primary hover:underline"
+                      >
+                        {item.title} →
+                      </Link>
+                      <span className="ml-3 text-xs uppercase tracking-[0.3em] text-slate-400">
+                        {item.type}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+            />
+            {faqSchema && (
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+              />
+            )}
           </div>
         </div>
       </div>

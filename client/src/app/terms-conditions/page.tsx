@@ -1,306 +1,129 @@
+import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
+import styles from "../privacy-policy/page.module.css";
 
-/**
- * Terms & Conditions page for Sufoniq by UAB Skillaxis
- * Single-page doc covering BOTH B2C (consumers) and B2B (business customers), EU-friendly.
- * IMPORTANT: Replace placeholder links/emails and verify local counsel review before production.
- */
-
-// ---------- CONFIGURABLE CONSTANTS ----------
-const BRAND = "Sufoniq";
-const COMPANY_LEGAL = "UAB Skillaxis"; // Lithuanian private limited company (UAB)
-const COMPANY_CODE = "307395574"; // Company code (from Lithuanian register)
-const COMPANY_ADDRESS = "Architektų g. 56-101, LT-04111 Vilnius, Lithuania";
-const CONTACT_EMAIL = "legal@sufoniq.com"; // TODO: confirm or replace
-const CONTACT_POSTAL = `${COMPANY_LEGAL}, ${COMPANY_ADDRESS}`;
-const WEBSITE = "sufoniq.com"; // used for copy only; no external calls
-const LAST_UPDATED_ISO = "2025-10-02"; // YYYY-MM-DD
-
-// ---------- UI TEXT ----------
-const TAGLINE = "Ground Rules for a Future‑Proof Mobility & Employment Experience";
-
-export const metadata = createPageMetadata("/terms-conditions", "Terms & Conditions | Sufoniq", "Read the terms for Sufoniq services by UAB Skillaxis, including service scope, payments, responsibilities and terms for consumers and business customers.");
+export const metadata = {
+  ...createPageMetadata("/terms-conditions", "Terms & Conditions | Sufoniq", "Terms for using Sufoniq’s website and arranging recruitment support with UAB Skillaxis, including written agreements, fees, responsibilities and consumer rights."),
+  robots: { index: false, follow: true },
+};
 
 const sections = [
-  { id: "who-we-are", label: "Who we are" },
-  { id: "eligibility", label: "Eligibility & Accounts" },
-  { id: "acceptable-use", label: "Acceptable Use" },
-  { id: "services", label: "Services, Changes & Availability" },
-  { id: "plans-payments", label: "Plans, Payments, Taxes (B2C & B2B)" },
-  { id: "consumer-rights", label: "EU Consumer Rights (B2C only)" },
-  { id: "your-content", label: "Your Content & Licenses" },
-  { id: "ip", label: "Intellectual Property" },
-  { id: "ai", label: "AI & Automation" },
-  { id: "privacy", label: "Data Protection & Privacy (GDPR)" },
-  { id: "third-parties", label: "Third‑Party Services & Partners" },
-  { id: "warranties", label: "Warranties & Disclaimers" },
-  { id: "indemnity", label: "Indemnity (B2B only)" },
-  { id: "liability", label: "Limitations of Liability (B2C & B2B)" },
-  { id: "export", label: "Export Controls & Sanctions" },
-  { id: "termination", label: "Suspension & Termination" },
-  { id: "changes", label: "Changes to these Terms" },
-  { id: "law", label: "Governing Law & Disputes" },
-  { id: "misc", label: "Miscellaneous" },
-  { id: "contact", label: "Contact" },
+  ["who-we-are", "Who we are and when terms apply"],
+  ["services", "Agreeing the work"],
+  ["plans-payments", "Fees and payment"],
+  ["responsibilities", "Responsibilities and decisions"],
+  ["privacy", "Information and confidentiality"],
+  ["acceptable-use", "Using the website"],
+  ["termination", "Changing or ending agreed work"],
+  ["consumer-rights", "Consumer rights"],
+  ["liability", "Responsibility for loss"],
+  ["law", "Complaints and governing law"],
+  ["changes", "Changes to these terms"],
+  ["contact", "Contact"],
 ];
-
-function LastUpdated({ dateISO }: { dateISO: string }) {
-  const dt = new Date(dateISO);
-  const display = dt.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-  return <time dateTime={dateISO}>{display}</time>;
-}
+const contact = <a href="mailto:support@sufoniq.com">support@sufoniq.com</a>;
 
 export default function TermsAndConditionsPage() {
   return (
-    <main className="min-h-screen bg-backgroundLight text-textLight dark:bg-backgroundDark dark:text-textDark py-16 px-6">
-      <div className="max-w-5xl mx-auto space-y-12">
-        <header className="space-y-4">
-          <p className="text-sm uppercase tracking-wide text-[var(--accent)]">Terms & Conditions</p>
-          <h1 className="text-4xl font-bold">{TAGLINE}</h1>
-          <p className="text-sm text-muted-foreground">
-            Last updated: <LastUpdated dateISO={LAST_UPDATED_ISO} />
-          </p>
-          <p className="text-lg leading-relaxed text-muted-foreground">
-            These terms govern your access to the {BRAND} platform and related services operated by {COMPANY_LEGAL}. By creating an account or using our site, you agree to these conditions. This page covers <strong>both consumers (B2C)</strong> and <strong>business customers (B2B)</strong>; sections are labelled where they apply to one group only.
-          </p>
-        </header>
+    <main className={styles.page}><div className={styles.container}>
+      <header className={styles.header}>
+        <p className={styles.eyebrow}>UAB Skillaxis · Sufoniq</p>
+        <h1>Terms and conditions</h1>
+        <p className={styles.updated}>Last updated: <time dateTime="2026-11-09">November 9, 2026</time></p>
+        <p className={styles.intro}>Your enquiry starts a conversation. Recruitment work, responsibilities and any employer fees are agreed in writing before delivery begins. These terms explain the basis for using our website and arranging support.</p>
+      </header>
+      <nav aria-label="Terms and conditions sections" className={styles.navigation}>
+        <h2>In these terms</h2>
+        <ol>{sections.map(([id, title]) => <li key={id}><a href={`#${id}`}>{title}</a></li>)}</ol>
+      </nav>
 
-        {/* Jump navigation */}
-        <nav aria-label="Terms and conditions sections" className="bg-background/60 border border-border rounded-xl p-6 shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Jump to a section</h2>
-          <ul className="grid gap-2 sm:grid-cols-2 text-sm">
-            {sections.map((s) => (
-              <li key={s.id}><a className="hover:underline" href={`#${s.id}`}>{s.label}</a></li>
-            ))}
-          </ul>
-        </nav>
+      <section id="who-we-are"><h2>1. Who we are and when terms apply</h2>
+        <p>Sufoniq is operated by UAB Skillaxis, company code 307395574, registered at Architektų g. 56-101, LT-04111, Vilnius, Lithuania. References to “we” or “us” mean UAB Skillaxis.</p>
+        <p>These terms describe use of sufoniq.com and the general basis on which we arrange recruitment and related preparation services. Sending a form, email or WhatsApp message does not create a paid engagement, reserve candidates or commit either side to proceed.</p>
+        <p>A service engagement is formed when we and the client accept a written proposal or service agreement. We provide the applicable terms before agreement. That document takes priority over these general terms where they differ, subject to mandatory law. Employers and job seekers have different responsibilities; provisions expressly concerning employer fees apply to the contracting business.</p>
+        <p id="eligibility">If you agree work on behalf of a company, you must have authority to do so. Individuals entering a service agreement must have the legal capacity to enter it.</p>
+      </section>
 
-        {/* 1. Who we are */}
-        <section id="who-we-are" className="space-y-4">
-          <h2 className="text-2xl font-semibold">1) Who we are</h2>
-          <p>
-            {BRAND} is a brand operated by <strong>{COMPANY_LEGAL}</strong> (company code {COMPANY_CODE}), with registered address {COMPANY_ADDRESS}. References to “we”, “us” or “our” mean {COMPANY_LEGAL}. References to “you” or “your” mean the individual end user (B2C) or the contracting business customer (B2B), as applicable.
-          </p>
-        </section>
+      <section id="services"><h2>2. Agreeing the work</h2>
+        <p>Depending on the agreed brief, support may include candidate sourcing and screening, recruitment coordination, preparation for an employment start, or identifying qualification requirements for a role and destination.</p>
+        <p>Before work begins, the written agreement identifies:</p>
+        <ul>
+          <li>The role or candidate situation, destination and work included.</li>
+          <li>What you will receive and which checks we will carry out.</li>
+          <li>Each party’s responsibilities, required information and external dependencies.</li>
+          <li>Any indicative milestones, fees, payment triggers, taxes and agreed expenses.</li>
+          <li>How changes, cancellation and any agreed replacement arrangements will be handled.</li>
+        </ul>
+        <p>Website examples illustrate our approach; they are not offers of a particular candidate, job, permit or start date. Country-specific requirements and suitability are assessed for the actual engagement.</p>
+      </section>
 
-        {/* 2. Eligibility & Accounts */}
-        <section id="eligibility" className="space-y-4">
-          <h2 className="text-2xl font-semibold">2) Eligibility & Accounts</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>You must be at least 18 and have legal capacity to enter this agreement.</li>
-            <li>You are responsible for safeguarding credentials and all activity under your account; notify us promptly of any suspected unauthorized use or security incident.</li>
-            <li>We may refuse, suspend, or terminate accounts for violations of these terms or applicable law (see §16).</li>
-          </ul>
-        </section>
+      <section id="plans-payments"><h2>3. Fees and payment</h2>
+        <p><strong>Sufoniq does not charge job seekers.</strong> Our recruitment fee model is employer-funded. Separate authority or third-party costs, such as visa, translation or examination fees, may apply; we discuss relevant costs and who pays them before agreeing work.</p>
+        <p>Employer fees are individually quoted. The written agreement states the amount or calculation method, applicable taxes, due dates, the work or milestone that triggers payment and any approved expenses. Costs outside that agreement require further agreement.</p>
+        <p>A request for information does not authorise a charge. There is no website checkout or automatically renewing subscription. Refunds and cancellation charges depend on the agreed service terms and applicable law; these terms do not impose a blanket non-refundable-fee rule.</p>
+      </section>
 
-        {/* 3. Acceptable Use */}
-        <section id="acceptable-use" className="space-y-4">
-          <h2 className="text-2xl font-semibold">3) Acceptable Use</h2>
-          <p>Use the Services lawfully. You agree not to:</p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>breach immigration, employment, export control, or sanctions laws;</li>
-            <li>upload or transmit unlawful, infringing, defamatory, or harmful content;</li>
-            <li>reverse engineer, decompile, or circumvent security/access controls (unless permitted by law);</li>
-            <li>introduce malware or interfere with service integrity/performance;</li>
-            <li>scrape, bulk‑download, or evade rate limits;</li>
-            <li>use outputs or the Services to train competing models/datasets without written consent;</li>
-            <li>misrepresent your identity or affiliation.</li>
-          </ul>
-        </section>
+      <section id="responsibilities"><h2>4. Responsibilities and decisions</h2>
+        <p>We carry out the agreed work with reasonable care and skill. Our screening is limited to the checks described in the proposal and the evidence available; we distinguish what has been checked from what remains unresolved.</p>
+        <ul>
+          <li><strong>Employers</strong> provide accurate role requirements, lawful employment terms and timely decisions. They retain responsibility for selection, employment contracts and their legal duties as employers.</li>
+          <li><strong>Candidates</strong> provide accurate information and genuine documents, confirm their interest and availability, and tell us about material changes.</li>
+          <li><strong>Authorities and relevant professional bodies</strong> decide on permits, visas, recognition, registration and licensing. Professional advice is provided by an appropriately authorised adviser where required and separately arranged.</li>
+        </ul>
+        <p>We do not guarantee a hire, a job offer, approval by an authority, recognition of a qualification or a particular arrival date. Any estimated timeline depends on the identified requirements and third-party decisions. This does not remove our responsibility for our own agreed work.</p>
+        <p>A candidate must not start work before the required authorisations are in place. Recruitment coordination does not itself authorise employment or professional practice.</p>
+      </section>
 
-        {/* 4. Services, Changes & Availability */}
-        <section id="services" className="space-y-4">
-          <h2 className="text-2xl font-semibold">4) Services, Changes & Availability</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>We aim for high availability but do not guarantee uninterrupted service. Maintenance windows, beta features, or third‑party outages may affect access.</li>
-            <li>We may modify or discontinue features. Where changes are material and adverse, we will provide reasonable advance notice when feasible.</li>
-            <li><strong>Beta/Preview.</strong> Provided <em>as‑is</em>, may be throttled or withdrawn, and excluded from service levels/support.</li>
-          </ul>
-        </section>
+      <section id="privacy"><h2>5. Information and confidentiality</h2>
+        <p>Our <Link href="/privacy-policy">Privacy policy</Link> explains how we handle enquiries, service information, disclosures and privacy requests. It is a notice about data processing, not a request to waive privacy rights.</p>
+        <p>We do not share candidate details with prospective employers or recruitment partners before the candidate agrees to the proposed introduction. Service providers used to deliver and store communications are described separately in the privacy policy.</p>
+        <p>Use candidate and business information only for the recruitment or service purpose for which it was supplied. Do not publish candidate documents or disclose confidential information to people who have no need or lawful basis to receive it. This does not prevent disclosures required by law or protected reporting.</p>
+        <p id="your-content">You retain your rights in the information and documents you provide. Providing them permits the handling needed for the requested or agreed service, subject to the privacy policy and applicable law; it does not give us an unrestricted right to publish or reuse them.</p>
+        <p>If an engagement requires us to process personal data solely on a business client’s instructions, the parties must put the required data processing agreement in place before that processing begins. We do not represent that an unpublished standard DPA is already part of every engagement.</p>
+      </section>
 
-        {/* 5. Plans, Payments, Taxes */}
-        <section id="plans-payments" className="space-y-4">
-          <h2 className="text-2xl font-semibold">5) Plans, Payments, Taxes (B2C & B2B)</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>Pricing, plan limits, and included features are shown at checkout or in your account.</li>
-            <li>Subscriptions renew automatically for the same term unless cancelled before the current term ends. You can cancel in your account anytime.</li>
-            <li>Unless stated otherwise, fees are non‑refundable and exclude applicable taxes; you are responsible for taxes and duties we do not collect.</li>
-            <li>We may change prices with at least 30 days’ notice for the next term.</li>
-          </ul>
-        </section>
+      <section id="acceptable-use"><h2>6. Using the website</h2>
+        <p>Use the website and enquiry channels lawfully. Do not impersonate another person, send fraudulent documents, disclose information you are not entitled to share, introduce malware, interfere with the website or attempt unauthorised access.</p>
+        <p id="export">We cannot undertake work prohibited by applicable sanctions, immigration, employment or other law. Any required eligibility checks are considered for the actual parties and engagement.</p>
+        <p id="ip">Website text, design, software and branding belong to UAB Skillaxis or the relevant rights holders. You may read, link to and share links to our public pages, including for internal assessment of our services. Other reuse must respect applicable intellectual property rights and any permission given.</p>
+        <p>The website may occasionally be unavailable. Links to authorities and other services are provided for reference; those organisations control their own websites and decisions. An external link does not itself establish a partnership.</p>
+      </section>
 
-        {/* 6. EU Consumer Rights (B2C only) */}
-                {/* 6. EU Consumer Rights (B2C only) */}
-        <section id="consumer-rights" className="space-y-4">
-          <h2 className="text-2xl font-semibold">6) EU Consumer Rights (B2C only)</h2>
-          <div className="space-y-3">
-            <p><strong>Cooling‑off period:</strong> If you are a consumer purchasing at a distance (online), you have a <strong>14‑day</strong> right to withdraw without giving any reason.</p>
-            <p><strong>How to withdraw:</strong> Send us a clear statement (e.g., email to <a className="text-[var(--accent)] hover:underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>) within 14 days of purchase. You may (but don’t have to) use the EU Model Withdrawal Form: <a className="text-[var(--accent)] hover:underline" href="https://eur-lex.europa.eu/eli/dec_impl/2014/871/oj">link</a>. We will confirm receipt on a durable medium.</p>
-            <p><strong>Refunds:</strong> We will refund payments without undue delay and in any event within 14 days of receiving your withdrawal notice, using the same payment method where possible. Deductions may apply as set out below.</p>
+      <section id="termination"><h2>7. Changing or ending agreed work</h2>
+        <p>Contact us if requirements change or you want to pause or end an engagement. Changes to scope, fees or responsibilities must be agreed in writing. A new version of this website does not alter an existing service agreement.</p>
+        <p>For business engagements, notice periods, payment for completed work, approved external costs, refunds and any replacement arrangements are set out in the written agreement. No replacement guarantee is implied unless expressly agreed.</p>
+        <p>We may decline an enquiry or stop work that would be unlawful. Any suspension or termination of agreed work, including for non-payment or missing information, is handled under the service agreement and applicable law. We explain the reason and practical next steps where lawful to do so.</p>
+        <p>Ending an engagement does not remove accrued lawful payment obligations, confidentiality duties or privacy rights. Information is handled according to the privacy policy and applicable retention requirements.</p>
+      </section>
 
-            <h3 className="text-xl font-semibold">Services started during the 14 days</h3>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>If you <em>request</em> that we begin providing a <strong>service</strong> during the cooling‑off period and then withdraw <em>before completion</em>, you owe a <strong>proportionate amount</strong> for the service provided up to your withdrawal.</li>
-              <li>If the service is <strong>fully performed</strong> within the cooling‑off period, and you gave <strong>express request to start</strong> and <strong>explicit acknowledgment</strong> that you would lose the right upon full performance, your right of withdrawal is <strong>lost</strong>.</li>
-            </ul>
+      <section id="consumer-rights"><h2>8. Consumer rights</h2>
+        <p>A consumer is an individual acting outside their trade or profession. Mandatory consumer rights are preserved. Our job-seeker support is free of Sufoniq charges; the following paid-service provisions apply only if a separate paid consumer service is lawfully offered and agreed.</p>
+        <p>For a covered distance service contract, the usual withdrawal period is 14 days from conclusion of the contract. Before agreeing such a service, we provide the applicable information, withdrawal instructions and model withdrawal form. You can withdraw by sending an unambiguous statement to {contact} or our postal address; using the model form is optional.</p>
+        <p>Starting a service during that period requires your express request. If you then withdraw, a proportionate payment for work already supplied may be due only where the legal conditions have been met. For a paid service, loss of the withdrawal right on full performance requires the prior express consent and acknowledgement required by law. Reading this page or making an enquiry does not give that consent.</p>
+        <p>Where a withdrawal refund is due, it is made without undue delay and within the applicable statutory deadline, normally 14 days after notification, using the original payment method unless otherwise expressly agreed and without a refund fee. These terms do not restrict other remedies available under consumer law.</p>
+      </section>
 
-            <h3 className="text-xl font-semibold">Digital content/services not supplied on a tangible medium (e.g., immediate platform/AI access)</h3>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>Your 14‑day right of withdrawal is <strong>lost at the moment delivery begins</strong> <em>if and only if</em> you gave <strong>prior express consent</strong> to immediate access and <strong>explicitly acknowledged</strong> that you lose the right once delivery starts. We confirm this on a durable medium.</li>
-            </ul>
+      <section id="liability"><h2>9. Responsibility for loss</h2>
+        <p>Each party remains responsible for its obligations under the agreed service and applicable law. A third party’s decision is not a promised outcome, but its involvement does not automatically excuse a failure in our own work.</p>
+        <p>Any business-specific liability limit or allocation of risk must be set out in the written service agreement and is subject to applicable law. This website does not impose an automatic fee-based liability cap or a general duty for clients to indemnify us against every claim.</p>
+        <p>Nothing in these terms excludes or limits liability where doing so would be unlawful, including liability for fraud or intentional misconduct, or removes mandatory consumer rights and remedies. Any unenforceable provision applies only to the extent permitted by law.</p>
+      </section>
 
-            <p className="text-sm text-muted-foreground">This section is intended to reflect EU consumer law (including Directive 2011/83/EU and Directive (EU) 2019/770). Your mandatory rights remain unaffected.</p>
+      <section id="law"><h2>10. Complaints and governing law</h2>
+        <p>Send complaints to {contact}, explaining the issue and the resolution you seek. We review consumer complaints without charge and provide a reasoned written response within 14 days where Lithuanian consumer complaint rules apply.</p>
+        <p>If a consumer complaint remains unresolved, you may apply to the <a href="https://vvtat.lrv.lt/en/how-to-submit-a-request/">Lithuanian State Consumer Rights Protection Authority</a> where it has jurisdiction, or another competent dispute-resolution body. Access to the courts and mandatory consumer protections remains unaffected.</p>
+        <p>These general terms are governed by Lithuanian law. This choice does not deprive consumers of mandatory protections applicable in their country of habitual residence. Business dispute arrangements are specified in the service agreement; consumer jurisdiction rights are not restricted by these terms.</p>
+      </section>
 
-            <div className="rounded-lg border border-border p-4 bg-background/60">
-              <h4 className="font-semibold mb-2">Immediate Start Consent (B2C — informational)</h4>
-              <ol className="list-decimal pl-6 space-y-2 text-sm">
-                <li>“I <strong>request</strong> that you begin providing the service/digital service <strong>immediately</strong> (before the 14‑day withdrawal period ends).”</li>
-                <li>“I <strong>understand</strong> that once the service is <strong>fully performed</strong> <em>or</em> once digital access <strong>starts</strong>, I <strong>will lose</strong> my 14‑day right of withdrawal. If I withdraw before completion of a service, I will pay a <strong>proportionate amount</strong> for what has been provided.”</li>
-              </ol>
-              <p className="mt-2 text-xs text-muted-foreground">Note: These statements are shown here for transparency; they may also appear in checkout/sign‑up flows.</p>
-            </div>
-          </div>
-        </section>
+      <section id="changes"><h2>11. Changes to these terms</h2>
+        <p>The date above identifies this version. Updates apply to future use and future agreements; they do not retrospectively change agreed work. Changes to an existing engagement require the agreement or lawful procedure specified in that engagement.</p>
+      </section>
 
-        {/* 7. Your Content & Licenses */}
-        <section id="your-content" className="space-y-4">
-          <h2 className="text-2xl font-semibold">7) Your Content & Licenses</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>You retain ownership of content you upload (&ldquo;Your Content&rdquo;).</li>
-            <li>You grant {COMPANY_LEGAL} a worldwide, non‑exclusive, royalty‑free license to host, process, transmit, reproduce, and display Your Content solely to operate, secure, maintain, and improve the Services, and to comply with law. We do not sell Your Content.</li>
-            <li>You warrant you have all rights necessary and that Your Content does not infringe third‑party rights.</li>
-            <li><strong>Feedback.</strong> You grant us a perpetual, irrevocable, royalty‑free license to use suggestions without restriction.</li>
-          </ul>
-        </section>
-
-        {/* 8. Intellectual Property */}
-        <section id="ip" className="space-y-4">
-          <h2 className="text-2xl font-semibold">8) Intellectual Property</h2>
-          <p>
-            The Services (including software, models, algorithms, curated datasets, UI, and trademarks) are owned by {COMPANY_LEGAL} or its licensors and protected by IP laws. No rights are granted except as expressly stated. Do not remove proprietary notices or use our marks without written permission.
-          </p>
-        </section>
-
-        {/* 9. AI & Automation */}
-        <section id="ai" className="space-y-4">
-          <h2 className="text-2xl font-semibold">9) AI & Automation</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>Outputs may be generated by machine‑learning models and can be probabilistic or incomplete.</li>
-            <li>Outputs are guidance only and not legal, immigration, tax, or financial advice. Consult qualified professionals for high‑stakes decisions.</li>
-            <li>We implement safeguards and quality controls, but we do not warrant that outputs will be correct or fit for a particular purpose. You are responsible for reviewing outputs before relying on them.</li>
-          </ul>
-        </section>
-
-        {/* 10. Data Protection & Privacy (GDPR) */}
-        <section id="privacy" className="space-y-4">
-          <h2 className="text-2xl font-semibold">10) Data Protection & Privacy (GDPR)</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>Our processing of personal data is described in our <a className="text-[var(--accent)] hover:underline" href="/privacy-policy">Privacy Policy</a>, which forms part of these terms.</li>
-            <li>Where we act as a processor for business customers, our Data Processing Addendum (DPA) applies and incorporates Standard Contractual Clauses where relevant.</li>
-            <li>We maintain appropriate technical and organizational measures. In case of a personal‑data breach, we will notify affected customers/authorities as required by law.</li>
-            <li>Upon account closure or request, we will delete or anonymize personal data within a reasonable period, subject to backups and legal retention. You may export Your Content prior to termination.</li>
-          </ul>
-        </section>
-
-        {/* 11. Third‑Party Services */}
-        <section id="third-parties" className="space-y-4">
-          <h2 className="text-2xl font-semibold">11) Third‑Party Services & Partners</h2>
-          <p>
-            The Services may integrate third‑party products. Your use of such products is subject to their terms. We are not responsible for third‑party services and do not guarantee their availability. Partner offerings may carry additional terms or fees disclosed at engagement.
-          </p>
-        </section>
-
-        {/* 12. Warranties & Disclaimers */}
-        <section id="warranties" className="space-y-4">
-          <h2 className="text-2xl font-semibold">12) Warranties & Disclaimers</h2>
-          <p>
-            Except as expressly stated, the Services are provided <strong>“as is” and “as available”</strong> without warranties of any kind, whether express, implied, or statutory (including merchantability, fitness for a particular purpose, and non‑infringement). This does not limit warranties that cannot be excluded under applicable law, especially for consumers.
-          </p>
-        </section>
-
-        {/* 13. Indemnity (B2B only) */}
-        <section id="indemnity" className="space-y-4">
-          <h2 className="text-2xl font-semibold">13) Indemnity (B2B only)</h2>
-          <p>
-            The business customer will defend and indemnify {COMPANY_LEGAL} against third‑party claims arising from (a) the customer’s content; (b) breach of these terms; or (c) unlawful use of the Services, to the extent permitted by law.
-          </p>
-        </section>
-
-        {/* 14. Limitations of Liability */}
-        <section id="liability" className="space-y-4">
-          <h2 className="text-2xl font-semibold">14) Limitations of Liability (B2C & B2B)</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>To the maximum extent permitted by law, {COMPANY_LEGAL} and its affiliates, directors, employees, and partners are not liable for indirect, incidental, special, punitive, or consequential damages, or for loss of profits, revenue, data, or goodwill.</li>
-            <li><strong>Aggregate cap (B2B).</strong> Our total liability for all claims relating to the Services in any 12‑month period is limited to the amounts paid by the business customer for the Services giving rise to the claim in that period.</li>
-            <li><strong>Consumers.</strong> Nothing in these terms limits liability that cannot be limited under applicable law (including for death/personal injury caused by negligence, fraud, or statutory consumer guarantees).</li>
-          </ul>
-        </section>
-
-        {/* 15. Export Controls & Sanctions */}
-        <section id="export" className="space-y-4">
-          <h2 className="text-2xl font-semibold">15) Export Controls & Sanctions</h2>
-          <p>
-            You must comply with applicable export control, sanctions, and anti‑boycott laws. You may not use the Services if you are located in a comprehensively sanctioned jurisdiction or are otherwise a restricted party.
-          </p>
-        </section>
-
-        {/* 16. Suspension & Termination */}
-        <section id="termination" className="space-y-4">
-          <h2 className="text-2xl font-semibold">16) Suspension & Termination</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>You may close your account at any time via settings or by contacting support.</li>
-            <li>We may suspend or terminate access for violations, legal/security risks, non‑payment, or prolonged inactivity.</li>
-            <li>Upon termination, sections that by their nature should survive (e.g., confidentiality, IP, fees, limitations of liability, indemnities, dispute resolution) will continue to apply. We will make commercially reasonable efforts to enable export of Your Content prior to closure where feasible.</li>
-          </ul>
-        </section>
-
-        {/* 17. Changes to these Terms */}
-        <section id="changes" className="space-y-4">
-          <h2 className="text-2xl font-semibold">17) Changes to these Terms</h2>
-          <p>
-            We may update these terms from time to time. For material adverse changes, we will provide notice (e.g., email or in‑product) at least 15 days before they take effect unless immediate changes are required by law or for security. Continued use after the effective date constitutes acceptance.
-          </p>
-        </section>
-
-        {/* 18. Governing Law & Disputes */}
-        <section id="law" className="space-y-4">
-          <h2 className="text-2xl font-semibold">18) Governing Law & Disputes</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li><strong>Governing law:</strong> Laws of the Republic of Lithuania, without regard to conflict‑of‑law principles.</li>
-            <li><strong>Venue:</strong> Courts of Vilnius, Lithuania, except where mandatory consumer venue rules or other non‑waivable rights apply.</li>
-            <li><strong>EU ODR:</strong> If you are an EU consumer, you may use the European Commission’s Online Dispute Resolution (ODR) platform.</li>
-          </ul>
-        </section>
-
-        {/* 19. Miscellaneous */}
-        <section id="misc" className="space-y-4">
-          <h2 className="text-2xl font-semibold">19) Miscellaneous</h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li><strong>Severability.</strong> If any provision is unenforceable, the remainder remains in effect.</li>
-            <li><strong>No waiver.</strong> Failure to enforce any term is not a waiver.</li>
-            <li><strong>Assignment.</strong> You may not assign without our consent. We may assign to an affiliate or in connection with a merger, acquisition, or asset transfer.</li>
-            <li><strong>Entire agreement.</strong> These terms, the Privacy Policy, the DPA (if applicable), and plan‑specific terms form the entire agreement regarding the Services.</li>
-          </ul>
-        </section>
-
-        {/* 20. Contact */}
-        <section id="contact" className="space-y-4">
-          <h2 className="text-2xl font-semibold">20) Contact</h2>
-          <p>
-            Questions? Email <a className="text-[var(--accent)] hover:underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> or write to {CONTACT_POSTAL}. For faster resolution of account issues, please contact support via your account.
-          </p>
-        </section>
-
-        <footer className="border-t border-border pt-6 text-xs text-muted-foreground">
-          <p>
-            © {new Date().getFullYear()} {COMPANY_LEGAL} — {BRAND} ({WEBSITE}). All rights reserved.
-          </p>
-        </footer>
-      </div>
-    </main>
+      <section id="contact"><h2>12. Contact</h2>
+        <p><strong>Service enquiries and complaints:</strong> {contact}</p>
+        <p><strong>Privacy requests:</strong> <a href="mailto:privacy@sufoniq.com">privacy@sufoniq.com</a></p>
+        <p><strong>Postal address:</strong> UAB Skillaxis, Architektų g. 56-101, LT-04111, Vilnius, Lithuania.</p>
+      </section>
+    </div></main>
   );
 }

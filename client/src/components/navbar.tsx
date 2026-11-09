@@ -8,16 +8,16 @@ import { Button } from "@/components/ui/button";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "For job seekers", href: "/work-in-europe" },
-  { label: "Insights", href: "/insights" },
   { label: "For employers", href: "/employers" },
+  { label: "For job seekers", href: "/work-in-europe" },
+  { label: "About us", href: "/about" },
   { label: "Method & Trust", href: "/method-trust" },
-  { label: "About Us", href: "/about" },
+  { label: "Insights", href: "/insights" },
   { label: "Contact", href: "/#contact" },
 ];
 
 const scrollToContact = () => {
-  const contactSection = document.getElementById("contact");
+  const contactSection = document.getElementById("driver-enquiry") ?? document.getElementById("employer-enquiry") ?? document.getElementById("seasonal-enquiry") ?? document.getElementById("contact");
   if (contactSection) {
     contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
@@ -28,6 +28,12 @@ const scrollToContact = () => {
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname() ?? "/";
+
+  const contactTargets: Record<string, string> = { "/employers": "employer-enquiry", "/truck-driver-recruitment": "driver-enquiry", "/austria-seasonal-workers": "seasonal-enquiry" };
+  const contactTarget = contactTargets[pathname];
+  const pageNavItems = contactTarget
+    ? navItems.map(item => item.label === "Contact" ? { ...item, href: `${pathname}#${contactTarget}` } : item)
+    : navItems;
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const isActive = (href: string) => {
@@ -50,7 +56,7 @@ export default function Navbar() {
         {/* Centered nav */}
         <nav className="hidden flex-1 justify-center xl:flex" aria-label="Main navigation">
           <ul className="flex items-center justify-center gap-5 text-sm font-medium text-slate-600">
-            {navItems.map(({ label, href }) => (
+            {pageNavItems.map(({ label, href }) => (
               <li key={label}>
                 <Link
                   href={href}
@@ -72,7 +78,7 @@ export default function Navbar() {
           <Button
             type="button"
             size="lg"
-            onClick={scrollToContact}
+            onClick={() => { setIsOpen(false); scrollToContact(); }}
             className="hidden items-center justify-center rounded-2xl text-base xl:inline-flex"
           >
             Discuss a role
@@ -98,10 +104,11 @@ export default function Navbar() {
         } xl:hidden border-t border-[color:var(--card-border)] bg-[var(--background)] px-6 py-4`}
       >
         <ul className="flex flex-col gap-3 text-sm font-medium">
-          {navItems.map(({ label, href }) => (
+          {pageNavItems.map(({ label, href }) => (
             <li key={label}>
               <Link
                 href={href}
+                onClick={() => setIsOpen(false)}
                 className="block w-full rounded-lg px-3 py-2 transition hover:bg-[var(--accent)]/10 hover:text-[var(--secondary)]"
               >
                 {label}

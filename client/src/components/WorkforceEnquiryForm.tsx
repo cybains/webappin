@@ -7,7 +7,25 @@ import styles from "./EmployerPanels.module.css";
 
 const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
 
-export default function WorkforceEnquiryForm({ source = "Home / Contact" }: { source?: string }) {
+type EnquiryFormProps = {
+  source?: string;
+  title?: string;
+  introduction?: string;
+  contextLabel?: string;
+  placeholder?: string;
+  help?: string;
+  submitLabel?: string;
+};
+
+export default function WorkforceEnquiryForm({
+  source = "Home / Contact",
+  title = "Let’s talk about your role",
+  introduction = "A brief outline is enough to start the conversation.",
+  contextLabel = "What are you hiring for?",
+  placeholder = "For example: two welders for our site in Austria, ideally starting in September. We’re finding it difficult to reach suitable candidates.",
+  help = "Include the role, location and preferred timing. Please leave out candidate documents and sensitive personal details.",
+  submitLabel = "Discuss a role",
+}: EnquiryFormProps) {
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -71,8 +89,8 @@ export default function WorkforceEnquiryForm({ source = "Home / Contact" }: { so
   return (
     <form onSubmit={handleSubmit} id="workforce-enquiry" aria-labelledby="workforce-enquiry-title" aria-busy={status === "sending"} className={styles.form}>
       <div className={styles.formHeader}>
-        <h3 id="workforce-enquiry-title">Let’s talk about your role</h3>
-        <p>A brief outline is enough to start the conversation.</p>
+        <h3 id="workforce-enquiry-title">{title}</h3>
+        <p>{introduction}</p>
       </div>
       <div className={styles.formBody}>
         <div className={styles.fields}>
@@ -85,14 +103,14 @@ export default function WorkforceEnquiryForm({ source = "Home / Contact" }: { so
             <input autoComplete="name" name="name" value={formData.name} onChange={event => setFormData(previous => ({ ...previous, name: event.target.value }))} className={styles.input} placeholder="Your name" />
           </label>
           <label className={[styles.label, styles.wide].join(" ")}>
-            <span>What are you hiring for?</span>
-            <textarea required name="context" aria-describedby="workforce-enquiry-help" value={formData.context} onChange={event => setFormData(previous => ({ ...previous, context: event.target.value }))} className={[styles.input, styles.textarea].join(" ")} placeholder="For example: two welders for our site in Austria, ideally starting in September. We’re finding it difficult to reach suitable candidates." />
+            <span>{contextLabel}</span>
+            <textarea required name="context" aria-describedby="workforce-enquiry-help" value={formData.context} onChange={event => setFormData(previous => ({ ...previous, context: event.target.value }))} className={[styles.input, styles.textarea].join(" ")} placeholder={placeholder} />
           </label>
         </div>
-        <p id="workforce-enquiry-help" className={styles.help}>Include the role, location and preferred timing. Please leave out candidate documents and sensitive personal details.</p>
+        <p id="workforce-enquiry-help" className={styles.help}>{help}</p>
         {error && <p className={[styles.message, styles.error].join(" ")} role="alert">{error}</p>}
         {status === "success" && <p className={[styles.message, styles.success].join(" ")} role="status">Enquiry received. We’ll contact you to discuss your requirement and next steps.</p>}
-        <button type="submit" disabled={status === "sending"} className={styles.submit}>{status === "sending" ? "Sending…" : "Discuss a role"}<ArrowRight size={18} aria-hidden="true" /></button>
+        <button type="submit" disabled={status === "sending"} className={styles.submit}>{status === "sending" ? "Sending…" : submitLabel}<ArrowRight size={18} aria-hidden="true" /></button>
         <p className={styles.privacy}>We use your enquiry to reply. <Link href="/privacy-policy">Privacy policy</Link></p>
       </div>
     </form>
