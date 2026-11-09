@@ -7,7 +7,8 @@ export type BodyBlock =
   | { type: "list"; items: string[] }
   | { type: "table"; columns: string[]; rows: string[][] }
   | { type: "faq"; items: { q: string; a: string }[] }
-  | { type: "link"; href: string; text: string };
+  | { type: "link"; href: string; text: string }
+  | { type: "source"; href: string; text: string };
 
 export interface InsightContent extends Insight {
   slugParts: string[];
@@ -63,7 +64,7 @@ const insightPages: InsightContent[] = [
       { type: "paragraph", text: "A date is easier to assess when the plan distinguishes completed steps from unresolved ones, identifies who can act next, and records which steps depend on another decision. Where an external decision remains open, the date remains a planning assumption rather than a confirmed milestone." },
       { type: "paragraph", text: "The practical distinction is between a date attached to a candidate and a date supported by a route. A credible route makes its uncertainties visible. It does not need to pretend they have disappeared." },
       { type: "paragraph", text: "Put the role you need to fill, the destination and your main question into the intake form — and start with whichever of the three questions is still open for you." },
-      { type: "link", href: "/work-in-europe", text: "Tell us the role →" },
+      { type: "link", href: "/employers#employer-enquiry", text: "Tell us the role →" },
     ],
     interpretation: "A candidate pool becomes relevant to a hiring plan when role fit, eligibility and qualification requirements are assessed together. Each new piece of evidence can change the route and the proposed timing.",
     boundary: "This is a framework for understanding dependencies. It does not establish the requirements for a particular country, confirm a candidate’s eligibility or replace checks with the relevant authorities and competent bodies.",
@@ -695,179 +696,212 @@ const insightPages: InsightContent[] = [
   },
   {
     slug: "rules/lithuania-foreign-worker-quota-2026",
-    slugParts: ["rules", "lithuania-foreign-worker-quota-2026"],
-    type: "Country Rules",
-    title: "Lithuania foreign worker quota 2026 is full — but hiring isn't closed",
-    framing:
-      "Lithuania's 2026 quota of 24,706 permits is full — non-EU hiring continues under salary rules. Permits, thresholds and the November 2026 VFS change, explained.",
-    readTime: "7 min",
-    date: "Nov 2026",
-    tags: ["hiring", "mobility", "permits", "lithuania", "visas"],
-    featured: false,
-    content: [
-      { type: "quote", text: "\"The quota is full. Can we still hire from outside the EU?\"" },
-      {
-        type: "paragraph",
-        text: "Yes. Lithuania's 2026 quota for work-related residence permits — 24,706 places — was confirmed fully used by the Migration Department in early September 2026. Permits continue to be issued after that point, under salary conditions or through routes that sit outside the quota.",
-      },
-      { type: "heading", text: "The answers in short" },
-      {
-        type: "list",
-        items: [
-          "Can employers still hire non-EU workers? Yes — if the salary meets 1.2× Lithuania's average gross wage (about €2,893 per month), or 1.0× (about €2,411) for a shortage occupation.",
-          "Is the general quota closed? Yes. All 24,706 places for 2026 were taken by early September.",
-          "Which routes sit outside the quota? Seasonal work permits, intra-company transfers and the EU Blue Card.",
-          "Did the filing process change? From November 1, 2026, applicants without a valid Lithuanian visa or residence permit must file through VFS centers abroad.",
-          "Is a labour market test required? No — the market test was abolished on January 1, 2025.",
-        ],
-      },
-      { type: "heading", text: "What the full quota actually changes" },
-      {
-        type: "paragraph",
-        text: "The quota caps ordinary work-based residence permits. Once it is full, a general application has no place to occupy, and the salary test decides whether a permit can still be issued. Hiring shifts from first-come timing to pay level and occupation.",
-      },
-      {
-        type: "paragraph",
-        text: "In practice that favours roles where the offer can clear the threshold: IT, healthcare, engineering and transport. The shortage list also covers professional truck and bus drivers, which lowers the requirement to 1.0× the average wage.",
-      },
-      { type: "heading", text: "Salary thresholds after the quota" },
-      {
-        type: "list",
-        items: [
-          "Standard work permit: at least 1.2× the average gross monthly wage — about €2,893 at the latest quarterly figures.",
-          "Shortage occupations: at least 1.0× — about €2,411 — for roles on Lithuania's high-value shortage list (IT, healthcare, engineering, transport).",
-          "EU Blue Card: 1.5× (about €3,166–3,334), reduced to 1.2× (about €2,532) for shortage occupations.",
-          "The State Data Agency updates these figures quarterly — confirm the current values before an offer is signed.",
-        ],
-      },
-      {
-        type: "paragraph",
-        text: "An offer below the applicable threshold ends the application before any document is examined. The salary figure is the first screening test, and it applies to the contract on the table.",
-      },
-      { type: "heading", text: "Five permit routes, and what each is for" },
-      {
-        type: "table",
-        columns: ["Permit", "Best for", "Salary requirement", "Where it is filed"],
-        rows: [
-          [
-            "Work permit (temporary residence for work)",
-            "Standard long-term non-EU hires",
-            "1.2× average wage — or 1.0× on the shortage list",
-            "Migration Department via MIGRIS; VFS abroad if the applicant is not yet in Lithuania",
-          ],
-          [
-            "Single Permit",
-            "Residence and work in one application (jobs of a year or more)",
-            "Same as the work permit",
-            "MIGRIS, under the Single Permit scheme",
-          ],
-          [
-            "Seasonal Work Permit",
-            "Short seasonal roles in agriculture, forestry or tourism — up to 9 months in any 12",
-            "Quota-exempt; standard wage rules apply",
-            "Employment Service, then a short-term permit",
-          ],
-          [
-            "Intra-Company Transfer (ICT)",
-            "Managers and specialists sent from a branch outside Lithuania",
-            "Quota-exempt; EU-standard salary, usually at least the average wage",
-            "Employment Service, then a residence permit in MIGRIS",
-          ],
-          [
-            "EU Blue Card",
-            "Highly skilled roles with a recognised tertiary degree",
-            "1.5× average wage — 1.2× on the shortage list",
-            "MIGRIS; often decided in about 15 days",
-          ],
-        ],
-      },
-      { type: "heading", text: "Where to apply: the November 2026 change" },
-      {
-        type: "paragraph",
-        text: "The standard route runs through MIGRIS, the Migration Department's online system, and it stays open for applicants who are already in Lithuania legally.",
-      },
-      {
-        type: "paragraph",
-        text: "From November 1, 2026, applicants who do not already hold a valid Lithuanian residence permit or a Lithuanian/EU visa must submit through VFS visa centers abroad. A Belarusian applicant, for example, files through VFS in Armenia or Georgia instead of directly at the Migration Department. Seasonal and intra-company cases continue to go through the Employment Service.",
-      },
-      {
-        type: "paragraph",
-        text: "For employers, one check comes before any filing plan: confirm what visa status the candidate currently holds. The same application follows two different paths depending on where the person is and what they hold.",
-      },
-      { type: "heading", text: "What the employer has to get right" },
-      {
-        type: "list",
-        items: [
-          "A signed employment contract — full-time, 40 hours a week, for at least six months.",
-          "No outstanding tax liabilities, and the required permits in licensed sectors.",
-          "An employment notification letter when the permit starts.",
-          "For drivers: an EU driving licence with Category 95.",
-        ],
-      },
-      {
-        type: "paragraph",
-        text: "None of these is difficult in isolation, and each one is checkable before filing. Authorities and competent bodies decide the permit applications; what the employer controls is a complete, correct file up front.",
-      },
-      { type: "heading", text: "How long it takes" },
-      {
-        type: "paragraph",
-        text: "The law provides for a decision within 90 days of a complete application. Employers commonly report three to six months in practice, and urgent processing is available for a higher fee. Seasonal permits through the Employment Service are usually faster, and the EU Blue Card can be decided in about 15 days.",
-      },
-      {
-        type: "paragraph",
-        text: "Plan hiring three to four months ahead of the start date. Any date that depends on an external decision stays an assumption until that decision arrives.",
-      },
-      { type: "heading", text: "If a permit is refused" },
-      {
-        type: "paragraph",
-        text: "A refusal can be appealed to the administrative courts, and courts have overturned slow or mishandled decisions before. The cheaper options come first: a quota-free route (Blue Card, intra-company, seasonal), a corrected application, or a salary that meets the threshold. Once a decision is issued, the room to act narrows quickly — the requirements worth checking twice are salary, occupation and documents.",
-      },
-      { type: "heading", text: "Questions employers ask" },
-      {
-        type: "faq",
-        items: [
-          {
-            q: "Can I still hire a non-EU worker in Lithuania in 2026?",
-            a: "Yes. The general quota is full, but permits are still issued when the salary meets 1.2× the average gross wage (about €2,893), or 1.0× (about €2,411) for a shortage occupation.",
-          },
-          {
-            q: "What happens now that the 24,706-permit quota is used up?",
-            a: "New general applications have no quota place left. The salary test and the quota-exempt routes — seasonal, intra-company transfer and EU Blue Card — decide what can still be filed.",
-          },
-          {
-            q: "Which occupations get the lower salary threshold?",
-            a: "Lithuania's high-value shortage list, which includes IT, healthcare, engineering and transport — including professional truck and bus drivers — qualifies for the 1.0× threshold.",
-          },
-          {
-            q: "Do I need a labour market test before hiring?",
-            a: "No. The market test requirement was abolished on January 1, 2025.",
-          },
-          {
-            q: "Where do I apply from November 2026?",
-            a: "Applicants already in Lithuania legally file through MIGRIS. Those without a valid Lithuanian visa or residence permit must apply through VFS centers abroad.",
-          },
-          {
-            q: "How long does a work permit take?",
-            a: "The law provides 90 days from a complete application; employers commonly report three to six months in practice. Seasonal permits are usually faster, and the EU Blue Card can be decided in about 15 days.",
-          },
-        ],
-      },
-      {
-        type: "paragraph",
-        text: "If you are weighing whether a role clears the threshold — or which of the five routes fits your hire — put the role, the work location and the salary band into the employer enquiry form.",
-      },
-      { type: "link", href: "/employers", text: "Tell us the role →" },
+    "slugParts": [
+      "rules",
+      "lithuania-foreign-worker-quota-2026"
     ],
-    interpretation:
-      "The 2026 quota moves Lithuanian hiring from timing to thresholds: salary level, occupation and permit route now decide whether a non-EU hire can be filed at all.",
-    boundary:
-      "Wage thresholds are updated quarterly, and the 2026 quota position was verified in November 2026. Rules and figures change: this article covers general conditions only, and authorities decide each application.",
-    whatThisIsNot: [
-      "Not legal advice",
-      "Not a guarantee any permit will be issued",
-      "Not a promise about processing times",
-      "Not a substitute for current Migration Department figures",
+    "type": "Country Rules",
+    "title": "Lithuania’s 2026 worker quota is full. What can employers do next?",
+    "framing": "The quota is used, but not every hire follows the same route. Check salary conditions, candidate status and November filing rules before planning a start.",
+    "readTime": "6 min",
+    "date": "Nov 2026",
+    "tags": [
+      "hiring",
+      "mobility",
+      "permits",
+      "lithuania",
+      "visas"
     ],
+    "featured": false,
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "You have a role to fill in Lithuania and a candidate outside the EU. The annual quota is full. Before abandoning the hire—or promising a start date—check which rules apply to this candidate and this employment offer."
+      },
+      {
+        "type": "paragraph",
+        "text": "Lithuania set its 2026 foreign-worker employment quota at 24,706. The Ministry of the Interior confirmed on 7 October that it had been fully used. That affects quota-based applications; it does not close every route to employment."
+      },
+      {
+        "type": "source",
+        "href": "https://vrm.lrv.lt/lt/naujienos/ministras-m-katelynas-migracijos-politika-turi-atitikti-valstybes-saugumo-interesus-Pwvb/",
+        "text": "Ministry of the Interior: 2026 quota status (7 October, Lithuanian)"
+      },
+      {
+        "type": "heading",
+        "text": "First, check whether this hire uses the quota"
+      },
+      {
+        "type": "paragraph",
+        "text": "The quota concerns temporary residence permits issued on the employment basis to which it applies. The Migration Department distinguishes new permits from qualifying renewals and approved changes of employer or job function. Its guidance also identifies specific exemptions, including certain people already entitled to live in Lithuania."
+      },
+      {
+        "type": "paragraph",
+        "text": "For an employer, the first useful check is the candidate’s current status and the legal basis of the proposed application. A first application from abroad and a qualifying renewal should not be treated as the same case."
+      },
+      {
+        "type": "source",
+        "href": "https://migracija.lrv.lt/lt/naujienos/migracijos-departamentas-paaiskina-kas-yra-uzsienieciu-kvota-ir-kaip-ji-skaiciuojama-HYn/",
+        "text": "Migration Department: how the quota applies and its exceptions (Lithuanian)"
+      },
+      {
+        "type": "heading",
+        "text": "After the quota: check the salary and exact occupation"
+      },
+      {
+        "type": "paragraph",
+        "text": "For the ordinary employment route covered by its notice, the Migration Department states a post-quota requirement of at least 1.2 times the last published annual average monthly gross earnings (BDU). The threshold is 1 BDU where the occupation is on the specified high-value-added shortage list."
+      },
+      {
+        "type": "list",
+        "items": [
+          "The Department’s notice, updated on 14 September 2026, gives 1.2 BDU as €2,893.68 gross per month and 1 BDU as €2,411.40. These are the figures in that dated notice; confirm the applicable benchmark before making an offer.",
+          "The required salary commitment must be reflected in the employer’s mediation letter and maintained for the permit’s validity.",
+          "Match the actual occupation to the official list. A general shortage of drivers, construction workers or other staff does not by itself establish eligibility for the lower threshold."
+        ]
+      },
+      {
+        "type": "source",
+        "href": "https://migracija.lrv.lt/lt/naujienos/keiciasi-tarpininkavimo-rastu-ir-prasymu-kuriems-taikoma-uzsienieciu-idarbinimo-kvota-teikimo-proceduros-r7j/",
+        "text": "Migration Department: post-quota salary conditions and mediation letters (Lithuanian; includes the official occupation-list link)"
+      },
+      {
+        "type": "heading",
+        "text": "From 1 November: lawful presence alone is not enough"
+      },
+      {
+        "type": "paragraph",
+        "text": "For the ordinary work-based application covered by the November change, a person lawfully in Lithuania can apply at the Migration Department if they have one of the following:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "A valid Lithuanian temporary residence permit.",
+          "A Lithuanian national visa.",
+          "A residence permit issued by another Schengen or EU member state.",
+          "The right to be in Lithuania under a visa-free regime."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "A Schengen visa issued by Lithuania or another Schengen state, or another country’s national visa, no longer qualifies on its own for this in-country filing route. The notice directs those cases to VFS Global abroad. Highly qualified employment and qualifying renewals have their own treatment; check the route before booking an appointment."
+      },
+      {
+        "type": "source",
+        "href": "https://migracija.lrv.lt/lt/naujienos/keiciasi-prasymu-isduoti-leidima-laikinai-gyventi-darbo-ir-studiju-pagrindais-priemimo-tvarka-QJL/",
+        "text": "Migration Department: November filing rules and status-by-status comparison (Lithuanian)"
+      },
+      {
+        "type": "heading",
+        "text": "Other routes have their own conditions"
+      },
+      {
+        "type": "paragraph",
+        "text": "There is no universal replacement permit when the ordinary route does not fit. Seasonal work, highly qualified employment and other grounds must match the real job and the person’s circumstances."
+      },
+      {
+        "type": "table",
+        "columns": [
+          "Situation",
+          "What to establish"
+        ],
+        "rows": [
+          [
+            "Ordinary employment after quota exhaustion",
+            "The applicable salary commitment, exact occupation and candidate’s filing route."
+          ],
+          [
+            "Genuine seasonal work",
+            "A job on the seasonal-work list, the employer’s seasonal work-permit application and the required visa or stay permission."
+          ],
+          [
+            "Highly qualified employment / EU Blue Card",
+            "The separate qualification, salary and residence-permit conditions for highly qualified work."
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "For Lithuania’s seasonal work-permit route, the Employment Service specifies a maximum of six months within twelve months, either continuously or in shorter periods. The employer applies for the work permit. It is not a route for relabelling an ordinary year-round vacancy."
+      },
+      {
+        "type": "source",
+        "href": "https://uzt.lt/lt/darbo-ieskantiems/esu-uzsienietis-ir-noriu-dirbti-lietuvoje",
+        "text": "Employment Service: seasonal work, employer applications and the six-month limit (Lithuanian)"
+      },
+      {
+        "type": "paragraph",
+        "text": "The EU Blue Card is a separate residence-permit route for highly qualified employment. It is not an extra permit that every employer or candidate can choose instead of the ordinary employment route."
+      },
+      {
+        "type": "source",
+        "href": "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/eu-immigration-portal/highly-qualified-worker-lithuania_en",
+        "text": "European Commission: highly qualified worker route in Lithuania"
+      },
+      {
+        "type": "heading",
+        "text": "What to settle before planning the start"
+      },
+      {
+        "type": "list",
+        "items": [
+          "The real duties, work location, employment terms and proposed gross salary.",
+          "The candidate’s nationality, current residence status and the proposed application basis.",
+          "The applicable occupation code and any qualification or licensing requirements.",
+          "Where the candidate can file, which documents are needed and who prepares each step.",
+          "The authority’s current procedure, appointment availability and the permissions needed before work begins."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Application processing is one part of the hiring timeline. Document preparation, appointments and any qualification steps also need to fit. Use the authority’s current timings for the actual route; do not turn a processing estimate into a promised arrival date."
+      },
+      {
+        "type": "heading",
+        "text": "Questions employers ask"
+      },
+      {
+        "type": "faq",
+        "items": [
+          {
+            "q": "Does a full quota stop all non-EU recruitment?",
+            "a": "No. First establish whether the proposed application is subject to the quota. Post-quota salary conditions, qualifying renewals and specific exemptions need to be considered separately."
+          },
+          {
+            "q": "Does a shortage occupation automatically qualify for the lower salary threshold?",
+            "a": "No. The relevant test is whether the exact occupation is on the specified high-value-added shortage list. General recruitment difficulty is not the same test."
+          },
+          {
+            "q": "Can anyone legally in Lithuania apply there after 1 November?",
+            "a": "No. For the ordinary work-based route covered by the change, the applicant’s specific residence or visa-free status matters. A Schengen visa alone no longer qualifies for that in-country filing route."
+          },
+          {
+            "q": "Can seasonal work last nine months in Lithuania?",
+            "a": "Not under the seasonal work-permit rule described here. The Employment Service specifies up to six months within a twelve-month period."
+          },
+          {
+            "q": "Can you confirm a start date from the salary figure alone?",
+            "a": "No. The application basis, documents, filing arrangements and required approvals still need to be established for the individual hire."
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Planning a hire in Lithuania? Tell us the role, location, proposed salary and target timing. We can discuss the recruitment and preparation work your team needs, then set out the scope and responsibilities in a proposal. Leave candidate documents out of the first enquiry."
+      },
+      {
+        "type": "link",
+        "href": "/employers#employer-enquiry",
+        "text": "Discuss a hire in Lithuania →"
+      }
+    ],
+    "interpretation": "For employers, the useful question is which route fits the actual job and candidate. Establish that before committing to recruitment costs or a start date.",
+    "boundary": "Official guidance checked 9 November 2026. Dated salary figures are attributed to the Migration Department notice, not presented as a permanent rate. Authorities decide individual applications; current rules must be checked for the proposed hire.",
+    "whatThisIsNot": [
+      "Individual legal or immigration advice",
+      "Confirmation of a particular candidate’s eligibility",
+      "A guarantee of permission or a start date"
+    ]
   },
 ];
 

@@ -182,10 +182,10 @@ export default function CoreServicesPage() {
   );
 
   return (
-    <div className="min-h-screen w-full bg-background [&_p]:leading-relaxed">
+    <div className="sufoniq-page seeker-page min-h-screen w-full bg-background [&_p]:leading-relaxed">
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-6xl px-6 py-12 md:px-8 md:py-16">
+        <div className="sufoniq-container py-12 md:py-16">
           <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight leading-tight md:text-5xl">
             Looking for work <span className="text-primary">in Europe?</span>
           </h1>
@@ -215,8 +215,8 @@ export default function CoreServicesPage() {
       </section>
 
       {/* How it works */}
-      <section className="mx-auto max-w-6xl px-6 py-12 md:px-8 md:py-16">
-        <h2 className="text-2xl font-semibold tracking-tight">How it works</h2>
+      <section className="sufoniq-container py-12 md:py-16">
+        <h2 className="sufoniq-section-title text-2xl font-semibold tracking-tight">How it works</h2>
         <p className="mt-2 text-muted-foreground">Three steps, no jargon.</p>
         <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
           <Card className="rounded-2xl">
@@ -248,8 +248,8 @@ export default function CoreServicesPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-10">
-        <h2 className="text-2xl font-semibold tracking-tight">What affects your start date?</h2>
+      <section className="sufoniq-container py-10">
+        <h2 className="sufoniq-section-title text-2xl font-semibold tracking-tight">What affects your start date?</h2>
         <p className="mt-3 max-w-3xl text-muted-foreground">
           Start with your target country, occupation and preferred timing.
           We’ll help you work through the steps: finding a suitable employer,
@@ -259,8 +259,8 @@ export default function CoreServicesPage() {
       </section>
 
       {/* What we help with */}
-      <section id="services" className="mx-auto max-w-6xl px-6 py-12 md:px-8 md:py-16">
-        <h2 className="text-2xl font-semibold tracking-tight">What we help with</h2>
+      <section id="services" className="sufoniq-container py-12 md:py-16">
+        <h2 className="sufoniq-section-title text-2xl font-semibold tracking-tight">What we help with</h2>
         <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-2">
           {services.map((s) => (
             <div
@@ -279,8 +279,8 @@ export default function CoreServicesPage() {
       </section>
 
       {/* High-Demand Jobs */}
-      <section className="mx-auto max-w-6xl px-6 py-12 md:px-8 md:py-16">
-        <h2 className="text-2xl font-semibold tracking-tight">Occupations you can ask us about</h2>
+      <section className="sufoniq-container py-12 md:py-16">
+        <h2 className="sufoniq-section-title text-2xl font-semibold tracking-tight">Occupations you can ask us about</h2>
         <p className="mt-2 max-w-3xl text-muted-foreground">
           Bring your experience in one of these occupations. We’ll help you
           prepare your job search and understand the steps for your preferred country.
@@ -351,8 +351,8 @@ export default function CoreServicesPage() {
       </section>
 
       <section className="border-y border-border bg-muted/40" aria-labelledby="trust-title">
-        <div className="mx-auto max-w-6xl px-6 py-12 md:px-8 md:py-16">
-          <h2 id="trust-title" className="text-2xl font-semibold tracking-tight">Who you’re talking to</h2>
+        <div className="sufoniq-container py-12 md:py-16">
+          <h2 id="trust-title" className="sufoniq-section-title text-2xl font-semibold tracking-tight">Who you’re talking to</h2>
           <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-12">
             <div className="space-y-4 text-muted-foreground">
               <p>Sufoniq is operated by UAB Skillaxis, headquartered in Vilnius, with management in Vienna and recruitment and operations in the Czech Republic.</p>
@@ -368,8 +368,8 @@ export default function CoreServicesPage() {
       </section>
 
       {/* FAQ */}
-      <section className="mx-auto max-w-6xl px-6 py-12 md:px-8 md:py-16">
-        <h2 className="text-2xl font-semibold tracking-tight">Questions people ask</h2>
+      <section className="sufoniq-container py-12 md:py-16">
+        <h2 className="sufoniq-section-title text-2xl font-semibold tracking-tight">Questions people ask</h2>
         <div className="mt-6 max-w-3xl divide-y divide-border border-y border-border">
           {faqs.map((f) => (
             <details key={f.q} className="group py-4">
@@ -388,9 +388,9 @@ export default function CoreServicesPage() {
 
       {/* Enquiry: guidance beside the form on desktop, above it on mobile. */}
       <section id="job-seeker-enquiry" ref={bottomFormRef} className="scroll-mt-24 border-t border-border bg-muted/40">
-        <div className="mx-auto grid max-w-6xl items-start gap-8 px-6 py-12 md:px-8 md:py-16 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
+        <div className="grid sufoniq-container items-start gap-8 py-12 md:py-16 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
           <div className="space-y-5">
-            <h2 className="text-2xl font-semibold tracking-tight">Tell us about your situation</h2>
+            <h2 className="sufoniq-section-title text-2xl font-semibold tracking-tight">Tell us about your situation</h2>
             <p className="max-w-xl text-muted-foreground">Tell us what you do and where you want to work. Within two business days, our recruitment team replies with advice on your job search, what to prepare and a suggested next step.</p>
             <div className="rounded-2xl border border-border bg-background p-5">
               <h3 className="text-base font-semibold">What to include</h3>

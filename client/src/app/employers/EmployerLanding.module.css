@@ -62,7 +62,7 @@
 @media (max-width: 639px) {
   .page { --section-gap: 44px; }
   .hero { padding-top: 40px; padding-bottom: 36px; }
-  .hero h1 { font-size: clamp(2rem, 8.5vw, 2.5rem); }
+  .hero h1 { font-size: var(--page-title-size); }
   .choiceCard { padding: 20px; }
   .choiceCard > span:nth-child(2) { min-height: 0; }
   .detailGrid, .workingGrid, .contactGrid { row-gap: 28px; }

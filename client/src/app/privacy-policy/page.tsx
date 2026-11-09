@@ -10,7 +10,7 @@ const sections = [["controller", "Who handles your data"], ["collection", "Infor
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className={styles.page}><div className={styles.container}>
+    <main className={`${styles.page} sufoniq-page`}><div className={styles.container}>
       <header className={styles.header}>
         <p className={styles.eyebrow}>UAB Skillaxis · Sufoniq</p>
         <h1>Privacy policy</h1>

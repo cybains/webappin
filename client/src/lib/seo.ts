@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const SITE_URL = "https://sufoniq.com";
-const shareImage = {
+export const shareImage = {
   url: SITE_URL + "/sufoniq-share.png",
   width: 1200,
   height: 630,
@@ -23,7 +23,8 @@ export function createPageMetadata(path: string, title: string, description: str
     title,
     description,
     alternates: { canonical: url },
-    openGraph: { type, siteName: "Sufoniq", title, description, url, images: [shareImage] },
+    robots: { index: true, follow: true },
+    openGraph: { type, locale: "en_GB", siteName: "Sufoniq", title, description, url, images: [shareImage] },
     twitter: { card: "summary_large_image", title, description, images: [shareImage.url] },
   };
 }

@@ -1,4 +1,6 @@
-import { createPageMetadata, SITE_URL } from "@/lib/seo";
+import { createPageMetadata } from "@/lib/seo";
+import { articleSchema as createArticleSchema, serializeSchema } from "@/lib/structured-data";
+import { insightSnippet } from "@/lib/insights/seo";
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -17,10 +19,11 @@ export async function generateMetadata({
   const insight = getInsightBySlug(slugParts);
   if (!insight) return {};
 
+  const snippet = insightSnippet(insight.slug, insight.title, insight.framing);
   return createPageMetadata(
     "/insights/" + insight.slugParts.join("/"),
-    insight.title + " | Sufoniq Insights",
-    insight.framing,
+    snippet.title,
+    snippet.description,
     "article",
   );
 }
@@ -94,6 +97,12 @@ function renderBlock(block: BodyBlock, index: number) {
           ))}
         </div>
       );
+    case "source":
+      return (
+        <p key={index} className="text-sm leading-relaxed text-slate-600">
+          Source: <a href={block.href} className="text-sky-800 underline underline-offset-4">{block.text}</a>
+        </p>
+      );
     case "link":
       return (
         <div key={index} className="pt-2">
@@ -122,18 +131,7 @@ export default async function InsightArticlePage({
     notFound();
   }
 
-  const canonical = new URL("/insights/" + insight.slugParts.join("/"), SITE_URL).href;
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: insight.title,
-    description: insight.framing,
-    mainEntityOfPage: canonical,
-    author: { "@type": "Organization", name: "Sufoniq", url: SITE_URL },
-    publisher: { "@type": "Organization", name: "Sufoniq", url: SITE_URL },
-    inLanguage: "en",
-    ...(insight.tags && insight.tags.length > 0 ? { keywords: insight.tags.join(", ") } : {}),
-  };
+  const articleSchema = createArticleSchema("/insights/" + insight.slugParts.join("/"), insight.title, insight.framing, insight.tags);
   const related = INSIGHTS.filter((item) => item.slug !== insight.slug)
     .sort((a, b) => {
       const scoreA = (a.tags ?? []).filter((tag) => insight.tags?.includes(tag)).length;
@@ -156,21 +154,21 @@ export default async function InsightArticlePage({
       : null;
 
   return (
-    <StructuralGridBand className="bg-[var(--background)] text-slate-900 min-h-screen">
+    <StructuralGridBand className="sufoniq-page article-page bg-[var(--background)] text-slate-900 min-h-screen">
       <div className="relative z-10">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <div className="space-y-8 rounded-[32px] border border-slate-200 bg-white/90 p-8 shadow-[0_40px_80px_rgba(15,23,42,0.15)] backdrop-blur-sm">
+        <div className="sufoniq-container py-16">
+          <div className="sufoniq-article space-y-10">
             <div className="space-y-2">
               <Link href="/insights" className="text-sm font-medium text-primary hover:underline flex items-center gap-2">
                 ← Back to Insights
               </Link>
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Interpretation, not advice.</p>
+              <p className="text-xs uppercase tracking-[0.13em] text-slate-500">Interpretation, not advice.</p>
             </div>
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.4em] text-slate-500">{insight.type}</p>
+              <p className="text-xs uppercase tracking-[0.13em] text-slate-500">{insight.type}</p>
               <h1 className="text-3xl font-semibold md:text-4xl">{insight.title}</h1>
               <p className="text-base leading-relaxed text-slate-700">{insight.framing}</p>
-              <div className="flex flex-wrap gap-4 text-xs uppercase tracking-[0.3em] text-slate-400">
+              <div className="flex flex-wrap gap-4 text-xs uppercase tracking-[0.13em] text-slate-600">
                 {insight.date && <span>{insight.date}</span>}
                 {insight.readTime && <span>{insight.readTime}</span>}
               </div>
@@ -180,16 +178,16 @@ export default async function InsightArticlePage({
             </div>
             <div className="grid gap-6 md:grid-cols-2">
               <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-5">
-                <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Interpretation</p>
+                <p className="text-xs uppercase tracking-[0.13em] text-slate-500">Interpretation</p>
                 <p className="mt-2 text-base leading-relaxed text-slate-700">{insight.interpretation}</p>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-5">
-                <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Boundary</p>
+                <p className="text-xs uppercase tracking-[0.13em] text-slate-500">Boundary</p>
                 <p className="mt-2 text-base leading-relaxed text-slate-700">{insight.boundary}</p>
               </div>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white/90 p-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">What this article is not</p>
+              <p className="text-xs uppercase tracking-[0.13em] text-slate-500">What this article is not</p>
               <ul className="mt-3 list-disc list-inside space-y-1 text-sm text-slate-600">
                 {insight.whatThisIsNot.map((item) => (
                   <li key={item}>{item}</li>
@@ -209,7 +207,7 @@ export default async function InsightArticlePage({
                       >
                         {item.title} →
                       </Link>
-                      <span className="ml-3 text-xs uppercase tracking-[0.3em] text-slate-400">
+                      <span className="ml-3 text-xs uppercase tracking-[0.13em] text-slate-600">
                         {item.type}
                       </span>
                     </li>
@@ -219,12 +217,12 @@ export default async function InsightArticlePage({
             )}
             <script
               type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+              dangerouslySetInnerHTML={{ __html: serializeSchema(articleSchema) }}
             />
             {faqSchema && (
               <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+                dangerouslySetInnerHTML={{ __html: serializeSchema(faqSchema) }}
               />
             )}
           </div>

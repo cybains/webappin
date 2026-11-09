@@ -25,7 +25,7 @@ const contact = <a href="mailto:support@sufoniq.com">support@sufoniq.com</a>;
 
 export default function TermsAndConditionsPage() {
   return (
-    <main className={styles.page}><div className={styles.container}>
+    <main className={`${styles.page} sufoniq-page`}><div className={styles.container}>
       <header className={styles.header}>
         <p className={styles.eyebrow}>UAB Skillaxis · Sufoniq</p>
         <h1>Terms and conditions</h1>

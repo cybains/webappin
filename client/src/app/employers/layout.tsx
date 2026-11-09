@@ -1,8 +1,9 @@
+import { breadcrumbSchema } from "@/lib/structured-data";
 import type { ReactNode } from "react";
 import { createPageMetadata, SITE_URL } from "@/lib/seo";
 
 const title = "Screened Candidates & Cross-Border Recruitment | Sufoniq";
-const description = "Source candidates screened for your role, with interest and availability confirmed. Connect recruitment with mobility preparation. Discuss your vacancy with Sufoniq.";
+const description = "Find candidates screened for your role, with interest and availability confirmed. Sufoniq connects recruitment with the steps needed before an international start.";
 const pageUrl = `${SITE_URL}/employers`;
 
 export const metadata = createPageMetadata("/employers", title, description);
@@ -10,6 +11,7 @@ export const metadata = createPageMetadata("/employers", title, description);
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
+    breadcrumbSchema("/employers", "For employers"),
     {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
@@ -25,7 +27,7 @@ const structuredData = {
       publisher: { "@id": `${SITE_URL}/#organization` },
     },
     {
-      "@type": "WebPage",
+      "@type": "WebPage", breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
       "@id": `${pageUrl}#webpage`,
       url: pageUrl,
       name: title,

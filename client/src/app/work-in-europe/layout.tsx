@@ -1,3 +1,4 @@
+import { breadcrumbSchema } from "@/lib/structured-data";
 import type { ReactNode } from "react";
 import { createPageMetadata, SITE_URL } from "@/lib/seo";
 
@@ -10,6 +11,7 @@ export const metadata = createPageMetadata("/work-in-europe", title, description
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
+    breadcrumbSchema("/work-in-europe", "For job seekers"),
     {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
@@ -18,10 +20,11 @@ const structuredData = {
       url: SITE_URL,
     },
     {
-      "@type": "WebPage",
+      "@type": "WebPage", breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
       "@id": `${pageUrl}#webpage`,
       url: pageUrl,
       name: title,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
       description,
       inLanguage: "en",
       publisher: { "@id": `${SITE_URL}/#organization` },

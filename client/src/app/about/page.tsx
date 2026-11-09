@@ -11,7 +11,7 @@ const principles = [
 
 export default function AboutPage() {
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} sufoniq-page`}>
       <StructuralGridBand>
         <header id="who" className={`${styles.container} ${styles.hero}`}>
           <p className={styles.eyebrow}>Recruitment and mobility in Europe</p>

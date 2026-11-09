@@ -60,11 +60,11 @@ export default function InsightsLanding() {
 
   return (
     <StructuralGridBand>
-      <div className="text-[color:var(--foreground)]">
-        <div className="mx-auto flex max-w-6xl flex-col gap-16 px-6 py-12">
+      <div className="sufoniq-page insights-page text-[color:var(--foreground)]">
+        <div className="flex sufoniq-container flex-col gap-16 py-12">
           <section className="grid gap-8 lg:grid-cols-[3fr_2fr] bg-transparent">
             <div className="space-y-4 max-w-2xl">
-            <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Editorial</p>
+            <p className="text-xs uppercase tracking-[0.13em] text-slate-500">Editorial</p>
             <h1 className="text-4xl font-semibold leading-tight text-slate-900">Insights</h1>
             <p className="text-base leading-relaxed tracking-tight text-slate-700 max-w-3xl">
               Calm analysis, grounded in signals. No advice. No promises. Just a clearer map of what’s moving—and what
@@ -77,7 +77,7 @@ export default function InsightsLanding() {
           </div>
           <Card className="rounded-2xl border border-slate-300/80 bg-slate-50/70 shadow-sm">
             <CardHeader className="space-y-3 px-4 py-5">
-              <CardTitle className="text-lg tracking-[0.3em] text-slate-500">Operating notes</CardTitle>
+              <CardTitle className="text-lg tracking-[0.13em] text-slate-500">Operating notes</CardTitle>
               <p className="text-sm leading-relaxed text-slate-700">
                 Insights are interpretive. They show how we read signals — not what you should do.
               </p>
@@ -91,7 +91,7 @@ export default function InsightsLanding() {
                   <Button
                     variant="outline"
                     size="default"
-                    className="rounded-full border-slate-300 bg-transparent px-10 py-3.5 text-xs tracking-[0.4em] text-foreground/80 hover:border-slate-400 hover:bg-white/70"
+                    className="rounded-full border-slate-300 bg-transparent px-10 py-3.5 text-xs tracking-[0.13em] text-foreground/80 hover:border-slate-400 hover:bg-white/70"
                   >
                     Method & Trust
                     <ArrowUpRight className="ml-2 h-4 w-4" />
@@ -106,7 +106,7 @@ export default function InsightsLanding() {
             <Card className="transition-shadow border border-slate-200 hover:border-slate-400 hover:shadow-lg">
               <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
                 <CardHeader className="space-y-4">
-                  <div className="text-xs uppercase tracking-[0.4em] text-slate-500">
+                  <div className="text-xs uppercase tracking-[0.13em] text-slate-500">
                     Featured visual dissertation
                   </div>
                   <Link
@@ -117,7 +117,7 @@ export default function InsightsLanding() {
                     <CardTitle className="text-3xl leading-tight text-slate-900 group-hover:underline">{featuredInsight.title}</CardTitle>
                   </Link>
                   <p className="text-sm text-slate-600">{featuredInsight.framing}</p>
-                  <div className="flex gap-6 text-xs uppercase tracking-[0.3em] text-slate-400">
+                  <div className="flex gap-6 text-xs uppercase tracking-[0.13em] text-slate-600">
                     {featuredInsight.date && <span>{featuredInsight.date}</span>}
                     {featuredInsight.readTime && <span>{featuredInsight.readTime}</span>}
                   </div>
@@ -161,7 +161,7 @@ export default function InsightsLanding() {
 
           <section className="space-y-6 bg-transparent">
         <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.4em] text-slate-500">All insights</p>
+            <p className="text-xs uppercase tracking-[0.13em] text-slate-500">All insights</p>
             <div className="grid gap-4 md:grid-cols-[1fr_auto]">
               <div>
                 <label className="sr-only" htmlFor="insights-search">
@@ -173,7 +173,7 @@ export default function InsightsLanding() {
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
                   placeholder="Search insights"
-                  className="w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
+                  className="w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-600 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                 />
               </div>
               <div className="flex items-center gap-2 overflow-x-auto">
@@ -185,7 +185,7 @@ export default function InsightsLanding() {
                       type="button"
                       onClick={() => setSelectedType(filter)}
                       className={
-                        `rounded-full border px-4 py-2 text-xs font-semibold tracking-[0.3em] transition ` +
+                        `rounded-full border px-4 py-2 text-xs font-semibold tracking-[0.13em] transition ` +
                         (isActive
                           ? "border-slate-900 bg-slate-900 text-white"
                           : "border-slate-200 bg-white text-slate-500 hover:border-slate-400")
@@ -197,7 +197,7 @@ export default function InsightsLanding() {
                 })}
               </div>
             </div>
-            <p className="text-xs uppercase tracking-[0.4em] text-slate-400">
+            <p className="text-xs uppercase tracking-[0.13em] text-slate-600">
               Showing {filteredInsights.length} insight{filteredInsights.length === 1 ? "" : "s"}.
             </p>
           </div>
@@ -207,7 +207,7 @@ export default function InsightsLanding() {
               <Link key={item.slug} href={normalizeSlug(item.slug)} className="block">
                 <Card className="h-full transition-shadow hover:shadow-lg">
                   <CardHeader className="space-y-2">
-                    <div className="text-xs uppercase tracking-[0.4em] text-slate-500">
+                    <div className="text-xs uppercase tracking-[0.13em] text-slate-500">
                       <span>{item.type}</span>
                     </div>
                     <CardTitle className="text-xl font-semibold leading-snug tracking-tight text-slate-900">
@@ -219,7 +219,7 @@ export default function InsightsLanding() {
                     <div className="flex items-center justify-between text-xs text-slate-500">
                       <span>{item.date ?? "\u00A0"}</span>
                       {item.tags?.[0] ? (
-                        <span className="tracking-[0.4em] uppercase text-slate-400/70">
+                        <span className="tracking-[0.13em] uppercase text-slate-600/70">
                           {item.tags[0]}
                         </span>
                       ) : null}

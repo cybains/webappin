@@ -1,3 +1,4 @@
+import { breadcrumbSchema } from "@/lib/structured-data";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, ChevronDown, Truck } from "lucide-react";
 import { createPageMetadata, SITE_URL } from "@/lib/seo";
@@ -15,16 +16,17 @@ const euQualifications = "https://eur-lex.europa.eu/eli/dir/2022/2561/oj/eng";
 const graph = {
   "@context": "https://schema.org",
   "@graph": [
+    breadcrumbSchema("/truck-driver-recruitment", "Truck driver recruitment in Europe", [{ name: "For employers", path: "/employers" }]),
     { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Sufoniq", legalName: "UAB Skillaxis", url: SITE_URL },
     { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: "Sufoniq", url: SITE_URL, publisher: { "@id": `${SITE_URL}/#organization` } },
-    { "@type": "WebPage", "@id": `${pageUrl}#webpage`, name: title, description, url: pageUrl, inLanguage: "en", isPartOf: { "@id": `${SITE_URL}/#website` }, mainEntity: { "@id": `${pageUrl}#service` }, publisher: { "@id": `${SITE_URL}/#organization` } },
+    { "@type": "WebPage", breadcrumb: { "@id": `${pageUrl}#breadcrumb` }, "@id": `${pageUrl}#webpage`, name: title, description, url: pageUrl, inLanguage: "en", isPartOf: { "@id": `${SITE_URL}/#website` }, mainEntity: { "@id": `${pageUrl}#service` }, publisher: { "@id": `${SITE_URL}/#organization` } },
     { "@type": "Service", "@id": `${pageUrl}#service`, name: "Truck driver recruitment for European transport employers", serviceType: "International truck driver sourcing, screening and preparation coordination", description: "Candidate sourcing against fleet requirements, screening and agreed coordination of qualification and employment preparation.", url: pageUrl, mainEntityOfPage: { "@id": `${pageUrl}#webpage` }, provider: { "@id": `${SITE_URL}/#organization` }, areaServed: { "@type": "Place", name: "Europe" }, audience: { "@type": "BusinessAudience", audienceType: "Transport employers recruiting truck drivers" } },
   ],
 };
 
 export default function TruckDriverRecruitment() {
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} sufoniq-page`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph).replace(/</g, "\\u003c") }} />
       <header className={`${styles.container} ${styles.hero}`}>
         <div>
