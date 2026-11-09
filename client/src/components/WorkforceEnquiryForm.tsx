@@ -7,7 +7,7 @@ import styles from "./EmployerPanels.module.css";
 
 const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
 
-export default function WorkforceEnquiryForm() {
+export default function WorkforceEnquiryForm({ source = "Home / Contact" }: { source?: string }) {
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -49,7 +49,7 @@ export default function WorkforceEnquiryForm() {
           subject: "Workforce enquiry",
           message: [
             `Context: ${contextValue}`,
-            "Source: Home / Contact (Workforce Enquiry)",
+            `Source: ${source} (Workforce Enquiry)`,
           ].join("\n"),
         }),
       });

@@ -6,7 +6,7 @@ import ts from "typescript";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const app = path.join(root, "src/app");
-const excluded = new Set(["/api"]);
+const excluded = new Set(["/api", "/hiring-in-practice"]);
 const entries = new Map();
 const dateCache = new Map();
 

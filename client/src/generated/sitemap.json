@@ -3,24 +3,16 @@
     "path": "/"
   },
   {
-    "path": "/about",
-    "lastModified": "2026-11-09T02:02:12.000Z"
+    "path": "/about"
   },
   {
-    "path": "/employers",
-    "lastModified": "2026-11-09T02:02:12.000Z"
+    "path": "/employers"
   },
   {
-    "path": "/ghana-tde",
-    "lastModified": "2026-11-09T02:02:12.000Z"
+    "path": "/ghana-tde"
   },
   {
-    "path": "/hiring-in-practice",
-    "lastModified": "2026-11-09T02:02:12.000Z"
-  },
-  {
-    "path": "/insights",
-    "lastModified": "2026-11-09T02:02:12.000Z"
+    "path": "/insights"
   },
   {
     "path": "/insights/frameworks/constraint-stacking",
@@ -35,8 +27,7 @@
     "lastModified": "2026-10-14T18:45:53.000Z"
   },
   {
-    "path": "/insights/growth",
-    "lastModified": "2026-11-09T02:02:12.000Z"
+    "path": "/insights/growth"
   },
   {
     "path": "/insights/signals/churn-is-signal",
@@ -51,19 +42,15 @@
     "lastModified": "2026-10-14T18:45:53.000Z"
   },
   {
-    "path": "/method-trust",
-    "lastModified": "2026-11-09T02:02:12.000Z"
+    "path": "/method-trust"
   },
   {
-    "path": "/privacy-policy",
-    "lastModified": "2026-11-09T02:02:12.000Z"
+    "path": "/privacy-policy"
   },
   {
-    "path": "/terms-conditions",
-    "lastModified": "2026-11-09T02:02:12.000Z"
+    "path": "/terms-conditions"
   },
   {
-    "path": "/work-in-europe",
-    "lastModified": "2026-11-09T04:00:22.000Z"
+    "path": "/work-in-europe"
   }
 ]

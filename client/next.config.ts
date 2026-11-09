@@ -17,13 +17,18 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/hiring-in-practice",
+        destination: "/employers",
+        permanent: true,
+      },
+      {
         source: "/case-studies",
-        destination: "/hiring-in-practice",
+        destination: "/employers",
         permanent: true,
       },
       {
         source: "/use-cases",
-        destination: "/hiring-in-practice",
+        destination: "/employers",
         permanent: true,
       },
       {

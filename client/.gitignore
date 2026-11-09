@@ -16,6 +16,7 @@
 # next.js
 /.next/
 /.next-performance-check/
+/.next-verify-*/
 /out/
 
 # production
