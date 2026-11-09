@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import styles from "./EmployerPanels.module.css";
 
 const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
 
@@ -67,82 +69,31 @@ export default function WorkforceEnquiryForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      id="workforce-enquiry"
-      aria-labelledby="workforce-enquiry-title"
-      className={`rounded-3xl border border-[color:var(--card-border)] bg-black/0.015 p-4 transition`}
-    >
-      <h3 id="workforce-enquiry-title" className="text-lg font-semibold text-foreground">Describe the role</h3>
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <label className="grid gap-1">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Work email</span>
-          <input
-            type="email"
-            required
-            aria-required="true"
-            autoComplete="email"
-            name="email"
-            value={formData.email}
-            onChange={(event) =>
-              setFormData((prev) => ({ ...prev, email: event.target.value }))
-            }
-            className="h-10 rounded-xl border border-black/10 bg-white px-3 text-sm text-foreground outline-none transition focus:border-black/20 focus:ring-2 focus:ring-black/10"
-            placeholder="name@example.com"
-          />
-        </label>
-        <label className="grid gap-1">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name (optional)</span>
-          <input
-            autoComplete="name"
-            name="name"
-            value={formData.name}
-            onChange={(event) => setFormData((prev) => ({ ...prev, name: event.target.value }))}
-            className="h-10 rounded-xl border border-black/10 bg-white px-3 text-sm text-foreground outline-none transition focus:border-black/20 focus:ring-2 focus:ring-black/10"
-            placeholder="Optional"
-          />
-        </label>
-        <label className="grid gap-1 sm:col-span-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">The role and hiring requirement</span>
-          <textarea
-            required
-            aria-required="true"
-            value={formData.context}
-            onChange={(event) =>
-              setFormData((prev) => ({ ...prev, context: event.target.value }))
-            }
-            name="context"
-            aria-describedby="workforce-enquiry-help"
-            className="min-h-[144px] rounded-xl border border-black/10 bg-white px-3 py-2 text-sm text-foreground outline-none transition focus:border-black/20 focus:ring-2 focus:ring-black/10"
-            placeholder="Roles, headcount, work location, timing and known requirements."
-          />
-        </label>
+    <form onSubmit={handleSubmit} id="workforce-enquiry" aria-labelledby="workforce-enquiry-title" aria-busy={status === "sending"} className={styles.form}>
+      <div className={styles.formHeader}>
+        <h3 id="workforce-enquiry-title">Let’s talk about your role</h3>
+        <p>A brief outline is enough to start the conversation.</p>
       </div>
-      <p id="workforce-enquiry-help" className="mt-3 text-xs text-muted-foreground">
-        Roles, headcount, work location, timing and any known hurdle. A brief outline is fine. Please leave out candidate documents and sensitive personal details.
-      </p>
-      <p className="mt-2 text-xs text-muted-foreground">We use your enquiry to assess fit and reply.</p>
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          {error && (
-            <p className="text-sm text-red-700" role="alert">
-              {error}
-            </p>
-          )}
-          {status === "success" && (
-              <p className="text-sm text-emerald-800" role="status">
-              Enquiry received. We&rsquo;ll contact you to discuss fit and next steps.
-            </p>
-          )}
+      <div className={styles.formBody}>
+        <div className={styles.fields}>
+          <label className={styles.label}>
+            <span>Work email</span>
+            <input type="email" required autoComplete="email" name="email" value={formData.email} onChange={event => setFormData(previous => ({ ...previous, email: event.target.value }))} className={styles.input} placeholder="you@company.com" />
+          </label>
+          <label className={styles.label}>
+            <span>Your name <span className={styles.optional}>(optional)</span></span>
+            <input autoComplete="name" name="name" value={formData.name} onChange={event => setFormData(previous => ({ ...previous, name: event.target.value }))} className={styles.input} placeholder="Your name" />
+          </label>
+          <label className={[styles.label, styles.wide].join(" ")}>
+            <span>What are you hiring for?</span>
+            <textarea required name="context" aria-describedby="workforce-enquiry-help" value={formData.context} onChange={event => setFormData(previous => ({ ...previous, context: event.target.value }))} className={[styles.input, styles.textarea].join(" ")} placeholder="For example: two welders for our site in Austria, ideally starting in September. We’re finding it difficult to reach suitable candidates." />
+          </label>
         </div>
-        <button
-          type="submit"
-          disabled={!canSubmit || !emailValid || status === "sending"}
-          className="inline-flex w-full sm:w-auto items-center justify-center gap-2 min-h-12 rounded-2xl bg-primary bg-[color:var(--primary)] px-4 sm:px-8 py-3 text-sm sm:text-base font-semibold text-primary-foreground text-[color:var(--primary-foreground)] transition hover:bg-primary/90 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-60"
-        >
-          {status === "sending" ? "Sending…" : "Discuss a role"}
-          <ArrowRight className="h-4 w-4" />
-        </button>
+        <p id="workforce-enquiry-help" className={styles.help}>Include the role, location and preferred timing. Please leave out candidate documents and sensitive personal details.</p>
+        {error && <p className={[styles.message, styles.error].join(" ")} role="alert">{error}</p>}
+        {status === "success" && <p className={[styles.message, styles.success].join(" ")} role="status">Enquiry received. We’ll contact you to discuss your requirement and next steps.</p>}
+        <button type="submit" disabled={status === "sending"} className={styles.submit}>{status === "sending" ? "Sending…" : "Discuss a role"}<ArrowRight size={18} aria-hidden="true" /></button>
+        <p className={styles.privacy}>We use your enquiry to reply. <Link href="/privacy-policy">Privacy policy</Link></p>
       </div>
     </form>
   );

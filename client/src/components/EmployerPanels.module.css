@@ -1,0 +1,40 @@
+.form { border: 1px solid var(--card-border); border-radius: 24px; background: var(--card); box-shadow: 0 12px 36px rgb(15 23 42 / 5%); overflow: hidden; }
+.formHeader { padding: 26px 28px 22px; border-bottom: 1px solid var(--card-border); background: color-mix(in srgb, var(--primary) 6%, var(--card)); }
+.formHeader h3 { font-size: 1.25rem; font-weight: 600; letter-spacing: -.025em; }
+.formHeader p { margin-top: 7px; font-size: .875rem; color: var(--muted); line-height: 1.6; }
+.formBody { padding: 26px 28px 28px; }
+.fields { display: grid; gap: 20px; }
+.label { display: grid; gap: 9px; font-size: .875rem; font-weight: 600; }
+.optional { font-weight: 400; color: var(--muted); }
+.input { width: 100%; min-height: 48px; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; background: var(--background); color: var(--foreground); font: inherit; font-size: 1rem; font-weight: 400; transition: border-color .15s, box-shadow .15s; }
+.input::placeholder { color: #64748b; opacity: 1; }
+.input:hover { border-color: #94a3b8; }
+.input:focus { outline: 2px solid var(--primary); outline-offset: 2px; border-color: var(--primary); }
+.textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
+.help { margin-top: 12px; font-size: .75rem; color: var(--muted); line-height: 1.65; }
+.submit { width: 100%; display: flex; justify-content: center; align-items: center; gap: 12px; min-height: 50px; margin-top: 22px; padding: 13px 18px; border-radius: 11px; background: var(--primary); color: var(--primary-foreground); font-weight: 650; cursor: pointer; transition: filter .15s; }
+.submit:hover { filter: brightness(.96); }
+.submit:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+.submit:disabled { opacity: .65; cursor: wait; }
+.privacy { display: block; text-align: center; margin-top: 13px; font-size: .75rem; line-height: 1.6; color: var(--muted); }
+.privacy a { text-decoration: underline; text-underline-offset: 3px; }
+.message { margin-top: 18px; padding: 12px 14px; border-radius: 10px; font-size: .875rem; line-height: 1.6; }
+.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.details { border-block: 1px solid var(--card-border); background: var(--card); }
+.summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 27px 24px; cursor: pointer; list-style: none; }
+.summary::-webkit-details-marker { display: none; }
+.summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+.summary strong { display: block; font-size: 1rem; font-weight: 600; }
+.summary p { margin-top: 6px; color: var(--muted); font-size: .875rem; line-height: 1.6; }
+.chevron { width: 34px; height: 34px; padding: 7px; flex-shrink: 0; border: 1px solid var(--card-border); border-radius: 50%; color: var(--foreground); transition: transform .2s; }
+.details[open] .chevron { transform: rotate(180deg); }
+.detailBody { border-top: 1px solid var(--card-border); padding: 8px 24px 26px; }
+.step { display: grid; grid-template-columns: 32px 1fr; column-gap: 16px; padding: 21px 0; border-bottom: 1px solid var(--card-border); }
+.step > span { color: var(--primary-foreground); background: color-mix(in srgb, var(--primary) 24%, var(--card)); border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 30px; font-size: .75rem; font-weight: 600; }
+.step h3 { font-size: .95rem; font-weight: 600; }
+.step p { margin-top: 7px; color: var(--muted); font-size: .875rem; line-height: 1.75; max-width: 48rem; }
+.detailLink { display: inline-flex; min-height: 44px; align-items: center; margin-top: 16px; font-size: .875rem; font-weight: 600; color: var(--foreground); text-decoration: underline; text-underline-offset: 4px; }
+@media (min-width: 640px) { .fields { grid-template-columns: 1fr 1fr; }.wide { grid-column: 1 / -1; } }
+@media (max-width: 639px) { .formHeader, .formBody { padding: 22px 20px; }.summary { padding: 23px 16px; gap: 14px; }.detailBody { padding-inline: 16px; } }
+@media (prefers-reduced-motion: reduce) { .chevron, .input, .submit { transition: none; } }

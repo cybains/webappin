@@ -1,7 +1,6 @@
 [
   {
-    "path": "/",
-    "lastModified": "2026-11-09T02:02:12.000Z"
+    "path": "/"
   },
   {
     "path": "/about",
@@ -64,6 +63,7 @@
     "lastModified": "2026-11-09T02:02:12.000Z"
   },
   {
-    "path": "/work-in-europe"
+    "path": "/work-in-europe",
+    "lastModified": "2026-11-09T04:00:22.000Z"
   }
 ]
