@@ -1,8 +1,48 @@
 import type { ReactNode } from "react";
-import { createPageMetadata } from "@/lib/seo";
+import { createPageMetadata, SITE_URL } from "@/lib/seo";
 
-export const metadata = createPageMetadata("/work-in-europe", "Job Seekers: Work, Visas & Relocation in Europe | Sufoniq", "Work in Europe from abroad or already in Europe: job search, visa, permit, housing and relocation support with requirements, timelines and service scope stated clearly.");
+const title = "Work in Europe: CV & Job-Search Support | Sufoniq";
+const description = "Get help with your CV, job applications and preparing a move to Europe. No Sufoniq fees for job seekers. Our team replies within two business days.";
+const pageUrl = `${SITE_URL}/work-in-europe`;
+
+export const metadata = createPageMetadata("/work-in-europe", title, description);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Sufoniq",
+      legalName: "UAB Skillaxis",
+      url: SITE_URL,
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: title,
+      description,
+      inLanguage: "en",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      mainEntity: { "@id": `${pageUrl}#service` },
+    },
+    {
+      "@type": "Service",
+      "@id": `${pageUrl}#service`,
+      name: "Job-search and relocation support",
+      description: "CV and application support, visa and permit guidance, and practical preparation for working in Europe.",
+      url: pageUrl,
+      provider: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
+};
 
 export default function PageLayout({ children }: { children: ReactNode }) {
-  return children;
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
+      {children}
+    </>
+  );
 }

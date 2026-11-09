@@ -4,83 +4,25 @@ import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-export const REASONS = [
-  "Find work",
-  "Upskill",
-  "Relocate",
-  "Housing",
-  "Other",
-] as const;
-
-export const STAGES = [
-  "Just exploring",
-  "Ready to start",
-  "Stuck mid-process",
-  "Need a second opinion",
-] as const;
-
-type IntakeFormValues = {
-  name: string;
-  email: string;
-  phone?: string;
-  reasons: string[];
-  stage?: string;
-  location?: string;
-  trade?: string;
-  message?: string;
-};
-
-const ToggleChip = ({
-  label,
-  selected,
-  onToggle,
-}: {
-  label: string;
-  selected: boolean;
-  onToggle: () => void;
-}) => (
-  <button
-    type="button"
-    onClick={onToggle}
-    aria-pressed={selected}
-    className={`rounded-full border px-3 py-1 text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${selected ? "border-transparent bg-[var(--primary)] text-[var(--primary-foreground)] shadow-sm" : "border-border bg-background text-foreground hover:bg-muted"}`}
-  >
-    {label}
-  </button>
-);
-
 export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }) {
   const formRef = useRef<HTMLFormElement>(null);
-  const [reasons, setReasons] = useState<string[]>([]);
-  const [stage, setStage] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
-
-  const toggleReason = (r: string) =>
-    setReasons((prev) => (prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]));
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const form = formRef.current!;
     const data = new FormData(form);
-    const values: IntakeFormValues = {
+    const values = {
       name: String(data.get("name") || ""),
       email: String(data.get("email") || ""),
-      phone: String(data.get("phone") || ""),
-      reasons,
-      stage,
-      location: String(data.get("location") || ""),
       trade: String(data.get("trade") || ""),
       message: String(data.get("message") || ""),
     };
 
-    const subject = `Website inquiry${values.reasons.length ? ` — ${values.reasons[0]}` : ""}`;
+    const subject = "Job-seeker enquiry";
     const composedMessage = [
-      values.phone ? `Phone / WhatsApp: ${values.phone}` : undefined,
-      values.reasons.length ? `Reason(s): ${values.reasons.join(", ")}` : undefined,
-      values.stage ? `Current stage: ${values.stage}` : undefined,
-      values.location ? `Preferred location: ${values.location}` : undefined,
       values.trade ? `Trade / occupation: ${values.trade}` : undefined,
       values.message ? `Notes:\n${values.message}` : undefined,
     ]
@@ -112,8 +54,6 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
       }
 
       form.reset();
-      setReasons([]);
-      setStage("");
       setStatus("success");
       onSubmitted?.();
     } catch (err) {
@@ -154,33 +94,13 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
           <label htmlFor="name" className="text-sm font-medium">
             Name
           </label>
-          <input id="name" name="name" type="text" required className="h-10 rounded-md border bg-background px-3" />
+          <input id="name" name="name" type="text" autoComplete="name" required className="h-10 rounded-md border bg-background px-3" />
         </div>
         <div className="grid gap-2">
           <label htmlFor="email" className="text-sm font-medium">
             Email
           </label>
-          <input id="email" name="email" type="email" required className="h-10 rounded-md border bg-background px-3" />
-        </div>
-        <div className="grid gap-2">
-          <label htmlFor="phone" className="text-sm font-medium">
-            Phone / WhatsApp
-          </label>
-          <p className="text-[11px] text-muted-foreground">Optional</p>
-          <input id="phone" name="phone" type="tel" className="h-10 rounded-md border bg-background px-3" />
-        </div>
-        <div className="grid gap-2">
-          <label htmlFor="location" className="text-sm font-medium">
-            Preferred location
-          </label>
-          <p className="text-[11px] text-muted-foreground">Optional</p>
-          <input
-            id="location"
-            name="location"
-            type="text"
-            placeholder="City or country — if you have one in mind"
-            className="h-10 rounded-md border bg-background px-3"
-          />
+          <input id="email" name="email" type="email" autoComplete="email" required className="h-10 rounded-md border bg-background px-3" />
         </div>
         <div className="grid gap-2">
           <label htmlFor="trade" className="text-sm font-medium">
@@ -197,34 +117,17 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
         </div>
       </div>
 
-      <div className="grid gap-2">
-        <span className="text-sm font-medium">What are you trying to do?</span>
-        <p className="text-[11px] text-muted-foreground">Select any that apply.</p>
-        <div className="flex flex-wrap gap-2">
-          {REASONS.map((r) => (
-            <ToggleChip key={r} label={r} selected={reasons.includes(r)} onToggle={() => toggleReason(r)} />
-          ))}
-        </div>
-      </div>
 
-      <div className="grid gap-2">
-        <span className="text-sm font-medium">Where are you in the process?</span>
-        <div className="flex flex-wrap gap-2">
-          {STAGES.map((s) => (
-            <ToggleChip key={s} label={s} selected={stage === s} onToggle={() => setStage(stage === s ? "" : s)} />
-          ))}
-        </div>
-      </div>
 
       <div className="grid gap-2">
         <label htmlFor="message" className="text-sm font-medium">
-          Anything else we should know?
+          What would you like help with? (optional)
         </label>
         <textarea
           id="message"
           name="message"
           rows={4}
-          placeholder="Short version: goal, constraints, timeline. Links welcome."
+          placeholder="Where you live now, your experience and your main question. Please leave out passport numbers and document scans."
           className="rounded-md border bg-background px-3 py-2"
         />
       </div>
