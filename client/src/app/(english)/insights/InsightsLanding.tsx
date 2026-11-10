@@ -39,13 +39,13 @@ export default function InsightsLanding() {
       const matchesType = selectedType === "All" || item.type === selectedType;
       if (!matchesType) return false;
       if (!term) return true;
-      const haystack = `${t(item.title)} ${t(item.framing)} ${t(item.type)}`.toLowerCase();
+      const haystack = `${t(item.title)} ${t(item.framing)} ${t(item.type)} ${(item.tags ?? []).map(t).join(" ")}`.toLowerCase();
       return haystack.includes(term);
     });
   }, [selectedType, searchTerm, t]);
 
   const featuredInsight = INSIGHTS.find((item) => item.featured) ?? INSIGHTS[0];
-  const chartSlides = locale === "de" ? [<div key="gdp" className="h-full w-full p-4"><GDPPerCapitaChart/></div>] : [
+  const chartSlides = locale !== "en" ? [<div key="gdp" className="h-full w-full p-4"><GDPPerCapitaChart/></div>] : [
     <div key="gdp" className="h-full w-full p-4">
       <GDPPerCapitaChart />
     </div>,
@@ -191,7 +191,7 @@ export default function InsightsLanding() {
               </div>
             </div>
             <p className="text-xs uppercase tracking-[0.13em] text-slate-600">
-              {locale === "de" ? `${filteredInsights.length} ${filteredInsights.length === 1 ? "Beitrag" : "Beiträge"}` : `Showing ${filteredInsights.length} insight${filteredInsights.length === 1 ? "" : "s"}.`}
+              {locale !== "en" ? `${filteredInsights.length} ${t(filteredInsights.length === 1 ? "article" : locale === "cs" && filteredInsights.length >= 2 && filteredInsights.length <= 4 ? "articles (few)" : "articles")}` : `Showing ${filteredInsights.length} insight${filteredInsights.length === 1 ? "" : "s"}.`}
             </p>
           </div>
 

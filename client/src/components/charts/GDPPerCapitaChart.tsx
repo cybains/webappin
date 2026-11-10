@@ -85,7 +85,7 @@ export const GDPPerCapitaChart = () => {
             dominantBaseline="middle"
             className="fill-slate-500 text-[10px]"
           >
-            {locale === "de" ? tick.toLocaleString("de-DE") : formatDollarThousands(tick)}
+            {locale !== "en" ? tick.toLocaleString(locale) : formatDollarThousands(tick)}
           </text>
         ))}
 
@@ -144,7 +144,7 @@ export const GDPPerCapitaChart = () => {
       <div className="sr-only"><table>
         <caption>{t("GDP per capita, ")}{t(gdpData.unit)}{t(". Source: World Bank World Development Indicators.")}</caption>
         <thead><tr><th scope="col">{t("Year")}</th>{gdpData.countries.map(country => <th key={country.code} scope="col">{t(country.name)}</th>)}</tr></thead>
-        <tbody>{gdpPerCapitaEU.map(row => <tr key={row.year}><th scope="row">{row.year}</th>{gdpData.countries.map(country => <td key={country.code}>{(row as Record<string, number>)[country.code].toLocaleString(locale === "de" ? "de-DE" : "en-US", { maximumFractionDigits: 2 })}</td>)}</tr>)}</tbody>
+        <tbody>{gdpPerCapitaEU.map(row => <tr key={row.year}><th scope="row">{row.year}</th>{gdpData.countries.map(country => <td key={country.code}>{(row as Record<string, number>)[country.code].toLocaleString(locale, { maximumFractionDigits: 2 })}</td>)}</tr>)}</tbody>
       </table></div>
     </figure>
   );

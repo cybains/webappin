@@ -1,4 +1,4 @@
-import {germanPaths,englishPath,localizedHref} from "./i18n/shared";
+import {availableLocales,pathLocale,englishPath,localizedHref} from "./i18n/shared";
 import type { Metadata } from "next";
 
 export const SITE_URL = "https://sufoniq.com";
@@ -21,14 +21,15 @@ export const siteMetadata: Metadata = {
 export function createPageMetadata(path: string, title: string, description: string, type: "website" | "article" = "website"): Metadata {
   const url = new URL(path, SITE_URL).href;
   const basePath=englishPath(path);
-  const hasGerman=(germanPaths as readonly string[]).includes(basePath);
-  const language=path === "/de" || path.startsWith("/de/") ? "de" : "en";
+  const locales=availableLocales(basePath),language=pathLocale(path);
+  const ogLocales={en:'en_GB',de:'de_DE',cs:'cs_CZ'};
+  const imageAlts={en:shareImage.alt,de:'Sufoniq – internationale Personalgewinnung in Europa',cs:'Sufoniq – mezinárodní nábor v Evropě'};
   return {
     title,
     description,
-    alternates: { canonical: url, ...(hasGerman ? {languages:{en:new URL(basePath,SITE_URL).href,de:new URL(localizedHref(basePath,"de"),SITE_URL).href,"x-default":new URL(basePath,SITE_URL).href}} : {}) },
+    alternates: { canonical: url, ...(locales.length>1 ? {languages:{...Object.fromEntries(locales.map(locale=>[locale,new URL(localizedHref(basePath,locale),SITE_URL).href])),"x-default":new URL(basePath,SITE_URL).href}} : {}) },
     robots: { index: true, follow: true },
-    openGraph: { type, locale: language === "de" ? "de_DE" : "en_GB", ...(hasGerman ? {alternateLocale: [language === "de" ? "en_GB" : "de_DE"]} : {}), siteName: "Sufoniq", title, description, url, images: [{...shareImage,alt:language === "de" ? "Sufoniq – internationale Personalgewinnung in Europa" : shareImage.alt}] },
+    openGraph: { type, locale: ogLocales[language], ...(locales.length>1 ? {alternateLocale:locales.filter(locale=>locale!==language).map(locale=>ogLocales[locale])} : {}), siteName: "Sufoniq", title, description, url, images: [{...shareImage,alt:imageAlts[language]}] },
     twitter: { card: "summary_large_image", title, description, images: [shareImage.url] },
   };
 }

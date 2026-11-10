@@ -75,7 +75,7 @@ export default function TermsAndConditionsPage({locale="en"}:{locale?:Locale}) {
       </section>
 
       <section id="privacy"><h2>{t("5. Information and confidentiality")}</h2>
-        <p>{t("Our ")}<Link locale={locale} href="/privacy-policy">{t("Privacy policy")}</Link> {t("explains how we handle enquiries, service information, disclosures and privacy requests. It is a notice about data processing, not a request to waive privacy rights.")}</p>
+        <p>{t("Our ")}<Link locale={locale} href="/privacy-policy">{t("privacy policy")}</Link> {t("explains how we handle enquiries, service information, disclosures and privacy requests. It is a notice about data processing, not a request to waive privacy rights.")}</p>
         <p>{t("We do not share candidate details with prospective employers or recruitment partners before the candidate agrees to the proposed introduction. Service providers used to deliver and store communications are described separately in the privacy policy.")}</p>
         <p>{t("Use candidate and business information only for the recruitment or service purpose for which it was supplied. Do not publish candidate documents or disclose confidential information to people who have no need or lawful basis to receive it. This does not prevent disclosures required by law or protected reporting.")}</p>
         <p id="your-content">{t("You retain your rights in the information and documents you provide. Providing them permits the handling needed for the requested or agreed service, subject to the privacy policy and applicable law; it does not give us an unrestricted right to publish or reuse them.")}</p>

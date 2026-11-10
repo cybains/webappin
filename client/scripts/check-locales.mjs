@@ -3,12 +3,13 @@ import {readFileSync,readdirSync} from 'node:fs';
 import ts from 'typescript';
 import vm from 'node:vm';
 
-const messages=JSON.parse(readFileSync('src/lib/i18n/de.json','utf8'));
+const dictionaries=Object.fromEntries(['de','cs'].map(locale=>[locale,JSON.parse(readFileSync('src/lib/i18n/'+locale+'.json','utf8'))]));
+const messages=dictionaries.de;
 const normalize=text=>text.replace(/\s+/g,' ').trim();
 let checked=0;
 function requireMessage(text,file){
  const key=normalize(text);
- assert(key && typeof messages[key]==='string' && messages[key].trim(),file+': missing German message: '+key);
+ for(const [locale,dictionary] of Object.entries(dictionaries))assert(key && typeof dictionary[key]==='string' && dictionary[key].trim(),file+': missing '+locale+' message: '+key);
  checked++;
 }
 function requireArgument(node,file){if(ts.isStringLiteral(node))requireMessage(node.text,file);else if(ts.isConditionalExpression(node)){requireArgument(node.whenTrue,file);requireArgument(node.whenFalse,file);}}
@@ -42,16 +43,21 @@ for(const file of ['src/app/(english)/employers/situations.ts','src/app/(english
 }
 const output=ts.transpileModule(readFileSync('src/lib/i18n/shared.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText;
 const exports={};vm.runInNewContext(output,{exports});
-for(const path of exports.germanPaths){
+for(const [locale,paths] of Object.entries(exports.localePaths))for(const path of paths){
  assert.equal(exports.localizedHref(path,'en'),path);
- const de=path==='/'?'/de':'/de'+path;
- assert.equal(exports.localizedHref(path,'de'),de);
- assert.equal(exports.englishPath(de),path);
- assert.equal(exports.localizedHref(path+'?example=1#contact','de'),de+'?example=1#contact');
+ const target='/'+locale+(path==='/'?'':path);
+ assert.equal(exports.localizedHref(path,locale),target);
+ assert.equal(exports.englishPath(target),path);
+ assert.equal(exports.localizedHref(path+'?example=1#contact',locale),target+'?example=1#contact');
+ for(const other of exports.languageOptions)assert.equal(exports.localizedHref(exports.localizedHref(path,other.code),locale),target);
 }
-assert.equal(exports.localizedHref('/not-translated','de'),'/not-translated');
-assert.equal(exports.localizedHref('https://example.com','de'),'https://example.com');
-assert.equal(exports.localizedHref('#contact','de'),'#contact');
+for(const locale of ['de','cs']){
+ assert.equal(exports.localizedHref('/not-translated',locale),'/not-translated');
+ assert.equal(exports.localizedHref('https://example.com',locale),'https://example.com');
+ assert.equal(exports.localizedHref('#contact',locale),'#contact');
+}
+assert.equal(exports.translate(dictionaries.cs,'Email address'),'E-mailová adresa');
+assert.equal(exports.translate(dictionaries.cs,'Email'),'Napište na');
 assert.equal(exports.translate(messages,' Your name '),' Ihr Name ');
 assert.equal(exports.translate({},'English source'),'English source');
 assert.equal(exports.translate(messages,'Email address'),'E-Mail-Adresse');
@@ -64,7 +70,7 @@ let articleChecks=0;
 function inspectArticle(node){
  if(ts.isObjectLiteralExpression(node)){
   const slug=node.properties.find(p=>ts.isPropertyAssignment(p)&&nameOf(p.name,articleSource)==='slug'&&ts.isStringLiteral(p.initializer));
-  if(slug)assert(exports.germanPaths.includes('/insights/'+slug.initializer.text),'Every published Insight must have a German route: '+slug.initializer.text);
+  if(slug)for(const paths of Object.values(exports.localePaths))assert(paths.includes('/insights/'+slug.initializer.text),'Every published Insight must have a translated route: '+slug.initializer.text);
   if(slug&&exports.germanPaths.includes('/insights/'+slug.initializer.text)){
    function visit(n){
     if(ts.isPropertyAssignment(n)){
@@ -80,4 +86,4 @@ function inspectArticle(node){
  ts.forEachChild(node,inspectArticle);
 }
 inspectArticle(articleSource);
-console.log('LOCALES PASS: '+checked+' message references including '+articleChecks+' article fields; '+Object.keys(messages).length+' German messages; paired URLs and English fallbacks verified.');
+console.log('LOCALES PASS: '+checked+' references including '+articleChecks+' article fields; '+Object.entries(dictionaries).map(([locale,dict])=>locale+': '+Object.keys(dict).length+' messages').join('; ')+'; three-language equivalent URLs and fallbacks verified.');

@@ -6,7 +6,7 @@ import ts from "typescript";
 // Read-only verification of the actual HTTP output. Run against dev or an isolated production server.
 const base = process.env.SEO_CHECK_BASE_URL || "http://localhost:3000";
 const canonicalOrigin = "https://sufoniq.com";
-const nonIndexed = new Set(["/privacy-policy", "/terms-conditions", "/de/privacy-policy", "/de/terms-conditions"]);
+const nonIndexed = new Set(["/privacy-policy", "/terms-conditions", "/de/privacy-policy", "/de/terms-conditions", "/cs/privacy-policy", "/cs/terms-conditions"]);
 const redirects = new Map([["/hiring-in-practice", "/employers"], ["/core-services", "/work-in-europe"], ["/methodology", "/method-trust"], ["/countries", "/"], ["/case-studies", "/employers"], ["/use-cases", "/employers"], ["/growth-atlas", "/insights"], ["/maptest", "/"], ["/jobs", "/employers"]]);
 const routes = new Set();
 function walk(directory, parts = []) {
@@ -52,21 +52,20 @@ for (const route of [...routes].sort()) {
   assert(description?.trim() && !descriptions.has(description), `${route}: unique description`); descriptions.add(description);
   const canonical = tags(html, "link").find(link => link.rel === "canonical")?.href;
   assert.equal(canonical && new URL(canonical).href, new URL(route, canonicalOrigin).href, `${route}: self-canonical`);
-  const languageBase=route === "/de" ? "/" : route.replace(/^\/de(?=\/)/, "");
-  const germanEquivalent=languageBase === "/" ? "/de" : "/de"+languageBase;
-  if(routes.has(germanEquivalent)) {
-    for(const [lang,target] of [["en",languageBase],["de",germanEquivalent],["x-default",languageBase]]) {
-      const alternate=tags(html,"link").find(link=>link.rel === "alternate" && link.hreflang === lang);
-      assert.equal(alternate?.href && new URL(alternate.href).href,new URL(target,canonicalOrigin).href,`${route}: ${lang} alternate language URL`);
-    }
-    assert.equal(byProperty("og:locale"),route === "/de" || route.startsWith("/de/") ? "de_DE" : "en_GB",`${route}: social locale`);
+  const language=/^\/de(?:\/|$)/.test(route)?'de':/^\/cs(?:\/|$)/.test(route)?'cs':'en';
+  const languageBase=route.replace(/^\/(?:de|cs)(?=\/|$)/,'') || '/';
+  const equivalents=[['en',languageBase],...['de','cs'].map(locale=>[locale,'/'+locale+(languageBase==='/'?'':languageBase)])].filter(([,target])=>routes.has(target));
+  for(const [lang,target] of [...equivalents,['x-default',languageBase]]) {
+    const alternate=tags(html,'link').find(link=>link.rel==='alternate'&&link.hreflang===lang);
+    assert.equal(alternate?.href&&new URL(alternate.href).href,new URL(target,canonicalOrigin).href,`${route}: ${lang} alternate language URL`);
   }
+  assert.equal(byProperty('og:locale'),{en:'en_GB',de:'de_DE',cs:'cs_CZ'}[language],`${route}: social locale`);
   assert.equal(byProperty("og:url"), canonical, `${route}: Open Graph URL agrees with canonical`);
   assert.equal(byProperty("og:title"), title, `${route}: social title`);
   assert.equal(byProperty("og:description"), description, `${route}: social description`);
   assert.equal(byName("twitter:card"), "summary_large_image", `${route}: social card`);
   assert(byName("viewport"), `${route}: viewport`);
-  assert(tags(html, "html").some(tag => tag.lang === (route === "/de" || route.startsWith("/de/") ? "de" : "en")), `${route}: document language`);
+  assert(tags(html, "html").some(tag => tag.lang === language), `${route}: document language`);
   assert.equal([...html.matchAll(/<h1\b[^>]*>/gi)].length, 1, `${route}: single H1`);
   const noindex = /(?:^|,)\s*noindex(?:,|$)/.test(byName("robots") || "");
   assert.equal(noindex, nonIndexed.has(route), `${route}: intended indexability`);
@@ -81,14 +80,14 @@ for (const route of [...routes].sort()) {
   assert(data.some(node => node["@type"] === "WebSite"), `${route}: website identity`);
   if (!nonIndexed.has(route)) {
     assert(data.some(node => ["WebPage", "AboutPage", "CollectionPage"].includes(node["@type"])), `${route}: page entity`);
-    if (route !== "/" && route !== "/de") assert(data.some(node => node["@type"] === "BreadcrumbList"), `${route}: breadcrumbs`);
+    if (!["/", "/de", "/cs"].includes(route)) assert(data.some(node => node["@type"] === "BreadcrumbList"), `${route}: breadcrumbs`);
   }
   for (const breadcrumb of data.filter(node => node["@type"] === "BreadcrumbList")) {
     const items = breadcrumb.itemListElement;
     assert(items.length >= 2 && items.every((item, i) => item.position === i + 1 && item.name && new URL(item.item).origin === canonicalOrigin), `${route}: valid ordered breadcrumbs`);
     assert.equal(new URL(items.at(-1).item).href, new URL(canonical).href, `${route}: last breadcrumb identifies current page`);
   }
-  if (route.startsWith("/insights/") || route.startsWith("/de/insights/")) {
+  if (/^\/(?:de\/|cs\/)?insights\//.test(route)) {
     assert.equal(byProperty("og:type"), "article", `${route}: article Open Graph type`);
     const article = data.find(node => node["@type"] === "BlogPosting");
     assert(article?.headline && article.author?.name && article.publisher?.["@id"], `${route}: article headline, author and publisher`);
@@ -127,6 +126,7 @@ for (const [route, target] of redirects) {
   assert([301, 308].includes(response.status), `${route}: permanent redirect`);
   assert.equal(new URL(response.headers.get("location"), base).pathname, target, `${route}: correct redirect target`);
 }
+const unknownCzech=await request("/cs/not-a-real-page");assert.equal(unknownCzech.status,404,"Unknown Czech routes are not invented");
 const unknownGerman = await request("/de/not-a-real-page");assert.equal(unknownGerman.status,404,"Unknown German routes are not invented");
 const missing = await request("/ghana-tde");assert.equal(missing.status, 404, "Removed Ghana page stays 404");
 const unknown = await request("/insights/not-a-real-article");assert.equal(unknown.status, 404, "Unknown article stays 404");

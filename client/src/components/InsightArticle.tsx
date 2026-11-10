@@ -103,7 +103,7 @@ export default function InsightArticle({insight:original,locale="en"}:{insight:I
   const t=getTranslator(locale);
   const insight=localizeInsight(original,t);
   const articleSchema = createArticleSchema(localizedHref("/insights/" + insight.slugParts.join("/"),locale), insight.title, insight.framing, insight.tags);
-  if(locale === "de") { for(const node of articleSchema["@graph"]){ if("inLanguage" in node)node.inLanguage="de";if("itemListElement" in node)node.itemListElement.forEach((item,index)=>{item.item=localizedHref(new URL(item.item).pathname,"de");item.item=new URL(item.item,SITE_URL).href;item.name=index===0?"Startseite":index===1?"Einblicke":insight.title;});} }
+  if(locale !== "en") { for(const node of articleSchema["@graph"]){ if("inLanguage" in node)node.inLanguage=locale;if("itemListElement" in node)node.itemListElement.forEach((item,index)=>{item.item=localizedHref(new URL(item.item).pathname,locale);item.item=new URL(item.item,SITE_URL).href;item.name=index===0?t("Home"):index===1?t("Insights"):insight.title;});} }
   const related = INSIGHTS.filter((item) => item.slug !== insight.slug)
     .sort((a, b) => {
       const scoreA = (a.tags ?? []).filter((tag) => original.tags?.includes(tag)).length;

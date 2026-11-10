@@ -13,7 +13,7 @@ export default function GrowthArticle({locale="en"}:{locale?:Locale}) {
   const related=INSIGHTS.filter(item=>item.slug !== "growth").slice(0,3);
   const headline=t(growth.title),framing=t(growth.framing);
   const growthSchema=articleSchema(localizedHref("/insights/growth",locale),headline,framing,growth.tags?.map(t));
-  if(locale === "de") { for(const node of growthSchema["@graph"]){ if("inLanguage" in node)node.inLanguage="de";if("itemListElement" in node)node.itemListElement.forEach((item,index)=>{item.item=new URL(localizedHref(new URL(item.item).pathname,"de"),SITE_URL).href;item.name=index===0?"Startseite":index===1?"Einblicke":headline;});} }
+  if(locale !== "en") { for(const node of growthSchema["@graph"]){ if("inLanguage" in node)node.inLanguage=locale;if("itemListElement" in node)node.itemListElement.forEach((item,index)=>{item.item=new URL(localizedHref(new URL(item.item).pathname,locale),SITE_URL).href;item.name=index===0?t("Home"):index===1?t("Insights"):headline;});} }
   return (
     <StructuralGridBand className="sufoniq-page article-page bg-[var(--background)] text-slate-900 min-h-screen">
       <div className="relative z-10">

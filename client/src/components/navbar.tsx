@@ -41,8 +41,8 @@ export default function Navbar() {
     ? visibleItems.map(item => item.label === "Contact" ? { ...item, href: `${pathname}#${contactTarget}` } : item)
     : visibleItems;
 
-  const primaryLabel=locale === "de" && pathname === "/work-in-europe" ? t("Ask for support") : t("Discuss a role");
-  const navLabel = (label: string) => t(locale === "de"
+  const primaryLabel=locale !== "en" && pathname === "/work-in-europe" ? t("Ask for support") : t("Discuss a role");
+  const navLabel = (label: string) => t(locale !== "en"
     ? ({ "For employers": "Employers", "For job seekers": "Job seekers", "Method & Trust": "Our approach" }[label] ?? label)
     : label);
   const toggleMenu = () => setIsOpen((prev) => !prev);
@@ -65,7 +65,7 @@ export default function Navbar() {
 
         {/* Centered nav */}
         <nav className={`hidden min-w-0 flex-1 justify-center xl:flex`} aria-label={t("Main navigation")}>
-          <ul className={`flex items-center justify-center ${locale === "de" ? "gap-1" : "gap-5"} text-sm font-medium text-slate-600`}>
+          <ul className={`flex items-center justify-center ${locale !== "en" ? "gap-1" : "gap-5"} text-sm font-medium text-slate-600`}>
             {pageNavItems.map(({ label, href }) => (
               <li key={label} className="shrink-0">
                 <Link locale={locale}
