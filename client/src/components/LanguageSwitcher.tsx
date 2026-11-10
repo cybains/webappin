@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Check, ChevronDown, Globe2 } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/client";
 import { languageOptions, localizedHref } from "@/lib/i18n/shared";
+import { LANGUAGE_COOKIE, LANGUAGE_COOKIE_MAX_AGE } from "@/lib/i18n/preference";
 
 export default function LanguageSwitcher({ pathname, onOpen }: { pathname: string; onOpen: () => void }) {
   const { locale, t } = useTranslation();
@@ -63,12 +64,15 @@ export default function LanguageSwitcher({ pathname, onOpen }: { pathname: strin
           <ul className="space-y-1">
             {languageOptions.map(language => {
               const destination = localizedHref(pathname, language.code);
-              const available = language.code === "en" || destination !== pathname;
+              const available = language.code === locale || language.code === "en" || destination !== pathname;
               const selected = language.code === locale;
               const label = <><span className="flex-1">{language.name}</span><span className="text-[11px] text-slate-500">{language.code.toUpperCase()}</span>{selected ? <Check className="h-4 w-4 text-primary" aria-hidden="true" /> : <span className="w-4" aria-hidden="true" />}</>;
               const classes = `flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${selected ? "bg-slate-100 font-semibold text-[var(--foreground)]" : "text-slate-600 hover:bg-slate-100 hover:text-[var(--foreground)]"}`;
               return <li key={language.code}>{available ? (
-                <a href={destination + suffix} hrefLang={language.code} lang={language.code} aria-current={selected ? "page" : undefined} className={classes} onClick={() => setOpen(false)}>{label}</a>
+                <a href={destination + suffix} hrefLang={language.code} lang={language.code} aria-current={selected ? "page" : undefined} className={classes} onClick={() => {
+                  document.cookie = `${LANGUAGE_COOKIE}=${language.code}; Path=/; Max-Age=${LANGUAGE_COOKIE_MAX_AGE}; SameSite=Lax${window.location.protocol === "https:" ? "; Secure" : ""}`;
+                  setOpen(false);
+                }}>{label}</a>
               ) : (
                 <button type="button" disabled title={t("Not available for this page")} className={`${classes} cursor-not-allowed opacity-45`}>{label}</button>
               )}</li>;

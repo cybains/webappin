@@ -51,3 +51,15 @@ Czech copy uses polite professional forms; employers are primary. Screening = p�
 Article counts use Czech singular/few/other forms. Number formatting follows the locale. Long headlines are edited before shrinking fonts or changing layout. Prepared messages avoid gender-specific first-person wording. Sentence-context privacy-link text is separate from standalone titles.
 
 check:locales checks both dictionaries, conditional UI branches, shared defaults and every article field. check:seo checks all three languages, self-canonicals, reciprocal hreflang and legal exclusions. Full Czech source-fidelity/editorial evidence is recorded in the writing-lab project sufoniq-czech-localisation; this remains author-only AI review, not independent native/legal certification. No deployment performed by the agent.
+
+## Automatic homepage language
+
+The bare homepage `/` runs country-based language negotiation in `src/middleware.ts`: CZ → cs; DE/AT → de; other or unknown → en. The hosting edge must supply `x-vercel-ip-country` (Vercel) or `cf-ipcountry` (Cloudflare). No external geolocation request is made, and the application does not store the IP or country. On another host, configure a trusted country header before expecting geolocation to work; absent headers safely mean English. Localhost has no real country signal.
+
+A `sufoniq-language` cookie stores only en/de/cs for up to one year, SameSite=Lax, Secure on HTTPS. A dropdown selection overrides the initial suggestion, including explicitly selecting English. The cookie is readable by the dropdown because it writes the preference before navigating. No account or database is involved.
+
+Only `/` negotiates; `/de`, `/cs`, deep links, API endpoints and sitemap/robots paths retain their explicit meaning. Direct English homepage links are inherently the same `/` entry point; visitors can select English to retain it. Search crawlers and prefetch requests bypass negotiation. Redirects use temporary 307 and private/no-store headers; canonical/hreflang/sitemap URLs are unchanged. Query parameters are preserved.
+
+Run `node scripts/check-language-redirect.cjs` for focused routing checks. Also verify against an isolated production server with injected country headers and browser cookie tests. Host-country accuracy and header availability require a deployed check; VPNs may indicate a different country. Language options always remain visible.
+
+Verification (10 November 2026): isolated production build passed; 26 focused routing cases passed; production browser checks passed for country redirects, fallback, cookie persistence, manual English override, explicit deep links, selecting the current language, query/hash and mobile picker. Three-language SEO checks passed (54 pages, 48 sitemap URLs, six legal noindex pages). Real hosting geolocation is not verified locally; Vercel/Cloudflare headers were simulated. No deployment performed.
