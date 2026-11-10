@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* German compounds must wrap without reducing the shared type scale. */
+html[lang="de"] {
+  hyphens: manual;
+  overflow-wrap: anywhere;
+}
+
 /* Interior pages inherit the homepage's type, content grid and visual rhythm.
    The homepage hero and its map deliberately retain their full-width layout. */
 :root {

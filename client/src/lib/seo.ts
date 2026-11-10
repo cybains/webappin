@@ -1,3 +1,4 @@
+import {germanPaths,englishPath,localizedHref} from "./i18n/shared";
 import type { Metadata } from "next";
 
 export const SITE_URL = "https://sufoniq.com";
@@ -19,12 +20,15 @@ export const siteMetadata: Metadata = {
 
 export function createPageMetadata(path: string, title: string, description: string, type: "website" | "article" = "website"): Metadata {
   const url = new URL(path, SITE_URL).href;
+  const basePath=englishPath(path);
+  const hasGerman=(germanPaths as readonly string[]).includes(basePath);
+  const language=path === "/de" || path.startsWith("/de/") ? "de" : "en";
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, ...(hasGerman ? {languages:{en:new URL(basePath,SITE_URL).href,de:new URL(localizedHref(basePath,"de"),SITE_URL).href,"x-default":new URL(basePath,SITE_URL).href}} : {}) },
     robots: { index: true, follow: true },
-    openGraph: { type, locale: "en_GB", siteName: "Sufoniq", title, description, url, images: [shareImage] },
+    openGraph: { type, locale: language === "de" ? "de_DE" : "en_GB", ...(hasGerman ? {alternateLocale: [language === "de" ? "en_GB" : "de_DE"]} : {}), siteName: "Sufoniq", title, description, url, images: [{...shareImage,alt:language === "de" ? "Sufoniq – internationale Personalgewinnung in Europa" : shareImage.alt}] },
     twitter: { card: "summary_large_image", title, description, images: [shareImage.url] },
   };
 }

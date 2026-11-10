@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
-import Link from "next/link";
+import Link from "@/components/LocalizedLink";
+import {useTranslation} from "@/lib/i18n/client";
+import {englishPath,localizedHref,type Locale} from "@/lib/i18n/shared";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
@@ -16,29 +19,36 @@ const navItems = [
   { label: "Contact", href: "/#contact" },
 ];
 
-const scrollToContact = () => {
-  const contactSection = document.getElementById("driver-enquiry") ?? document.getElementById("employer-enquiry") ?? document.getElementById("seasonal-enquiry") ?? document.getElementById("contact");
+const scrollToContact = (locale: Locale) => {
+  const contactSection = document.getElementById("driver-enquiry") ?? document.getElementById("employer-enquiry") ?? document.getElementById("seasonal-enquiry") ?? document.getElementById("job-seeker-enquiry") ?? document.getElementById("contact");
   if (contactSection) {
     contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
-  window.location.href = "/#contact";
+  window.location.href = localizedHref("/#contact",locale);
 };
 
 export default function Navbar() {
+  const {locale,t}=useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname() ?? "/";
+  const actualPath=usePathname() ?? "/";
+  const pathname = englishPath(actualPath);
 
-  const contactTargets: Record<string, string> = { "/employers": "employer-enquiry", "/truck-driver-recruitment": "driver-enquiry", "/austria-seasonal-workers": "seasonal-enquiry" };
+  const contactTargets: Record<string, string> = { "/work-in-europe": "job-seeker-enquiry", "/employers": "employer-enquiry", "/truck-driver-recruitment": "driver-enquiry", "/austria-seasonal-workers": "seasonal-enquiry" };
   const contactTarget = contactTargets[pathname];
+  const visibleItems=navItems;
   const pageNavItems = contactTarget
-    ? navItems.map(item => item.label === "Contact" ? { ...item, href: `${pathname}#${contactTarget}` } : item)
-    : navItems;
+    ? visibleItems.map(item => item.label === "Contact" ? { ...item, href: `${pathname}#${contactTarget}` } : item)
+    : visibleItems;
 
+  const primaryLabel=locale === "de" && pathname === "/work-in-europe" ? t("Ask for support") : t("Discuss a role");
+  const navLabel = (label: string) => t(locale === "de"
+    ? ({ "For employers": "Employers", "For job seekers": "Job seekers", "Method & Trust": "Our approach" }[label] ?? label)
+    : label);
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
-    if (href.startsWith("/#")) return pathname === "/";
+    if (href.includes("#")) return false;
     return pathname === href;
   };
 
@@ -47,26 +57,26 @@ export default function Navbar() {
       className="w-full sticky top-0 z-50 border-b border-[color:var(--card-border)] bg-[var(--background)]"
       style={{ fontFamily: "var(--font-sans)" }}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6">
         {/* Wordmark */}
-        <Link href="/" className="text-[var(--foreground)]">
+        <Link locale={locale} href="/" className="shrink-0 text-[var(--foreground)]">
           <span className="text-base font-medium tracking-[0.05em]">SUFONIQ</span>
         </Link>
 
         {/* Centered nav */}
-        <nav className="hidden flex-1 justify-center xl:flex" aria-label="Main navigation">
-          <ul className="flex items-center justify-center gap-5 text-sm font-medium text-slate-600">
+        <nav className={`hidden min-w-0 flex-1 justify-center xl:flex`} aria-label={t("Main navigation")}>
+          <ul className={`flex items-center justify-center ${locale === "de" ? "gap-1" : "gap-5"} text-sm font-medium text-slate-600`}>
             {pageNavItems.map(({ label, href }) => (
-              <li key={label}>
-                <Link
+              <li key={label} className="shrink-0">
+                <Link locale={locale}
                   href={href}
-                  className={`px-2 py-1 text-sm font-medium border-b-2 transition duration-200 ${
+                  className={`inline-flex min-h-11 items-center whitespace-nowrap px-2 py-1 text-sm font-medium border-b-2 transition duration-200 ${
                     isActive(href)
                       ? "border-[color:var(--foreground)] text-[var(--foreground)]"
                       : "border-transparent hover:border-slate-300 hover:text-[var(--foreground)]"
                   }`}
                 >
-                  {label}
+                  {navLabel(label)}
                 </Link>
               </li>
             ))}
@@ -74,44 +84,44 @@ export default function Navbar() {
         </nav>
 
         {/* CTA + mobile toggle */}
-        <div className="flex items-center gap-4">
-          <Button
+        <div className="flex shrink-0 items-center gap-3">
+
+          <div className="hidden xl:block"><Button
             type="button"
             size="lg"
-            onClick={() => { setIsOpen(false); scrollToContact(); }}
-            className="hidden items-center justify-center rounded-2xl text-base xl:inline-flex"
-          >
-            Discuss a role
-          </Button>
+            onClick={() => { setIsOpen(false); scrollToContact(locale); }}
+            className="items-center justify-center whitespace-nowrap rounded-2xl text-base"
+          >{primaryLabel}</Button></div>
           <button
-            className="xl:hidden text-3xl focus:outline-none"
+            className={`flex h-11 w-11 items-center justify-center xl:hidden text-3xl focus-visible:outline-2 focus-visible:outline-offset-4`}
             onClick={toggleMenu}
-            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-label={t(isOpen ? "Close menu" : "Open menu")}
             aria-expanded={isOpen}
             aria-controls="mobile-navigation"
           >
             {isOpen ? "✕" : "☰"}
           </button>
+          <LanguageSwitcher key={actualPath} pathname={pathname} onOpen={() => setIsOpen(false)} />
         </div>
       </div>
 
       {/* Mobile menu */}
       <nav
         id="mobile-navigation"
-        aria-label="Mobile navigation"
+        aria-label={t("Mobile navigation")}
         className={`${
           isOpen ? "block" : "hidden"
         } xl:hidden border-t border-[color:var(--card-border)] bg-[var(--background)] px-6 py-4`}
       >
         <ul className="flex flex-col gap-3 text-sm font-medium">
           {pageNavItems.map(({ label, href }) => (
-            <li key={label}>
-              <Link
+            <li key={navLabel(label)}>
+              <Link locale={locale}
                 href={href}
                 onClick={() => setIsOpen(false)}
                 className="block w-full rounded-lg px-3 py-2 transition hover:bg-[var(--accent)]/10 hover:text-[var(--secondary)]"
               >
-                {label}
+                {navLabel(label)}
               </Link>
             </li>
           ))}
@@ -119,11 +129,9 @@ export default function Navbar() {
             <Button
               type="button"
               size="lg"
-              onClick={scrollToContact}
-              className="w-full rounded-2xl text-base"
-            >
-              Discuss a role
-            </Button>
+              onClick={() => {setIsOpen(false);scrollToContact(locale);}}
+              className="w-full whitespace-nowrap rounded-2xl text-base"
+            >{primaryLabel}</Button>
           </li>
         </ul>
       </nav>

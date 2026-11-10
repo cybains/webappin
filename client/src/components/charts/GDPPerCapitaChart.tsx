@@ -1,3 +1,5 @@
+"use client";
+import {useTranslation} from "@/lib/i18n/client";
 import React from "react";
 import gdpData from "@/data/homepage-gdp.json";
 
@@ -15,6 +17,7 @@ const createLinearScale = (domain: [number, number], range: [number, number]) =>
 const formatDollarThousands = (value: number) => `US$${(value / 1000).toFixed(0)}k`;
 
 export const GDPPerCapitaChart = () => {
+  const {locale,t}=useTranslation();
   const titleId = "homepage-gdp-title";
   const descriptionId = "homepage-gdp-description";
   const width = 620;
@@ -42,11 +45,11 @@ export const GDPPerCapitaChart = () => {
   return (
     <figure className="flex h-full w-full flex-col">
       <figcaption className="mb-1 text-xs text-slate-600">
-        GDP per capita · {gdpData.unit} · {gdpData.startYear}–{gdpData.endYear}
+        {t("GDP per capita · ")}{t(gdpData.unit)} · {gdpData.startYear}–{gdpData.endYear}
       </figcaption>
     <svg viewBox={`0 0 ${width} ${height}`} className="min-h-0 w-full flex-1" role="img" aria-labelledby={`${titleId} ${descriptionId}`}>
-      <title id={titleId}>{`GDP per capita in Austria, Germany, Poland and Romania, ${gdpData.startYear}–${gdpData.endYear}`}</title>
-      <desc id={descriptionId}>Annual World Bank data in constant 2015 US dollars, adjusted for inflation. The vertical axis starts at zero. Economic context, not wages or a measure of hiring availability. Exact figures follow in a table.</desc>
+      <title id={titleId}>{`${t("GDP per capita in Austria, Germany, Poland and Romania")} ${gdpData.startYear}–${gdpData.endYear}`}</title>
+      <desc id={descriptionId}>{t("Annual World Bank data in constant 2015 US dollars, adjusted for inflation. The vertical axis starts at zero. Economic context, not wages or a measure of hiring availability. Exact figures follow in a table.")}</desc>
       <g transform={`translate(${margin.left},${margin.top})`}>
         {yTicks.map((tick) => (
           <line
@@ -82,7 +85,7 @@ export const GDPPerCapitaChart = () => {
             dominantBaseline="middle"
             className="fill-slate-500 text-[10px]"
           >
-            {formatDollarThousands(tick)}
+            {locale === "de" ? tick.toLocaleString("de-DE") : formatDollarThousands(tick)}
           </text>
         ))}
 
@@ -123,26 +126,25 @@ export const GDPPerCapitaChart = () => {
           <g key={key} transform={`translate(${index * 120},0)`}>
             <rect width={12} height={4} y={-8} rx={2} fill={color} />
             <text x={16} y={-5} className="fill-slate-600 text-[10px]">
-              {key === "AT"
+              {t(key === "AT"
                 ? "Austria"
                 : key === "DE"
                 ? "Germany"
                 : key === "PL"
                 ? "Poland"
-                : "Romania"}
+                : "Romania")}
             </text>
           </g>
         ))}
       </g>
     </svg>
       <p className="mt-1 text-[11px] leading-relaxed text-slate-500">
-        Source: <a href={gdpData.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">World Bank WDI</a> · CC BY 4.0 · Retrieved {gdpData.retrievedAt.slice(0, 10)}.
-        {" "}Inflation-adjusted US dollars; not wages or purchasing-power-adjusted figures.
-      </p>
+        {t("Source: ")}<a href={gdpData.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{t("World Bank WDI")}</a> {t("· CC BY 4.0 · Retrieved ")}{gdpData.retrievedAt.slice(0, 10)}.
+        {" "}{t("Inflation-adjusted US dollars; not wages or purchasing-power-adjusted figures.")}</p>
       <div className="sr-only"><table>
-        <caption>GDP per capita, {gdpData.unit}. Source: World Bank World Development Indicators.</caption>
-        <thead><tr><th scope="col">Year</th>{gdpData.countries.map(country => <th key={country.code} scope="col">{country.name}</th>)}</tr></thead>
-        <tbody>{gdpPerCapitaEU.map(row => <tr key={row.year}><th scope="row">{row.year}</th>{gdpData.countries.map(country => <td key={country.code}>{(row as Record<string, number>)[country.code].toLocaleString("en-US", { maximumFractionDigits: 2 })}</td>)}</tr>)}</tbody>
+        <caption>{t("GDP per capita, ")}{t(gdpData.unit)}{t(". Source: World Bank World Development Indicators.")}</caption>
+        <thead><tr><th scope="col">{t("Year")}</th>{gdpData.countries.map(country => <th key={country.code} scope="col">{t(country.name)}</th>)}</tr></thead>
+        <tbody>{gdpPerCapitaEU.map(row => <tr key={row.year}><th scope="row">{row.year}</th>{gdpData.countries.map(country => <td key={country.code}>{(row as Record<string, number>)[country.code].toLocaleString(locale === "de" ? "de-DE" : "en-US", { maximumFractionDigits: 2 })}</td>)}</tr>)}</tbody>
       </table></div>
     </figure>
   );

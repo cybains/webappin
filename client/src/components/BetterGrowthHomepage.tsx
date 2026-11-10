@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "@/lib/i18n/client";
+
 import React, { useMemo } from "react";
 import { Brain, Factory, Leaf, LineChart, Map, Users } from "lucide-react";
 
@@ -71,17 +73,19 @@ type CardProps = {
   children: React.ReactNode;
 };
 
+const GrowthText = ({text}:{text:string}) => { const {t}=useTranslation(); return <>{t(text)}</>; };
+
 // --- UI primitives -------------------------------------------
 const Section = ({ id, icon: Icon, title, kicker, children, lede }: SectionProps) => (
   <section id={id} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     {lede && (
-      <div className="mb-6 text-base md:text-lg text-slate-600">{lede}</div>
+      <div className="mb-6 text-base md:text-lg text-slate-600">{typeof lede === "string" ? <GrowthText text={lede} /> : lede}</div>
     )}
     <div className="flex items-center gap-3 mb-6">
       <Icon className="w-5 h-5" />
-      <p className="uppercase tracking-widest text-xs opacity-70">{kicker}</p>
+      <p className="uppercase tracking-widest text-xs opacity-70"><GrowthText text={kicker} /></p>
     </div>
-    <h2 className="text-2xl md:text-4xl font-semibold mb-4">{title}</h2>
+    <h2 className="text-2xl md:text-4xl font-semibold mb-4"><GrowthText text={title} /></h2>
     <div className="prose prose-slate max-w-none mb-8">{children}</div>
   </section>
 );
@@ -93,6 +97,7 @@ const Card = ({ children }: CardProps) => (
 );
 
 const ScatterRndVsGrowth = () => {
+  const {t}=useTranslation();
   const width = 620;
   const height = 240;
   const margin = { top: 20, right: 20, bottom: 32, left: 52 };
@@ -123,7 +128,7 @@ const ScatterRndVsGrowth = () => {
   }, [gdpValues]);
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
+    <svg role="img" aria-label={t("Illustrative comparison of research spending and GDP growth")} viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
       <g transform={`translate(${margin.left},${margin.top})`}>
         {yTicks.map((tick) => (
           <line
@@ -201,21 +206,18 @@ const ScatterRndVsGrowth = () => {
         y={height - 4}
         textAnchor="middle"
         className="fill-slate-500 text-[10px]"
-      >
-        R&D spend (% GDP)
-      </text>
+      ><GrowthText text={"R&D spend (% GDP)"} /></text>
       <text
         transform={`translate(12 ${margin.top + innerHeight / 2}) rotate(-90)`}
         textAnchor="middle"
         className="fill-slate-500 text-[10px]"
-      >
-        GDP growth (%)
-      </text>
+      ><GrowthText text={"GDP growth (%)"} /></text>
     </svg>
   );
 };
 
 const GDPVsCO2AreaChart = () => {
+  const {t}=useTranslation();
   const width = 620;
   const height = 240;
   const margin = { top: 20, right: 20, bottom: 28, left: 50 };
@@ -264,7 +266,7 @@ const GDPVsCO2AreaChart = () => {
   }, [values]);
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
+    <svg role="img" aria-label={t("Illustrative GDP and CO₂ index trends")} viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
       <defs>
         <linearGradient id="gdpGradient" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stopColor="#1d4ed8" stopOpacity={0.3} />
@@ -337,11 +339,11 @@ const GDPVsCO2AreaChart = () => {
       <g transform={`translate(${margin.left},${height - 8})`}>
         <g className="text-[10px] fill-slate-600" transform="translate(0,-6)">
           <rect width={12} height={4} y={-6} rx={2} fill="#1d4ed8" />
-          <text x={16} y={-3}>GDP Index</text>
+          <text x={16} y={-3}><GrowthText text={"GDP Index"} /></text>
         </g>
         <g className="text-[10px] fill-slate-600" transform="translate(120,-6)">
           <rect width={12} height={4} y={-6} rx={2} fill="#ef4444" />
-          <text x={16} y={-3}>CO₂ Index</text>
+          <text x={16} y={-3}><GrowthText text={"CO₂ Index"} /></text>
         </g>
       </g>
     </svg>
@@ -349,6 +351,7 @@ const GDPVsCO2AreaChart = () => {
 };
 
 const MobilityBarChart = () => {
+  const {t,locale}=useTranslation();
   const width = 620;
   const height = 240;
   const margin = { top: 20, right: 20, bottom: 40, left: 52 };
@@ -359,7 +362,7 @@ const MobilityBarChart = () => {
   const barWidth = innerWidth / migrationBalance.length - 16;
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
+    <svg role="img" aria-label={t("Illustrative migration routes")} viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
       <g transform={`translate(${margin.left},${margin.top})`}>
         <line x1={0} y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="#94a3b8" />
         <line x1={0} y1={0} x2={0} y2={innerHeight} stroke="#94a3b8" />
@@ -381,7 +384,7 @@ const MobilityBarChart = () => {
               dominantBaseline="middle"
               className="fill-slate-500 text-[10px]"
             >
-              {`${tick.toFixed(1)}k`}
+              {`${tick.toLocaleString(locale,{minimumFractionDigits:1,maximumFractionDigits:1})}k`}
             </text>
           </g>
         ))}
@@ -404,7 +407,7 @@ const MobilityBarChart = () => {
                 textAnchor="middle"
                 className="fill-slate-500 text-[10px]"
               >
-                {`${route.people.toFixed(1)}k`}
+                {`${route.people.toLocaleString(locale,{minimumFractionDigits:1,maximumFractionDigits:1})}k`}
               </text>
               <text
                 x={barWidth / 2}
@@ -423,6 +426,7 @@ const MobilityBarChart = () => {
 };
 
 const BalancedScatter = () => {
+  const {t}=useTranslation();
   const width = 620;
   const height = 240;
   const margin = { top: 20, right: 20, bottom: 32, left: 56 };
@@ -459,7 +463,7 @@ const BalancedScatter = () => {
   const highlightHeight = Math.abs(yScale(32) - yScale(26));
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
+    <svg role="img" aria-label={t("Illustrative comparison of GDP growth and inequality")} viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
       <g transform={`translate(${margin.left},${margin.top})`}>
         <rect
           x={highlightLeft}
@@ -538,16 +542,12 @@ const BalancedScatter = () => {
         y={height - 6}
         textAnchor="middle"
         className="fill-slate-500 text-[10px]"
-      >
-        GDP growth (%)
-      </text>
+      ><GrowthText text={"GDP growth (%)"} /></text>
       <text
         transform={`translate(12 ${margin.top + innerHeight / 2}) rotate(-90)`}
         textAnchor="middle"
         className="fill-slate-500 text-[10px]"
-      >
-        Gini (lower is fairer)
-      </text>
+      ><GrowthText text={"Gini (lower is fairer)"} /></text>
     </svg>
   );
 };
@@ -560,13 +560,10 @@ const UnevenGrowth = () => (
     title="Growth is uneven. Your strategy shouldn’t be."
     lede="Economy, without the drama: what matters, measured — and a direction worth growing toward."
   >
-    <p>
-      Some regions sprint. Others tie their shoes for twenty years. The chart maps the divergence;
-      turning it into convergence is where the work starts.
-    </p>
+    <p><GrowthText text={"Some regions sprint. Others tie their shoes for twenty years. The chart maps the divergence; turning it into convergence is where the work starts."} /></p>
     <div className="grid md:grid-cols-2 gap-6 mt-8">
       <Card>
-        <h3 className="text-lg font-medium mb-2">GDP per capita — selected EU economies</h3>
+        <h3 className="text-lg font-medium mb-2"><GrowthText text={"GDP per capita — selected EU economies"} /></h3>
         <div className="h-64">
           <GDPPerCapitaChart />
         </div>
@@ -574,17 +571,12 @@ const UnevenGrowth = () => (
       <Card>
         <div className="space-y-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Interpretation</p>
-            <p className="text-slate-700">
-              Convergence is real — regions with the steepest productivity slopes tend to attract fresh
-              momentum.
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500"><GrowthText text={"Interpretation"} /></p>
+            <p className="text-slate-700"><GrowthText text={"Convergence is real — regions with the steepest productivity slopes tend to attract fresh momentum."} /></p>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Boundary</p>
-            <p className="text-slate-700">
-              This does not claim that every low per-capita economy is immediately ready for scaling.
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500"><GrowthText text={"Boundary"} /></p>
+            <p className="text-slate-700"><GrowthText text={"This does not claim that every low per-capita economy is immediately ready for scaling."} /></p>
           </div>
         </div>
       </Card>
@@ -594,30 +586,24 @@ const UnevenGrowth = () => (
 
 const BrainsNotBrawn = () => (
   <Section id="brains" icon={Brain} kicker="Chapter 2" title="Growth needs brains. (And decent Wi‑Fi)">
-    <p>
-      Ideas scale. Smokestacks plateau. The chart plots R&D against growth to show where cleverness
-      compounds.
-    </p>
+    <p><GrowthText text={"Ideas scale. Smokestacks plateau. The chart plots R&D against growth to show where cleverness compounds."} /></p>
     <div className="grid md:grid-cols-2 gap-6 mt-8">
       <Card>
-        <h3 className="text-lg font-medium mb-2">R&D (% GDP) vs Real GDP growth</h3>
+        <h3 className="text-lg font-medium mb-2"><GrowthText text={"R&D (% GDP) vs Real GDP growth"} /></h3>
         <div className="h-64">
           <ScatterRndVsGrowth />
         </div>
+        <p className="mt-3 text-xs leading-relaxed text-slate-600"><GrowthText text="Illustrative data only — these values demonstrate a relationship, not observed statistics or a hiring forecast." /></p>
       </Card>
       <Card>
         <div className="space-y-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Interpretation</p>
-            <p className="text-slate-700">
-              High R&D ecosystems amplify skilled people and expand margin potential when ideas scale.
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500"><GrowthText text={"Interpretation"} /></p>
+            <p className="text-slate-700"><GrowthText text={"High R&D ecosystems amplify skilled people and expand margin potential when ideas scale."} /></p>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Boundary</p>
-            <p className="text-slate-700">
-              This is not suggesting R&D spending alone guarantees meaningful outcomes.
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500"><GrowthText text={"Boundary"} /></p>
+            <p className="text-slate-700"><GrowthText text={"This is not suggesting R&D spending alone guarantees meaningful outcomes."} /></p>
           </div>
         </div>
       </Card>
@@ -627,31 +613,24 @@ const BrainsNotBrawn = () => (
 
 const Limits = () => (
   <Section id="limits" icon={Leaf} kicker="Chapter 3" title="Growth has limits. Math says hi.">
-    <p>
-      Infinite curves are cute until the planet disagrees. We look for decoupling — more value, less
-      damage — and build hiring that supports it.
-    </p>
+    <p><GrowthText text={"Infinite curves are cute until the planet disagrees. We look for decoupling — more value, less damage — and build hiring that supports it."} /></p>
     <div className="grid md:grid-cols-2 gap-6 mt-8">
       <Card>
-        <h3 className="text-lg font-medium mb-2">Index: GDP vs CO₂ (2000 = 100)</h3>
+        <h3 className="text-lg font-medium mb-2"><GrowthText text={"Index: GDP vs CO₂ (2000 = 100)"} /></h3>
         <div className="h-64">
           <GDPVsCO2AreaChart />
         </div>
+        <p className="mt-3 text-xs leading-relaxed text-slate-600"><GrowthText text="Illustrative data only — these values demonstrate a relationship, not observed statistics or a hiring forecast." /></p>
       </Card>
       <Card>
         <div className="space-y-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Interpretation</p>
-            <p className="text-slate-700">
-              Decoupling happens when policy, technology, and choices align so output rises while footprints
-              ease.
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500"><GrowthText text={"Interpretation"} /></p>
+            <p className="text-slate-700"><GrowthText text={"Decoupling happens when policy, technology, and choices align so output rises while footprints ease."} /></p>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Boundary</p>
-            <p className="text-slate-700">
-              This analysis does not promise any specific sector will always drop emissions.
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500"><GrowthText text={"Boundary"} /></p>
+            <p className="text-slate-700"><GrowthText text={"This analysis does not promise any specific sector will always drop emissions."} /></p>
           </div>
         </div>
       </Card>
@@ -661,30 +640,24 @@ const Limits = () => (
 
 const PeopleFlows = () => (
   <Section id="people" icon={Users} kicker="Chapter 4" title="Growth is people. Borders are paperwork.">
-    <p>
-      Europe runs on human movement. The work is keeping it legal, ethical, and pleasantly
-      uneventful.
-    </p>
+    <p><GrowthText text={"Europe runs on human movement. The work is keeping it legal, ethical, and pleasantly uneventful."} /></p>
     <div className="grid md:grid-cols-2 gap-6 mt-8">
       <Card>
-        <h3 className="text-lg font-medium mb-2">Indicative mobility routes (scaled)</h3>
+        <h3 className="text-lg font-medium mb-2"><GrowthText text={"Indicative mobility routes (scaled)"} /></h3>
         <div className="h-64">
           <MobilityBarChart />
         </div>
+        <p className="mt-3 text-xs leading-relaxed text-slate-600"><GrowthText text="Illustrative data only — these values demonstrate a relationship, not observed statistics or a hiring forecast." /></p>
       </Card>
       <Card>
         <div className="space-y-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Interpretation</p>
-            <p className="text-slate-700">
-              When paperwork is tidy and compliant, talent movement remains ethical and predictable.
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500"><GrowthText text={"Interpretation"} /></p>
+            <p className="text-slate-700"><GrowthText text={"When paperwork is tidy and compliant, talent movement remains ethical and predictable."} /></p>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Boundary</p>
-            <p className="text-slate-700">
-              This is not a promise that any route will be effortless or without jurisdictional effort.
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500"><GrowthText text={"Boundary"} /></p>
+            <p className="text-slate-700"><GrowthText text={"This is not a promise that any route will be effortless or without jurisdictional effort."} /></p>
           </div>
         </div>
       </Card>
@@ -694,30 +667,24 @@ const PeopleFlows = () => (
 
 const Balanced = () => (
   <Section id="balanced" icon={LineChart} kicker="Chapter 5" title="Better growth is balanced. (Yes, like a budget)">
-    <p>
-      GDP growth with less inequality happens rarely, and this chart shows where. We aim hiring at
-      that balance — and help build it where it’s missing.
-    </p>
+    <p><GrowthText text={"GDP growth with less inequality happens rarely, and this chart shows where. We aim hiring at that balance — and help build it where it’s missing."} /></p>
     <div className="grid md:grid-cols-2 gap-6 mt-8">
       <Card>
-        <h3 className="text-lg font-medium mb-2">GDP growth vs Gini (lower is fairer)</h3>
+        <h3 className="text-lg font-medium mb-2"><GrowthText text={"GDP growth vs Gini (lower is fairer)"} /></h3>
         <div className="h-64">
           <BalancedScatter />
         </div>
+        <p className="mt-3 text-xs leading-relaxed text-slate-600"><GrowthText text="Illustrative data only — these values demonstrate a relationship, not observed statistics or a hiring forecast." /></p>
       </Card>
       <Card>
         <div className="space-y-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Interpretation</p>
-            <p className="text-slate-700">
-              Growth tied to durable demand tends to endure longer than applause-driven spikes.
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500"><GrowthText text={"Interpretation"} /></p>
+            <p className="text-slate-700"><GrowthText text={"Growth tied to durable demand tends to endure longer than applause-driven spikes."} /></p>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Boundary</p>
-            <p className="text-slate-700">
-              This is not declaring other growth patterns invalid; it simply notes which ones last.
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500"><GrowthText text={"Boundary"} /></p>
+            <p className="text-slate-700"><GrowthText text={"This is not declaring other growth patterns invalid; it simply notes which ones last."} /></p>
           </div>
         </div>
       </Card>
@@ -730,38 +697,38 @@ const Services = () => (
     <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0">
       <li>
         <Card>
-          <div className="flex items-center gap-3 mb-2"><Brain className="w-5 h-5" /><h4 className="font-medium">Market Intelligence</h4></div>
-          <p className="text-slate-700">World‑Bank‑powered dashboards that find where talent meets demand — without the guesswork.</p>
+          <div className="flex items-center gap-3 mb-2"><Brain className="w-5 h-5" /><h4 className="font-medium"><GrowthText text={"Market Intelligence"} /></h4></div>
+          <p className="text-slate-700"><GrowthText text={"World‑Bank‑powered dashboards that find where talent meets demand — without the guesswork."} /></p>
         </Card>
       </li>
       <li>
         <Card>
-          <div className="flex items-center gap-3 mb-2"><Users className="w-5 h-5" /><h4 className="font-medium">Ethical Mobility</h4></div>
-          <p className="text-slate-700">Recruitment, compliance, visas. Legal, boring, effective — the holy trinity.</p>
+          <div className="flex items-center gap-3 mb-2"><Users className="w-5 h-5" /><h4 className="font-medium"><GrowthText text={"Ethical Mobility"} /></h4></div>
+          <p className="text-slate-700"><GrowthText text={"Recruitment, compliance, visas. Legal, boring, effective — the holy trinity."} /></p>
         </Card>
       </li>
       <li>
         <Card>
-          <div className="flex items-center gap-3 mb-2"><Factory className="w-5 h-5" /><h4 className="font-medium">Sector Pipelines</h4></div>
-          <p className="text-slate-700">Building repeatable hiring for logistics, seasonal, and clean‑industry roles.</p>
+          <div className="flex items-center gap-3 mb-2"><Factory className="w-5 h-5" /><h4 className="font-medium"><GrowthText text={"Sector Pipelines"} /></h4></div>
+          <p className="text-slate-700"><GrowthText text={"Building repeatable hiring for logistics, seasonal, and clean‑industry roles."} /></p>
         </Card>
       </li>
       <li>
         <Card>
-          <div className="flex items-center gap-3 mb-2"><Leaf className="w-5 h-5" /><h4 className="font-medium">Sustainability by Design</h4></div>
-          <p className="text-slate-700">Prioritising decoupling sectors: more output, less footprint, fewer headaches.</p>
+          <div className="flex items-center gap-3 mb-2"><Leaf className="w-5 h-5" /><h4 className="font-medium"><GrowthText text={"Sustainability by Design"} /></h4></div>
+          <p className="text-slate-700"><GrowthText text={"Prioritising decoupling sectors: more output, less footprint, fewer headaches."} /></p>
         </Card>
       </li>
       <li>
         <Card>
-          <div className="flex items-center gap-3 mb-2"><LineChart className="w-5 h-5" /><h4 className="font-medium">Custom Visual Essays</h4></div>
-          <p className="text-slate-700">We’ll tailor this dissertation to your boardroom. Bring questions; we’ll bring receipts.</p>
+          <div className="flex items-center gap-3 mb-2"><LineChart className="w-5 h-5" /><h4 className="font-medium"><GrowthText text={"Custom Visual Essays"} /></h4></div>
+          <p className="text-slate-700"><GrowthText text={"We’ll tailor this dissertation to your boardroom. Bring questions; we’ll bring receipts."} /></p>
         </Card>
       </li>
       <li>
         <Card>
-          <div className="flex items-center gap-3 mb-2"><Map className="w-5 h-5" /><h4 className="font-medium">Partner Programs</h4></div>
-          <p className="text-slate-700">Licensed local partners for leasing; direct placements where it’s simpler. Sensible beats flashy.</p>
+          <div className="flex items-center gap-3 mb-2"><Map className="w-5 h-5" /><h4 className="font-medium"><GrowthText text={"Partner Programs"} /></h4></div>
+          <p className="text-slate-700"><GrowthText text={"Licensed local partners for leasing; direct placements where it’s simpler. Sensible beats flashy."} /></p>
         </Card>
       </li>
     </ul>
@@ -790,8 +757,8 @@ export default function BetterGrowthHomepage() {
       <Services />
       <footer className="border-y border-slate-200 mt-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-sm text-slate-700 text-center space-y-2">
-          <p className="font-medium tracking-wide uppercase">© 2025 UAB Skillaxis — We measure twice; Europe grows once.</p>
-          <p className="text-slate-600">A visual dissertation of better growth, built on data, shipped with taste.</p>
+          <p className="font-medium tracking-wide uppercase"><GrowthText text={"© 2025 UAB Skillaxis — We measure twice; Europe grows once."} /></p>
+          <p className="text-slate-600"><GrowthText text={"A visual dissertation of better growth, built on data, shipped with taste."} /></p>
         </div>
       </footer>
     </div>

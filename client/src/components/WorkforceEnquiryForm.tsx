@@ -1,8 +1,9 @@
 "use client";
+import { useTranslation,localizeValidation,clearValidation } from "@/lib/i18n/client";
 
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/LocalizedLink";
 import styles from "./EmployerPanels.module.css";
 
 const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
@@ -24,8 +25,9 @@ export default function WorkforceEnquiryForm({
   contextLabel = "What are you hiring for?",
   placeholder = "For example: two welders for our site in Austria, ideally starting in September. We’re finding it difficult to reach suitable candidates.",
   help = "Include the role, location and preferred timing. Please leave out candidate documents and sensitive personal details.",
-  submitLabel = "Discuss a role",
+  submitLabel = "Send enquiry",
 }: EnquiryFormProps) {
+  const {locale,t}=useTranslation();
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -64,8 +66,9 @@ export default function WorkforceEnquiryForm({
         body: JSON.stringify({
           name: formData.name.trim() || "Anonymous",
           email: emailValue,
-          subject: "Workforce enquiry",
+          subject: t("Workforce enquiry"),
           message: [
+            `Language: ${locale}`,
             `Context: ${contextValue}`,
             `Source: ${source} (Workforce Enquiry)`,
           ].join("\n"),
@@ -82,36 +85,36 @@ export default function WorkforceEnquiryForm({
     } catch (err) {
       console.error(err);
       setStatus("error");
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError("Something went wrong");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} id="workforce-enquiry" aria-labelledby="workforce-enquiry-title" aria-busy={status === "sending"} className={styles.form}>
+    <form onInvalidCapture={event=>localizeValidation(event.target,locale,t)} onInputCapture={event=>clearValidation(event.target)} onSubmit={handleSubmit} id="workforce-enquiry" aria-labelledby="workforce-enquiry-title" aria-busy={status === "sending"} className={styles.form}>
       <div className={styles.formHeader}>
-        <h3 id="workforce-enquiry-title">{title}</h3>
-        <p>{introduction}</p>
+        <h3 id="workforce-enquiry-title">{t(title)}</h3>
+        <p>{t(introduction)}</p>
       </div>
       <div className={styles.formBody}>
         <div className={styles.fields}>
           <label className={styles.label}>
-            <span>Work email</span>
-            <input type="email" required autoComplete="email" name="email" value={formData.email} onChange={event => setFormData(previous => ({ ...previous, email: event.target.value }))} className={styles.input} placeholder="you@company.com" />
+            <span>{t("Work email (required)")}</span>
+            <input type="email" required autoComplete="email" name="email" value={formData.email} onChange={event => setFormData(previous => ({ ...previous, email: event.target.value }))} className={styles.input} placeholder={t("you@company.com")} />
           </label>
           <label className={styles.label}>
-            <span>Your name <span className={styles.optional}>(optional)</span></span>
-            <input autoComplete="name" name="name" value={formData.name} onChange={event => setFormData(previous => ({ ...previous, name: event.target.value }))} className={styles.input} placeholder="Your name" />
+            <span>{t("Your name ")}<span className={styles.optional}>{t("(optional)")}</span></span>
+            <input autoComplete="name" name="name" value={formData.name} onChange={event => setFormData(previous => ({ ...previous, name: event.target.value }))} className={styles.input} placeholder={t("Your name")} />
           </label>
           <label className={[styles.label, styles.wide].join(" ")}>
-            <span>{contextLabel}</span>
-            <textarea required name="context" aria-describedby="workforce-enquiry-help" value={formData.context} onChange={event => setFormData(previous => ({ ...previous, context: event.target.value }))} className={[styles.input, styles.textarea].join(" ")} placeholder={placeholder} />
+            <span>{t(contextLabel)} <span className={styles.optional}>{t("(required)")}</span></span>
+            <textarea required name="context" aria-describedby="workforce-enquiry-help" value={formData.context} onChange={event => setFormData(previous => ({ ...previous, context: event.target.value }))} className={[styles.input, styles.textarea].join(" ")} placeholder={t(placeholder)} />
           </label>
         </div>
-        <p id="workforce-enquiry-help" className={styles.help}>{help}</p>
-        {error && <p className={[styles.message, styles.error].join(" ")} role="alert">{error}</p>}
-        {status === "success" && <p className={[styles.message, styles.success].join(" ")} role="status">Enquiry received. We’ll contact you to discuss your requirement and next steps.</p>}
-        <button type="submit" disabled={status === "sending"} className={styles.submit}>{status === "sending" ? "Sending…" : submitLabel}<ArrowRight size={18} aria-hidden="true" /></button>
-        <p className={styles.privacy}>We use your enquiry to reply. <Link href="/privacy-policy">Privacy policy</Link></p>
+        <p id="workforce-enquiry-help" className={styles.help}>{t(help)}</p>
+        {error && <p className={[styles.message, styles.error].join(" ")} role="alert">{t(error)}</p>}
+        {status === "success" && <p className={[styles.message, styles.success].join(" ")} role="status">{t("Enquiry received. We’ll contact you to discuss your requirement and next steps.")}</p>}
+        <button type="submit" disabled={status === "sending"} className={styles.submit}>{t(status === "sending" ? "Sending…" : submitLabel)}<ArrowRight size={18} aria-hidden="true" /></button>
+        <p className={styles.privacy}>{t("We use your enquiry to reply. ")}<Link locale={locale} href="/privacy-policy">{t("Privacy policy")}</Link></p>
       </div>
     </form>
   );

@@ -1,10 +1,14 @@
 "use client";
+import {localizeValidation,clearValidation} from "@/lib/i18n/client";
+import {contactHref} from "@/lib/i18n/shared";
+import {useTranslation} from "@/lib/i18n/client";
 
 import React, { useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/LocalizedLink";
 import { Button } from "@/components/ui/button";
 
 export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }) {
+  const {locale,t}=useTranslation();
   const formRef = useRef<HTMLFormElement>(null);
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
@@ -21,8 +25,9 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
       message: String(data.get("message") || ""),
     };
 
-    const subject = "Job-seeker enquiry";
+    const subject = t("Job-seeker enquiry");
     const composedMessage = [
+      `Language: ${locale}`,
       values.trade ? `Trade / occupation: ${values.trade}` : undefined,
       values.message ? `Notes:\n${values.message}` : undefined,
     ]
@@ -62,7 +67,7 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
       if (err instanceof Error && err.name === "AbortError") {
         setError("Request timed out. Please try again.");
       } else {
-        setError(err instanceof Error ? err.message : "Something went wrong");
+        setError("Something went wrong");
       }
     } finally {
       clearTimeout(timer);
@@ -71,47 +76,43 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
   };
 
   return (
-    <form ref={formRef} className="grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
+    <form onInvalidCapture={e=>localizeValidation(e.target,locale,t)} onInputCapture={e=>clearValidation(e.target)} ref={formRef} className="grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
       {status === "success" && (
         <div
           role="status"
           aria-live="polite"
           className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900"
         >
-          Thanks — we’ve got it. Our recruitment team reads every message and replies within two business days.
-        </div>
+          {t("Thanks — we’ve got it. Our recruitment team reads every message and replies within two business days.")}</div>
       )}
       {status === "error" && error && (
         <div
           role="alert"
           className="rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive"
         >
-          {error}
+          {t(error)}
         </div>
       )}
       <div className="grid gap-4 md:grid-cols-2">
         <div className="grid gap-2">
           <label htmlFor="name" className="text-sm font-medium">
-            Name
-          </label>
+            {t("Name")}</label>
           <input id="name" name="name" type="text" autoComplete="name" required className="h-10 rounded-md border bg-background px-3" />
         </div>
         <div className="grid gap-2">
           <label htmlFor="email" className="text-sm font-medium">
-            Email
-          </label>
+            {t("Email address")}</label>
           <input id="email" name="email" type="email" autoComplete="email" required className="h-10 rounded-md border bg-background px-3" />
         </div>
         <div className="grid gap-2">
           <label htmlFor="trade" className="text-sm font-medium">
-            Trade or occupation
-          </label>
-          <p className="text-[11px] text-muted-foreground">Optional</p>
+            {t("Trade or occupation")}</label>
+          <p className="text-[11px] text-muted-foreground">{t("Optional")}</p>
           <input
             id="trade"
             name="trade"
             type="text"
-            placeholder="e.g. welder, truck driver, cook"
+            placeholder={t("e.g. welder, truck driver, cook")}
             className="h-10 rounded-md border bg-background px-3"
           />
         </div>
@@ -121,35 +122,32 @@ export default function IntakeForm({ onSubmitted }: { onSubmitted?: () => void }
 
       <div className="grid gap-2">
         <label htmlFor="message" className="text-sm font-medium">
-          What would you like help with? (optional)
-        </label>
+          {t("What would you like help with? (optional)")}</label>
         <textarea
           id="message"
           name="message"
           rows={4}
-          placeholder="Where you are now, and your main question — hiring a role or looking for work. Please leave out passport numbers and document scans."
+          placeholder={t("Where you are now, and your main question — hiring a role or looking for work. Please leave out passport numbers and document scans.")}
           className="rounded-md border bg-background px-3 py-2"
         />
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
         <Button type="submit" className="rounded-2xl" disabled={submitting}>
-          {submitting ? "Sending..." : "Send message"}
+          {t(submitting ? "Sending..." : "Send message")}
         </Button>
         <a
-          href="https://wa.me/420778604430?text=Hi%20Sufoniq%2C%20I%27d%20like%20to%20talk."
+          href={contactHref("https://wa.me/420778604430?text=Hi%20Sufoniq%2C%20I%27d%20like%20to%20talk.",locale,t)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm font-medium text-primary underline underline-offset-4"
         >
-          Prefer WhatsApp? Message us instead.
-        </a>
-        <Link
+          {t("Prefer WhatsApp? Message us instead.")}</a>
+        <Link locale={locale}
           href="/privacy-policy"
           className="text-sm text-muted-foreground underline underline-offset-4"
         >
-          Privacy Policy
-        </Link>
+          {t("Privacy Policy")}</Link>
       </div>
     </form>
   );

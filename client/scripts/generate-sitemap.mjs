@@ -6,7 +6,7 @@ import ts from "typescript";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const app = path.join(root, "src/app");
-const excluded = new Set(["/api", "/hiring-in-practice", "/privacy-policy", "/terms-conditions"]);
+const excluded = new Set(["/api", "/hiring-in-practice", "/privacy-policy", "/terms-conditions", "/de/privacy-policy", "/de/terms-conditions"]);
 const entries = new Map();
 const dateCache = new Map();
 
@@ -123,7 +123,7 @@ try {
 } catch {
   // Missing or shallow history must never prevent deployment.
 }
-const template = dependencies(path.join(app, "insights/[...slug]/page.tsx"));
+const template = dependencies(path.join(app, "(english)/insights/[...slug]/page.tsx"));
 template.delete(contentFile);
 const templateDate = lastModified(template);
 for (const slug of articles.keys()) {

@@ -17,7 +17,7 @@ export const homepageSchema = {
       "@id": `${SITE_URL}/#website`,
       url: `${SITE_URL}/`,
       name: "Sufoniq",
-      inLanguage: "en",
+      inLanguage: ["en", "de"],
       publisher: { "@id": `${SITE_URL}/#organization` },
     },
     {

@@ -1,4 +1,5 @@
 ﻿"use client";
+import {useTranslation} from "@/lib/i18n/client";
 
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
@@ -9,6 +10,7 @@ type ChartCarouselProps = {
 };
 
 export default function ChartCarousel({ slides, intervalMs = 4000 }: ChartCarouselProps) {
+  const {t}=useTranslation();
   const validSlides = useMemo(() => (slides.length ? slides : [null]), [slides]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -27,14 +29,14 @@ export default function ChartCarousel({ slides, intervalMs = 4000 }: ChartCarous
         <button
           key={idx}
           type="button"
-          aria-label={`Slide ${idx + 1}`}
+          aria-label={`${t("Chart")} ${idx + 1}`}
           onClick={() => setActiveIndex(idx)}
           className={`h-2 w-2 rounded-full transition-opacity ${
             idx === activeIndex ? "opacity-100" : "opacity-40"
           }`}
         />
       )),
-    [activeIndex, validSlides]
+    [activeIndex, validSlides, t]
   );
 
   return (

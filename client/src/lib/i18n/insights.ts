@@ -1,0 +1,2 @@
+import type {InsightContent} from '@/lib/insights/content';
+export function localizeInsight(insight:InsightContent,t:(text:string)=>string):InsightContent { function translate(value:unknown,key:string):unknown {if(['slug','slugParts','href','type'].includes(key))return value;if(typeof value==='string')return t(value);if(Array.isArray(value))return value.map(item=>translate(item,key));if(value && typeof value==='object')return Object.fromEntries(Object.entries(value).map(([k,v])=>[k,translate(v,k)]));return value;}return translate(insight,'') as InsightContent;}
