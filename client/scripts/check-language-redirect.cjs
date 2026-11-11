@@ -9,11 +9,12 @@ function load(file, imports = {}) {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
   }).outputText;
   const module = { exports: {} };
-  vm.runInNewContext(source, { module, exports: module.exports, require: name => imports[name] || require(name) }, { filename: file });
+  vm.runInNewContext(source, { module, exports: module.exports, Headers, require: name => imports[name] || require(name) }, { filename: file });
   return module.exports;
 }
 const preference = load('src/lib/i18n/preference.ts');
-const { middleware } = load('src/middleware.ts', { '@/lib/i18n/preference': preference });
+const negotiation = load('src/lib/agent-negotiation.ts');
+const { middleware } = load('src/middleware.ts', { '@/lib/i18n/preference': preference, '@/lib/agent-negotiation': negotiation });
 let checks = 0;
 function check(path, headers, destination, language, method = 'GET') {
   const response = middleware(new NextRequest(`https://sufoniq.com${path}`, { headers, method }));

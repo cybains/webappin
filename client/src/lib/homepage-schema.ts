@@ -1,10 +1,12 @@
 import { SITE_URL } from "./seo";
+import { siteIdentitySchema } from "./structured-data";
 
 // Describe the visible offer; do not imply vacancies, ratings or measured results.
 export const homepageSchema = {
   "@context": "https://schema.org",
   "@graph": [
     {
+      ...siteIdentitySchema["@graph"][0],
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "Sufoniq",

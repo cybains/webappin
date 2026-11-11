@@ -27,7 +27,7 @@ export default function SiteShell({
       <body className="antialiased flex min-h-screen flex-col">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeSchema(siteIdentitySchema) }} />
         <LocaleProvider locale={locale} messages={getMessages(locale)}><Navbar />
-        <div className="flex-1">{children}</div>
+        <div className="flex-1" data-page-content>{children}</div>
         <Footer locale={locale} /></LocaleProvider>
       </body>
     </html>

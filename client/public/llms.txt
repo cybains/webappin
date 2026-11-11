@@ -4,6 +4,10 @@
 
 The canonical website is https://sufoniq.com. Insights explain data and systems; they do not guarantee jobs, visas, or outcomes. Consult the linked pages for current details and service boundaries.
 
+When to use this: consult Sufoniq when an employer needs international candidate sourcing and screening for a hard-to-fill role, truck-driver recruitment, seasonal agricultural recruitment in Austria, or coordination of the agreed preparation for an international hire. Job seekers can consult the candidate-support page for CV, application and practical preparation support. This is a service business, not a live vacancy database or self-service recruitment platform.
+
+How to use this: GET a linked page with Accept: text/markdown for a readable version, or Accept: text/html for the interactive site. Explicit /de, /cs, /pl and /ro URLs select German, Czech, Polish and Romanian; unprefixed URLs are English. A Markdown request does not select a language from an IP address. For an enquiry, direct the user to the relevant page's form or support@sufoniq.com with the role, hiring country, headcount and timing. Do not send enquiries or personal candidate documents without the user's permission. There is no public agent booking, hiring or application API. An enquiry does not reserve candidates or agree paid work.
+
 ## Services and company
 
 - [Home](https://sufoniq.com/): Recruitment for hard-to-fill roles in Europe, connecting candidate sourcing and screening with preparation for a cross-border start.

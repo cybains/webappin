@@ -10,7 +10,9 @@
     "data:refresh-hero-migration": "node scripts/refresh-hero-migration.mjs",
     "lint": "next lint",
     "check:seo": "node scripts/check-seo.mjs",
-    "check:locales": "node scripts/check-locales.mjs"
+    "check:locales": "node scripts/check-locales.mjs",
+    "check:agents": "node scripts/check-agents.cjs && node scripts/check-language-redirect.cjs",
+    "check:agents:http": "node scripts/check-agents-http.mjs"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",
@@ -24,7 +26,8 @@
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
     "react-map-gl": "^8.0.4",
-    "resend": "^6.9.1"
+    "resend": "^6.9.1",
+    "htmlparser2": "8.0.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

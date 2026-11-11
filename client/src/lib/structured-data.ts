@@ -11,6 +11,8 @@ export const siteIdentitySchema = {
       "@type": "Organization", "@id": organizationId,
       name: "Sufoniq", legalName: "UAB Skillaxis", url: `${SITE_URL}/`,
       email: "support@sufoniq.com",
+      logo: `${SITE_URL}/logo.svg`,
+      contactPoint: { "@type": "ContactPoint", email: "support@sufoniq.com", contactType: "customer enquiries", url: `${SITE_URL}/#contact` },
       identifier: { "@type": "PropertyValue", propertyID: "Lithuanian company code", value: "307395574" },
       address: { "@type": "PostalAddress", streetAddress: "Architektų g. 56-101", postalCode: "LT-04111", addressLocality: "Vilnius", addressCountry: "LT" },
     },
