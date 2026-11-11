@@ -2,7 +2,7 @@ import { breadcrumbSchema } from "@/lib/structured-data";
 import type { ReactNode } from "react";
 import { createPageMetadata, SITE_URL } from "@/lib/seo";
 
-const title = "Screened Candidates & Cross-Border Recruitment | Sufoniq";
+const title = "Recruitment for Hard-to-Fill Roles | Sufoniq";
 const description = "Find candidates screened for your role, with interest and availability confirmed. Sufoniq connects recruitment with the steps needed before an international start.";
 const pageUrl = `${SITE_URL}/employers`;
 

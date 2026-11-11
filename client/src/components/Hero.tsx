@@ -12,7 +12,7 @@ export default function Hero({locale = "en"}: {locale?: Locale}) {
       style={{ backgroundColor: "transparent" }}
     >
       <div className="relative z-10 w-full space-y-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-700">{t("Cross-border recruitment & mobility · Europe")}</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-700">{t("International recruitment · Europe")}</p>
         <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-gray-950 tracking-tight text-balance relative leading-[0.95]">
           {t("Find the people you need.")}<span className="block">
             {t("Look beyond the local market.")}</span>

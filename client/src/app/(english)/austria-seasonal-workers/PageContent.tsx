@@ -7,7 +7,7 @@ import { ArrowRight, CheckCircle2, Sprout, CalendarDays, ClipboardCheck } from "
 import { SITE_URL } from "@/lib/seo";
 import WorkforceEnquiryForm from "@/components/WorkforceEnquiryForm";
 
-const title = "Seasonal Agricultural Recruitment in Austria | Sufoniq";
+const title = "Agricultural Recruitment in Austria | Sufoniq";
 const description = "Recruit seasonal workers for your Austrian farm, orchard or greenhouse. Sufoniq sources and screens candidates and coordinates agreed employment preparation.";
 const pageUrl = `${SITE_URL}/austria-seasonal-workers`;
 

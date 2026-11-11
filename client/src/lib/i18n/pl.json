@@ -37,7 +37,7 @@
   "Scope and costs agreed in writing": "Zakres i koszty ustalane pisemnie",
   "Your hiring decision stays with you. We agree the work, responsibilities and costs in writing before delivery begins.": "Decyzja o zatrudnieniu należy do Ciebie. Przed rozpoczęciem realizacji ustalamy na piśmie zakres pracy, odpowiedzialność i koszty.",
   "About Sufoniq →": "O Sufoniq →",
-  "Cross-border recruitment & mobility · Europe": "Rekrutacja międzynarodowa i mobilność zawodowa · Europa",
+  "International recruitment · Europe": "Rekrutacja międzynarodowa · Europa",
   "Find the people you need.": "Znajdź ludzi do zespołu.",
   "Look beyond the local market.": "Również za granicą.",
   "When the right people are hard to find locally, Sufoniq helps you recruit across borders. We connect sourcing and screening with the permits, documents and practical steps that get a hire ready to start.": "Gdy lokalnie trudno o odpowiednich ludzi, Sufoniq pomaga rekrutować za granicą. Łączymy poszukiwanie i wstępną ocenę kandydatów z zezwoleniami, dokumentami i praktycznymi przygotowaniami do rozpoczęcia pracy.",
@@ -109,7 +109,7 @@
   "Terms and conditions": "Regulamin",
   "Developed by:": "Projekt i wykonanie:",
   "AMUI Design": "AMUI Design",
-  "For European employers": "Dla pracodawców w Europie",
+  "Cross-border recruitment for employers": "Rekrutacja pracowników z zagranicy dla firm",
   "Meet candidates screened for your role.": "Poznaj kandydatów ocenionych pod kątem Twojego stanowiska.",
   "Tell us who you need to hire. We source candidates, screen them against your requirements and confirm their interest and availability, so your team can focus on relevant interviews.": "Powiedz, kogo chcesz zatrudnić. Znajdujemy kandydatów, oceniamy ich według Twoich wymagań oraz potwierdzamy zainteresowanie i dostępność, aby Twój zespół mógł skupić się na odpowiednich rozmowach.",
   "For international hires, we connect the search with the document, permit and qualification steps needed before work can start.": "Przy zatrudnieniu z zagranicy łączymy poszukiwania z przygotowaniem dokumentów, zezwoleń i kwalifikacji potrzebnych przed rozpoczęciem pracy.",
@@ -1289,6 +1289,6 @@
   "articles": "artykułów",
   "privacy policy": "polityka prywatności",
   "Last updated: November 10, 2026": "Ostatnia aktualizacja: 10 listopada 2026 r.",
-  "On your first homepage visit, we use the country supplied by our hosting service to suggest Czech in the Czech Republic, German in Germany or Austria, Polish in Poland, and English elsewhere. We store only the language code in the sufoniq-language cookie for up to one year. Choosing a language overrides that suggestion. You can remove this preference through your browser settings.": "Przy pierwszej wizycie na stronie głównej używamy informacji o kraju przekazanej przez hosting, aby wybrać czeski w Czechach, niemiecki w Niemczech lub Austrii, polski w Polsce, a angielski w pozostałych krajach. W pliku cookie sufoniq-language zapisujemy wyłącznie kod języka na okres do roku. Ręczny wybór języka zastępuje tę podpowiedź. Możesz usunąć preferencję w ustawieniach przeglądarki.",
-  "Last updated: November 11, 2026": "Ostatnia aktualizacja: 11 listopada 2026 r."
+  "Last updated: November 11, 2026": "Ostatnia aktualizacja: 11 listopada 2026 r.",
+  "On your first homepage visit, we use the country supplied by our hosting service to suggest Czech in the Czech Republic, German in Germany or Austria, Polish in Poland, Romanian in Romania, and English elsewhere. We store only the language code in the sufoniq-language cookie for up to one year. Choosing a language overrides that suggestion. You can remove this preference through your browser settings.": "Przy pierwszej wizycie na stronie głównej używamy informacji o kraju przekazanej przez hosting, aby wybrać czeski w Czechach, niemiecki w Niemczech lub Austrii, polski w Polsce, rumuński w Rumunii, a angielski w pozostałych krajach. W pliku cookie sufoniq-language zapisujemy wyłącznie kod języka na okres do roku. Ręczny wybór języka zastępuje tę podpowiedź. Możesz usunąć preferencję w ustawieniach przeglądarki."
 }

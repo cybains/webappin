@@ -9,7 +9,7 @@ import DriverEnquiryForm from "./DriverEnquiryForm";
 import { faqs, screening, steps } from "./content";
 import styles from "./page.module.css";
 
-const title = "Truck Driver Recruitment in Europe | Sufoniq";
+const title = "Truck Driver Recruitment for Transport Companies | Sufoniq";
 const description = "Truck driver recruitment for European transport employers. Source and screen international candidates, with licence and qualification requirements made clear.";
 const pageUrl = `${SITE_URL}/truck-driver-recruitment`;
 

@@ -22,8 +22,8 @@ export function createPageMetadata(path: string, title: string, description: str
   const url = new URL(path, SITE_URL).href;
   const basePath=englishPath(path);
   const locales=availableLocales(basePath),language=pathLocale(path);
-  const ogLocales={en:'en_GB',de:'de_DE',cs:'cs_CZ',pl:'pl_PL'};
-  const imageAlts={en:shareImage.alt,de:'Sufoniq – internationale Personalgewinnung in Europa',cs:'Sufoniq – mezinárodní nábor v Evropě',pl:'Sufoniq – rekrutacja międzynarodowa w Europie'};
+  const ogLocales={en:'en_GB',de:'de_DE',cs:'cs_CZ',pl:'pl_PL',ro:'ro_RO'};
+  const imageAlts={en:shareImage.alt,de:'Sufoniq – internationale Personalgewinnung in Europa',cs:'Sufoniq – mezinárodní nábor v Evropě',pl:'Sufoniq – rekrutacja międzynarodowa w Europie',ro:'Sufoniq – recrutare internațională în Europa'};
   return {
     title,
     description,

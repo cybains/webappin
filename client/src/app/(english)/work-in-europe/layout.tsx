@@ -2,7 +2,7 @@ import { breadcrumbSchema } from "@/lib/structured-data";
 import type { ReactNode } from "react";
 import { createPageMetadata, SITE_URL } from "@/lib/seo";
 
-const title = "Work in Europe: CV & Job-Search Support | Sufoniq";
+const title = "Work in Europe: CV and Job-Search Support | Sufoniq";
 const description = "Get help with your CV, job applications and preparing a move to Europe. No Sufoniq fees for job seekers. Our team replies within two business days.";
 const pageUrl = `${SITE_URL}/work-in-europe`;
 

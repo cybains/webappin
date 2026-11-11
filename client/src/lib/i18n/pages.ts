@@ -1,11 +1,11 @@
 export const germanPages = {
-  '/': {title:'Internationale Personalgewinnung in Europa | Sufoniq',description:'Vor Ort fehlen passende Bewerber? Sufoniq unterstützt internationale Suche, Vorauswahl und die Vorbereitung des Arbeitsbeginns. Besprechen Sie Ihren Personalbedarf.',name:'Internationale Personalgewinnung'},
-  '/employers': {title:'Personalgewinnung für Unternehmen in Europa | Sufoniq',description:'Finden Sie Bewerber, die zu Ihrer Stelle passen. Sufoniq unterstützt Suche, Vorauswahl und die Vorbereitung internationaler Einstellungen. Personalbedarf besprechen.',name:'Für Unternehmen'},
-  '/truck-driver-recruitment': {title:'Lkw-Fahrer für Ihren Fuhrpark finden | Sufoniq',description:'Internationale Lkw-Fahrer für Transportunternehmen in Europa. Vorauswahl nach Ihren Anforderungen, mit Klarheit zu Erfahrung, Verfügbarkeit und Qualifizierung.',name:'Lkw-Fahrer rekrutieren'},
+  '/': {title:'Internationale Personalvermittlung in Europa | Sufoniq',description:'Vor Ort fehlen passende Bewerber? Sufoniq unterstützt internationale Suche, Vorauswahl und die Vorbereitung des Arbeitsbeginns. Besprechen Sie Ihren Personalbedarf.',name:'Internationale Personalgewinnung'},
+  '/employers': {title:'Fachkräfte aus dem Ausland finden | Sufoniq',description:'Fachkräfte aus dem Ausland für Ihr Unternehmen: Sufoniq unterstützt Suche, Vorauswahl und die Vorbereitung des Arbeitsbeginns. Besprechen Sie Ihre offene Stelle.',name:'Für Unternehmen'},
+  '/truck-driver-recruitment': {title:'Lkw-Fahrer-Vermittlung für Transportunternehmen | Sufoniq',description:'Internationale Lkw-Fahrer für Transportunternehmen in Europa. Vorauswahl nach Ihren Anforderungen, mit Klarheit zu Erfahrung, Verfügbarkeit und Qualifizierung.',name:'Lkw-Fahrer rekrutieren'},
   '/austria-seasonal-workers': {title:'Saisonarbeitskräfte für Österreichs Landwirtschaft | Sufoniq',description:'Saisonpersonal für Obsternte, Weinbau und Gewächshäuser in Österreich. Internationale Suche, Vorauswahl und Vorbereitung. Besprechen Sie Ihren Personalbedarf.',name:'Saisonarbeitskräfte in Österreich'},
 "/about": {"title":"Über Sufoniq | Personalgewinnung und Mobilität in Europa","description":"Warum Sufoniq entstand, wer hinter dem Angebot steht und wie unser kleines internationales Team Unternehmen und Jobsuchende in Europa unterstützt.","name":"Über Sufoniq"},
 "/method-trust": {"title":"Unser Vorgehen bei der Personalgewinnung | Sufoniq","description":"So vereinbart Sufoniq Leistungen, Vorauswahl, Vorbereitung und Zuständigkeiten. Erfahren Sie, welche Prüfungen wir übernehmen und wer Entscheidungen trifft.","name":"Vorgehen und Verantwortung"},
-"/work-in-europe": {"title":"Arbeit in Europa suchen: Bewerbung und Vorbereitung | Sufoniq","description":"Unterstützung bei Lebenslauf, Bewerbungen und den praktischen Schritten für die Arbeit in Europa. Sufoniq berechnet Jobsuchenden keine Gebühren.","name":"Für Jobsuchende"},
+"/work-in-europe": {"title":"Jobsuche in Europa: Bewerbung und Vorbereitung | Sufoniq","description":"Unterstützung bei Lebenslauf, Bewerbungen und den praktischen Schritten für die Arbeit in Europa. Sufoniq berechnet Jobsuchenden keine Gebühren.","name":"Für Jobsuchende"},
 "/privacy-policy": {"title":"Datenschutzerklärung | Sufoniq","description":"Wie UAB Skillaxis als Betreiber von Sufoniq Anfragen und personenbezogene Daten verarbeitet: Zwecke, Empfänger, Speicherdauer und Ihre Datenschutzrechte.","name":"Datenschutzerklärung"},
 "/terms-conditions": {"title":"Allgemeine Geschäftsbedingungen | Sufoniq","description":"Bedingungen für Website und vereinbarte Unterstützung durch UAB Skillaxis: Leistungen, Gebühren, Zuständigkeiten, Verbraucherrechte und Beschwerden.","name":"Allgemeine Geschäftsbedingungen"},
 "/insights": {"title":"Einblicke in Arbeit und Mobilität in Europa | Sufoniq","description":"Analysen zu internationaler Personalgewinnung, Arbeitsmärkten und beruflicher Mobilität. Mit klarer Trennung zwischen Beobachtung, Einordnung und Aussagegrenzen.","name":"Einblicke"},
@@ -18,17 +18,17 @@ export const czechPages = {
     "name": "Mezinárodní nábor"
   },
   "/employers": {
-    "title": "Nábor zaměstnanců pro firmy v Evropě | Sufoniq",
-    "description": "Najděte uchazeče pro svou pozici. Sufoniq zajišťuje hledání, předvýběr a přípravu mezinárodního náboru. Začněte konkrétním personálním požadavkem.",
+    "title": "Nábor zaměstnanců ze zahraničí pro firmy | Sufoniq",
+    "description": "Nábor zaměstnanců ze zahraničí pro vaši firmu. Hledání, předvýběr podle požadavků a příprava nástupu. Proberte s námi svou volnou pozici.",
     "name": "Pro zaměstnavatele"
   },
   "/truck-driver-recruitment": {
-    "title": "Nábor řidičů nákladních vozidel v Evropě | Sufoniq",
+    "title": "Nábor řidičů pro dopravní firmy | Sufoniq",
     "description": "Zahraniční řidiči pro evropské dopravce. Předvýběr podle vašeho vozového parku s přehledem zkušeností, dostupnosti a potřebné kvalifikace.",
     "name": "Nábor řidičů nákladních vozidel"
   },
   "/austria-seasonal-workers": {
-    "title": "Sezonní pracovníci pro zemědělství v Rakousku | Sufoniq",
+    "title": "Nábor sezonních pracovníků pro rakouské zemědělství | Sufoniq",
     "description": "Nábor zahraničních pracovníků pro rakouské farmy, sady, vinice a skleníky. Předvýběr a příprava zaměstnání podle vašich sezonních potřeb.",
     "name": "Sezonní pracovníci v Rakousku"
   },
@@ -71,17 +71,17 @@ export const polishPages = {
     "name": "Rekrutacja międzynarodowa"
   },
   "/employers": {
-    "title": "Rekrutacja pracowników dla firm w Europie | Sufoniq",
-    "description": "Znajdź kandydatów do swojej firmy. Sufoniq wspiera poszukiwania, ocenę według wymagań i przygotowania do zatrudnienia z zagranicy. Zacznij od wakatu.",
+    "title": "Rekrutacja pracowników z zagranicy dla firm | Sufoniq",
+    "description": "Rekrutacja pracowników z zagranicy dla Twojej firmy. Wyszukiwanie kandydatów, wstępna ocena i przygotowanie zatrudnienia. Omów z nami swój wakat.",
     "name": "Dla pracodawców"
   },
   "/truck-driver-recruitment": {
-    "title": "Rekrutacja kierowców ciężarówek w Europie | Sufoniq",
+    "title": "Rekrutacja kierowców dla firm transportowych | Sufoniq",
     "description": "Kierowcy z zagranicy dla europejskich firm transportowych. Wstępna ocena według potrzeb floty, doświadczenie, dostępność i planowanie kwalifikacji.",
     "name": "Rekrutacja kierowców ciężarówek"
   },
   "/austria-seasonal-workers": {
-    "title": "Pracownicy sezonowi dla rolnictwa w Austrii | Sufoniq",
+    "title": "Rekrutacja sezonowa dla gospodarstw w Austrii | Sufoniq",
     "description": "Rekrutacja pracowników z zagranicy dla gospodarstw, sadów, winnic i szklarni w Austrii. Wstępna ocena i przygotowania zgodnie z potrzebami sezonu.",
     "name": "Pracownicy sezonowi w Austrii"
   },
@@ -114,5 +114,58 @@ export const polishPages = {
     "title": "Analizy pracy i mobilności w Europie | Sufoniq",
     "description": "Analizy rekrutacji międzynarodowej, rynków pracy i mobilności zawodowej. Obserwacje, interpretacje oraz wyraźnie określone ograniczenia wniosków.",
     "name": "Analizy"
+  }
+} as const;
+
+export const romanianPages = {
+  "/": {
+    "title": "Recrutare internațională în Europa | Sufoniq",
+    "description": "Găsiți greu candidați potriviți local? Sufoniq sprijină căutarea internațională, evaluarea și pregătirea angajării. Să discutăm necesarul de personal.",
+    "name": "Recrutare internațională"
+  },
+  "/employers": {
+    "title": "Recrutare personal străin pentru companii | Sufoniq",
+    "description": "Recrutare de personal străin pentru compania dumneavoastră. Căutare, evaluare după cerințele postului și pregătirea angajării. Spuneți-ne de cine aveți nevoie.",
+    "name": "Pentru angajatori"
+  },
+  "/truck-driver-recruitment": {
+    "title": "Recrutare șoferi pentru companii de transport | Sufoniq",
+    "description": "Șoferi internaționali pentru firme europene de transport. Evaluare după flotă și rute, experiență, disponibilitate și planificarea calificărilor.",
+    "name": "Recrutare șoferi de camion"
+  },
+  "/austria-seasonal-workers": {
+    "title": "Recrutare sezonieră pentru ferme din Austria | Sufoniq",
+    "description": "Recrutare internațională pentru ferme, livezi, podgorii și sere din Austria. Evaluare și pregătire în funcție de sarcini, personal și datele sezonului.",
+    "name": "Lucrători sezonieri în Austria"
+  },
+  "/about": {
+    "title": "Despre Sufoniq | Recrutare și mobilitate în Europa",
+    "description": "De ce a apărut Sufoniq, compania din spatele serviciului și echipa internațională care sprijină angajatorii și candidații în Europa.",
+    "name": "Despre Sufoniq"
+  },
+  "/method-trust": {
+    "title": "Metoda de recrutare și responsabilități | Sufoniq",
+    "description": "Cum convenim recrutarea, evaluarea și pregătirea. Aflați ce verifică Sufoniq și cine decide angajarea, permisele și recunoașterea calificărilor.",
+    "name": "Metodă și responsabilități"
+  },
+  "/work-in-europe": {
+    "title": "Sprijin pentru găsirea unui loc de muncă în Europa | Sufoniq",
+    "description": "Ajutor pentru CV, candidaturi și pașii practici ai muncii în Europa. Spuneți experiența și țara dorită. Sufoniq nu percepe taxe candidaților.",
+    "name": "Pentru candidați"
+  },
+  "/privacy-policy": {
+    "title": "Politica de confidențialitate | Sufoniq",
+    "description": "Cum prelucrează UAB Skillaxis solicitările și datele personale Sufoniq: scopuri, destinatari, păstrare, transferuri și drepturi de confidențialitate.",
+    "name": "Politica de confidențialitate"
+  },
+  "/terms-conditions": {
+    "title": "Termeni și condiții | Sufoniq",
+    "description": "Condițiile site-ului și serviciilor convenite cu UAB Skillaxis: activități, onorarii, responsabilități, drepturile consumatorilor și reclamații.",
+    "name": "Termeni și condiții"
+  },
+  "/insights": {
+    "title": "Analize despre muncă și mobilitate în Europa | Sufoniq",
+    "description": "Analize ale recrutării internaționale, piețelor muncii și mobilității. Observații și interpretări, cu limitele concluziilor explicate clar.",
+    "name": "Analize"
   }
 } as const;

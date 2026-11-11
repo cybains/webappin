@@ -16,7 +16,7 @@ export default function EmployerLanding({locale = "en"}: {locale?: Locale}) {
   return (
     <main className={`${styles.page} sufoniq-page bg-background text-foreground`}>
       <header id="overview" className={`${styles.hero} sufoniq-container pb-12 pt-12 md:pb-16 md:pt-16`}>
-        <p className="sufoniq-meta-label">{t("For European employers")}</p>
+        <p className="sufoniq-meta-label">{t("Cross-border recruitment for employers")}</p>
         <h1 className="mt-5 max-w-4xl text-4xl font-semibold leading-tight tracking-tight md:text-6xl">{t("Meet candidates screened for your role.")}</h1>
         <p className="mt-6 max-w-2xl text-lg sufoniq-body-text">{t("Tell us who you need to hire. We source candidates, screen them against your requirements and confirm their interest and availability, so your team can focus on relevant interviews.")}</p>
         <p className="mt-4 max-w-2xl sufoniq-body-text">{t("For international hires, we connect the search with the document, permit and qualification steps needed before work can start.")}</p>

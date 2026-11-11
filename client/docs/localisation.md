@@ -7,10 +7,10 @@ English keeps its original public URLs. The German and Czech sites each include 
 - src/app/(english): existing English routes. The route group changes source organisation, not public URLs.
 - src/app/de and src/app/cs: thin locale route wrappers with translated metadata and structured data.
 - src/components/SiteShell.tsx: shared root layout; sets the HTML language on the server. Separate root layouts keep pages statically renderable without cookie/header detection.
-- src/lib/i18n/de.json, cs.json and pl.json: locale messages keyed by their complete English source text (gettext-style). Change a source sentence and update every translated entry together.
+- src/lib/i18n/de.json, cs.json, pl.json and ro.json: locale messages keyed by their complete English source text (gettext-style). Change a source sentence and update every translated entry together.
 - src/lib/i18n/server.ts: server translations. English client components receive an empty message dictionary; each translated locale receives only its own messages through LocaleProvider.
 - src/lib/i18n/shared.ts: locale types, supported locale routes and internal link mapping.
-- src/lib/i18n/pages.ts: German, Czech and Polish core-page titles and search descriptions.
+- src/lib/i18n/pages.ts: German, Czech, Polish and Romanian core-page titles and search descriptions.
 - src/components/InsightArticle.tsx and src/lib/i18n/insights.ts: shared article rendering and translated fields; URLs, identifiers and block types are preserved.
 
 The build checks literal UI messages, configured UI data and every visible text field in the translated articles. Updating English source copy without its translated entries fails this check. The translated Insights index uses the sourced GDP chart; illustrative charts on the English index are not republished as locale-specific evidence.
@@ -50,11 +50,11 @@ Czech copy uses polite professional forms; employers are primary. Screening = p�
 
 Article counts use Czech singular/few/other forms. Number formatting follows the locale. Long headlines are edited before shrinking fonts or changing layout. Prepared messages avoid gender-specific first-person wording. Sentence-context privacy-link text is separate from standalone titles.
 
-check:locales checks both dictionaries, conditional UI branches, shared defaults and every article field. check:seo checks all four languages, self-canonicals, reciprocal hreflang and legal exclusions. Full Czech source-fidelity/editorial evidence is recorded in the writing-lab project sufoniq-czech-localisation; this remains author-only AI review, not independent native/legal certification. No deployment performed by the agent.
+check:locales checks both dictionaries, conditional UI branches, shared defaults and every article field. check:seo checks all five languages, self-canonicals, reciprocal hreflang and legal exclusions. Full Czech source-fidelity/editorial evidence is recorded in the writing-lab project sufoniq-czech-localisation; this remains author-only AI review, not independent native/legal certification. No deployment performed by the agent.
 
 ## Automatic homepage language
 
-The bare homepage `/` runs country-based language negotiation in `src/middleware.ts`: CZ → cs; DE/AT → de; PL → pl; other or unknown → en. The hosting edge must supply `x-vercel-ip-country` (Vercel) or `cf-ipcountry` (Cloudflare). No external geolocation request is made, and the application does not store the IP or country. On another host, configure a trusted country header before expecting geolocation to work; absent headers safely mean English. Localhost has no real country signal.
+The bare homepage `/` runs country-based language negotiation in `src/middleware.ts`: CZ → cs; DE/AT → de; PL → pl; RO → ro; other or unknown → en. The hosting edge must supply `x-vercel-ip-country` (Vercel) or `cf-ipcountry` (Cloudflare). No external geolocation request is made, and the application does not store the IP or country. On another host, configure a trusted country header before expecting geolocation to work; absent headers safely mean English. Localhost has no real country signal.
 
 A `sufoniq-language` cookie stores only en/de/cs for up to one year, SameSite=Lax, Secure on HTTPS. A dropdown selection overrides the initial suggestion, including explicitly selecting English. The cookie is readable by the dropdown because it writes the preference before navigating. No account or database is involved.
 
@@ -70,10 +70,20 @@ Polish uses `pl`, Open Graph `pl_PL` and `/pl` routes. All 18 pages, including e
 
 Glossary: screening = wstępna ocena według wymagań; sourcing = poszukiwanie/pozyskiwanie kandydatów; stated availability = deklarowana dostępność; recognition = uznanie kwalifikacji; professional driver qualification = kwalifikacja zawodowa. Candidate interest and availability do not imply permission to work. Professional advisers are “doradcy”, not specifically “doradcy zawodowi” (career advisers). A sentence-internal privacy link uses lowercase “polityka prywatności”.
 
-The language picker includes Polski. The preference cookie accepts pl. Automatic homepage mapping is CZ → Czech, DE/AT → German, PL → Polish, elsewhere → English. Manual choices are remembered and override country detection. No browser-language redirect is added.
+The language picker includes Polski. The preference cookie accepts pl. Automatic homepage mapping is CZ → Czech, DE/AT → German, PL → Polish, RO → Romanian, elsewhere → English. Manual choices are remembered and override country detection. No browser-language redirect is added.
 
 Locale-aware plural selection uses Intl.PluralRules so article counts have singular/few/other forms in Polish as well as Czech. Shared numeric formatting retains source data. The map component, animation, data and placement remain unchanged.
 
 Sitemap coverage is now 64 indexable URLs across four languages, with reciprocal en/de/cs/pl/x-default links. Eight translated legal pages remain noindex and excluded. `check:seo` also checks XML namespaces and each sitemap alternate cluster. The writing-lab project is `sufoniq-polish-localisation`; review is author-only AI, not independent native/legal certification.
 
 Verification (Polish, 10 November 2026): production build, TypeScript and translation coverage passed; 72-page SEO check verifies 64 sitemap URLs and reciprocal four-language clusters. All 18 Polish routes passed four-width layout/text checks; five intercepted form flows passed; 28 four-language header layouts, article search, employer CTA/details and remembered manual Polish choice passed. Desktop/mobile screenshots reviewed. Writing-lab rendered prose check clean after separating FAQ controls from paragraph capture. Review remains AI-led; no genuine email, commit or deployment.
+
+## Romanian version
+
+Romanian uses `ro`, Open Graph `ro_RO` and `/ro` URLs. All 18 pages, including eight articles, use the shared design and accepted English copy as source. `ro.json` contains the full enquiry journey, legal text, charts, accessibility labels and prepared messages. The language selector uses the native name Română. The cookie accepts ro; Romania (RO) defaults to Romanian on the first bare-homepage visit, while manual choice wins and explicit links retain their language.
+
+Use consistent polite plural Romanian. Screening = evaluare inițială pe baza cerințelor, sourcing = căutarea/identificarea candidaților, stated availability = disponibilitate declarată, recognition = recunoașterea calificărilor. None imply authorisation to work. The Terms sentence has a context-specific link: “Politica noastră de” + “confidențialitate” + “explică…”. Standalone titles remain “Politica de confidențialitate”. Article counts use singular “articol”, few “articole”, other “de articole” with Intl.PluralRules. Source country rules remain those of each article, not Romanian law merely because the text is Romanian.
+
+Five-language SEO includes en/de/cs/pl/ro/x-default equivalents, self-canonicals, localized JSON-LD and 80 indexable sitemap URLs. Ten legal pages remain noindex and excluded. English URL slugs remain stable under /ro. The map animation, data and placement are preserved. Writing-lab evidence is in sufoniq-romanian-localisation; author-only AI review, not independent native/legal certification.
+
+Verification (Romanian, 11 November 2026): production build and TypeScript passed; 1,342 source references covered; 90-page SEO check passed with 80 sitemap URLs and reciprocal five-language XML alternates. All 72 Romanian responsive/text checks, five intercepted form journeys, 35 header layouts, search/plurals, contextual Terms text and remembered-language checks passed. Romania redirect and manual English override verified using simulated hosting headers. Screenshots reviewed; map components unchanged. Slopless clean; two anti-ai-tell heuristics read and rejected with reasons in the lab record. No real enquiry, commit or deployment. Native/legal review is not independently certified.
