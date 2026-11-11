@@ -12,7 +12,9 @@
     "check:seo": "node scripts/check-seo.mjs",
     "check:locales": "node scripts/check-locales.mjs",
     "check:agents": "node scripts/check-agents.cjs && node scripts/check-language-redirect.cjs",
-    "check:agents:http": "node scripts/check-agents-http.mjs"
+    "check:agents:http": "node scripts/check-agents-http.mjs",
+    "check:campaigns": "node scripts/check-campaign-enquiry.cjs",
+    "check:campaigns:browser": "node scripts/check-campaign-forms.cjs"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",

@@ -1,0 +1,9 @@
+.fields > label { min-width: 0; }
+.fields input, .fields select, .fields textarea { min-width: 0; max-width: 100%; }
+
+@media (min-width: 640px) {
+  .fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @supports (grid-template-rows: subgrid) {
+    .fields > label { grid-row: span 2; grid-template-rows: subgrid; }
+  }
+}

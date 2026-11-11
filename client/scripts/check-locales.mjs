@@ -36,7 +36,7 @@ function walk(dir){
  }
 }
 walk('src');
-for(const file of ['src/app/(english)/employers/situations.ts','src/app/(english)/employers/recruitment-pages.ts','src/app/(english)/truck-driver-recruitment/content.ts']){
+for(const file of ['src/lib/campaign-fields.ts','src/app/(english)/employers/situations.ts','src/app/(english)/employers/recruitment-pages.ts','src/app/(english)/truck-driver-recruitment/content.ts']){
  const source=ts.createSourceFile(file,readFileSync(file,'utf8'),ts.ScriptTarget.Latest,true);
  function visit(node){if(ts.isStringLiteral(node)&&node.text.includes(' '))requireMessage(node.text,file);ts.forEachChild(node,visit);}
  visit(source);
