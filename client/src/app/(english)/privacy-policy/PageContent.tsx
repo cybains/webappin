@@ -14,7 +14,7 @@ export default function PrivacyPolicyPage({locale="en"}:{locale?:Locale}) {
       <header className={styles.header}>
         <p className={styles.eyebrow}>{t("UAB Skillaxis · Sufoniq")}</p>
         <h1>{t("Privacy policy")}</h1>
-        <p className={styles.updated}>{t("Last updated: November 10, 2026")}</p>
+        <p className={styles.updated}>{t("Last updated: November 11, 2026")}</p>
         <p className={styles.intro}>{t("When you contact Sufoniq about hiring, finding work or our services, you share information with us. This policy explains what we use it for, who may receive it and how to exercise your privacy rights.")}</p>
       </header>
       <nav aria-label={t("Privacy policy sections")} className={styles.navigation}><h2>{t("In this policy")}</h2><ol>{sections.map(([id, title]) => <li key={id}><a href={`#${id}`}>{t(title)}</a></li>)}</ol></nav>
@@ -87,7 +87,7 @@ export default function PrivacyPolicyPage({locale="en"}:{locale?:Locale}) {
 
       <section id="cookies"><h2>{t("7. Website and external services")}</h2>
         <p id="cookie-list">{t("Our public enquiry forms do not require an account or login. We do not use these forms to set advertising cookies or build advertising profiles. Hosting and security services may process technical request information to deliver and protect the website.")}</p>
-        <p>{t("On your first homepage visit, we use the country supplied by our hosting service to suggest Czech in the Czech Republic, German in Germany or Austria, and English elsewhere. We store only the language code in the sufoniq-language cookie for up to one year. Choosing a language overrides that suggestion. You can remove this preference through your browser settings.")}</p>
+        <p>{t("On your first homepage visit, we use the country supplied by our hosting service to suggest Czech in the Czech Republic, German in Germany or Austria, Polish in Poland, and English elsewhere. We store only the language code in the sufoniq-language cookie for up to one year. Choosing a language overrides that suggestion. You can remove this preference through your browser settings.")}</p>
         <p>{t("You can manage cookies and other website storage through your browser settings. If we introduce optional cookie-based analytics or advertising, we will explain the relevant providers, purposes and durations and obtain consent where required before enabling them.")}</p>
         <p>{t("WhatsApp buttons open an external service when you choose to use them. WhatsApp processes information under its own privacy terms, and we receive the contact details and messages you send us there. You can use our form or email instead. Other external links are subject to the destination’s privacy information.")}</p>
       </section>

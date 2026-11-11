@@ -3,7 +3,7 @@ import {readFileSync,readdirSync} from 'node:fs';
 import ts from 'typescript';
 import vm from 'node:vm';
 
-const dictionaries=Object.fromEntries(['de','cs'].map(locale=>[locale,JSON.parse(readFileSync('src/lib/i18n/'+locale+'.json','utf8'))]));
+const dictionaries=Object.fromEntries(['de','cs','pl'].map(locale=>[locale,JSON.parse(readFileSync('src/lib/i18n/'+locale+'.json','utf8'))]));
 const messages=dictionaries.de;
 const normalize=text=>text.replace(/\s+/g,' ').trim();
 let checked=0;
@@ -51,7 +51,7 @@ for(const [locale,paths] of Object.entries(exports.localePaths))for(const path o
  assert.equal(exports.localizedHref(path+'?example=1#contact',locale),target+'?example=1#contact');
  for(const other of exports.languageOptions)assert.equal(exports.localizedHref(exports.localizedHref(path,other.code),locale),target);
 }
-for(const locale of ['de','cs']){
+for(const locale of ['de','cs','pl']){
  assert.equal(exports.localizedHref('/not-translated',locale),'/not-translated');
  assert.equal(exports.localizedHref('https://example.com',locale),'https://example.com');
  assert.equal(exports.localizedHref('#contact',locale),'#contact');
@@ -86,4 +86,4 @@ function inspectArticle(node){
  ts.forEachChild(node,inspectArticle);
 }
 inspectArticle(articleSource);
-console.log('LOCALES PASS: '+checked+' references including '+articleChecks+' article fields; '+Object.entries(dictionaries).map(([locale,dict])=>locale+': '+Object.keys(dict).length+' messages').join('; ')+'; three-language equivalent URLs and fallbacks verified.');
+console.log('LOCALES PASS: '+checked+' references including '+articleChecks+' article fields; '+Object.entries(dictionaries).map(([locale,dict])=>locale+': '+Object.keys(dict).length+' messages').join('; ')+'; four-language equivalent URLs and fallbacks verified.');

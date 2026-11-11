@@ -63,3 +63,56 @@ export const czechPages = {
     "name": "Přehledy"
   }
 } as const;
+
+export const polishPages = {
+  "/": {
+    "title": "Rekrutacja międzynarodowa w Europie | Sufoniq",
+    "description": "Brakuje odpowiednich kandydatów lokalnie? Sufoniq wspiera poszukiwania za granicą, wstępną ocenę i przygotowanie zatrudnienia. Omów potrzeby kadrowe.",
+    "name": "Rekrutacja międzynarodowa"
+  },
+  "/employers": {
+    "title": "Rekrutacja pracowników dla firm w Europie | Sufoniq",
+    "description": "Znajdź kandydatów do swojej firmy. Sufoniq wspiera poszukiwania, ocenę według wymagań i przygotowania do zatrudnienia z zagranicy. Zacznij od wakatu.",
+    "name": "Dla pracodawców"
+  },
+  "/truck-driver-recruitment": {
+    "title": "Rekrutacja kierowców ciężarówek w Europie | Sufoniq",
+    "description": "Kierowcy z zagranicy dla europejskich firm transportowych. Wstępna ocena według potrzeb floty, doświadczenie, dostępność i planowanie kwalifikacji.",
+    "name": "Rekrutacja kierowców ciężarówek"
+  },
+  "/austria-seasonal-workers": {
+    "title": "Pracownicy sezonowi dla rolnictwa w Austrii | Sufoniq",
+    "description": "Rekrutacja pracowników z zagranicy dla gospodarstw, sadów, winnic i szklarni w Austrii. Wstępna ocena i przygotowania zgodnie z potrzebami sezonu.",
+    "name": "Pracownicy sezonowi w Austrii"
+  },
+  "/about": {
+    "title": "O Sufoniq | Rekrutacja i mobilność w Europie",
+    "description": "Dlaczego powstało Sufoniq, kto stoi za marką i jak nasz mały międzynarodowy zespół wspiera pracodawców oraz osoby szukające pracy w Europie.",
+    "name": "O Sufoniq"
+  },
+  "/method-trust": {
+    "title": "Nasz sposób rekrutacji i odpowiedzialność | Sufoniq",
+    "description": "Jak Sufoniq uzgadnia rekrutację, wstępną ocenę, przygotowania i odpowiedzialność. Poznaj zakres sprawdzeń oraz podział decyzji przy zatrudnieniu.",
+    "name": "Sposób pracy i odpowiedzialność"
+  },
+  "/work-in-europe": {
+    "title": "Szukanie pracy w Europie: CV i przygotowania | Sufoniq",
+    "description": "Pomoc z CV, aplikacjami i praktycznymi krokami do pracy w Europie. Opisz doświadczenie i kraj docelowy. Sufoniq nie pobiera opłat od kandydatów.",
+    "name": "Dla szukających pracy"
+  },
+  "/privacy-policy": {
+    "title": "Polityka prywatności | Sufoniq",
+    "description": "Jak UAB Skillaxis, operator Sufoniq, przetwarza zapytania i dane osobowe: cele, odbiorcy, przechowywanie i prawa dotyczące prywatności.",
+    "name": "Polityka prywatności"
+  },
+  "/terms-conditions": {
+    "title": "Regulamin świadczenia usług i witryny | Sufoniq",
+    "description": "Zasady korzystania z witryny i uzgadniania wsparcia UAB Skillaxis: usługi, opłaty, odpowiedzialność, prawa konsumentów i skargi.",
+    "name": "Regulamin"
+  },
+  "/insights": {
+    "title": "Analizy pracy i mobilności w Europie | Sufoniq",
+    "description": "Analizy rekrutacji międzynarodowej, rynków pracy i mobilności zawodowej. Obserwacje, interpretacje oraz wyraźnie określone ograniczenia wniosków.",
+    "name": "Analizy"
+  }
+} as const;

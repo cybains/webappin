@@ -14,7 +14,7 @@ export const siteIdentitySchema = {
       identifier: { "@type": "PropertyValue", propertyID: "Lithuanian company code", value: "307395574" },
       address: { "@type": "PostalAddress", streetAddress: "Architektų g. 56-101", postalCode: "LT-04111", addressLocality: "Vilnius", addressCountry: "LT" },
     },
-    { "@type": "WebSite", "@id": websiteId, name: "Sufoniq", url: `${SITE_URL}/`, inLanguage: ["en", "de", "cs"], publisher: { "@id": organizationId } },
+    { "@type": "WebSite", "@id": websiteId, name: "Sufoniq", url: `${SITE_URL}/`, inLanguage: ["en", "de", "cs", "pl"], publisher: { "@id": organizationId } },
   ],
 };
 

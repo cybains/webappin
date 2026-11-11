@@ -14,7 +14,7 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 ${pages.map(
   (page: { path: string; lastModified?: string }) => `  <url>
     <loc>${escapeXml(`${BASE_URL}${page.path}`)}</loc>${page.lastModified ? `\n    <lastmod>${escapeXml(page.lastModified)}</lastmod>` : ""}
-${availableLocales(page.path).length>1 ? [...availableLocales(page.path), "x-default"].map(lang => `\n    <xhtml:link rel="alternate" hreflang="${lang}" href="${escapeXml(BASE_URL + localizedHref(englishPath(page.path), lang === "de" ? "de" : lang === "cs" ? "cs" : "en"))}" />`).join("") : ""}
+${availableLocales(page.path).length>1 ? [...availableLocales(page.path), "x-default" as const].map(lang => `\n    <xhtml:link rel="alternate" hreflang="${lang}" href="${escapeXml(BASE_URL + localizedHref(englishPath(page.path), lang === "x-default" ? "en" : lang))}" />`).join("") : ""}
   </url>`,
 ).join("\n")}
 </urlset>`;

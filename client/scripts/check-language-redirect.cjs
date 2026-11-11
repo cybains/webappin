@@ -31,16 +31,17 @@ function check(path, headers, destination, language, method = 'GET') {
   }
   checks++;
 }
-for (const [country, locale] of [['CZ','cs'], ['DE','de'], ['AT','de'], ['US','en'], ['CH','en'], ['XX','en']]) {
+for (const [country, locale] of [['CZ','cs'], ['DE','de'], ['AT','de'], ['US','en'], ['CH','en'], ['XX','en'], ['PL','pl']]) {
   check('/?campaign=email', { 'x-vercel-ip-country': country }, locale === 'en' ? null : `/${locale}?campaign=email`, locale);
 }
 check('/', {}, null, 'en');
 check('/', { 'cf-ipcountry': 'CZ' }, '/cs', 'cs');
-for (const locale of ['en','de','cs']) {
-  check('/', { 'x-vercel-ip-country': 'CZ', cookie: `sufoniq-language=${locale}` }, locale === 'en' ? null : `/${locale}`, undefined);
+check('/', { 'cf-ipcountry': 'PL' }, '/pl', 'pl');
+for (const locale of ['en','de','cs','pl']) {
+  check('/', { 'x-vercel-ip-country': 'PL', cookie: `sufoniq-language=${locale}` }, locale === 'en' ? null : `/${locale}`, undefined);
 }
 check('/', { 'x-vercel-ip-country': 'DE', cookie: 'sufoniq-language=invalid' }, '/de', 'de');
-for (const path of ['/de','/cs','/employers','/cs/employers','/de/employers','/api/contact','/sitemap.xml','/robots.txt']) {
+for (const path of ['/de','/cs','/pl','/pl/employers','/employers','/cs/employers','/de/employers','/api/contact','/sitemap.xml','/robots.txt']) {
   check(path, { 'x-vercel-ip-country': 'CZ' }, null, undefined);
 }
 for (const bot of ['Googlebot/2.1', 'bingbot/2.0']) check('/', { 'x-vercel-ip-country': 'CZ', 'user-agent': bot }, null, undefined);

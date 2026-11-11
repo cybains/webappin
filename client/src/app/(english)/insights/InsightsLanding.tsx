@@ -191,7 +191,7 @@ export default function InsightsLanding() {
               </div>
             </div>
             <p className="text-xs uppercase tracking-[0.13em] text-slate-600">
-              {locale !== "en" ? `${filteredInsights.length} ${t(filteredInsights.length === 1 ? "article" : locale === "cs" && filteredInsights.length >= 2 && filteredInsights.length <= 4 ? "articles (few)" : "articles")}` : `Showing ${filteredInsights.length} insight${filteredInsights.length === 1 ? "" : "s"}.`}
+              {locale !== "en" ? `${filteredInsights.length} ${t(filteredInsights.length === 1 ? "article" : new Intl.PluralRules(locale).select(filteredInsights.length) === "few" ? "articles (few)" : "articles")}` : `Showing ${filteredInsights.length} insight${filteredInsights.length === 1 ? "" : "s"}.`}
             </p>
           </div>
 
